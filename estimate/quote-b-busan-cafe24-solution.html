@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>견적서 - 코웹솔루션</title>
+<style>
+:root{ --navy:#1f3a5f; --black:#111; --gray:#555; --bg:#eef0f2; --hl:#e8edf3; }
+*{box-sizing:border-box;}
+body{margin:0;background:#d9dde1;font-family:'맑은 고딕','Malgun Gothic','Apple SD Gothic Neo',Dotum,sans-serif;color:var(--black);}
+.toolbar{position:sticky;top:0;z-index:10;background:var(--navy);padding:11px;text-align:center;}
+.toolbar button{border:0;background:#fff;color:var(--navy);padding:9px 18px;font-weight:700;cursor:pointer;font-size:13px;border-radius:3px;}
+.toolbar a{color:#cdd8e6;text-decoration:none;margin-left:12px;font-size:13px;}
+
+.page{width:210mm;min-height:297mm;margin:18px auto;background:#fff;box-shadow:0 8px 26px rgba(0,0,0,.2);padding:16mm 15mm;}
+
+/* big title */
+.title{text-align:center;font-size:34px;font-weight:800;letter-spacing:1.2em;padding-left:1.2em;color:var(--navy);border-bottom:3px solid var(--navy);padding-bottom:10px;margin:0 0 2px;}
+.title-sub{text-align:center;font-size:11px;color:var(--gray);letter-spacing:.3em;margin:6px 0 8mm;}
+
+/* supplier / client two-box like tax invoice */
+.parties{display:grid;grid-template-columns:1fr 1.1fr;gap:0;border:2px solid var(--black);margin-bottom:7mm;}
+.parties .col{padding:0;}
+.parties .col + .col{border-left:2px solid var(--black);}
+.ph{background:var(--navy);color:#fff;font-size:12px;font-weight:700;text-align:center;padding:6px;letter-spacing:.05em;}
+.prow{display:grid;grid-template-columns:30px 1fr;border-top:1px solid #000;font-size:11px;}
+.prow:first-of-type{border-top:0;}
+.prow .lab{background:var(--hl);writing-mode:horizontal-tb;text-align:center;padding:7px 2px;font-weight:700;color:var(--navy);border-right:1px solid #000;display:flex;align-items:center;justify-content:center;}
+.prow .val{padding:7px 9px;display:flex;align-items:center;gap:8px;}
+.seal{margin-left:auto;width:42px;height:42px;border:1.5px solid #c0392b;border-radius:50%;color:#c0392b;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.1;transform:rotate(-8deg);flex:0 0 auto;}
+.logo-row{display:flex;align-items:center;gap:8px;}
+.logo-row b{white-space:nowrap;}
+.kw{width:26px;height:26px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;letter-spacing:-.04em;border-radius:3px;}
+
+/* amount band */
+.amount-band{border:2px solid var(--black);border-top:0;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;background:var(--hl);margin-bottom:7mm;}
+.amount-band .ko{font-size:14px;font-weight:800;color:var(--navy);letter-spacing:.02em;}
+.amount-band .num{font-size:16px;font-weight:800;}
+
+.intro{font-size:11px;color:var(--gray);line-height:1.7;margin-bottom:5mm;}
+
+table.items{width:100%;border-collapse:collapse;font-size:11px;border:2px solid #000;}
+table.items th{background:var(--navy);color:#fff;border:1px solid #000;padding:7px 4px;font-weight:700;}
+table.items td{border:1px solid #000;padding:7px 8px;vertical-align:middle;}
+table.items td.no{text-align:center;width:30px;color:var(--gray);}
+table.items td.gu{font-weight:700;white-space:nowrap;}
+table.items td.qty{text-align:center;width:54px;}
+table.items td.amt{text-align:right;width:96px;white-space:nowrap;font-weight:700;}
+table.items tr:nth-child(even) td{background:#f7f9fb;}
+table.items tfoot td{background:var(--hl);font-weight:800;}
+table.items tfoot td.lab{text-align:center;}
+table.items tfoot tr.total td{background:var(--navy);color:#fff;font-size:13px;}
+
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid #000;border-top:0;margin-top:7mm;font-size:10.5px;}
+.terms .box{padding:9px 11px;line-height:1.7;color:var(--gray);}
+.terms .box + .box{border-left:1px solid #000;}
+.terms .box h4{margin:0 0 5px;font-size:11px;color:var(--navy);}
+
+.footer{margin-top:9mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:2px solid var(--navy);padding-top:6mm;}
+.footer .memo{font-size:10.5px;color:var(--gray);line-height:1.7;max-width:120mm;}
+.footer .stamp{text-align:right;font-size:11px;color:var(--black);line-height:1.7;}
+.footer .stamp b{font-size:15px;color:var(--navy);}
+.disc{margin-top:6mm;font-size:9px;color:#999;}
+
+@page{size:A4;margin:0;}
+@media print{body{background:#fff;}.toolbar{display:none;}.page{margin:0;box-shadow:none;width:210mm;min-height:297mm;}}
+@media(max-width:740px){.page{width:100%;padding:16px;}.title{letter-spacing:.6em;padding-left:.6em;font-size:26px;}.parties,.terms{grid-template-columns:1fr;}.parties .col+.col,.terms .box+.box{border-left:0;border-top:2px solid #000;}}
+</style>
+</head>
+<body>
+<div class="toolbar"><button onclick="window.print()">PDF로 저장 / 인쇄</button><a href="quotes-index.html">목록으로</a></div>
+<article class="page">
+
+  <h1 class="title">견 적 서</h1>
+  <div class="title-sub">QUOTATION · CAFE24 SHOPPING MALL</div>
+
+  <div class="parties">
+    <div class="col">
+      <div class="ph">공 급 받 는 자</div>
+      <div class="prow"><div class="lab">상호</div><div class="val">블렌딩키트 브랜드 쇼핑몰 구축 고객</div></div>
+      <div class="prow"><div class="lab">건명</div><div class="val">티 블렌딩 키트 카페24 쇼핑몰 구축</div></div>
+      <div class="prow"><div class="lab">견적일</div><div class="val">2026. 06. 20.</div></div>
+      <div class="prow"><div class="lab">유효</div><div class="val">견적일로부터 30일</div></div>
+    </div>
+    <div class="col">
+      <div class="ph">공 급 자</div>
+      <div class="prow"><div class="lab">상호</div><div class="val"><div class="logo-row"><span class="kw">KW</span><b>코웹솔루션</b></div></div></div>
+      <div class="prow"><div class="lab">소재</div><div class="val">경기도 성남시 · 쇼핑몰 구축 전문 제작사</div></div>
+      <div class="prow"><div class="lab">문서</div><div class="val">KW-20260620-02</div></div>
+      <div class="prow"><div class="lab">제작</div><div class="val">약 6주 (10월 중순 착수 → 11월 말 완료)</div></div>
+    </div>
+  </div>
+
+  <div class="amount-band">
+    <div class="ko">합계금액(VAT 포함) : 金 사백칠만원整</div>
+    <div class="num">(₩ 4,070,000)</div>
+  </div>
+
+  <p class="intro">아래와 같이 견적합니다. 카페24 EC 호스팅 기반의 표준 쇼핑몰 구축 견적이며, 유료 반응형 스킨 적용·PG 연동·상품 등록 대행을 포함한 턴키 방식입니다.</p>
+
+  <table class="items">
+    <thead><tr><th style="width:30px">No</th><th>구　분</th><th>세 부 내 용</th><th style="width:54px">수량</th><th style="width:96px">금　액</th></tr></thead>
+    <tbody>
+      <tr><td class="no">1</td><td class="gu">EC 호스팅 개설</td><td>카페24 관리자 패널 구성, 기본 정책 등록</td><td class="qty">1식</td><td class="amt">350,000</td></tr>
+      <tr><td class="no">2</td><td class="gu">유료 반응형 스킨</td><td>반응형 스킨 라이선스 포함, 컬러·폰트 커스텀</td><td class="qty">1식</td><td class="amt">900,000</td></tr>
+      <tr><td class="no">3</td><td class="gu">메인 배너·슬라이드</td><td>배너 3종 등록, 자동진열·기획전 영역 설정</td><td class="qty">1식</td><td class="amt">550,000</td></tr>
+      <tr><td class="no">4</td><td class="gu">카테고리·필터 구조</td><td>대/중/소 분류 체계, 옵션 필터 구성</td><td class="qty">1식</td><td class="amt">350,000</td></tr>
+      <tr><td class="no">5</td><td class="gu">상품 등록 대행 (10건)</td><td>상품정보 입력, 옵션 설정, 대표 이미지 등록</td><td class="qty">10건</td><td class="amt">450,000</td></tr>
+      <tr><td class="no">6</td><td class="gu">PG 결제 모듈 연동</td><td>KG이니시스 또는 토스 PG 신청 대행, 결제 테스트</td><td class="qty">1식</td><td class="amt">400,000</td></tr>
+      <tr><td class="no">7</td><td class="gu">배송·CS 정책 설정</td><td>배송비 정책, 교환/반품 자동안내, 약관 등록</td><td class="qty">1식</td><td class="amt">250,000</td></tr>
+      <tr><td class="no">8</td><td class="gu">도메인·SSL·오픈 검수</td><td>보유 도메인 연결, SSL 인증서, 최종 테스트</td><td class="qty">1식</td><td class="amt">450,000</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td class="lab" colspan="4">공　급　가　액</td><td class="amt">3,700,000</td></tr>
+      <tr><td class="lab" colspan="4">부　가　세 (10%)</td><td class="amt">370,000</td></tr>
+      <tr class="total"><td class="lab" colspan="4">합　　　계</td><td class="amt">4,070,000</td></tr>
+    </tfoot>
+  </table>
+
+  <div class="terms">
+    <div class="box"><h4>포함 조건</h4>EC 호스팅 개설, 유료 반응형 스킨(라이선스 포함), 상품 등록 10건, PG 신청 대행, 배송·CS 정책 설정, SSL·도메인 연결, 오픈 검수</div>
+    <div class="box"><h4>별도 조건</h4>브랜드 전략 기획, 커스텀 메인 디자인, 저널·교육 콘텐츠 페이지, 상세페이지 개별 디자인, 촬영·이미지 제작, 네이버페이·카카오페이 연동, 유료 앱</div>
+  </div>
+
+  <div class="footer">
+    <div class="stamp">위와 같이 견적합니다.<br>경기도 성남시 · <b>코웹솔루션</b></div>
+  </div>
+
+</article>
+</body></html>
