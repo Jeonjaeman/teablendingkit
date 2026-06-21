@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>프로젝트 대시보드 · tea Apotheca</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;background:#e8e6db;}
+.topbar{background:#2a2a22;color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.topbar .brand{font-size:14px;font-weight:700;letter-spacing:.02em;}
+.topbar .brand small{font-weight:400;color:#a8a594;margin-left:8px;font-size:11px;}
+.topbar .meta{font-size:11px;color:#a8a594;}
+.tabs{background:#3a3a2e;display:flex;gap:0;position:sticky;top:38px;z-index:99;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tabs button{background:none;border:none;color:#c8c4b4;padding:13px 22px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;}
+.tabs button:hover{color:#fff;background:rgba(255,255,255,.05);}
+.tabs button.active{color:#fff;border-bottom-color:#5e6447;background:rgba(255,255,255,.08);}
+.tab-panel{display:none;width:100%;height:calc(100vh - 82px);}
+.tab-panel.active{display:block;}
+.tab-panel iframe{width:100%;height:100%;border:none;}
+.tab-home{padding:40px 24px;max-width:900px;margin:0 auto;}
+.tab-home h1{font-size:26px;color:#2a2a22;margin-bottom:6px;}
+.tab-home .sub{font-size:13px;color:#8a8674;margin-bottom:32px;}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.card{background:#fff;border-radius:14px;padding:24px;border:1px solid #e3e1d5;box-shadow:0 6px 18px rgba(0,0,0,.06);cursor:pointer;transition:all .2s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.1);}
+.card .icon{font-size:28px;margin-bottom:10px;}
+.card h3{font-size:16px;margin-bottom:6px;color:#2a2a22;}
+.card p{font-size:12px;color:#8a8674;line-height:1.6;}
+.card .arrow{margin-top:12px;font-size:12px;font-weight:700;color:#5e6447;}
+.shortcuts{margin-top:32px;background:#fff;border-radius:14px;padding:24px;border:1px solid #e3e1d5;}
+.shortcuts h3{font-size:15px;color:#5e6447;margin-bottom:12px;}
+.link-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.link-grid a{display:block;padding:10px 14px;background:#f4f3ec;border-radius:8px;font-size:12px;color:#2a2a22;text-decoration:none;line-height:1.5;transition:background .15s;}
+.link-grid a:hover{background:#e3e1d5;}
+.link-grid a small{display:block;color:#8a8674;font-size:10px;margin-top:2px;}
+@media(max-width:640px){.cards{grid-template-columns:1fr;}.link-grid{grid-template-columns:1fr 1fr;}.tabs button{padding:11px 16px;font-size:12px;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">tea Apotheca <small>프로젝트 대시보드</small></div>
+  <div class="meta">탱탱소프트 × 이소연 대표 · 10월 초 → 10월 말</div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="active" data-tab="home">홈</button>
+  <button data-tab="checklist">체크리스트</button>
+  <button data-tab="analysis">성향 분석</button>
+  <button data-tab="reference">레퍼런스 사이트</button>
+  <button data-tab="estimate">비교견적</button>
+</div>
+
+<!-- 홈 탭 -->
+<div class="tab-panel active" id="panel-home">
+  <div class="tab-home">
+    <h1>tea Apotheca 카페24 쇼핑몰 구축</h1>
+    <p class="sub">이소연 명인의 티 블렌딩 키트 브랜드 · 카페24 쇼핑몰 구축 프로젝트 통합 관리</p>
+
+    <div class="cards">
+      <div class="card" onclick="switchTab('checklist')">
+        <div class="icon">&#9745;</div>
+        <h3>프로젝트 체크리스트</h3>
+        <p>개발자·의뢰자 준비사항, 주차별 진행 체크리스트. 체크 상태 자동 저장.</p>
+        <div class="arrow">열기 &rarr;</div>
+      </div>
+      <div class="card" onclick="switchTab('analysis')">
+        <div class="icon">&#9998;</div>
+        <h3>의뢰자 성향 분석</h3>
+        <p>레퍼런스 이미지 21장 + 텍스트 요청서 종합 분석. 핵심 키워드, 비주얼 성향.</p>
+        <div class="arrow">열기 &rarr;</div>
+      </div>
+      <div class="card" onclick="switchTab('reference')">
+        <div class="icon">&#9733;</div>
+        <h3>추천 레퍼런스 사이트</h3>
+        <p>브랜드 10선 + 디자인 11선 + 질감 10선. 페이지별 참고 매트릭스 포함.</p>
+        <div class="arrow">열기 &rarr;</div>
+      </div>
+      <div class="card" onclick="switchTab('estimate')">
+        <div class="icon">&#9776;</div>
+        <h3>비교견적 4종</h3>
+        <p>서울·경기·인천·청주 4개 업체 견적 비교. 채택/미채택 사유 포함.</p>
+        <div class="arrow">열기 &rarr;</div>
+      </div>
+    </div>
+
+    <div class="shortcuts">
+      <h3>빠른 링크</h3>
+      <div class="link-grid">
+        <a href="quote-d-tengtengsoft.html" target="_blank">탱탱소프트 견적서<small>채택 견적 · 3,800,000원</small></a>
+        <a href="https://teablendingkit.kr" target="_blank">teablendingkit.kr<small>의뢰자 보유 도메인</small></a>
+        <a href="https://github.com/Jeonjaeman/teablendingkit" target="_blank">GitHub 저장소<small>소스 코드 관리</small></a>
+        <a href="https://jeonjaeman.github.io/teablendingkit/estimate/quotes-index.html" target="_blank">견적서 공유 URL<small>GitHub Pages</small></a>
+        <a href="https://searchadvisor.naver.com/" target="_blank">네이버 서치어드바이저<small>검색 등록 (네이버 계정 필요)</small></a>
+        <a href="https://search.google.com/search-console" target="_blank">구글 서치콘솔<small>검색 등록 (구글 계정 필요)</small></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 체크리스트 탭 -->
+<div class="tab-panel" id="panel-checklist">
+  <iframe src="project-checklist.html"></iframe>
+</div>
+
+<!-- 성향 분석 탭 (성향 분석 섹션만) -->
+<div class="tab-panel" id="panel-analysis">
+  <iframe src="reference-sites.html"></iframe>
+</div>
+
+<!-- 레퍼런스 사이트 탭 -->
+<div class="tab-panel" id="panel-reference">
+  <iframe src="reference-sites.html"></iframe>
+</div>
+
+<!-- 비교견적 탭 -->
+<div class="tab-panel" id="panel-estimate">
+  <iframe src="quotes-index.html"></iframe>
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(`panel-${tabId}`).classList.add('active');
+}
+
+document.querySelectorAll('.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// URL hash로 탭 직접 접근 가능
+if (location.hash) {
+  const tab = location.hash.replace('#', '');
+  const btn = document.querySelector(`[data-tab="${tab}"]`);
+  if (btn) switchTab(tab);
+}
+</script>
+
+</body>
+</html>

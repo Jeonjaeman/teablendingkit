@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>프로젝트 체크리스트 · tea Apotheca 카페24 쇼핑몰 구축</title>
+<style>
+:root{--ink:#2a2a22;--olive:#5e6447;--gray:#8a8674;--line:#e3e1d5;--tint:#f4f3ec;--paper:#fff;--done:#e8f5e9;--accent:#2563eb;}
+*{box-sizing:border-box;}
+body{margin:0;background:#e8e6db;font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+.wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:26px;letter-spacing:-.02em;margin:0 0 4px;}
+.sub{font-size:13px;color:var(--gray);margin-bottom:8px;}
+.progress-bar{background:var(--line);border-radius:8px;height:12px;margin-bottom:32px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--olive);border-radius:8px;transition:width .4s ease;}
+.progress-text{font-size:12px;color:var(--gray);margin-bottom:6px;}
+.section{background:var(--paper);border-radius:16px;padding:28px 28px 20px;margin-bottom:20px;box-shadow:0 8px 24px rgba(0,0,0,.06);}
+.section h2{font-size:17px;margin:0 0 6px;color:var(--olive);display:flex;align-items:center;gap:10px;}
+.section h2 .count{font-size:12px;color:var(--gray);font-weight:400;}
+.section .desc{font-size:12px;color:var(--gray);margin-bottom:16px;line-height:1.6;}
+.phase{margin-bottom:18px;}
+.phase-title{font-size:13px;font-weight:700;color:var(--ink);margin:0 0 8px;padding:6px 10px;background:var(--tint);border-radius:8px;display:flex;justify-content:space-between;align-items:center;}
+.phase-title .pcount{font-size:11px;color:var(--gray);font-weight:400;}
+.item{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-bottom:1px solid #f0efe8;cursor:pointer;border-radius:6px;transition:background .15s;}
+.item:hover{background:#faf9f4;}
+.item:last-child{border-bottom:none;}
+.item.checked{background:var(--done);}
+.item.checked .label{text-decoration:line-through;color:var(--gray);}
+.item input[type=checkbox]{margin:2px 0 0;accent-color:var(--olive);width:16px;height:16px;flex:0 0 16px;cursor:pointer;}
+.label{font-size:13.5px;line-height:1.6;flex:1;}
+.label small{display:block;font-size:11.5px;color:var(--gray);margin-top:2px;}
+.tag{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:middle;}
+.t-dev{background:#e3f2fd;color:#1565c0;}
+.t-client{background:#fff3e0;color:#e65100;}
+.t-both{background:#f3e5f5;color:#7b1fa2;}
+.t-wait{background:#fff8e1;color:#f57f17;}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+.legend span{font-size:11px;display:flex;align-items:center;gap:5px;}
+.legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.toolbar{position:sticky;top:0;z-index:10;background:var(--olive);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;}
+.toolbar .title{font-size:13px;font-weight:700;}
+.toolbar button{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.toolbar button:hover{background:rgba(255,255,255,.25);}
+.timeline{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:24px;}
+.tl{background:var(--paper);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--line);box-shadow:0 4px 12px rgba(0,0,0,.04);}
+.tl b{display:block;font-size:11px;color:var(--olive);letter-spacing:.05em;margin-bottom:4px;}
+.tl span{font-size:12px;color:var(--ink);}
+.note{margin-top:24px;background:#fff8e7;border-left:5px solid #d0a45d;padding:14px 18px;border-radius:12px;color:#55462c;font-size:12px;line-height:1.7;}
+@media(max-width:640px){.wrap{padding:20px 14px;}.section{padding:20px 16px 14px;}.timeline{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="title">tea Apotheca · 카페24 쇼핑몰 구축 프로젝트</div>
+  <div>
+    <button onclick="resetAll()">초기화</button>
+    <button onclick="window.print()">인쇄</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<h1>프로젝트 체크리스트</h1>
+<p class="sub">tea Apotheca (이소연 대표) × 탱탱소프트 (전재만) · 10월 초 착수 → 10월 말 완료</p>
+
+<div class="progress-text">전체 진행률 <b id="progressPct">0%</b> (<span id="progressDone">0</span>/<span id="progressTotal">0</span>)</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="timeline">
+  <div class="tl"><b>1주차</b><span>10월 초<br>기획·설계</span></div>
+  <div class="tl"><b>2주차</b><span>10월 중순<br>디자인·구축</span></div>
+  <div class="tl"><b>3주차</b><span>10월 하순<br>콘텐츠·세팅</span></div>
+  <div class="tl"><b>4주차</b><span>10월 말<br>QA·오픈</span></div>
+</div>
+
+<div class="legend">
+  <span><span class="dot" style="background:#1565c0;"></span> 개발자 (전재만)</span>
+  <span><span class="dot" style="background:#e65100;"></span> 의뢰자 (이소연 대표)</span>
+  <span><span class="dot" style="background:#7b1fa2;"></span> 공동</span>
+  <span><span class="dot" style="background:#f57f17;"></span> 대기 중</span>
+</div>
+
+<!-- 착수 전 준비 -->
+<div class="section">
+  <h2>착수 전 준비 <span class="count" id="count-prep"></span></h2>
+  <div class="desc">계약·자료 수집 단계. 착수 전까지 완료 필요.</div>
+
+  <div class="phase">
+    <div class="phase-title">의뢰자 준비 자료 <span class="pcount" id="pcount-client-prep"></span></div>
+    <label class="item" data-group="prep"><input type="checkbox" id="c01"><div class="label">브랜드 로고 파일 전달<span class="tag t-client">의뢰자</span><small>
+      · AI 또는 SVG 벡터 원본 (확대해도 깨지지 않는 형식)<br>
+      · PNG 고해상도 (투명 배경, 최소 1000px 이상)<br>
+      · 흰색 배경용 / 어두운 배경용 2종류<br>
+      · 호랑이 일러스트 원본 + "tea Apotheca" 텍스트 로고 각각 분리 파일<br>
+      · 파비콘용 정사각형 아이콘 (512×512px)
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c02"><div class="label">완제품 사진 촬영·전달<span class="tag t-client">의뢰자</span><small>
+      · 키트 전체 구성 사진 (박스+내용물 펼친 컷)<br>
+      · 개별 허브 원물 클로즈업 (페퍼민트, 캐모마일, 레몬밤 등)<br>
+      · 차를 우려내는 과정 사진 (자연광 촬영 권장)<br>
+      · 완성된 차 한 잔 사진<br>
+      · 사진 해상도: 최소 2000px 이상, JPG/PNG<br>
+      · 현재 완제품 없음 → 정식 제품 완성 후 촬영 or 시제품 촬영
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c03"><div class="label">브랜드 스토리 원고 작성<span class="tag t-client">의뢰자</span><small>
+      · "왜 이 브랜드를 만들었는지" — 이소연 명인의 개인 스토리<br>
+      · "차를 통해 어떤 삶을 이야기하는지" — 브랜드 비전<br>
+      · "blend since 1975"의 의미와 역사<br>
+      · 한국(청주)과 미국(Chula Vista) 양국 거점 이야기<br>
+      · 분량: A4 1~2장 (500~1000자) 권장<br>
+      · 완벽하지 않아도 됨 — 키워드·메모 수준이라도 전달하면 개발자가 정리 가능
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c04"><div class="label">"취향의 권리" 철학 원고 작성<span class="tag t-client">의뢰자</span><small>
+      · 핵심 문구: "전문가에게는 원칙이 있지만 소비자에게는 취향의 권리가 있습니다"<br>
+      · 이 철학이 나오게 된 배경 이야기<br>
+      · 왜 블렌딩 '키트'인지 — 소비자가 직접 만드는 경험의 의미<br>
+      · 분량: 300~500자 권장
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c05"><div class="label">교육 프로그램 상세 내용 정리<span class="tag t-client">의뢰자</span><small>
+      · 프로그램별 정리 필요:<br>
+      &nbsp;&nbsp;① 기관 출강 — 대상 기관, 수강 인원, 소요 시간, 커리큘럼 요약<br>
+      &nbsp;&nbsp;② 강사 과정 — 수강 자격, 과정 기간, 수료증 발급 여부, 수강료<br>
+      &nbsp;&nbsp;③ 기업 워크숍 — 기업 대상, 인원, 프로그램 구성, 견적 기준<br>
+      · 각 프로그램 진행 사진 (있으면)<br>
+      · 신청 방식: 게시판 접수 / 구글폼 / 전화·이메일 중 선택 필요
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c06"><div class="label">강의 자료 PPT 전달<span class="tag t-client">의뢰자</span><small>
+      · 대화 중 "지난번 강의 자료 ppt 보내드려볼께요" 언급<br>
+      · 강의 시 사용하는 멘트·원고가 있으면 함께 전달 (글 톤 참고용)<br>
+      · 강의 중 사용한 이미지·도표가 있으면 웹 콘텐츠에 활용 가능<br>
+      · 수강생 후기·수료 사진이 있으면 교육 페이지에 활용
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c07"><div class="label">상품 정보 정리 (가격, 옵션, 설명)<span class="tag t-client">의뢰자</span><small>
+      · 상품별로 아래 정보 필요:<br>
+      &nbsp;&nbsp;— 상품명 (예: Sweet Dream 티 블렌딩 키트)<br>
+      &nbsp;&nbsp;— 판매가 (소비자가)<br>
+      &nbsp;&nbsp;— 옵션이 있으면 옵션별 가격 차이<br>
+      &nbsp;&nbsp;— 구성품 목록 (페퍼민트 5g, 캐모마일 5g, 레몬밤 5g, 티백필터, 계량스푼 등)<br>
+      &nbsp;&nbsp;— 원재료명 및 함량 (식품표시 기준)<br>
+      &nbsp;&nbsp;— 보관 방법, 유통기한<br>
+      &nbsp;&nbsp;— 제조원: 티아포테카 (충청북도 청주시)<br>
+      · B2B 대량 주문 가격 정책 (있으면)
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c08"><div class="label">Journal 콘텐츠 초안 (1~2편)<span class="tag t-client">의뢰자</span><small>
+      · 에세이 / 차 이야기 / 식물 이야기 / 명상 이야기 중 선택<br>
+      · 분량: 편당 500~1500자 권장<br>
+      · 함께 쓸 이미지 1~3장 (자연광·원물 느낌)<br>
+      · 예시: "왜 캐모마일인가", "블렌딩이라는 행위에 대하여", "명상과 차의 시간"<br>
+      · 완벽하지 않아도 됨 — 초안이나 메모 수준이면 개발자가 편집 가능
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c09"><div class="label">사업자등록증 사본 전달<span class="tag t-client">의뢰자</span><small>
+      · 카페24 쇼핑몰 개설, PG 연동, 통신판매업 신고에 모두 필요<br>
+      · 확인 항목: 상호명, 사업자등록번호(380-07-03649), 대표자명, 업태, 종목<br>
+      · 사업장 주소가 현재 주소와 일치하는지 확인<br>
+      · PDF 또는 스캔 이미지로 전달
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c10"><div class="label">통신판매업 신고 완료<span class="tag t-client">의뢰자</span><small>
+      · 온라인 쇼핑몰 운영 시 법적 필수 (전자상거래법)<br>
+      · 신고 방법: 정부24 (gov.kr) 온라인 또는 관할 시·군·구청 방문<br>
+      · 필요 서류: ① 사업자등록증 ② 구매안전서비스(에스크로) 이용 확인증<br>
+      · 에스크로 확인증은 카페24페이먼츠 가입 후 발급 가능<br>
+      · 처리 기간: 영업일 3~7일<br>
+      · 면제 조건: 간이과세자이면서 전년도 판매 50회 미만이면 면제<br>
+      · 신고 후 → 신고번호를 쇼핑몰 하단(Footer)에 필수 표기
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c11"><div class="label">배송 정책 결정<span class="tag t-client">의뢰자</span><small>
+      · 결정 필요 항목:<br>
+      &nbsp;&nbsp;— 기본 배송비 (예: 3,000원 / 00,000원 이상 무료배송)<br>
+      &nbsp;&nbsp;— 배송 업체 (CJ대한통운, 우체국택배 등)<br>
+      &nbsp;&nbsp;— 평균 배송 소요일 (결제 후 2~3일 등)<br>
+      &nbsp;&nbsp;— 교환/반품 조건 (단순 변심 7일, 불량 30일 등)<br>
+      &nbsp;&nbsp;— 교환/반품 배송비 부담 (편도 3,000원 등)<br>
+      &nbsp;&nbsp;— 반품 수거지 주소 (청주 사업장 주소)<br>
+      &nbsp;&nbsp;— 제주/도서산간 추가 배송비 여부
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c12"><div class="label">도메인 관리 정보 확인 (teablendingkit.kr)<span class="tag t-client">의뢰자</span><small>
+      · 대화 중 "사두었어요" 언급 — 아래 정보 전달 필요:<br>
+      &nbsp;&nbsp;— 도메인 등록 업체 (가비아, 후이즈, 카페24 등)<br>
+      &nbsp;&nbsp;— 해당 업체 로그인 ID/PW (네임서버 변경에 필요)<br>
+      · 카페24 연결 시 네임서버를 카페24로 변경해야 함<br>
+      · 네임서버 변경 후 적용까지 24~48시간 소요<br>
+      · 카페24에서 도메인 2개까지 무료 연결 가능
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c13"><div class="label">참고 사이트 nothingatall.co.kr 결제 방식 검토<span class="tag t-both">공동</span><small>
+      · 대화 중 "아는 업체인데 결제방식 한번 봐주시면 감사하겠습니다" 요청<br>
+      · 확인 항목: PG사 종류, 결제 수단(카드/계좌이체/간편결제), 결제 흐름 UX<br>
+      · 검토 후 tea Apotheca에 적용할 결제 방식 결정
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c13b"><div class="label">대표자 신분증 사본 준비<span class="tag t-client">의뢰자</span><small>
+      · 카페24페이먼츠 PG 계약서 작성에 필요<br>
+      · 대표자 본인 명의 신분증 (주민등록증 또는 운전면허증)<br>
+      · 공동대표가 있으면 공동대표 신분증도 필요
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c13c"><div class="label">정산 계좌 정보 준비<span class="tag t-client">의뢰자</span><small>
+      · 카페24페이먼츠 PG 정산금 입금 계좌<br>
+      · 대표자 또는 법인 명의와 동일한 이름의 계좌만 가능<br>
+      · 필요 정보: 은행명, 계좌번호, 예금주명<br>
+      · 통장 사본 (앞면) 이미지 준비
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c13d"><div class="label">네이버 계정 준비 (검색 등록용)<span class="tag t-client">의뢰자</span><small>
+      · 네이버 서치어드바이저 등록에 네이버 아이디 필요<br>
+      · 브랜드 공식 네이버 계정이 있으면 그 계정 사용 권장<br>
+      · 없으면 tea Apotheca 명의로 새로 생성<br>
+      · 향후 네이버 블로그·플레이스에도 같은 계정 사용 가능
+    </small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c13e"><div class="label">구글 계정 준비 (검색·애널리틱스용)<span class="tag t-client">의뢰자</span><small>
+      · 구글 서치콘솔 + 구글 애널리틱스 등록에 구글 계정 필요<br>
+      · 브랜드 공식 Gmail이 있으면 사용 (예: teaapotheca@gmail.com)<br>
+      · 향후 유튜브 채널 개설에도 같은 계정 사용 가능<br>
+      · 구글 서치콘솔에서 사이트 소유권 확인 시 HTML 메타태그 삽입 필요 (개발자 처리)
+    </small></div></label>
+  </div>
+
+  <div class="phase">
+    <div class="phase-title">개발자 사전 준비 <span class="pcount" id="pcount-dev-prep"></span></div>
+    <label class="item" data-group="prep"><input type="checkbox" id="c14"><div class="label">비교견적서 4종 작성 및 공유<span class="tag t-dev">개발자</span><small>완료 — GitHub Pages 배포 완료</small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c15"><div class="label">의뢰자 성향 분석 및 레퍼런스 문서 작성<span class="tag t-dev">개발자</span><small>완료 — 브랜드 10선 + 디자인 11선 + 질감 10선</small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c16"><div class="label">카페24 PG 정책 확인 (무료 결제연동)<span class="tag t-dev">개발자</span><small>완료 — 카페24페이먼츠 가입비 무료, 수수료만 발생</small></div></label>
+    <label class="item" data-group="prep"><input type="checkbox" id="c17"><div class="label">카페24 FTP·스마트디자인 커스텀 가능 여부 확인<span class="tag t-dev">개발자</span><small>완료 — HTML/CSS/JS 직접 편집 가능, FTP 제공</small></div></label>
+  </div>
+</div>
+
+<!-- 1주차 -->
+<div class="section">
+  <h2>1주차 · 기획·설계 <span class="count" id="count-w1"></span></h2>
+  <div class="desc">10월 초. 사이트맵 확정, 와이어프레임 설계, 카페24 개설.</div>
+
+  <div class="phase">
+    <div class="phase-title">기획·구조 <span class="pcount" id="pcount-w1"></span></div>
+    <label class="item" data-group="w1"><input type="checkbox" id="c20"><div class="label">사이트맵 확정 (의뢰자 컨펌)<span class="tag t-both">공동</span><small>메인 / 브랜드스토리 / 취향의 권리 / 키트 소개 / 교육 / Journal / 문의</small></div></label>
+    <label class="item" data-group="w1"><input type="checkbox" id="c21"><div class="label">메인 화면 와이어프레임 설계<span class="tag t-dev">개발자</span><small>콘텐츠 배치, 스크롤 흐름, 섹션 구성</small></div></label>
+    <label class="item" data-group="w1"><input type="checkbox" id="c22"><div class="label">카페24 EC 호스팅 개설<span class="tag t-dev">개발자</span><small>쇼핑몰 생성, 관리자 초기 설정</small></div></label>
+    <label class="item" data-group="w1"><input type="checkbox" id="c23"><div class="label">도메인(teablendingkit.kr) 연결 · SSL 설정<span class="tag t-dev">개발자</span><small>의뢰자 도메인 관리 정보 필요</small></div></label>
+    <label class="item" data-group="w1"><input type="checkbox" id="c24"><div class="label">컬러·폰트·톤앤매너 가이드 확정<span class="tag t-both">공동</span><small>세이지그린·올리브·아이보리 + Pretendard·MaruBuri + Cormorant Garamond</small></div></label>
+  </div>
+</div>
+
+<!-- 2주차 -->
+<div class="section">
+  <h2>2주차 · 디자인·구축 <span class="count" id="count-w2"></span></h2>
+  <div class="desc">10월 중순. 메인 디자인·코딩, 서브페이지 구축.</div>
+
+  <div class="phase">
+    <div class="phase-title">디자인·퍼블리싱 <span class="pcount" id="pcount-w2"></span></div>
+    <label class="item" data-group="w2"><input type="checkbox" id="c30"><div class="label">메인 비주얼 디자인·코딩<span class="tag t-dev">개발자</span><small>자연광·여백 기반 히어로, 브랜드 철학 섹션 퍼블리싱</small></div></label>
+    <label class="item" data-group="w2"><input type="checkbox" id="c31"><div class="label">메인 시안 의뢰자 컨펌<span class="tag t-client">의뢰자</span><small>시안 확인 후 피드백. 수정 2회 포함</small></div></label>
+    <label class="item" data-group="w2"><input type="checkbox" id="c32"><div class="label">브랜드 스토리 페이지 구축<span class="tag t-dev">개발자</span><small>의뢰자 원고 기반. 브랜드 탄생 이유, 차를 통한 삶</small></div></label>
+    <label class="item" data-group="w2"><input type="checkbox" id="c33"><div class="label">취향의 권리 페이지 구축<span class="tag t-dev">개발자</span><small>브랜드 핵심 철학 페이지</small></div></label>
+    <label class="item" data-group="w2"><input type="checkbox" id="c34"><div class="label">교육 프로그램 페이지 구축<span class="tag t-dev">개발자</span><small>기관출강·강사과정·기업워크숍. 신청폼(게시판 커스텀 또는 외부 폼)</small></div></label>
+    <label class="item" data-group="w2"><input type="checkbox" id="c35"><div class="label">문의 페이지 구축<span class="tag t-dev">개발자</span><small>B2B 문의, 일반 문의 구분</small></div></label>
+  </div>
+</div>
+
+<!-- 3주차 -->
+<div class="section">
+  <h2>3주차 · 콘텐츠·세팅 <span class="count" id="count-w3"></span></h2>
+  <div class="desc">10월 하순. 상품 등록, 저널, 결제·배송 설정.</div>
+
+  <div class="phase">
+    <div class="phase-title">상품·콘텐츠 <span class="pcount" id="pcount-w3a"></span></div>
+    <label class="item" data-group="w3"><input type="checkbox" id="c40"><div class="label">상품 진열·상세 템플릿 구축<span class="tag t-dev">개발자</span><small>카테고리 구조, 키트 진열, 상세 기본 레이아웃</small></div></label>
+    <label class="item" data-group="w3"><input type="checkbox" id="c41"><div class="label">상품 등록 (의뢰자 제공 정보 기반)<span class="tag t-both">공동</span><small>상품명, 가격, 옵션, 설명, 이미지 등록</small></div></label>
+    <label class="item" data-group="w3"><input type="checkbox" id="c42"><div class="label">저널(블로그형 게시판) 구축<span class="tag t-dev">개발자</span><small>에세이·차 이야기·명상 콘텐츠 게시판 및 썸네일 구조</small></div></label>
+    <label class="item" data-group="w3"><input type="checkbox" id="c43"><div class="label">Journal 콘텐츠 1~2편 등록<span class="tag t-both">공동</span><small>의뢰자 원고 기반 등록. 이미지 배치</small></div></label>
+  </div>
+
+  <div class="phase">
+    <div class="phase-title">결제·운영 설정 <span class="pcount" id="pcount-w3b"></span></div>
+    <label class="item" data-group="w3"><input type="checkbox" id="c44"><div class="label">카페24페이먼츠(무료 PG) 연동<span class="tag t-dev">개발자</span><small>가입비 무료. 신용카드 2~3.5%, 계좌이체 1.8%</small></div></label>
+    <label class="item" data-group="w3"><input type="checkbox" id="c45"><div class="label">배송 정책 설정<span class="tag t-dev">개발자</span><small>배송비, 교환/반품 정책, 약관 등록</small></div></label>
+    <label class="item" data-group="w3"><input type="checkbox" id="c46"><div class="label">주문 알림 설정 (SMS/알림톡)<span class="tag t-dev">개발자</span><small>주문확인·배송시작·배송완료 자동 알림</small></div></label>
+  </div>
+</div>
+
+<!-- 4주차 -->
+<div class="section">
+  <h2>4주차 · QA·오픈 <span class="count" id="count-w4"></span></h2>
+  <div class="desc">10월 말. 테스트, 검색 등록, 오픈.</div>
+
+  <div class="phase">
+    <div class="phase-title">테스트·오픈 <span class="pcount" id="pcount-w4"></span></div>
+    <label class="item" data-group="w4"><input type="checkbox" id="c50"><div class="label">모바일 QA (디바이스별 화면 점검)<span class="tag t-dev">개발자</span><small>iOS Safari, Android Chrome, PC 크로스 브라우징</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c51"><div class="label">결제 흐름 테스트 (장바구니→결제→완료)<span class="tag t-both">공동</span><small>테스트 주문, PG 결제 정상 작동 확인</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c52"><div class="label">메타태그·OG 이미지 설정<span class="tag t-dev">개발자</span><small>카카오톡/SNS 공유 시 썸네일·제목·설명 노출</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c53"><div class="label">네이버 서치어드바이저 등록 (무료)<span class="tag t-dev">개발자</span><small>사이트맵 제출, 네이버 검색 노출</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c54"><div class="label">구글 서치콘솔 등록 (무료)<span class="tag t-dev">개발자</span><small>사이트맵 제출, 구글 검색 노출</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c55"><div class="label">관리자 사용법 안내 (1회)<span class="tag t-dev">개발자</span><small>상품 등록, 주문 관리, 게시판 관리 안내</small></div></label>
+    <label class="item" data-group="w4"><input type="checkbox" id="c56"><div class="label">최종 의뢰자 컨펌 · 오픈<span class="tag t-both">공동</span><small>전체 점검 후 사이트 오픈</small></div></label>
+  </div>
+</div>
+
+<!-- 오픈 후 -->
+<div class="section">
+  <h2>오픈 후 · 안정화 <span class="count" id="count-after"></span></h2>
+  <div class="desc">11월. 1개월 무상 안정화 지원 기간.</div>
+
+  <div class="phase">
+    <div class="phase-title">안정화·향후 <span class="pcount" id="pcount-after"></span></div>
+    <label class="item" data-group="after"><input type="checkbox" id="c60"><div class="label">오픈 후 1개월 무상 안정화 지원<span class="tag t-dev">개발자</span><small>버그 수정, 간단 수정 대응</small></div></label>
+    <label class="item" data-group="after"><input type="checkbox" id="c61"><div class="label">네이버 블로그 개설·세팅 검토<span class="tag t-wait">향후 제안</span><small>향후 마케팅 채널 확장</small></div></label>
+    <label class="item" data-group="after"><input type="checkbox" id="c62"><div class="label">네이버 플레이스 등록·최적화 검토<span class="tag t-wait">향후 제안</span><small>오프라인 교육 장소 등록</small></div></label>
+    <label class="item" data-group="after"><input type="checkbox" id="c63"><div class="label">유튜브 채널 개설 및 영상 제작 검토<span class="tag t-wait">향후 제안</span><small>브랜드 영상, 블렌딩 과정 영상</small></div></label>
+    <label class="item" data-group="after"><input type="checkbox" id="c64"><div class="label">인스타그램 썸네일·릴스 제작 검토<span class="tag t-wait">향후 제안</span><small>인스타 피드 브랜딩</small></div></label>
+  </div>
+</div>
+
+<div class="note">
+  <b>사용 안내</b><br>
+  체크박스를 클릭하면 이 브라우저에 자동 저장됩니다 (localStorage). 같은 기기·같은 브라우저에서 열면 체크 상태가 유지됩니다.<br>
+  다른 기기에서는 체크 상태가 공유되지 않습니다. 초기화 버튼으로 전체 리셋할 수 있습니다.
+</div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'tea-apotheca-checklist-v1';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function init() {
+  const state = loadState();
+  const checkboxes = document.querySelectorAll('input[type=checkbox]');
+  checkboxes.forEach(cb => {
+    if (state[cb.id]) { cb.checked = true; cb.closest('.item').classList.add('checked'); }
+    cb.addEventListener('change', function() {
+      const s = loadState();
+      s[this.id] = this.checked;
+      saveState(s);
+      this.closest('.item').classList.toggle('checked', this.checked);
+      updateProgress();
+    });
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('input[type=checkbox]');
+  const checked = document.querySelectorAll('input[type=checkbox]:checked');
+  const total = all.length;
+  const done = checked.length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressDone').textContent = done;
+  document.getElementById('progressTotal').textContent = total;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Update section counts
+  const groups = {};
+  all.forEach(cb => {
+    const g = cb.closest('[data-group]')?.dataset.group;
+    if (!g) return;
+    if (!groups[g]) groups[g] = {total:0, done:0};
+    groups[g].total++;
+    if (cb.checked) groups[g].done++;
+  });
+
+  const sectionMap = {
+    'prep': 'count-prep',
+    'w1': 'count-w1',
+    'w2': 'count-w2',
+    'w3': 'count-w3',
+    'w4': 'count-w4',
+    'after': 'count-after'
+  };
+  for (const [g, id] of Object.entries(sectionMap)) {
+    const el = document.getElementById(id);
+    if (el && groups[g]) el.textContent = groups[g].done + '/' + groups[g].total;
+  }
+}
+
+function resetAll() {
+  if (!confirm('모든 체크를 초기화하시겠습니까?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.item').classList.remove('checked');
+  });
+  updateProgress();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
