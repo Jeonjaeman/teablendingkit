@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tea Apothēca — blend since 1975</title>
+<meta name="description" content="차를 통해 삶의 여백을 제안하는 브랜드, tea Apothēca." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Pinyon+Script&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FCF9F5; --cream:#F7EFE8; --blush:#EFD9D1; --blush-soft:#F6E7E1;
+  --sage:#9DAC92; --sage-soft:#C7D0BE; --taupe:#A9988A; --gold:#C9A57E;
+  --ink:#4E463E; --soft:#766C62; --muted:#9C9186; --line:#ECE2DA;
+  --serif:"Cormorant Garamond", serif; --script:"Pinyon Script", cursive; --kr:"Noto Serif KR", serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--kr);font-weight:300;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden;line-height:1.8;}
+img{max-width:100%;display:block;}
+.wrap{max-width:1140px;margin:0 auto;padding:0 32px;}
+.eyebrow{font-family:var(--serif);text-transform:uppercase;letter-spacing:.32em;font-size:12px;color:var(--taupe);font-weight:500;}
+.film{filter:saturate(.94) contrast(.98) brightness(1.02);}
+
+/* media placeholder (until assets generated) */
+.ph{position:relative;background:linear-gradient(135deg,var(--blush-soft),var(--cream));display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--serif);font-style:italic;font-size:15px;text-align:center;overflow:hidden;}
+.ph span{padding:0 14px;opacity:.8;}
+
+/* ---------- HEADER ---------- */
+header.nav{position:fixed;top:0;left:0;width:100%;z-index:100;background:rgba(252,249,245,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+header.nav .in{max-width:1140px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:var(--script);font-size:38px;line-height:1;color:var(--ink);text-decoration:none;padding-top:6px;}
+.menu{display:flex;gap:30px;}
+.menu a{font-family:var(--serif);text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--soft);text-decoration:none;transition:color .2s;}
+.menu a:hover{color:var(--gold);}
+.navtoggle{display:none;background:none;border:none;font-size:20px;color:var(--ink);cursor:pointer;}
+
+/* ---------- HERO ---------- */
+#hero{padding:150px 0 90px;}
+#hero .grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.blob{position:relative;aspect-ratio:1/1;}
+.blob .media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  -webkit-mask:radial-gradient(58% 58% at 50% 50%,#000 64%,transparent 78%);
+          mask:radial-gradient(58% 58% at 50% 50%,#000 64%,transparent 78%);}
+.blob .wc{position:absolute;inset:-6%;z-index:-1;background:
+  radial-gradient(38% 40% at 36% 34%,rgba(239,217,209,.7),transparent 70%),
+  radial-gradient(40% 44% at 66% 60%,rgba(157,172,146,.45),transparent 72%),
+  radial-gradient(30% 32% at 56% 30%,rgba(201,165,126,.4),transparent 70%);
+  filter:blur(14px);}
+#hero h1{font-family:var(--kr);font-weight:300;font-size:clamp(27px,3vw,42px);line-height:1.55;margin:18px 0 26px;letter-spacing:-.01em;}
+#hero h1 em{font-family:var(--serif);font-style:italic;color:var(--sage);}
+#hero p{font-size:16px;color:var(--soft);max-width:440px;margin-bottom:18px;}
+.btn{display:inline-block;font-family:var(--serif);text-transform:uppercase;letter-spacing:.2em;font-size:13px;color:var(--ink);text-decoration:none;padding:13px 30px;border:1px solid var(--taupe);border-radius:999px;transition:.25s;margin-top:14px;}
+.btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+/* ---------- FLORAL BAND (story) ---------- */
+.band{position:relative;padding:96px 0;text-align:center;overflow:hidden;background:var(--blush-soft);}
+.band .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.55;}
+.band::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(247,239,232,.55);}
+.band .in{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:0 32px;}
+.band h2{font-family:var(--kr);font-weight:300;font-size:clamp(22px,2.5vw,32px);line-height:1.7;margin:18px 0;}
+.band h2 em{font-family:var(--serif);font-style:italic;color:var(--sage);}
+.band p{color:var(--soft);font-size:15.5px;}
+.band .since{font-family:var(--script);font-size:clamp(46px,7vw,86px);color:var(--sage);opacity:.5;margin-top:20px;line-height:1;}
+
+/* ---------- TWO COLUMN (kit) ---------- */
+.section{padding:96px 0;}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.twocol .imgwrap{aspect-ratio:4/5;border-radius:4px;overflow:hidden;}
+.twocol h2{font-family:var(--kr);font-weight:300;font-size:clamp(24px,2.6vw,36px);line-height:1.45;margin:16px 0 20px;}
+.twocol h2 em{font-family:var(--serif);font-style:italic;color:var(--sage);}
+.twocol p{color:var(--soft);font-size:16px;margin-bottom:26px;}
+
+/* ---------- CARD GRID ---------- */
+.heading{text-align:center;max-width:640px;margin:0 auto 52px;}
+.heading h2{font-family:var(--serif);font-style:italic;font-size:clamp(30px,3.6vw,48px);font-weight:500;color:var(--ink);margin:14px 0 12px;}
+.heading p{color:var(--soft);font-size:15px;}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+.card{text-decoration:none;color:inherit;display:block;}
+.card .pic{position:relative;aspect-ratio:3/4;border-radius:3px;overflow:hidden;margin-bottom:0;}
+.card .pic img,.card .pic video{width:100%;height:100%;object-fit:cover;}
+.card .label{background:var(--paper);margin:-46px 26px 0;position:relative;z-index:2;padding:20px 18px;text-align:center;box-shadow:0 14px 30px rgba(78,70,62,.07);}
+.card .label .c{font-family:var(--serif);text-transform:uppercase;letter-spacing:.22em;font-size:10.5px;color:var(--gold);}
+.card .label .t{font-family:var(--kr);font-weight:400;font-size:17px;color:var(--ink);margin-top:7px;}
+.card .label .d{font-size:11.5px;color:var(--muted);margin-top:7px;letter-spacing:.04em;}
+
+/* ---------- QUOTE BAND (taste) ---------- */
+#taste{padding:110px 0;}
+#taste .in{max-width:840px;margin:0 auto;text-align:center;padding:0 32px;}
+#taste .q{font-family:var(--kr);font-weight:300;font-size:clamp(23px,2.8vw,38px);line-height:1.7;}
+#taste .q b{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--gold);}
+#taste .label{font-family:var(--serif);text-transform:uppercase;letter-spacing:.3em;font-size:12px;color:var(--taupe);margin-top:30px;}
+#taste .ornament{width:60px;height:1px;background:var(--taupe);opacity:.5;margin:34px auto 0;position:relative;}
+#taste .ornament::after{content:"❀";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--paper);padding:0 10px;color:var(--gold);font-size:13px;}
+
+/* ---------- CLASS GRID (4) ---------- */
+.cards-class{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.ccard{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;text-align:center;}
+.ccard .pic{aspect-ratio:4/3;overflow:hidden;}
+.ccard .pic img{width:100%;height:100%;object-fit:cover;}
+.ccard .body{padding:22px 20px 26px;}
+.ccard .en{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--gold);}
+.ccard h3{font-family:var(--kr);font-weight:400;font-size:18px;margin:4px 0 10px;}
+.ccard p{font-size:13px;color:var(--soft);line-height:1.8;}
+
+/* ---------- B2B ---------- */
+#b2b{position:relative;padding:104px 0;text-align:center;overflow:hidden;background:var(--cream);}
+#b2b .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;z-index:0;}
+#b2b::after{content:"";position:absolute;inset:0;z-index:1;background:rgba(247,239,232,.5);}
+#b2b .in{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:0 32px;}
+#b2b h2{font-family:var(--kr);font-weight:300;font-size:clamp(23px,2.6vw,36px);line-height:1.5;margin:14px 0 18px;}
+#b2b h2 em{font-family:var(--serif);font-style:italic;color:var(--sage);}
+#b2b p{color:var(--soft);font-size:15.5px;margin-bottom:28px;}
+
+/* ---------- FOOTER ---------- */
+footer{background:#F3EBE3;border-top:1px solid var(--line);padding:70px 0 34px;}
+footer .grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.5fr;gap:36px;}
+footer .logo{font-size:32px;margin-bottom:10px;display:inline-block;}
+footer .brandcol p{font-size:13px;color:var(--soft);max-width:240px;}
+footer h4{font-family:var(--serif);text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:var(--taupe);margin-bottom:14px;}
+footer ul{list-style:none;}
+footer li{margin-bottom:9px;}
+footer a{color:var(--soft);text-decoration:none;font-size:13px;}
+footer a:hover{color:var(--gold);}
+footer .biz{font-size:11.5px;line-height:1.95;color:var(--muted);}
+footer .bottom{max-width:1140px;margin:46px auto 0;padding:22px 32px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);letter-spacing:.05em;}
+
+@media(max-width:820px){
+  .menu{display:none;}
+  .navtoggle{display:block;}
+  #hero .grid,.twocol,footer .grid{grid-template-columns:1fr;gap:36px;}
+  .cards3,.cards-class{grid-template-columns:1fr;}
+  .blob{max-width:380px;margin:0 auto;}
+  footer .bottom{flex-direction:column;gap:8px;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="nav">
+  <div class="in">
+    <a class="logo" href="#hero">tea Apothēca</a>
+    <nav class="menu">
+      <a href="#story">Story</a>
+      <a href="#kit">Shop</a>
+      <a href="#class">Class</a>
+      <a href="#journal">Journal</a>
+      <a href="#b2b">B2B</a>
+    </nav>
+    <button class="navtoggle" aria-label="메뉴">☰</button>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="wrap grid">
+    <div class="blob">
+      <div class="wc"></div>
+      <video class="media film" src="assets/hero.mp4" poster="assets/hero.png" autoplay muted loop playsinline></video>
+    </div>
+    <div class="copy">
+      <div class="eyebrow">blend since 1975 · Cheongju ↔ Chula Vista</div>
+      <h1>차를 만드는 방법보다,<br><em>차를 마시는 시간</em>이<br>더 중요합니다</h1>
+      <p>tea Apothēca는 차를 파는 브랜드가 아니라, 차를 통해 삶의 여백을 제안하는 브랜드입니다.</p>
+      <p>엄선한 허브 원물과 도구로, 당신만의 한 잔을 블렌딩하는 고요한 의식을 건넵니다.</p>
+      <a href="#story" class="btn">브랜드 알아보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STORY BAND ===================== -->
+<section id="story" class="band">
+  <video class="bg film" src="assets/band-roses.mp4" poster="assets/band-roses.png" autoplay muted loop playsinline></video>
+  <div class="in">
+    <div class="eyebrow">Our Story</div>
+    <h2>차를 파는 브랜드가 아니라,<br>차를 통해 <em>삶의 여백</em>을 제안하는 브랜드.</h2>
+    <p>1975년 시작된 블렌딩의 시간. 한국 청주와 미국 Chula Vista, 두 거점에서 이어온 이소연 명인의 손길.</p>
+    <div class="since">since 1975</div>
+  </div>
+</section>
+
+<!-- ===================== KIT (two column) ===================== -->
+<section id="kit" class="section">
+  <div class="wrap twocol">
+    <div class="copy">
+      <div class="eyebrow">Tea Blending Kit</div>
+      <h2>직접 <em>블렌딩</em>하는<br>한 잔의 의식</h2>
+      <p>페퍼민트, 캐모마일, 레몬밤… 손으로 고른 허브 원물과 도구가 하나의 키트로 담깁니다. 레시피는 정답이 아니라 제안입니다. 비율을 바꾸고, 향을 더하고, 오늘의 나에게 맞는 한 잔을 찾아가는 시간 — 그것이 이 키트가 건네는 경험입니다.</p>
+      <a href="#kit" class="btn">View the Kit</a>
+    </div>
+    <div class="imgwrap"><img class="film" src="assets/kit.png" alt="" style="width:100%;height:100%;object-fit:cover;"></div>
+  </div>
+</section>
+
+<!-- ===================== JOURNAL (3 cards) ===================== -->
+<section id="journal" class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="heading">
+      <div class="eyebrow">Journal</div>
+      <h2>Some things stay with us softly</h2>
+      <p>에세이 · 차 이야기 · 식물 이야기 · 명상. 판매보다 먼저, 브랜드가 이야기하는 삶을 전합니다.</p>
+    </div>
+    <div class="cards3">
+      <a class="card" href="#journal">
+        <div class="pic"><video class="film" src="assets/journal-morning.mp4" poster="assets/journal-morning.png" autoplay muted loop playsinline></video></div>
+        <div class="label"><div class="c">Essay</div><div class="t">느린 아침</div><div class="d">차 한 잔과 책의 시간</div></div>
+      </a>
+      <a class="card" href="#journal">
+        <div class="pic"><img class="film" src="assets/journal-plant.png" alt=""></div>
+        <div class="label"><div class="c">Botany</div><div class="t">창가의 식물</div><div class="d">빛과 그림자의 기록</div></div>
+      </a>
+      <a class="card" href="#journal">
+        <div class="pic"><img class="film" src="assets/journal-botanical.png" alt=""></div>
+        <div class="label"><div class="c">Tea Story</div><div class="t">원물의 시간</div><div class="d">마른 꽃과 잎의 결</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TASTE (quote band) ===================== -->
+<section id="taste" class="band" style="background:var(--cream);">
+  <img class="bg film" src="assets/band-wild.png" alt="">
+  <div class="in" style="max-width:840px;">
+    <div class="eyebrow" style="color:var(--gold);">취향의 권리</div>
+    <div class="q" style="margin-top:18px;">전문가에게는 <b>원칙</b>이 있지만,<br>소비자에게는 <b>취향의 권리</b>가 있습니다.</div>
+    <div class="ornament"></div>
+    <div class="label" style="font-family:var(--serif);text-transform:uppercase;letter-spacing:.3em;font-size:12px;color:var(--taupe);margin-top:24px;">The Right to One's Own Taste</div>
+  </div>
+</section>
+
+<!-- ===================== CLASS (3 cards) ===================== -->
+<section id="class" class="section">
+  <div class="wrap">
+    <div class="heading">
+      <div class="eyebrow">Education · Class</div>
+      <h2>차를 나누는 시간</h2>
+      <p>차를 통해 삶의 여백을 함께 나누는 프로그램. 기관·강사·기업을 위한 클래스를 운영합니다.</p>
+    </div>
+    <div class="cards-class">
+      <div class="ccard">
+        <div class="pic"><img class="film" src="assets/class-institutional.png" alt=""></div>
+        <div class="body"><div class="en">Institutional</div><h3>기관 출강</h3><p>도서관·문화센터·복지기관을 찾아가 차 한 잔의 시간을 나눕니다.</p></div>
+      </div>
+      <div class="ccard">
+        <div class="pic"><img class="film" src="assets/class-instructor.png" alt=""></div>
+        <div class="body"><div class="en">Instructor Course</div><h3>강사 과정</h3><p>이소연 명인의 블렌딩 철학을 잇는 티 블렌딩 지도자 과정.</p></div>
+      </div>
+      <div class="ccard">
+        <div class="pic"><img class="film" src="assets/class-corporate.png" alt=""></div>
+        <div class="body"><div class="en">Corporate Workshop</div><h3>기업 워크숍</h3><p>팀이 함께 차를 우리며 호흡을 고르는 웰니스 프로그램.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== B2B ===================== -->
+<section id="b2b">
+  <img class="bg film" src="assets/b2b-bg.png" alt="">
+  <div class="in">
+    <div class="eyebrow">For Business</div>
+    <h2>기업·기관을 위한<br><em>티 블렌딩 솔루션</em></h2>
+    <p>선물용 패키지, 사내 웰니스 프로그램, 기관 납품 및 입찰을 위한 맞춤 블렌딩 키트를 제안합니다.</p>
+    <a href="mailto:soyounlee03@gmail.com?subject=tea%20Apoth%C4%93ca%20B2B%20%EB%AC%B8%EC%9D%98" class="btn">B2B·입찰 문의</a>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap grid">
+    <div class="brandcol">
+      <a class="logo" href="#hero">tea Apothēca</a>
+      <p>blend since 1975. 차 한 잔을 통해 삶의 여백을 제안합니다.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul><li><a href="#story">Story</a></li><li><a href="#kit">Shop</a></li><li><a href="#class">Class</a></li><li><a href="#journal">Journal</a></li><li><a href="#b2b">B2B</a></li></ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul><li><a href="#kit">주문·배송</a></li><li><a href="#kit">교환·반품</a></li><li><a href="#b2b">문의하기</a></li><li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li></ul>
+    </div>
+    <div>
+      <h4>tea apotheca Inc.</h4>
+      <div class="biz">대표 이소연 (Soyoun Teana Lee)<br>872 Eastlake Pkwy 510, Chula Vista, CA<br>Zen Blend KR · 청주시 청주역로 661-2<br>soyounlee03@gmail.com<br>teaapotheca.com · teablendingkit.kr</div>
+    </div>
+  </div>
+  <div class="bottom"><span>© 2026 tea Apothēca. All rights reserved.</span><span>이용약관 · 개인정보처리방침</span></div>
+</footer>
+
+<script>
+var t=document.querySelector('.navtoggle'),m=document.querySelector('.menu');
+t.addEventListener('click',function(){m.style.display=m.style.display==='flex'?'none':'flex';});
+m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){if(innerWidth<=820)m.style.display='none';});});
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(RM){document.querySelectorAll('video').forEach(function(v){v.removeAttribute('autoplay');v.pause();});}
+else{var vio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.play().catch(function(){});});},{threshold:0.01});document.querySelectorAll('video').forEach(function(v){vio.observe(v);});}
+</script>
+</body>
+</html>
