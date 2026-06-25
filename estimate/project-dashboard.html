@@ -35,9 +35,11 @@ body{font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;background:#e8e6db
 .link-grid a:hover{background:#e3e1d5;}
 .link-grid a small{display:block;color:#8a8674;font-size:10px;margin-top:2px;}
 .design-grid{display:grid;grid-template-columns:1fr;gap:20px;}
-.design-card{display:grid;grid-template-columns:200px 1fr;background:#fff;border-radius:14px;border:1px solid #e3e1d5;box-shadow:0 6px 18px rgba(0,0,0,.06);overflow:hidden;text-decoration:none;color:inherit;transition:all .2s;}
+.design-card{display:grid;grid-template-columns:240px 1fr;background:#fff;border-radius:14px;border:1px solid #e3e1d5;box-shadow:0 6px 18px rgba(0,0,0,.06);overflow:hidden;text-decoration:none;color:inherit;transition:all .2s;}
 .design-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.1);}
-.design-card .preview{min-height:160px;}
+.design-card .preview{min-height:200px;position:relative;overflow:hidden;}
+.design-card .preview iframe{position:absolute;top:0;left:0;width:1280px;height:1080px;transform:scale(.1875);transform-origin:0 0;pointer-events:none;border:none;z-index:1;}
+.design-card .preview .fallback{position:absolute;inset:0;}
 .design-card .design-info{padding:20px 24px;display:flex;flex-direction:column;justify-content:center;}
 .design-card .design-num{font-size:11px;font-weight:700;color:#5e6447;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
 .design-card h3{font-size:16px;margin:0 0 8px;color:#2a2a22;}
@@ -69,7 +71,7 @@ body{font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;background:#e8e6db
     <p class="sub">tea Apotheca 카페24 쇼핑몰 메인 페이지 디자인 3종 시안입니다. 각 시안을 클릭하면 실제 데모 페이지로 이동합니다.</p>
     <div class="design-grid">
       <a class="design-card" href="https://jeonjaeman.github.io/teablendingkit/design3/" target="_blank">
-        <div class="preview" style="background:linear-gradient(135deg,#F6F0E9,#E7D7D4,#D9C4C3);"></div>
+        <div class="preview"><div class="fallback" style="background:linear-gradient(135deg,#F6F0E9,#E7D7D4,#D9C4C3);"></div><iframe src="../design3/index.html" loading="lazy" tabindex="-1"></iframe></div>
         <div class="design-info">
           <span class="design-num">시안 1</span>
           <h3>Petit Amour 에디토리얼 + 뮤트 보태니컬</h3>
@@ -78,7 +80,7 @@ body{font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;background:#e8e6db
         </div>
       </a>
       <a class="design-card" href="https://jeonjaeman.github.io/teablendingkit/design/" target="_blank">
-        <div class="preview" style="background:linear-gradient(135deg,#F4F1E9,#E2D8C6,#7E8B6E);"></div>
+        <div class="preview"><div class="fallback" style="background:linear-gradient(135deg,#F4F1E9,#E2D8C6,#7E8B6E);"></div><iframe src="../design/index.html" loading="lazy" tabindex="-1"></iframe></div>
         <div class="design-info">
           <span class="design-num">시안 2</span>
           <h3>몰입형 메인 · 어스톤 내추럴</h3>
@@ -87,7 +89,7 @@ body{font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;background:#e8e6db
         </div>
       </a>
       <a class="design-card" href="https://jeonjaeman.github.io/teablendingkit/design2/" target="_blank">
-        <div class="preview" style="background:linear-gradient(135deg,#FCF9F5,#EFD9D1,#9DAC92);"></div>
+        <div class="preview"><div class="fallback" style="background:linear-gradient(135deg,#FCF9F5,#EFD9D1,#9DAC92);"></div><iframe src="../design2/index.html" loading="lazy" tabindex="-1"></iframe></div>
         <div class="design-info">
           <span class="design-num">시안 3</span>
           <h3>페미닌 매거진형 + 페일 필름톤</h3>
