@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>메인 디자인 시안 3종 · tea Apotheca</title>
+<style>
+:root{--ink:#2a2a22;--olive:#5e6447;--olive-deep:#474d36;--gray:#8a8674;--line:#e3e1d5;--tint:#f4f3ec;--paper:#fff;}
+*{box-sizing:border-box;}
+body{margin:0;background:#e8e6db;font-family:'Pretendard','Noto Sans KR',Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+header.hero{background:var(--olive-deep);color:#fff;padding:46px 24px 40px;}
+header.hero .in{max-width:960px;margin:0 auto;}
+header.hero h1{margin:0 0 10px;font-size:28px;letter-spacing:-.02em;}
+header.hero p{margin:0;color:#c8c4b0;line-height:1.75;font-size:14px;max-width:640px;}
+header.hero .back{color:#a8a594;text-decoration:none;font-size:12px;display:inline-block;margin-bottom:14px;}
+header.hero .back:hover{color:#fff;}
+main{max-width:960px;margin:0 auto;padding:34px 24px 60px;}
+
+.card{background:var(--paper);border-radius:18px;border:1px solid var(--line);box-shadow:0 10px 26px rgba(0,0,0,.08);margin-bottom:24px;overflow:hidden;display:grid;grid-template-columns:380px 1fr;}
+.card .thumb{position:relative;overflow:hidden;background:var(--tint);min-height:280px;}
+.card .thumb iframe{position:absolute;top:0;left:0;width:1440px;height:1080px;transform:scale(.2639);transform-origin:0 0;pointer-events:none;border:none;z-index:1;}
+.card .thumb .fallback{position:absolute;inset:0;z-index:0;}
+.card .body{padding:28px 30px;display:flex;flex-direction:column;justify-content:center;}
+.badge{display:inline-block;align-self:flex-start;font-size:11px;font-weight:700;padding:5px 12px;border-radius:999px;margin-bottom:12px;}
+.b-1{background:#F6F0E9;color:#897262;border:1px solid #E7D7D4;}
+.b-2{background:#f0edd6;color:#5e6447;border:1px solid #d5d2b8;}
+.b-3{background:#FCF3EF;color:#9a7a6a;border:1px solid #EFD9D1;}
+.card h2{margin:0 0 6px;font-size:20px;letter-spacing:-.01em;}
+.card .concept{font-size:13px;color:var(--gray);line-height:1.75;margin:0 0 16px;}
+.colors{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.colors .swatch{width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,.08);}
+.colors .swatch-name{font-size:10px;color:var(--gray);align-self:center;margin-left:4px;}
+.keywords{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.keywords span{font-size:11px;font-weight:600;color:var(--olive);background:var(--tint);border:1px solid var(--line);border-radius:999px;padding:5px 12px;}
+.card a.btn{display:inline-block;align-self:flex-start;text-decoration:none;font-weight:800;font-size:13px;padding:12px 22px;border-radius:999px;background:var(--olive);color:#fff;transition:background .15s;}
+.card a.btn:hover{background:var(--olive-deep);}
+
+.note{margin-top:8px;background:#fff8e7;border-left:5px solid #d0a45d;padding:15px 18px;border-radius:12px;color:#55462c;font-size:13px;line-height:1.7;}
+.foot{margin-top:32px;text-align:center;font-size:12px;color:var(--gray);line-height:1.8;}
+.foot a{color:var(--olive);text-decoration:none;}
+
+@media(max-width:800px){
+  .card{grid-template-columns:1fr;}
+  .card .thumb{min-height:220px;}
+  .card .thumb iframe{width:1280px;height:960px;transform:scale(.25);}
+}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="in">
+  <a class="back" href="project-dashboard.html">&larr; 대시보드로 돌아가기</a>
+  <h1>메인 디자인 시안 — 3종</h1>
+  <p>tea Apotheca 카페24 쇼핑몰 메인 페이지 디자인 시안입니다. 각 시안의 <b>데모 보기</b> 버튼을 클릭하면 실제 동작하는 데모 페이지로 이동합니다. 선호하시는 방향을 알려주세요.</p>
+</div></header>
+
+<main>
+
+  <!-- 시안 1 -->
+  <div class="card">
+    <div class="thumb">
+      <div class="fallback" style="background:linear-gradient(135deg,#F6F0E9,#E7D7D4,#D9C4C3);"></div>
+      <iframe src="../design3/index.html" loading="lazy" tabindex="-1"></iframe>
+    </div>
+    <div class="body">
+      <span class="badge b-1">시안 1</span>
+      <h2>Petit Amour 에디토리얼 + 뮤트 보태니컬</h2>
+      <p class="concept">에디토리얼 매거진 감성과 뮤트 보태니컬 무드를 결합한 디자인. 로즈·크림·올리브 톤으로 부드럽고 고급스러운 브랜드 세계관을 전달합니다. 세리프 타이포와 여백이 만드는 잔잔한 호흡.</p>
+      <div class="colors">
+        <div class="swatch" style="background:#F6F0E9;" title="Paper"></div>
+        <div class="swatch" style="background:#D9C4C3;" title="Rose"></div>
+        <div class="swatch" style="background:#E7D7D4;" title="Rose Soft"></div>
+        <div class="swatch" style="background:#7C7E63;" title="Olive"></div>
+        <div class="swatch" style="background:#9AA086;" title="Sage"></div>
+        <div class="swatch" style="background:#5B5048;" title="Ink"></div>
+      </div>
+      <div class="keywords">
+        <span>에디토리얼</span><span>뮤트 보태니컬</span><span>로즈톤</span><span>세리프 타이포</span><span>여백</span>
+      </div>
+      <a class="btn" href="https://jeonjaeman.github.io/teablendingkit/design3/" target="_blank">데모 보기 &rarr;</a>
+    </div>
+  </div>
+
+  <!-- 시안 2 -->
+  <div class="card">
+    <div class="thumb">
+      <div class="fallback" style="background:linear-gradient(135deg,#F4F1E9,#E2D8C6,#7E8B6E);"></div>
+      <iframe src="../design/index.html" loading="lazy" tabindex="-1"></iframe>
+    </div>
+    <div class="body">
+      <span class="badge b-2">시안 2</span>
+      <h2>몰입형 메인 · 어스톤 내추럴</h2>
+      <p class="concept">스크롤 연출과 자연광 여백 중심의 몰입형 브랜드 경험 설계. 아이보리·세이지·클레이 톤으로 자연주의 감성을 극대화합니다. 풀스크린 히어로와 패럴랙스 효과로 브랜드 철학에 집중.</p>
+      <div class="colors">
+        <div class="swatch" style="background:#F4F1E9;" title="Ivory"></div>
+        <div class="swatch" style="background:#E2D8C6;" title="Sand"></div>
+        <div class="swatch" style="background:#7E8B6E;" title="Sage"></div>
+        <div class="swatch" style="background:#5E6447;" title="Olive"></div>
+        <div class="swatch" style="background:#B07D5B;" title="Clay"></div>
+        <div class="swatch" style="background:#2a2a22;" title="Ink"></div>
+      </div>
+      <div class="keywords">
+        <span>몰입형 스크롤</span><span>어스톤</span><span>자연광 여백</span><span>패럴랙스</span><span>내추럴</span>
+      </div>
+      <a class="btn" href="https://jeonjaeman.github.io/teablendingkit/design/" target="_blank">데모 보기 &rarr;</a>
+    </div>
+  </div>
+
+  <!-- 시안 3 -->
+  <div class="card">
+    <div class="thumb">
+      <div class="fallback" style="background:linear-gradient(135deg,#FCF9F5,#EFD9D1,#9DAC92);"></div>
+      <iframe src="../design2/index.html" loading="lazy" tabindex="-1"></iframe>
+    </div>
+    <div class="body">
+      <span class="badge b-3">시안 3</span>
+      <h2>페미닌 매거진형 + 페일 필름톤</h2>
+      <p class="concept">페일 필름 감성의 부드러운 매거진형 레이아웃. 블러시·세이지·토프 톤이 만드는 따뜻하고 감성적인 분위기. 잡지를 넘기는 듯한 콘텐츠 흐름으로 브랜드 이야기를 전달합니다.</p>
+      <div class="colors">
+        <div class="swatch" style="background:#FCF9F5;" title="Paper"></div>
+        <div class="swatch" style="background:#EFD9D1;" title="Blush"></div>
+        <div class="swatch" style="background:#F6E7E1;" title="Blush Soft"></div>
+        <div class="swatch" style="background:#9DAC92;" title="Sage"></div>
+        <div class="swatch" style="background:#A9988A;" title="Taupe"></div>
+        <div class="swatch" style="background:#3a3530;" title="Ink"></div>
+      </div>
+      <div class="keywords">
+        <span>페미닌 매거진</span><span>페일 필름톤</span><span>블러시</span><span>세이지</span><span>감성적</span>
+      </div>
+      <a class="btn" href="https://jeonjaeman.github.io/teablendingkit/design2/" target="_blank">데모 보기 &rarr;</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>안내</b><br>
+    모든 시안은 동일한 브랜드 카피("차를 만드는 방법보다, 차를 마시는 시간이 더 중요합니다")를 사용하며, 컬러·레이아웃·분위기만 다릅니다. 선호하시는 시안의 번호와 피드백을 알려주시면 해당 방향으로 최종 디자인을 진행합니다.
+  </div>
+
+  <div class="foot">
+    tea Apotheca 카페24 쇼핑몰 구축 프로젝트 · 탱탱소프트 (전재만)<br>
+    <a href="project-dashboard.html">프로젝트 대시보드</a> · 2026.06.25
+  </div>
+
+</main>
+</body>
+</html>
