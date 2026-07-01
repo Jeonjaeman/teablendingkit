@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>홈페이지 디자인 기획서 — 취향의 권리 · tea Apotheca</title>
+<meta name="description" content="「고재, 취향을 담는 그릇」 — 세계관·인문학 우선, 차는 나중. 취향의 권리 홈페이지 디자인 기획서 (힉스필드 실전용)." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F4F1E9; --paper:#EDE7DA; --sand:#E2D8C6;
+  --sage:#7E8B6E; --olive:#5E6447; --clay:#B07D5B; --terra:#A9603F;
+  --charcoal:#2C2B24; --ink:#3A382E; --muted:#8C8676; --line:#DAD2C2;
+  --serif:"Cormorant Garamond", serif; --kr:"Noto Serif KR", serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ivory);color:var(--ink);font-family:var(--kr);font-weight:300;
+  line-height:1.85;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px 120px;}
+
+/* hero cover with generated image */
+.hero{position:relative;min-height:60vh;display:flex;align-items:center;justify-content:flex-start;
+  color:#fff;overflow:hidden;padding:70px 24px;}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(24,21,16,.72),rgba(24,21,16,.30) 55%,rgba(24,21,16,.08));}
+.hero .inner{position:relative;z-index:2;max-width:920px;margin:0 auto;width:100%;}
+.hero .eyebrow{font-family:var(--serif);font-style:italic;font-size:19px;letter-spacing:.05em;opacity:.9;}
+.hero h1{font-family:var(--kr);font-weight:300;font-size:clamp(27px,4.4vw,44px);letter-spacing:-.01em;margin:16px 0 12px;line-height:1.45;}
+.hero h1 em{font-family:var(--serif);font-style:italic;color:#E9C9A8;font-weight:500;}
+.hero .sub{font-size:14px;color:#e7ddca;max-width:640px;}
+.badge{display:inline-block;margin-top:22px;font-size:12px;font-weight:600;letter-spacing:.05em;
+  padding:7px 16px;border-radius:999px;background:rgba(176,125,91,.32);color:#f2ddc9;border:1px solid rgba(233,201,168,.5);}
+.meta{margin-top:20px;font-size:12.5px;color:#d8cfbd;line-height:1.9;}
+.docnav a{color:#E9C9A8;text-decoration:none;border-bottom:1px solid rgba(233,201,168,.5);}
+
+section{padding-top:56px;}
+h2{font-family:var(--kr);font-weight:500;font-size:23px;color:var(--olive);letter-spacing:-.01em;
+  padding-bottom:12px;border-bottom:2px solid var(--olive);margin-bottom:8px;display:flex;align-items:baseline;gap:12px;}
+h2 .n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--clay);}
+h3{font-size:16px;font-weight:600;color:var(--charcoal);margin:26px 0 10px;}
+p{font-size:15px;margin:10px 0;color:#4a4840;}
+.lead{font-size:16px;color:var(--ink);}
+ul{margin:10px 0 10px 4px;list-style:none;}
+li{font-size:14.5px;padding:5px 0 5px 20px;position:relative;color:#4a4840;}
+li::before{content:"—";position:absolute;left:0;color:var(--clay);}
+b,strong{font-weight:600;color:var(--charcoal);}
+blockquote{border-left:4px solid var(--sage);background:var(--paper);padding:16px 22px;margin:18px 0;
+  border-radius:0 10px 10px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--olive);line-height:1.6;}
+blockquote .kr{font-family:var(--kr);font-style:normal;font-size:14.5px;color:#4a4840;display:block;margin-top:8px;line-height:1.8;}
+
+.warn{background:#fbeee0;border-left:5px solid var(--terra);padding:15px 20px;border-radius:0 12px 12px 0;margin:18px 0;font-size:13.5px;color:#6b452c;line-height:1.8;}
+.copyset{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.copyset .q{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--olive);line-height:1.5;box-shadow:0 6px 18px rgba(60,50,30,.05);}
+.copyset .q span{display:block;font-family:var(--kr);font-style:normal;font-size:13px;color:var(--muted);margin-top:8px;}
+
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;}
+.fig{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 6px 18px rgba(60,50,30,.06);}
+.fig img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover;}
+.fig figcaption{font-size:12px;color:#55513f;padding:8px 12px;background:#fff;}
+
+/* essay flow steps */
+.flow{margin:16px 0;}
+.step{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);}
+.step:last-child{border-bottom:none;}
+.step .s{font-family:var(--serif);font-style:italic;font-size:15px;font-weight:600;color:#fff;background:var(--olive);
+  width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.step.tea .s{background:var(--clay);}
+.step h4{font-size:15.5px;color:var(--charcoal);margin-bottom:4px;font-weight:600;}
+.step .cap{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--olive);margin:6px 0;line-height:1.5;}
+.step p{font-size:13.5px;margin:4px 0;color:#55513f;}
+.tealbl{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:middle;}
+.no-tea{background:#e7efe0;color:#3f6b32;}
+.tea-yes{background:#f3e2d3;color:#8a4f2c;}
+
+.prompt{margin:12px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+.prompt .head{background:var(--sand);padding:10px 16px;font-weight:600;font-size:14px;color:var(--charcoal);display:flex;justify-content:space-between;gap:10px;align-items:center;}
+.prompt .head .tag{font-size:11px;font-weight:600;color:#fff;background:var(--sage);padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.prompt pre{margin:0;padding:14px 16px;font-family:Consolas,Menlo,monospace;font-size:12px;line-height:1.7;color:#3a382e;white-space:pre-wrap;background:#fbfaf5;}
+.prompt .note{padding:9px 16px;font-size:12.5px;color:var(--terra);background:#fff8ef;border-top:1px dashed var(--line);}
+.tokenbox{background:var(--charcoal);color:#e7e0d0;border-radius:12px;padding:16px 18px;font-family:monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;margin:12px 0;}
+.foot{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);text-align:center;line-height:1.9;}
+@media(max-width:640px){.copyset,.figrow{grid-template-columns:1fr;}h2{font-size:20px;}.step{grid-template-columns:48px 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="assets/s0-cover-01.png" alt="고재 — 시간을 담는 그릇 (힉스필드 생성 S0 표지 시안)">
+  <div class="inner">
+    <div class="eyebrow">취향의 권리 · The Right to Taste</div>
+    <h1>홈페이지 디자인 기획서<br><em>「고재, 취향을 담는 그릇」</em></h1>
+    <div class="sub">취향에 관한 인문학적 에세이 — 세계관·공감이 먼저, 차는 나중·최소. 힉스필드 실전용.</div>
+    <div class="badge">⚠️ 미확정 제안 — 방향 승인 전 초안 (패키지 진행에 영향 없음)</div>
+    <div class="meta">
+      작성 2026-07-02 · 탱탱소프트(전재만) · 클라이언트 이소연 명인<br>
+      <span class="docnav">함께 보기 → <a href="package.html">패키지 디자인 기획서</a> · <a href="index.html">개요</a></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="warn"><b>이 문서는 승인 전 초안입니다.</b> 아래 IA·카피·프롬프트는 홈페이지 방향 확정 시 변경될 수 있으며, <b>패키지(확정 기반) 진행의 전제가 아닙니다.</b> 공통 톤은 홈페이지가 아니라 <b>확정된 브랜드 톤(고재·어스톤)</b>에서 도출됩니다 — 홈페이지는 확정 시 패키지 에셋·톤을 재사용하는 쪽(단방향)입니다.</div>
+
+  <section id="soul">
+    <h2><span class="n">00</span> 근본 은유 — 고재는 취향을 담는 그릇</h2>
+    <blockquote>고재(古材)는 시간·기억·취향을 담는 그릇이다.
+      <span class="kr">나뭇결이 시간을 새기듯, 사람의 취향도 시간과 경험으로 완성된다. 홈페이지는 상품몰이 아니라, <b>이 고재 노트를 펼쳐 읽는 듯한 한 편의 에세이</b>다.</span></blockquote>
+    <div class="figrow">
+      <figure class="fig"><img src="assets/s0-cover-01.png" alt="S0 표지 시안"><figcaption>S0 표지 — 고재 + 창가 빛 + 여백 (힉스필드 생성, 2K)</figcaption></figure>
+      <figure class="fig"><img src="assets/s2-graingrain-01.png" alt="S2 고재 은유 시안"><figcaption>S2 고재 은유 — 시간의 결(나이테·균열) (힉스필드 생성, 2K)</figcaption></figure>
+    </div>
+    <p class="lead"><b>핵심 원칙 — 세계관 우선, 차는 나중·최소.</b> 취향의 권리라는 인문학적 풀이와 <b>공감대 형성이 1순위</b>. 차/제품은 세계관에 공감한 뒤 후반부(S5~)에 조용히 등장한다. 상단 60~70%는 차 없이 빛·질감·시간·사람의 은유로.</p>
+    <h3>담아야 할 카피 축</h3>
+    <div class="copyset">
+      <div class="q">"당신의 취향에는, 권리가 있습니다."<span>2인칭으로 방문자 본인에게 건네는 초대</span></div>
+      <div class="q">"정형화된 블렌딩은, 정답이 아닙니다."<span>전문가 권위·정답에 대한 잔잔한 의심</span></div>
+      <div class="q">"전문가에게는 원칙이 있지만, 당신에게는 취향의 권리가 있습니다."<span>선언 — 감정의 절정, 공감대</span></div>
+      <div class="q">"취향은 정해지는 것이 아니라, 완성되어 갑니다."<span>고재 은유와 직결되는 철학</span></div>
+    </div>
+  </section>
+
+  <section id="principle">
+    <h2><span class="n">01</span> 디자인 원칙 — 인문학적 접근</h2>
+    <ul>
+      <li><b>차 노출 지연·최소</b> — 상단(S0~S4)은 차 없이 빛·나뭇결·시간·사람의 은유로만. 차/제품은 S5부터.</li>
+      <li><b>2인칭 화법</b> — "당신"에게 말을 건다. 판매 문구·CTA 남발 금지.</li>
+      <li><b>한 화면 = 한 문장/한 호흡</b> — 타이포 중심, 압도적 여백. <b>길이는 제약이 아니다.</b></li>
+      <li><b>"정답 없음"을 레이아웃으로</b> — 비대칭·불완결·여백으로 정형화된 정답의 부재를 시각화.</li>
+      <li><b>사이트 = 고재 노트를 읽는 경험</b> — 각인체 세리프, 고재 질감, 느린 페이드. 표지 노트의 정서를 UI 전체로 확장.</li>
+      <li><b>엠블럼(□ + 점)</b> — 빈 사각(모든 가능한 취향의 여백) 안의 한 점(= 당신). "정답은 격자가 아니라 당신이라는 한 점". 스크롤 진행·섹션 마커로.</li>
+    </ul>
+  </section>
+
+  <section id="ia">
+    <h2><span class="n">02</span> 정보구조 — 세계관 에세이 흐름 (제품 후치)</h2>
+    <p>스크롤 순서. <b>S0~S4 = 세계관/공감(차 없음)</b>, <b>S5~S6 = 차·제품의 조용한 등장</b>, <b>S7~S8 = 확장·연결</b>.</p>
+    <div class="flow">
+      <div class="step"><div class="s">S0</div><div><h4>표지 / Prologue <span class="tealbl no-tea">차 없음</span></h4><div class="cap">"당신의 취향에는, 권리가 있습니다."</div><p>고재 질감 풀스크린 + 각인 엠블럼. 브랜드명조차 크게 내세우지 않음. 느린 fade-in · scroll 큐.</p></div></div>
+      <div class="step"><div class="s">S1</div><div><h4>질문 <span class="tealbl no-tea">차 없음</span></h4><div class="cap">"언젠가부터, 우리는 '정답'을 배웠습니다."</div><p>정형화된 정답·전문가 권위에 대한 잔잔한 의심. 빛/그림자/손의 은유.</p></div></div>
+      <div class="step"><div class="s">S2</div><div><h4>고재의 은유 (핵심) <span class="tealbl no-tea">차 없음</span></h4><div class="cap">"고재의 아름다움은 낡음이 아니라, 그 안에 담긴 시간과 이야기에서. 사람의 취향도, 그렇게 완성됩니다."</div><p>나뭇결·옹이 매크로로 '시간을 담는 그릇'을 시각화.</p></div></div>
+      <div class="step"><div class="s">S3</div><div><h4>선언 (감정 절정 · 공감대) <span class="tealbl no-tea">차 없음</span></h4><div class="cap">"전문가에게는 원칙이 있지만, 당신에게는 취향의 권리가 있습니다." / "정형화된 블렌딩은, 정답이 아닙니다."</div><p>엠블럼의 점이 화면 중앙에서 커짐(= 당신).</p></div></div>
+      <div class="step"><div class="s">S4</div><div><h4>인터랙션 — "정답 없는 블렌딩" <span class="tealbl no-tea">차 없음</span></h4><p>방문자가 지금의 기분·계절·순간을 나타내는 단어 몇 개를 고르면, <b>채점 없이</b> 자기만의 한 문장/결이 생성된다. "정답이 없다"를 몸으로 체감시키는 공감 장치. (선택 구현)</p></div></div>
+      <div class="step tea"><div class="s">S5</div><div><h4>그리고, 차 (첫 등장) <span class="tealbl tea-yes">차 등장</span></h4><div class="cap">"우리는 이 믿음을 담는 하나의 방식으로, 차를 블렌딩합니다."</div><p>여기서 처음 차가 조용히 등장. blend since 1975(청주 ↔ Chula Vista)는 판매가 아닌 <b>철학의 오랜 실천</b>으로 은근히 삽입.</p></div></div>
+      <div class="step tea"><div class="s">S6</div><div><h4>취향을 담는 그릇 (키트 = 도구) <span class="tealbl tea-yes">차 등장</span></h4><div class="cap">"당신의 취향의 시간을 담는 노트."</div><p>고재 노트(표지) 그대로 등장. 키트를 상품이 아니라 <b>취향을 발견·기록하는 도구</b>로 제시. (패키지 P1·P3·P7 재사용)</p></div></div>
+      <div class="step"><div class="s">S7</div><div><h4>함께 걷기</h4><p>클래스(출강/강사/워크숍)·Journal을 '사유의 연장'으로. "가르침"이 아니라 "함께 발견".</p></div></div>
+      <div class="step"><div class="s">S8</div><div><h4>Footer</h4><div class="cap">"Stay a while."</div><p>조용한 커머스 연결(카페24 CTA는 여기서만, 절제). teablendingkit.kr / 취향의권리.com</p></div></div>
+    </div>
+  </section>
+
+  <section id="prompts">
+    <h2><span class="n">03</span> 섹션별 힉스필드 프롬프트 (은유·인간 중심, 차는 S5부터)</h2>
+    <div class="tokenbox">모든 프롬프트에 <b style="color:#E9C9A8">[STYLE TOKEN]</b> (아이보리·세이지·클레이 어스톤 + 자연광 + 35mm 필름그레인 + 여백 + no gloss/no vibrant) 를 append. 상세 토큰은 패키지 기획서 §02 참조.</div>
+
+    <div class="prompt"><div class="head">S0 — 표지/Prologue (고재 풀스크린) <span class="tag">21:9 · 모바일 9:16</span></div>
+    <pre>Full-frame macro of weathered reclaimed wood (고재), soft warm greyish
+brown, fine grain with knots, tiny worm holes and time cracks, gentle
+raking window light, long quiet shadow. Large calm empty area centered
+for an engraved emblem and one line of text. Contemplative, almost
+silent.  + [STYLE TOKEN]</pre>
+    <div class="note">✅ 생성 완료 — assets/s0-cover-01.png (위 히어로). image_to_video 옵션: 빛이 결을 따라 아주 느리게 이동, 10s loop, 카메라 고정.</div></div>
+
+    <div class="prompt"><div class="head">S1 — 질문 (손·빛의 은유, 차 없음) <span class="tag">16:9</span></div>
+    <pre>A single human hand resting open on an aged wooden surface, soft
+daylight from a window, long shadow, dust motes floating. Quiet,
+introspective, no product, lots of empty space. A moment of doubt
+and reflection.  + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">S2 — 고재의 은유 (시간의 결 · 핵심) <span class="tag">16:9</span></div>
+    <pre>Extreme close-up of an old wood grain surface where growth rings and
+cracks look like layers of accumulated time and memory. Warm earthy
+tones, side light revealing texture depth. Metaphor of time held inside
+material. No objects, no tea.  + [STYLE TOKEN]</pre>
+    <div class="note">✅ 생성 완료 — assets/s2-graingrain-01.png (위 도판).</div></div>
+
+    <div class="prompt"><div class="head">S3 — 선언 (엠블럼 배경, 타이포 위주) <span class="tag">16:9</span></div>
+    <pre>A near-empty ivory-to-sand textured paper background with faint aged
+paper grain, extremely minimal, soft vignette — a calm canvas for a
+single centered engraved square emblem with one small dot inside.
+Meditative negative space.  + [STYLE TOKEN]</pre>
+    <div class="note">엠블럼(□+점)·문구는 벡터 합성.</div></div>
+
+    <div class="prompt"><div class="head">S4 — 인터랙션 배경 (정답 없는 블렌딩) <span class="tag">16:9</span></div>
+    <pre>Softly lit flat-lay of loose dried herbs and petals scattered freely
+(not in a grid) on cream handmade paper, asymmetric, incomplete, plenty
+of empty space — visualizing "there is no single correct blend".
+Gentle shadow, muted tones.  + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">S5 — 그리고, 차 (첫 등장, 조용히) <span class="tag">16:9</span></div>
+    <pre>A quiet still life: a hand gently cupping a handmade ceramic bowl of
+freshly blended tea on an aged wood table by a window, soft steam, warm
+side light, sheer linen nearby. Understated, devotional, not a product
+shot — tea as the practice of a belief. Empty space for text.
++ [STYLE TOKEN]</pre>
+    <div class="note">image_to_video: 김이 아주 느리게 피어오름, 8s loop, 카메라 고정.</div></div>
+
+    <div class="prompt"><div class="head">S6 — 취향을 담는 그릇 (고재 노트) <span class="tag">3:4</span></div>
+    <pre>The aged-wood-grain "tea blending note" lying open on rough old planks,
+a pressed leaf and a pencil beside it, a few handwritten-looking marks
+(no readable text) on the cream inner page. A personal journal of taste,
+not merchandise. Warm top light.  + [STYLE TOKEN]</pre>
+    <div class="note">기제작 노트 시안 + 패키지 P1/P3/P7 재사용.</div></div>
+
+    <div class="prompt"><div class="head">S7 — 함께 걷기 (클래스 · Journal) <span class="tag">클래스 16:9 / 저널 3:4</span></div>
+    <pre>(class) Hands of a few people around a long wooden table with small
+bowls of dried herbs and open notebooks, soft daylight from above,
+faces not emphasized — discovering together, not a lecture.
+(journal) A person seen from behind sitting quietly by a window, a bowl
+of tea in hand, leaf shadows on the wall.  + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">S8 — Footer 배경 텍스처 <span class="tag">21:9 (short)</span></div>
+    <pre>A soft botanical footer band: pressed dried flowers and herb sprigs
+laid flat on cream handmade paper, faint, low-contrast, wide and short,
+lots of breathing room.  + [STYLE TOKEN]</pre></div>
+  </section>
+
+  <section id="ui">
+    <h2><span class="n">04</span> 타이포 · UI 시그니처 &amp; 런칭</h2>
+    <ul>
+      <li><b>각인체 인상의 세리프</b> — 한글 Noto Serif KR(300/400)·MaruBuri, 영문 Cormorant Garamond(이탤릭 강조). 본문은 큰 자간·행간으로 '읽는 호흡'.</li>
+      <li><b>엠블럼(□+점)</b> — 로고·스크롤 진행·섹션 구분에 반복. 점 위치가 스크롤에 따라 사각 안을 미세 이동 → "당신의 자리" 은유.</li>
+      <li><b>모션</b> — IntersectionObserver 기반 문장 페이드+상승만. <code>prefers-reduced-motion</code> 대응.</li>
+      <li><b>모바일</b> — S0·S5 주요 컷은 9:16 세로 버전 별도 생성(단순 크롭 지양, reframe/재생성).</li>
+      <li><b>와디즈 상세페이지 (런칭 1순위)</b> — 동일 세계관 톤의 세로 롱폼 에세이 컷 확보. S0~S6 흐름을 세로로 압축 재사용.</li>
+    </ul>
+  </section>
+
+  <div class="foot">
+    취향의 권리 · tea Apothēca — 홈페이지 디자인 기획서 「고재, 취향을 담는 그릇」 (미확정 제안)<br>
+    탱탱소프트 · 2026-07-02 · 상세 원본 <code>docs/design-brief-higgsfield.md</code> · 히어로/도판은 힉스필드 생성 시안
+  </div>
+
+</div>
+</body>
+</html>

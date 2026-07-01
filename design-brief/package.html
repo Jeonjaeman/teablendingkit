@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>패키지 디자인 기획서 — 취향의 권리 · tea Apotheca</title>
+<meta name="description" content="「고재, 시간의 결」 — 취향의 권리 티 블렌딩 키트 패키지 디자인 기획서 (힉스필드 실전용)." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F4F1E9; --paper:#EDE7DA; --sand:#E2D8C6;
+  --sage:#7E8B6E; --olive:#5E6447; --clay:#B07D5B; --terra:#A9603F;
+  --charcoal:#2C2B24; --ink:#3A382E; --muted:#8C8676; --line:#DAD2C2;
+  --serif:"Cormorant Garamond", serif; --kr:"Noto Serif KR", serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--ivory);color:var(--ink);font-family:var(--kr);font-weight:300;
+  line-height:1.85;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:920px;margin:0 auto;padding:0 24px 120px;}
+
+/* cover */
+.cover{background:var(--charcoal);color:var(--ivory);padding:74px 24px 64px;text-align:center;}
+.cover .inner{max-width:920px;margin:0 auto;}
+.cover .eyebrow{font-family:var(--serif);font-style:italic;font-size:19px;letter-spacing:.05em;opacity:.8;}
+.cover h1{font-family:var(--kr);font-weight:300;font-size:clamp(28px,4.6vw,46px);letter-spacing:-.01em;margin:18px 0 10px;line-height:1.4;}
+.cover h1 em{font-family:var(--serif);font-style:italic;color:#E9C9A8;font-weight:500;}
+.cover .sub{font-size:14px;color:#cfc7b5;letter-spacing:.02em;}
+.badge{display:inline-block;margin-top:24px;font-size:12px;font-weight:600;letter-spacing:.06em;
+  padding:7px 16px;border-radius:999px;background:rgba(126,139,110,.25);color:#cfe0bf;border:1px solid rgba(126,139,110,.5);}
+.meta{margin-top:26px;font-size:12.5px;color:#b7ae9c;line-height:1.9;}
+
+/* section */
+section{padding-top:56px;}
+h2{font-family:var(--kr);font-weight:500;font-size:23px;color:var(--olive);letter-spacing:-.01em;
+  padding-bottom:12px;border-bottom:2px solid var(--olive);margin-bottom:8px;display:flex;align-items:baseline;gap:12px;}
+h2 .n{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--clay);}
+h3{font-size:16px;font-weight:600;color:var(--charcoal);margin:28px 0 10px;}
+p{font-size:15px;margin:10px 0;color:#4a4840;}
+.lead{font-size:16px;color:var(--ink);}
+ul{margin:10px 0 10px 4px;list-style:none;}
+li{font-size:14.5px;padding:5px 0 5px 20px;position:relative;color:#4a4840;}
+li::before{content:"—";position:absolute;left:0;color:var(--clay);}
+b,strong{font-weight:600;color:var(--charcoal);}
+blockquote{border-left:4px solid var(--sage);background:var(--paper);padding:16px 22px;margin:18px 0;
+  border-radius:0 10px 10px 0;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--olive);line-height:1.6;}
+blockquote .kr{font-family:var(--kr);font-style:normal;font-size:14.5px;color:#4a4840;display:block;margin-top:8px;line-height:1.8;}
+
+/* cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 6px 18px rgba(60,50,30,.05);}
+.card b{display:block;font-size:12.5px;letter-spacing:.05em;color:var(--olive);margin-bottom:6px;text-transform:uppercase;}
+.card p{font-size:13.5px;margin:4px 0;color:#55513f;}
+
+/* swatches */
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+.sw span{display:flex;align-items:center;gap:8px;font-size:12px;color:#55513f;background:#fff;border:1px solid var(--line);padding:5px 12px 5px 6px;border-radius:999px;}
+.sw i{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.08);}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:16px 0;}
+table{border-collapse:collapse;width:100%;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(60,50,30,.05);}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--olive);color:#fff;font-weight:500;letter-spacing:.02em;white-space:nowrap;}
+td b{color:var(--terra);}
+tr:last-child td{border-bottom:none;}
+
+/* prompt block */
+.prompt{margin:14px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;}
+.prompt .head{background:var(--sand);padding:10px 16px;font-weight:600;font-size:14px;color:var(--charcoal);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.prompt .head .tag{font-size:11px;font-weight:600;color:#fff;background:var(--sage);padding:3px 9px;border-radius:999px;letter-spacing:.03em;}
+.prompt pre{margin:0;padding:14px 16px;font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  font-size:12px;line-height:1.7;color:#3a382e;white-space:pre-wrap;background:#fbfaf5;}
+.prompt .note{padding:9px 16px;font-size:12.5px;color:var(--terra);background:#fff8ef;border-top:1px dashed var(--line);}
+
+.callout{background:#fff8e7;border-left:5px solid var(--clay);padding:15px 20px;border-radius:0 12px 12px 0;margin:18px 0;font-size:13.5px;color:#55462c;line-height:1.8;}
+.tokenbox{background:var(--charcoal);color:#e7e0d0;border-radius:12px;padding:16px 18px;font-family:monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;margin:12px 0;}
+.tokenbox .k{color:#E9C9A8;}
+.docnav{font-size:13px;color:var(--muted);margin-top:8px;}
+.docnav a{color:var(--olive);text-decoration:none;border-bottom:1px solid var(--sage);}
+.foot{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);text-align:center;line-height:1.9;}
+@media(max-width:640px){.cards{grid-template-columns:1fr;}h2{font-size:20px;}}
+@media print{.cover{background:#fff;color:#000;}body{background:#fff;}.prompt pre{background:#f6f6f6;}}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="inner">
+    <div class="eyebrow">취향의 권리 · tea Apothēca — blend since 1975</div>
+    <h1>패키지 디자인 기획서<br><em>「고재, 시간의 결」</em></h1>
+    <div class="sub">Aged Wood, the Grain of Time · 티 블렌딩 키트 패키지 · 힉스필드 실전용</div>
+    <div class="badge">✅ 확정 기반 — 프로토타입 · 예산(300만) · 벤더 미팅 · 요청서 존재</div>
+    <div class="meta">
+      작성 2026-07-02 · 탱탱소프트(전재만) · 클라이언트 이소연 명인<br>
+      <span class="docnav">함께 보기 → <a href="homepage.html">홈페이지 디자인 기획서</a> · <a href="index.html">개요</a></span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section id="needs">
+    <h2><span class="n">00</span> 담당자 니즈 (자료 시간순 분석 요약)</h2>
+    <p class="lead">06/20~07/01 카톡·요청서·미팅/통화 녹음·프로토타입 사진을 시간순 분석해 확정한 핵심 니즈다. 패키지는 이 중 <b>실사 프린팅 기반 단순화</b>와 <b>고재 은유</b>가 직접 근거가 된다.</p>
+    <div class="cards">
+      <div class="card"><b>경험을 판다</b><p>판매가 아닌 취향 발견의 경험. "사야겠다"보다 "쉬어가고 싶다".</p></div>
+      <div class="card"><b>고재(古材) 은유</b><p>낡음이 아닌 시간의 결. 취향도 시간·경험으로 완성된다. "옛것에 현재를 블렌딩".</p></div>
+      <div class="card"><b>실사 프린팅 단순화</b><p>일러스트 창작 최소화 → 예산 절감 + 시리즈(결/숨) 재사용. 로고·문구 배치 중심.</p></div>
+      <div class="card"><b>예산 타이트</b><p>패키지 개발 300만(제작 100개 포함). 힉스필드로 촬영·목업·텍스처 비용을 대체하는 것이 핵심 전략.</p></div>
+      <div class="card"><b>톤 리드가 산출물</b><p>"무드만 잡아주면 패키지·출판·홈페이지가 같은 결로 간다" — 일관된 비주얼 소스 생산이 우리 역할.</p></div>
+      <div class="card"><b>시리즈 확장</b><p>겉박스·병풍·노트는 공용, 허브 파우치·카드·레이블만 교체하는 모듈형.</p></div>
+    </div>
+  </section>
+
+  <section id="concept">
+    <h2><span class="n">01</span> 패키지 컨셉 — 고재, 시간의 결</h2>
+    <blockquote>고재의 아름다움은 낡음이 아니라, 그 안에 담긴 시간과 이야기에서 비롯됩니다.
+      <span class="kr">사람의 취향 또한 그렇게 완성됩니다. — 고재는 시간·기억·취향을 담는 그릇이다.</span></blockquote>
+    <ul>
+      <li><b>핵심 오브제</b> — 오래된 목재의 나뭇결·옹이·못자국·풍화 질감 (실사 프린팅)</li>
+      <li><b>감정</b> — 갤러리 전시 카탈로그를 여는 듯한 조용한 격, 손끝의 촉감(크래프트지·먹색 인쇄)</li>
+      <li><b>차별점</b> — 화려한 그래픽이 아니라 소재(고재)와 여백, 각인(刻印)된 로고로 완성</li>
+      <li><b>인쇄 인상</b> — 나무에 인두로 지진 듯한 번(burn)/각인 로고, 종이는 크래프트·재생지</li>
+    </ul>
+    <h3>컬러</h3>
+    <div class="sw">
+      <span><i style="background:#6b4f36"></i>우드 브라운</span>
+      <span><i style="background:#cbb892"></i>오트밀 베이지</span>
+      <span><i style="background:#f4f1e9"></i>아이보리</span>
+      <span><i style="background:#2c2b24"></i>차콜</span>
+      <span><i style="background:#1c1a16"></i>먹색 (포인트)</span>
+      <span><i style="background:#b8973f"></i>골드 (포인트)</span>
+    </div>
+  </section>
+
+  <section id="guide">
+    <h2><span class="n">02</span> 힉스필드 공통 운용 가이드</h2>
+    <h3>모델 선택</h3>
+    <ul>
+      <li><b>정물·목업·질감</b> — 고사실계 image 모델(Nano Banana Pro / Seedream 계열). 확신 없으면 <b>models_explore(recommend)</b>로 목적·레퍼런스 넣고 추천.</li>
+      <li><b>후처리 전용 툴 우선</b> — 재생성보다 <b>upscale_image</b>(2K/4K), <b>outpaint_image</b>(배경 확장), <b>remove_background</b>(제품 컷아웃).</li>
+    </ul>
+    <h3>공통 스타일 토큰 (모든 프롬프트에 append)</h3>
+    <div class="tokenbox"><span class="k">STYLE TOKEN:</span>
+soft natural window light, long gentle shadows, muted earth tones
+(ivory #F4F1E9, oatmeal beige #E2D8C6, sage #7E8B6E, olive #5E6447,
+clay #B07D5B, charcoal #2C2B24, ink-black, matte gold #E9C9A8),
+fine 35mm film grain, low saturation, calm and meditative mood,
+generous negative space, MUJI x apothecary x gallery-catalog aesthetic,
+photographic realism, no gloss, no vibrant colors
+
+<span class="k">NEGATIVE:</span>
+oversaturated, neon, HDR, glossy plastic, busy background, cluttered,
+harsh flash, cartoon, 3d render look, watermark, text artifacts,
+lens flare, commercial ad vibe, stock-photo cliché</div>
+    <h3>일관성 규칙</h3>
+    <ul>
+      <li><b>시드 고정</b> — 채택 컷 seed 기록 → 시리즈(결/숨)·리사이즈 변형 재사용.</li>
+      <li><b>로고·한글표기·문구는 벡터 합성</b> — AI 이미지에 직접 각인 시 글자 깨짐. 프롬프트엔 "빈 여백" 요청.</li>
+      <li><b>비율</b> — 패키지 목업 4:3 / 5:4, 카드·엽서 3:4. <b>해상도</b> — 채택본 upscale로 인쇄용 확보.</li>
+    </ul>
+  </section>
+
+  <section id="assets">
+    <h2><span class="n">03</span> 구성품 &amp; 산출 에셋</h2>
+    <div class="tblwrap">
+    <table>
+      <tr><th>#</th><th>구성품</th><th>디자인 포인트</th><th>힉스필드 산출물</th><th>실사프린팅</th></tr>
+      <tr><td><b>P1</b></td><td>겉박스 (닫힌 상태)</td><td>고재 나무결 실사 + 각인 로고</td><td>목업 1컷</td><td>✅ 겉면</td></tr>
+      <tr><td><b>P2</b></td><td>겉박스 (열린 / 전체 구성)</td><td>병풍·구성품 배치 오버뷰</td><td>목업 1컷</td><td>—</td></tr>
+      <tr><td><b>P3</b></td><td>병풍(아코디언) 펼침</td><td>용수철처럼 늘어나는 칸·칼선</td><td>목업 1~2컷</td><td>✅ 칸 하단 로고</td></tr>
+      <tr><td><b>P4</b></td><td>허브 파우치 (6종)</td><td>크래프트 파우치 + 미니 레이블</td><td>세트컷 + 개별</td><td>레이블 교체</td></tr>
+      <tr><td><b>P5</b></td><td>허브 카드 (6종)</td><td>향·특징, 보태니컬 원물</td><td>카드 앞/뒤</td><td>✅ 카드 표면</td></tr>
+      <tr><td><b>P6</b></td><td>엽서</td><td>블렌딩 영감 문구 여백</td><td>엽서 목업</td><td>✅</td></tr>
+      <tr><td><b>P7</b></td><td>블렌딩 노트 표지</td><td>고재 각인 "취향의 권리" (기제작 톤)</td><td>표지 목업</td><td>✅ 표지</td></tr>
+      <tr><td><b>P8</b></td><td>브랜드 북 표지</td><td>에세이집 톤, 조용한 격</td><td>표지 목업</td><td>✅ 표지</td></tr>
+      <tr><td><b>P9</b></td><td>고재 텍스처 원판</td><td>인쇄 입힐 원본 나뭇결</td><td>seamless 텍스처</td><td>✅ 소스</td></tr>
+    </table>
+    </div>
+    <div class="callout">기제작 시안(고재 나무결 패키지 목업 · 취향의 권리 노트 표지)이 이미 P1·P2·P7 톤을 잘 잡았음 → <b>그 톤을 기준 시드로 고정</b>하고 나머지 컷을 같은 결로 확장.</div>
+
+    <h3>컷별 힉스필드 프롬프트</h3>
+
+    <div class="prompt"><div class="head">P1 — 겉박스(닫힌 상태) <span class="tag">ratio 4:3</span></div>
+    <pre>A closed premium tea gift box photographed top-down on a dark aged
+wooden table. The box surface is a photo-real print of weathered
+reclaimed wood grain (고재), with visible knots, nail holes and time-worn
+texture. A small minimal engraved/burned logo mark and thin serif
+wordmark centered, lots of empty space. Kraft corrugated edges.
+Editorial still-life, gallery-catalog calm.  + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">P2 — 겉박스(열린, 전체 구성) <span class="tag">ratio 5:4</span></div>
+    <pre>An open tea blending kit box seen from a slight top angle. Inside,
+left to right: a small kraft herb pouch with a tiny white label, a
+"guide book" and a "blending note" with aged-wood-grain covers standing
+in fitted compartments. Natural kraft cardboard padding. A sprig of
+eucalyptus beside the box on a walnut table. Warm window light.
++ [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">P3 — 병풍(아코디언) 펼침 <span class="tag">ratio 16:9</span></div>
+    <pre>A long accordion-folded (byeongpung / concertina) kraft paper strip
+being pulled out of a tea box like a spring, unfolding into several
+equal panels. Each panel has a die-cut slot holding a translucent herb
+pouch and a small postcard. A minimal engraved logo repeats at the
+bottom of every panel. Angle showing folds and depth, soft light,
+clean neutral background.  + [STYLE TOKEN]</pre>
+    <div class="note">⚠️ 실물 프로토타입(크래프트 병풍 + 칼선) 사진을 참조 이미지로 첨부해 image-to-image로 생성하면 구조 정확도가 크게 오른다.</div></div>
+
+    <div class="prompt"><div class="head">P4 — 허브 파우치 6종 세트컷 <span class="tag">ratio 4:3</span></div>
+    <pre>Six small translucent/kraft herb pouches arranged in a calm grid on an
+oatmeal linen cloth, each filled with dried botanicals (lemon balm,
+hibiscus, lemon myrtle, chamomile, lavender, rose). Each pouch has a
+tiny minimal white label with clean empty space (no readable text).
+Loose dried petals scattered sparingly. Top-down, soft light.
++ [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">P5 — 허브 카드 (원물 보태니컬) <span class="tag">ratio 3:4</span></div>
+    <pre>A minimal herb information card on aged wood. Left: a photo-real
+close-up of a single dried botanical (e.g. lavender) on cream paper;
+right: generous empty space reserved for text. Letterpress / kraft
+paper feel, subtle deckled edge. Gallery herbarium mood. + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">P6 — 엽서 (블렌딩 영감 문구용) <span class="tag">ratio 3:4</span></div>
+    <pre>A single cream postcard with heavy deckled-edge cotton paper texture,
+on a wood surface with a dried leaf shadow across it. Vast empty center
+for a short poetic line (leave blank). Ink-black thin serif accent only.
+Quiet, contemplative.  + [STYLE TOKEN]</pre></div>
+
+    <div class="prompt"><div class="head">P7 / P8 — 노트 &amp; 브랜드 북 표지 <span class="tag">ratio 3:4</span></div>
+    <pre>A book cover printed with photo-real aged reclaimed-wood grain, worn
+with tiny insect holes and cracks, exposed thread binding on the spine.
+A minimal engraved square emblem centered, thin serif line beneath it,
+large empty space. On rough old wooden planks, top lit, deep shadow.
++ [STYLE TOKEN]</pre>
+    <div class="note">표지 위 "취향의 권리 / TEA BLENDING NOTE / 나만의 취향을 발견하는 시간" 등 글자는 벡터 합성 (기제작본과 동일 방식).</div></div>
+
+    <div class="prompt"><div class="head">P9 — 고재 seamless 텍스처 (실사 프린팅 소스) <span class="tag">ratio 1:1</span></div>
+    <pre>A seamless flat-lay texture of weathered reclaimed barn wood, greyish
+warm brown, fine grain, knots and nail holes, evenly lit with no strong
+shadow, tileable, high resolution, print background.  + low saturation,
+matte, no objects</pre>
+    <div class="note">톤 편차용 밝은/중간/어두운 3종을 뽑아 시리즈별로 사용. 채택본 upscale 4K.</div></div>
+
+    <h3>시리즈 확장 (결 / 숨)</h3>
+    <ul>
+      <li><b>공용 재사용</b> — 겉박스·병풍·노트/북.</li>
+      <li><b>교체만 재생성</b> — 허브 파우치 라벨(원물), 허브 카드 6종, 엽서 문구, 라인 포인트 컬러(결=그린 / 숨=클레이·골드 강조).</li>
+    </ul>
+  </section>
+
+  <section id="flow">
+    <h2><span class="n">04</span> 산출·전달 워크플로 &amp; 리스크</h2>
+    <ol style="margin:10px 0 10px 20px;font-size:14.5px;line-height:2;color:#4a4840;">
+      <li><b>텍스처 원판(P9) 먼저</b> 3종 생성 → 톤 기준선 확정 → seed 고정.</li>
+      <li>패키지 목업 P1→P2→P3 (구조 정확도 위해 실물 프로토타입 image-to-image 활용).</li>
+      <li>채택본 전량 <b>upscale_image</b>(인쇄 4K) → 필요분 <b>remove_background</b> 컷아웃.</li>
+      <li>로고·한글표기·문구는 <b>벡터 합성</b>(AI 텍스트 금지).</li>
+      <li>대표 확인 루프: 무드/톤 먼저 승인 → 세부 조정 1~2회.</li>
+    </ol>
+    <div class="callout">
+      <b>리스크 메모</b><br>
+      · AI 텍스트 각인 깨짐 → 문구·로고 후합성 필수.<br>
+      · 병풍 1900mm 초과 시 분할 인쇄 → 목업은 이상적 형태, 실제 칼선·분할은 패키지 업체 샘플과 대조.<br>
+      · 예산 방어 → 힉스필드가 촬영/일러스트/목업 비용을 대체함을 견적서에 명시.<br>
+      · 시리즈 일관성 → seed·스타일 토큰·텍스처 원판을 자산으로 관리.
+    </div>
+  </section>
+
+  <div class="foot">
+    취향의 권리 · tea Apothēca — 패키지 디자인 기획서 「고재, 시간의 결」<br>
+    탱탱소프트 · 2026-07-02 · 상세 원본 <code>docs/design-brief-higgsfield.md</code>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>취향의 권리 — The Right to Taste</title>
+<meta name="description" content="당신의 취향에는, 권리가 있습니다. 취향에 관한 한 편의 에세이 — tea Apothēca 취향의 권리." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Serif+KR:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F4F1E9; --paper:#EDE7DA; --sand:#E2D8C6;
+  --sage:#7E8B6E; --olive:#5E6447; --clay:#B07D5B; --terra:#A9603F;
+  --charcoal:#2C2B24; --ink:#3A382E; --muted:#8C8676; --gold:#E9C9A8;
+  --serif:"Cormorant Garamond", serif; --kr:"Noto Serif KR", serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--ivory);color:var(--ink);font-family:var(--kr);font-weight:300;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;word-break:keep-all;line-height:1.9;}
+
+/* progress + demo mark */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--olive);z-index:300;transition:width .1s linear;}
+.demomark{position:fixed;right:14px;bottom:14px;z-index:300;font-size:11px;letter-spacing:.04em;
+  color:var(--muted);background:rgba(244,241,233,.85);border:1px solid #d8d0c0;border-radius:999px;padding:6px 13px;backdrop-filter:blur(4px);}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;width:100%;padding:20px 34px;display:flex;justify-content:space-between;align-items:center;
+  z-index:200;color:#efe9db;transition:background .5s,color .5s,padding .4s;}
+.nav.light{color:var(--ink);}
+.nav.solid{background:rgba(28,26,22,.72);color:#efe9db;padding:14px 34px;backdrop-filter:blur(6px);}
+.nav .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:20px;letter-spacing:.05em;font-weight:500;color:inherit;text-decoration:none;}
+.nav .menu{display:flex;gap:26px;font-family:var(--serif);font-size:13px;letter-spacing:.14em;text-transform:uppercase;}
+.nav .menu a{color:inherit;text-decoration:none;opacity:.8;transition:opacity .2s;}
+.nav .menu a:hover{opacity:1;}
+@media(max-width:720px){.nav .menu{display:none;}}
+
+/* emblem */
+.emblem{display:inline-block;position:relative;}
+.emblem svg{display:block;}
+
+/* sections */
+section{position:relative;width:100%;min-height:100vh;display:flex;align-items:center;padding:120px 34px;overflow:hidden;}
+.inner{max-width:1100px;margin:0 auto;width:100%;}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1.5s cubic-bezier(.16,.7,.2,1),transform 1.5s cubic-bezier(.16,.7,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+.d1{transition-delay:.2s;} .d2{transition-delay:.45s;} .d3{transition-delay:.7s;} .d4{transition-delay:.95s;}
+.eyebrow{font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.5vw,19px);letter-spacing:.06em;color:var(--clay);}
+.big{font-weight:200;font-size:clamp(30px,5.2vw,66px);line-height:1.42;letter-spacing:-.01em;}
+.big em{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--olive);}
+.mid{font-weight:300;font-size:clamp(22px,3.2vw,40px);line-height:1.55;letter-spacing:-.01em;}
+.small{font-size:clamp(14px,1.4vw,17px);color:var(--muted);line-height:2;}
+.enline{font-family:var(--serif);font-style:italic;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+
+/* image-bg sections */
+.imgbg{position:absolute;inset:0;z-index:0;}
+.imgbg img{width:100%;height:100%;object-fit:cover;}
+.scrim-l::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(24,21,16,.78),rgba(24,21,16,.35) 48%,rgba(24,21,16,.05));}
+.scrim-r::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(270deg,rgba(28,25,20,.55),rgba(28,25,20,.12) 45%,transparent 70%);}
+.scrim-b::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(24,21,16,.5),rgba(24,21,16,.2) 40%,rgba(24,21,16,.55));}
+.on-img{position:relative;z-index:2;color:#f3ecdd;}
+.on-img .big em{color:var(--gold);}
+.on-img .eyebrow{color:var(--gold);}
+.on-img .small{color:#d8cfbd;}
+
+/* hero */
+#s0{background:var(--charcoal);}
+#s0 .col{max-width:760px;}
+.scrollcue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:5;color:#e7ddca;
+  font-family:var(--serif);letter-spacing:.3em;font-size:11px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:.8;}
+.scrollcue .line{width:1px;height:42px;background:linear-gradient(#e7ddca,transparent);animation:drop 2.4s ease-in-out infinite;}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top;}45%{transform:scaleY(1);transform-origin:top;}55%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* two-column image sections */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center;min-height:100vh;}
+.split .txt{padding:120px 6vw;}
+@media(max-width:820px){.split{grid-template-columns:1fr;}.split .txt{padding:90px 30px;}}
+
+/* plain philosophy sections */
+.plain{background:var(--ivory);}
+.plain.paper{background:var(--paper);}
+.center{text-align:center;}
+.rule{width:44px;height:1px;background:var(--clay);margin:26px 0;}
+.center .rule{margin:26px auto;}
+
+/* S3 declaration */
+#s3{background:var(--charcoal);color:#f1eadc;}
+#s3 .big em{color:var(--gold);}
+#s3 .emwrap{margin-bottom:40px;}
+#s3 .neg{margin-top:28px;font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.2vw,26px);color:var(--sage);}
+
+/* S4 interaction */
+#s4{background:var(--paper);}
+.chips{display:flex;flex-wrap:wrap;gap:11px;margin:26px 0 8px;max-width:760px;}
+.chip{font-family:var(--kr);font-size:15px;color:var(--ink);background:#fff;border:1px solid #d8d0c0;border-radius:999px;
+  padding:9px 20px;cursor:pointer;transition:all .25s;user-select:none;}
+.chip:hover{border-color:var(--sage);}
+.chip.on{background:var(--olive);color:#fff;border-color:var(--olive);}
+.chipgroup{margin-bottom:20px;}
+.chipgroup .lbl{font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-family:var(--serif);font-style:italic;}
+.result{margin-top:30px;min-height:96px;font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,30px);
+  line-height:1.5;color:var(--olive);opacity:0;transform:translateY(10px);transition:opacity .8s,transform .8s;}
+.result.show{opacity:1;transform:none;}
+.result .hl{color:var(--terra);font-style:normal;font-family:var(--kr);font-weight:400;}
+.result .foot{display:block;margin-top:14px;font-family:var(--kr);font-style:normal;font-size:15px;color:var(--muted);}
+
+/* S6 note */
+#s6{background:var(--sand);}
+#s6 .noteimg{border-radius:6px;box-shadow:0 30px 60px rgba(40,32,20,.28);max-height:78vh;width:auto;max-width:100%;}
+#s6 .figside{display:flex;justify-content:center;padding:80px 4vw;}
+
+/* S7 cards */
+#s7{background:var(--ivory);flex-direction:column;}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px;}
+.tcard{background:#fff;border:1px solid #e2dac9;border-radius:14px;padding:30px 26px;box-shadow:0 10px 26px rgba(60,50,30,.05);}
+.tcard .k{font-family:var(--serif);font-style:italic;color:var(--clay);font-size:15px;letter-spacing:.05em;}
+.tcard h3{font-size:19px;font-weight:500;color:var(--charcoal);margin:8px 0 10px;}
+.tcard p{font-size:14px;color:#55513f;line-height:1.85;}
+@media(max-width:820px){.cards{grid-template-columns:1fr;}}
+
+/* footer */
+#foot{background:var(--charcoal);color:#e7ddca;min-height:70vh;text-align:center;flex-direction:column;justify-content:center;}
+#foot .fbig{font-family:var(--serif);font-style:italic;font-size:clamp(34px,6vw,72px);color:var(--gold);font-weight:500;}
+#foot .cta{margin-top:34px;display:inline-block;font-family:var(--serif);letter-spacing:.16em;text-transform:uppercase;font-size:13px;
+  color:#e7ddca;text-decoration:none;border:1px solid rgba(233,201,168,.45);border-radius:999px;padding:13px 30px;transition:background .3s;}
+#foot .cta:hover{background:rgba(233,201,168,.14);}
+#foot .fmeta{margin-top:40px;font-size:12px;color:#a99f8c;line-height:2;letter-spacing:.03em;}
+#foot .fmeta a{color:#cdbfa6;text-decoration:none;border-bottom:1px solid rgba(205,191,166,.4);}
+
+@media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none;}.scrollcue .line{animation:none;}}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+<div class="demomark">데모 · 미확정 시안 (취향의 권리 세계관)</div>
+
+<nav class="nav" id="nav">
+  <a class="brand" href="#s0">
+    <span class="emblem" id="navemblem"></span> 취향의 권리
+  </a>
+  <div class="menu">
+    <a href="#s2">이야기</a>
+    <a href="#s5">차</a>
+    <a href="#s6">키트</a>
+    <a href="#s7">함께</a>
+  </div>
+</nav>
+
+<!-- S0 · Prologue -->
+<section id="s0" class="scrim-l">
+  <div class="imgbg"><img src="assets/s0-cover.png" alt="고재 — 시간을 담는 그릇"></div>
+  <div class="inner on-img">
+    <div class="col">
+      <div class="eyebrow reveal in">The Right to Taste · 취향의 권리</div>
+      <h1 class="big reveal in d1" style="margin-top:20px;">당신의 취향에는,<br><em>권리</em>가 있습니다.</h1>
+      <p class="small reveal in d2" style="margin-top:26px;max-width:440px;">정답을 파는 브랜드가 아니라, 당신이 당신의 취향을 발견하는 시간을 짓는 브랜드.</p>
+    </div>
+  </div>
+  <div class="scrollcue"><span>Scroll</span><span class="line"></span></div>
+</section>
+
+<!-- S1 · 질문 -->
+<section id="s1" class="split scrim-l" style="padding:0;">
+  <div class="imgbg" style="grid-column:1/-1;"><img src="assets/s1-hand.png" alt="사색하는 손"></div>
+  <div class="txt on-img" style="position:relative;z-index:2;">
+    <p class="eyebrow reveal">하나.</p>
+    <h2 class="mid reveal d1" style="margin-top:18px;">언젠가부터 우리는,<br><em style="font-family:var(--serif);font-style:italic;color:var(--gold);">‘정답’</em>을 배웠습니다.</h2>
+    <p class="small reveal d2" style="margin-top:22px;max-width:420px;">무엇이 좋은 맛인지, 무엇이 옳은 취향인지.<br>그러나 정말, 정답이 있었을까요.</p>
+  </div>
+  <div></div>
+</section>
+
+<!-- S2 · 고재의 은유 (핵심) -->
+<section id="s2" class="split" style="padding:0;background:var(--charcoal);">
+  <div class="txt on-img">
+    <p class="eyebrow reveal">둘. 고재(古材)</p>
+    <h2 class="mid reveal d1" style="margin-top:18px;">고재의 아름다움은 낡음이 아니라,<br>그 안에 담긴 <em style="font-family:var(--serif);font-style:italic;color:var(--gold);">시간</em>과 이야기에서<br>비롯됩니다.</h2>
+    <div class="rule reveal d2"></div>
+    <p class="small reveal d2" style="max-width:420px;">사람의 취향 또한, 그렇게 완성되어 갑니다.<br>결 하나하나에 시간이 새겨지듯이.</p>
+  </div>
+  <div class="imgbg scrim-none" style="position:relative;min-height:100vh;">
+    <img src="assets/s2-grain.png" alt="고재의 결 — 시간의 층">
+  </div>
+</section>
+
+<!-- S3 · 선언 -->
+<section id="s3" class="center">
+  <div class="inner">
+    <div class="emwrap reveal"><span class="emblem" id="bigemblem"></span></div>
+    <h2 class="big reveal d1">전문가에게는 원칙이 있지만,<br><em>당신</em>에게는 취향의 권리가 있습니다.</h2>
+    <p class="neg reveal d2">정형화된 블렌딩은, 정답이 아닙니다.</p>
+  </div>
+</section>
+
+<!-- S4 · 인터랙션 : 정답 없는 블렌딩 -->
+<section id="s4">
+  <div class="inner">
+    <p class="eyebrow reveal">셋. 정답 없는 블렌딩</p>
+    <h2 class="mid reveal d1" style="margin-top:14px;">오늘의 당신을 골라보세요.</h2>
+    <p class="small reveal d1" style="margin-top:10px;">맞고 틀림은 없습니다. 고르는 순간, 그것이 당신의 취향입니다.</p>
+
+    <div class="reveal d2" style="margin-top:20px;">
+      <div class="chipgroup">
+        <div class="lbl">지금의 계절 / 시간</div>
+        <div class="chips" data-group="when">
+          <span class="chip">이른 아침</span><span class="chip">비 오는 오후</span><span class="chip">깊은 밤</span><span class="chip">환절기</span>
+        </div>
+      </div>
+      <div class="chipgroup">
+        <div class="lbl">지금의 마음</div>
+        <div class="chips" data-group="mood">
+          <span class="chip">고요함</span><span class="chip">설렘</span><span class="chip">위로가 필요한</span><span class="chip">단단해지고 싶은</span>
+        </div>
+      </div>
+      <div class="result" id="s4result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 · 그리고, 차 (첫 등장) -->
+<section id="s5" style="padding:0;">
+  <div class="imgbg"><img src="assets/s5-tea.png" alt="차를 감싼 손 — 믿음의 실천"></div>
+  <div class="inner" style="position:relative;z-index:2;">
+    <div style="max-width:460px;margin-left:auto;text-align:right;color:var(--charcoal);">
+      <p class="eyebrow reveal" style="color:var(--terra);">그리고, 차.</p>
+      <h2 class="mid reveal d1" style="margin-top:16px;">우리는 이 믿음을 담는<br>하나의 방식으로,<br><em style="font-family:var(--serif);font-style:italic;color:var(--terra);">차를 블렌딩</em>합니다.</h2>
+      <p class="small reveal d2" style="margin-top:22px;color:#5a5545;">차를 파는 일이 아니라, 취향을 짓는 일.</p>
+      <p class="enline reveal d3" style="margin-top:20px;color:#7a7362;">blend since 1975 · 청주 ↔ Chula Vista</p>
+    </div>
+  </div>
+</section>
+
+<!-- S6 · 취향을 담는 그릇 (키트=도구) -->
+<section id="s6" class="split" style="padding:0;">
+  <div class="txt">
+    <p class="eyebrow reveal">넷. 취향을 담는 그릇</p>
+    <h2 class="mid reveal d1" style="margin-top:16px;">당신의 취향의 시간을 담는,<br><em style="font-family:var(--serif);font-style:italic;color:var(--olive);">티 블렌딩 노트</em>.</h2>
+    <div class="rule reveal d2"></div>
+    <p class="small reveal d2" style="max-width:420px;">여섯 가지 원물, 한 권의 노트, 그리고 빈 페이지.
+      키트는 완성된 상품이 아니라, 당신이 당신의 결을 발견하고 기록하는 <b style="color:var(--charcoal);font-weight:500;">도구</b>입니다.</p>
+    <p class="enline reveal d3" style="margin-top:24px;">A TIME TO DISCOVER MY TASTE</p>
+  </div>
+  <div class="figside">
+    <img class="noteimg reveal d1" src="assets/s6-note.png" alt="취향의 권리 티 블렌딩 노트 — 고재 각인">
+  </div>
+</section>
+
+<!-- S7 · 함께 걷기 -->
+<section id="s7">
+  <div class="inner center">
+    <p class="eyebrow reveal">다섯. 함께 걷기</p>
+    <h2 class="mid reveal d1" style="margin-top:12px;">가르치지 않습니다. <em style="font-family:var(--serif);font-style:italic;color:var(--olive);">함께 발견</em>합니다.</h2>
+  </div>
+  <div class="inner">
+    <div class="cards">
+      <div class="tcard reveal d1"><div class="k">Class</div><h3>블렌딩 클래스</h3><p>기관 출강 · 강사 과정 · 기업 워크숍. 정답을 전수하는 강의가 아니라, 각자의 취향을 여는 시간.</p></div>
+      <div class="tcard reveal d2"><div class="k">Journal</div><h3>취향의 기록</h3><p>차 이야기 · 식물 이야기 · 명상. 느린 호흡으로 읽는, 취향에 관한 에세이.</p></div>
+      <div class="tcard reveal d3"><div class="k">Ritual</div><h3>느린 아침</h3><p>차 한 잔으로 시작하는 하루. 무언가를 사는 대신, 잠시 쉬어가는 시간.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<section id="foot">
+  <div class="inner">
+    <div class="emblem reveal" id="footemblem" style="margin-bottom:26px;"></div>
+    <div class="fbig reveal d1">Stay a while.</div>
+    <p class="small reveal d2" style="color:#cdc2ad;margin-top:16px;">잠시 쉬어가세요. 당신의 취향은, 서두르지 않아도 됩니다.</p>
+    <a class="cta reveal d3" href="#s0">취향의 권리 알아보기</a>
+    <div class="fmeta reveal d3">
+      tea Apothēca · 취향의 권리 (The Right to Taste)<br>
+      teablendingkit.kr · 취향의권리.com<br>
+      <a href="../design-brief/homepage.html">홈페이지 기획서</a> · <a href="../design-brief/index.html">디자인 기획서 개요</a>
+    </div>
+  </div>
+</section>
+
+<script>
+// emblem: 빈 사각 안의 한 점 = 당신
+function emblem(size, dotColor, lineColor){
+  var s = size, p = s*0.62, off=(s-p)/2, dot=Math.max(2.2,s*0.055);
+  return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'">'
+    + '<rect x="'+off+'" y="'+off+'" width="'+p+'" height="'+p+'" fill="none" stroke="'+lineColor+'" stroke-width="1.1"/>'
+    + '<circle class="edot" cx="'+(off+p*0.78)+'" cy="'+(off+p*0.24)+'" r="'+dot+'" fill="'+dotColor+'"/></svg>';
+}
+document.getElementById('navemblem').innerHTML = emblem(22,'#E9C9A8','currentColor');
+document.getElementById('bigemblem').innerHTML = emblem(120,'#B07D5B','#8C8676');
+document.getElementById('footemblem').innerHTML = emblem(40,'#E9C9A8','rgba(231,221,202,.6)');
+
+// scroll progress + nav state
+var prog=document.getElementById('prog'), nav=document.getElementById('nav');
+var lightSections=['s3','s4','s6','s7']; // 밝은 배경 섹션에서 nav 어둡게
+function onScroll(){
+  var h=document.documentElement, st=h.scrollTop||document.body.scrollTop;
+  var max=h.scrollHeight-h.clientHeight;
+  prog.style.width=(max>0?(st/max*100):0)+'%';
+  nav.classList.toggle('solid', st>60);
+}
+window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+// reveal on scroll
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.18});
+document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+
+// emblem dot drifts with scroll (S3 big emblem) — "당신의 자리"
+window.addEventListener('scroll', function(){
+  var be=document.querySelector('#bigemblem .edot'); if(!be)return;
+  var r=document.getElementById('s3').getBoundingClientRect();
+  var prog=Math.min(1,Math.max(0,1-(r.top+ r.height)/ (window.innerHeight+r.height)));
+  be.setAttribute('cx', (37 + prog*46).toFixed(1)); // 74.4 -> drift
+},{passive:true});
+
+// S4 interaction : 정답 없는 블렌딩
+var sel={when:null, mood:null};
+var blendmap={
+  '이른 아침':'맑게 깨어나는', '비 오는 오후':'차분히 가라앉는', '깊은 밤':'고요히 물드는', '환절기':'몸을 돌보는',
+  '고요함':'레몬밤과 카모마일의 결', '설렘':'장미와 히비스커스의 결', '위로가 필요한':'라벤더의 결', '단단해지고 싶은':'생강과 진피의 결'
+};
+document.querySelectorAll('#s4 .chips').forEach(function(g){
+  var group=g.getAttribute('data-group');
+  g.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      g.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on'); sel[group]=c.textContent; renderS4();
+    });
+  });
+});
+function renderS4(){
+  var r=document.getElementById('s4result');
+  if(!sel.when||!sel.mood){ return; }
+  var a=blendmap[sel.when]||'', b=blendmap[sel.mood]||'';
+  r.innerHTML='오늘 당신의 취향은 —<br><span class="hl">'+sel.when+'</span>, '+sel.mood+'.<br>'+a+' 시간에, '+b+'.'
+    +'<span class="foot">정답은 없습니다. 그저, 당신입니다.</span>';
+  r.classList.add('show');
+}
+</script>
+</body>
+</html>
