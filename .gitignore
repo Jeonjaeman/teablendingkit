@@ -1,2 +1,25 @@
+# OMC / 에이전트 상태
 .omc/
 .claude/
+
+# 의뢰자 원자료 (통화 녹음·카톡 대화·음성 전사) — 개인정보/사업정보, 추적 제외
+data/
+
+# 버려진 반복 시안 (design4 중간 생성물)
+design4/assets/s0-cover.png
+design4/assets/s0-start*.png
+design4/assets/s0-end-*.png
+design4/assets/s0-logo-v*.png
+design4/assets/s0hero-*.png
+
+# 중복/임시 파일
+design5/assets/hf_*.mp4
+design5/assets/*\ 2.png
+
+# design5 루트의 참고/소스 이미지 (결과물 아님 — index.html은 assets/만 참조)
+design5/*.png
+design5/*.jpg
+
+# OS/에디터
+Thumbs.db
+.DS_Store

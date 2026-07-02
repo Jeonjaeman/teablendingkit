@@ -55,7 +55,7 @@ section{position:relative;width:100%;min-height:100vh;display:flex;align-items:c
 
 /* image-bg sections */
 .imgbg{position:absolute;inset:0;z-index:0;}
-.imgbg img{width:100%;height:100%;object-fit:cover;}
+.imgbg img,.imgbg video{width:100%;height:100%;object-fit:cover;display:block;}
 .scrim-l::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(24,21,16,.78),rgba(24,21,16,.35) 48%,rgba(24,21,16,.05));}
 .scrim-r::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(270deg,rgba(28,25,20,.55),rgba(28,25,20,.12) 45%,transparent 70%);}
 .scrim-b::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(24,21,16,.5),rgba(24,21,16,.2) 40%,rgba(24,21,16,.55));}
@@ -65,8 +65,14 @@ section{position:relative;width:100%;min-height:100vh;display:flex;align-items:c
 .on-img .small{color:#d8cfbd;}
 
 /* hero */
-#s0{background:var(--charcoal);}
-#s0 .col{max-width:760px;}
+#s0{background:var(--charcoal);justify-content:center;}
+#s0 .veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 42%,transparent 44%,rgba(22,19,14,.5) 100%),
+             linear-gradient(180deg,rgba(22,19,14,.28),transparent 26%,transparent 62%,rgba(22,19,14,.62));}
+#s0 .s0tag{position:absolute;left:0;right:0;bottom:16%;z-index:5;text-align:center;color:#f1e9da;padding:0 24px;}
+#s0 .s0tag .eyebrow{color:var(--gold);display:block;margin-bottom:14px;}
+#s0 .s0line{font-family:var(--kr);font-weight:200;font-size:clamp(18px,2.5vw,30px);letter-spacing:.01em;line-height:1.5;color:#f4eee0;text-shadow:0 2px 20px rgba(20,16,10,.6);}
+#s0 .s0line em{font-family:var(--serif);font-style:italic;color:var(--gold);font-weight:500;}
 .scrollcue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:5;color:#e7ddca;
   font-family:var(--serif);letter-spacing:.3em;font-size:11px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:9px;opacity:.8;}
 .scrollcue .line{width:1px;height:42px;background:linear-gradient(#e7ddca,transparent);animation:drop 2.4s ease-in-out infinite;}
@@ -148,15 +154,18 @@ section{position:relative;width:100%;min-height:100vh;display:flex;align-items:c
   </div>
 </nav>
 
-<!-- S0 · Prologue -->
-<section id="s0" class="scrim-l">
-  <div class="imgbg"><img src="assets/s0-cover.png" alt="고재 — 시간을 담는 그릇"></div>
-  <div class="inner on-img">
-    <div class="col">
-      <div class="eyebrow reveal in">The Right to Taste · 취향의 권리</div>
-      <h1 class="big reveal in d1" style="margin-top:20px;">당신의 취향에는,<br><em>권리</em>가 있습니다.</h1>
-      <p class="small reveal in d2" style="margin-top:26px;max-width:440px;">정답을 파는 브랜드가 아니라, 당신이 당신의 취향을 발견하는 시간을 짓는 브랜드.</p>
-    </div>
+<!-- S0 · Prologue (영상: 탑다운 고재 바닥 + 종류별 찻잎 + 중앙 각인 로고) -->
+<section id="s0">
+  <div class="imgbg">
+    <video autoplay muted playsinline poster="assets/s0-hero-poster.png">
+      <source src="assets/s0-hero.mp4" type="video/mp4">
+      <img src="assets/s0-hero-poster.png" alt="고재 바닥 위 종류별 찻잎, 중앙에 각인된 취향의 권리 로고">
+    </video>
+  </div>
+  <div class="veil"></div>
+  <div class="s0tag">
+    <span class="eyebrow reveal in">The Right to Taste</span>
+    <p class="s0line reveal in d1">당신의 취향에는, <em>권리</em>가 있습니다.</p>
   </div>
   <div class="scrollcue"><span>Scroll</span><span class="line"></span></div>
 </section>
