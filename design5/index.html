@@ -83,37 +83,34 @@ section{position:relative;padding:0 40px;}
 .wrap{max-width:1180px;margin:0 auto;}
 @media(max-width:720px){section{padding:0 22px;}}
 
-/* prologue editorial — 무드보드 콜라주 (고재 나무결 + 차 원물) */
-#intro{padding:130px 40px;background:var(--cream);}
-#intro .mood{position:relative;max-width:1180px;margin:0 auto;min-height:960px;}
+/* prologue editorial — 무드보드 콜라주 (넉넉한 중앙 여백 + 큰 도형) */
+#intro{padding:120px 24px;background:var(--cream);}
+#intro .mood{position:relative;width:100%;max-width:1280px;margin:0 auto;aspect-ratio:1280/1000;}
 #intro .msquig{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible;}
-#intro .mtext{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(400px,58%);text-align:center;z-index:3;}
-#intro .mtext .display{margin-top:20px;}
-#intro .squig{margin:30px auto 0;display:block;opacity:.55;}
-#intro .card{position:absolute;z-index:2;overflow:hidden;box-shadow:0 20px 44px rgba(60,48,28,.12);background:var(--sand);}
+#intro .mtext{position:absolute;left:35%;top:29%;width:30%;text-align:center;z-index:3;}
+#intro .mtext .display{font-size:clamp(24px,2.9vw,42px);line-height:1.44;margin-top:14px;}
+#intro .squig{margin:22px auto 0;display:block;opacity:.55;}
+#intro .card{position:absolute;z-index:2;overflow:hidden;box-shadow:0 24px 50px rgba(60,48,28,.13);background:var(--sand);}
 #intro .card img{width:100%;height:100%;object-fit:cover;transition:transform 1.7s cubic-bezier(.16,.7,.2,1);}
 #intro .card:hover img{transform:scale(1.045);}
 #intro .card.arch{border-radius:900px 900px 5px 5px;}
 #intro .card.rc{border-radius:5px;}
-#intro .cap{position:absolute;left:0;bottom:-22px;width:100%;text-align:center;font-family:var(--en);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
-/* scattered positions */
-#intro .p1{left:0;top:4%;width:210px;aspect-ratio:3/4.2;}
-#intro .p2{left:6%;top:54%;width:186px;aspect-ratio:4/3;}
-#intro .p3{left:19%;bottom:0;width:138px;aspect-ratio:1/1;}
-#intro .p4{right:1%;top:7%;width:224px;aspect-ratio:4/3;}
-#intro .p5{right:9%;top:49%;width:176px;aspect-ratio:1/1;}
-#intro .p6{right:27%;bottom:1%;width:126px;aspect-ratio:1/1;}
-#intro .p7{left:20%;top:8px;width:118px;aspect-ratio:3/4;}
+/* 큰 도형 + 중앙 텍스트 여백 확보 (좌/상/폭/높이 %) */
+#intro .p1{left:41.5%;top:0.5%;width:17%;height:24%;}   /* 상단 아치 */
+#intro .p2{left:0;top:19%;width:28%;height:41%;}        /* 좌측 큰 사각 */
+#intro .p3{left:71%;top:29%;width:29%;height:35%;}      /* 우측 와이드 */
+#intro .p4{left:4%;top:66%;width:21%;height:24%;}       /* 좌하 소형 */
+#intro .p5{left:72%;top:70%;width:19%;height:24%;}      /* 우하 소형 */
+#intro .p6{left:41%;top:80%;width:18%;height:20%;}      /* 하단 중앙 소형 */
 @media(max-width:920px){
   #intro{padding:90px 22px;}
-  #intro .mood{min-height:0;}
+  #intro .mood{aspect-ratio:auto;max-width:560px;}
   #intro .msquig{display:none;}
-  #intro .mtext{position:static;transform:none;width:100%;max-width:560px;margin:0 auto 34px;}
+  #intro .mtext{position:static;width:100%;margin:0 auto 34px;}
+  #intro .mtext .display{font-size:clamp(26px,6vw,40px);}
   #intro .mcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  #intro .card{position:static;width:auto;aspect-ratio:1/1;transform:none;box-shadow:0 12px 26px rgba(60,48,28,.1);}
-  #intro .card.p1,#intro .card.p4{aspect-ratio:4/5;}
-  #intro .card.p7{display:none;}
-  #intro .cap{display:none;}
+  #intro .card{position:static;width:auto;height:auto;aspect-ratio:1/1;box-shadow:0 12px 26px rgba(60,48,28,.1);}
+  #intro .card.p2,#intro .card.p3{grid-column:1 / -1;aspect-ratio:16/10;}
 }
 
 /* chapter rows (01 질문) */
@@ -125,26 +122,48 @@ section{position:relative;padding:0 40px;}
 .chapter .imgcol{aspect-ratio:4/4.6;}
 @media(max-width:900px){.chapter .grid,.chapter .grid.flip{grid-template-columns:1fr;gap:44px;}.chapter{padding-top:100px;padding-bottom:100px;}}
 
-/* 02 고재 — wood metaphor */
-#s2{background:var(--charcoal);color:#efe7d6;padding:0;}
-#s2 .split{display:grid;grid-template-columns:1.05fr 1fr;min-height:96vh;align-items:stretch;}
-#s2 .txt{padding:16vh 6vw;display:flex;flex-direction:column;justify-content:center;}
+/* 02 고재 — wood metaphor (스크롤 스크럽: 우측 고재 세로 팬 + 좌측 텍스트 순차 등장) */
+#s2{position:relative;background:var(--charcoal);color:#efe7d6;padding:0;height:340vh;}
+#s2 .s2sticky{position:sticky;top:0;height:100vh;overflow:hidden;}
+#s2 .split{display:grid;grid-template-columns:1.05fr 1fr;height:100vh;align-items:stretch;}
+#s2 .txt{padding:0 6vw;display:flex;flex-direction:column;justify-content:center;}
 #s2 .display{color:#f0e8d7;}
 #s2 .display em{color:var(--gold);}
 #s2 .body{color:#bdb29b;}
 #s2 .label{color:#a3987f;}
-#s2 .imgside{position:relative;}
-#s2 .imgside img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-@media(max-width:900px){#s2 .split{grid-template-columns:1fr;}#s2 .imgside{min-height:60vh;position:relative;}}
+#s2 .imgside{position:relative;overflow:hidden;}
+#s2 .panimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 0%;will-change:object-position;}
+/* 좌측 텍스트: 스크롤 진행도에 따라 하나씩 등장 */
+#s2 .s2step{opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.16,.7,.2,1),transform 1s cubic-bezier(.16,.7,.2,1);}
+#s2 .s2step.on{opacity:1;transform:none;}
+@media(max-width:900px){
+  #s2{height:auto;}
+  #s2 .s2sticky{position:static;height:auto;}
+  #s2 .split{grid-template-columns:1fr;height:auto;}
+  #s2 .txt{padding:80px 30px;order:2;}
+  #s2 .imgside{height:62vh;order:1;}
+  #s2 .s2step{opacity:1;transform:none;}
+}
 
 /* 03 선언 emblem */
 #s3{background:var(--cream);text-align:center;padding-top:170px;padding-bottom:170px;}
 #s3 .emwrap{margin-bottom:44px;}
 #s3 .sub{margin-top:30px;font-family:var(--en);font-style:italic;font-size:clamp(17px,2vw,24px);color:var(--olive);letter-spacing:.02em;}
 
-/* 04 interaction */
-#s4{background:var(--paper);padding-top:150px;padding-bottom:150px;}
+/* 04 interaction — 좌: 인터랙션 / 우: 병풍 이미지시퀀스 스크롤 스크럽 */
+#s4{position:relative;background:var(--paper);height:260vh;}
+#s4 .s4sticky{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
+#s4 .s4inner{max-width:1240px;margin:0 auto;width:100%;padding:100px 40px;display:grid;grid-template-columns:1fr 0.92fr;gap:5vw;align-items:center;}
 #s4 .head{max-width:640px;}
+#s4 .s4seq{position:relative;width:100%;aspect-ratio:4/3;background:#EAE4D6;border-radius:6px;overflow:hidden;box-shadow:0 26px 60px rgba(60,48,28,.14);}
+#s4 .s4seq img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#s4 .s4seq .seqcap{position:absolute;left:0;bottom:14px;width:100%;text-align:center;font-family:var(--en);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);z-index:2;}
+@media(max-width:900px){
+  #s4{height:auto;}
+  #s4 .s4sticky{position:static;min-height:0;}
+  #s4 .s4inner{grid-template-columns:1fr;gap:36px;padding:110px 24px;}
+  #s4 .s4seq{order:2;}
+}
 .chips{display:flex;flex-wrap:wrap;gap:11px;margin:24px 0 6px;max-width:720px;}
 .chip{font-family:var(--kr);font-size:14.5px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;
   padding:9px 22px;cursor:pointer;transition:all .3s;user-select:none;}
@@ -178,8 +197,13 @@ section{position:relative;padding:0 40px;}
 #s6 .linerow p{font-size:13.5px;color:#6b6350;margin-top:6px;line-height:1.9;}
 @media(max-width:900px){#s6 .grid{grid-template-columns:1fr;gap:52px;}}
 
-/* 07 함께 걷기 — numbered editorial list */
-#s7{padding-top:150px;padding-bottom:170px;background:var(--cream);}
+/* 07 함께 걷기 — numbered editorial list (은은한 배경 영상) */
+#s7{position:relative;padding-top:150px;padding-bottom:170px;background:var(--cream);overflow:hidden;}
+#s7 .s7bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#s7 .s7bg video{width:100%;height:100%;object-fit:cover;opacity:.22;}
+#s7 .s7bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--cream) 0%,rgba(242,238,229,.62) 22%,rgba(242,238,229,.55) 50%,rgba(242,238,229,.62) 78%,var(--cream) 100%);}
+#s7 .wrap{position:relative;z-index:1;}
 #s7 .head{text-align:center;max-width:620px;margin:0 auto 70px;}
 #s7 .rows{max-width:860px;margin:0 auto;border-top:1px solid var(--line);}
 #s7 .row{display:grid;grid-template-columns:90px 1fr 2fr;gap:30px;padding:38px 6px;border-bottom:1px solid var(--line);align-items:baseline;}
@@ -237,12 +261,10 @@ section{position:relative;padding:0 40px;}
 <!-- ═══ Prologue essay — 무드보드 콜라주 (고재 나무결 + 차 원물) ═══ -->
 <section id="intro">
   <div class="mood">
-    <!-- 카드들을 잇는 얇은 곡선 -->
-    <svg class="msquig" viewBox="0 0 1180 960" preserveAspectRatio="none" fill="none">
-      <path d="M150 150 C 320 60, 430 300, 590 120 S 900 90, 1010 210" stroke="#B07D5B" stroke-width="1" opacity=".4"/>
-      <path d="M170 560 C 340 720, 520 640, 640 830 S 880 760, 980 620" stroke="#B07D5B" stroke-width="1" opacity=".32"/>
-      <circle cx="150" cy="150" r="2.4" fill="#B07D5B" opacity=".5"/>
-      <circle cx="1010" cy="210" r="2.4" fill="#B07D5B" opacity=".5"/>
+    <!-- 카드들을 잇는 얇은 곡선 (레퍼런스: 좌상단→상단 아치→우측 와이드로 스윕) -->
+    <svg class="msquig" viewBox="0 0 1280 1000" preserveAspectRatio="none" fill="none">
+      <path d="M330 250 C 470 150, 600 120, 700 145 S 900 240, 908 320" stroke="#B07D5B" stroke-width="1.1" opacity=".42"/>
+      <circle cx="330" cy="250" r="2.4" fill="#B07D5B" opacity=".5"/>
     </svg>
 
     <!-- 중앙 텍스트 -->
@@ -259,15 +281,14 @@ section{position:relative;padding:0 40px;}
       </svg>
     </div>
 
-    <!-- 흩어진 도형 카드 : 고재 나무결 + 차 원물 -->
+    <!-- 흩어진 도형 카드 (레퍼런스 6개 배치) : 고재 나무결 + 차 원물 -->
     <div class="mcards">
-      <div class="card arch frame p1 reveal">  <img src="assets/s2-grain.jpg"   alt="고재의 나뭇결"><span class="cap">古材 · Grain</span></div>
-      <div class="card rc frame p2 reveal d1"> <img src="assets/m-chamomile.jpg" alt="카모마일"><span class="cap">Chamomile</span></div>
-      <div class="card rc frame p3 reveal d2"> <img src="assets/m-cardamom.jpg"  alt="카다멈"></div>
-      <div class="card rc frame p4 reveal d1"> <img src="assets/m-blend.jpg"     alt="허브 블렌드"><span class="cap">The Blend</span></div>
-      <div class="card rc frame p5 reveal d2"> <img src="assets/m-bay.jpg"       alt="월계수 잎"></div>
-      <div class="card rc frame p6 reveal d3"> <img src="assets/s2-grain.jpg"    alt="고재의 결"></div>
-      <div class="card arch frame p7 reveal d2"><img src="assets/m-botanical.jpg" alt="말린 보태니컬"></div>
+      <div class="card arch frame p1 reveal">   <img src="assets/m-botanical.jpg" alt="말린 보태니컬"></div>
+      <div class="card rc frame p2 reveal d1">  <img src="assets/s2-grain.jpg"    alt="고재의 나뭇결"></div>
+      <div class="card rc frame p3 reveal d1">  <img src="assets/m-blend.jpg"     alt="허브 블렌드"></div>
+      <div class="card rc frame p4 reveal d2">  <img src="assets/m-chamomile.jpg" alt="카모마일"></div>
+      <div class="card rc frame p5 reveal d2">  <img src="assets/m-bay.jpg"       alt="월계수 잎"></div>
+      <div class="card rc frame p6 reveal d3">  <img src="assets/m-cardamom.jpg"  alt="카다멈"></div>
     </div>
   </div>
 </section>
@@ -295,21 +316,25 @@ section{position:relative;padding:0 40px;}
   </div>
 </section>
 
-<!-- ═══ 02 · 고재의 은유 ═══ -->
+<!-- ═══ 02 · 고재의 은유 (스크롤 스크럽) ═══ -->
 <section id="s2">
-  <div class="split">
-    <div class="txt">
-      <span class="label reveal">02 · The Grain of Time · 고재(古材)</span>
-      <h2 class="display reveal d1" style="margin-top:30px;">고재의 아름다움은<br>낡음이 아니라, 그 안에 담긴<br><em>시간</em>과 이야기에서 비롯됩니다.</h2>
-      <p class="body reveal d2" style="margin-top:32px;max-width:400px;">
-        수많은 계절을 지나며 생긴 결, 옹이, 못 자국.<br>
-        상처는 결함이 아니라 시간이 남긴 고유한 무늬입니다.<br><br>
-        사람의 취향 또한 이와 닮아 있습니다.<br>
-        경험과 선택과 기억이 쌓여, 비로소<br>
-        자신만의 결이 완성됩니다.
-      </p>
+  <div class="s2sticky">
+    <div class="split">
+      <div class="txt">
+        <span class="label s2step">02 · The Grain of Time · 고재(古材)</span>
+        <h2 class="display s2step" style="margin-top:30px;">고재의 아름다움은<br>낡음이 아니라, 그 안에 담긴<br><em>시간</em>과 이야기에서 비롯됩니다.</h2>
+        <p class="body s2step" style="margin-top:32px;max-width:400px;">
+          수많은 계절을 지나며 생긴 결, 옹이, 못 자국.<br>
+          상처는 결함이 아니라 시간이 남긴 고유한 무늬입니다.
+        </p>
+        <p class="body s2step" style="margin-top:22px;max-width:400px;">
+          사람의 취향 또한 이와 닮아 있습니다.<br>
+          경험과 선택과 기억이 쌓여, 비로소<br>
+          자신만의 결이 완성됩니다.
+        </p>
+      </div>
+      <div class="imgside"><img class="panimg" src="assets/s2-wood-tall.jpg" alt="고재의 결 — 시간의 층"></div>
     </div>
-    <div class="imgside"><img src="assets/s2-grain.jpg" alt="고재의 결 — 시간의 층"></div>
   </div>
 </section>
 
@@ -324,26 +349,35 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 04 · 정답 없는 블렌딩 ═══ -->
 <section id="s4">
-  <div class="wrap">
-    <div class="head">
-      <span class="label reveal">03 · No Right Answer · 정답 없는 블렌딩</span>
-      <h2 class="display reveal d1" style="font-size:clamp(24px,3.2vw,42px);margin-top:26px;">오늘의 당신을, 골라보세요.</h2>
-      <p class="body reveal d2" style="margin-top:14px;">맞고 틀림은 없습니다. 고르는 순간 — 그것이 당신의 취향입니다.</p>
-    </div>
-    <div class="reveal d2">
-      <div class="chipgroup">
-        <div class="glabel">지금의 계절, 시간</div>
-        <div class="chips" data-group="when">
-          <span class="chip">이른 아침</span><span class="chip">비 오는 오후</span><span class="chip">깊은 밤</span><span class="chip">환절기</span>
+  <div class="s4sticky">
+    <div class="s4inner">
+      <div class="s4left">
+        <div class="head">
+          <span class="label reveal">03 · No Right Answer · 정답 없는 블렌딩</span>
+          <h2 class="display reveal d1" style="font-size:clamp(24px,3.2vw,42px);margin-top:26px;">오늘의 당신을, 골라보세요.</h2>
+          <p class="body reveal d2" style="margin-top:14px;">맞고 틀림은 없습니다. 고르는 순간 — 그것이 당신의 취향입니다.</p>
+        </div>
+        <div class="reveal d2">
+          <div class="chipgroup">
+            <div class="glabel">지금의 계절, 시간</div>
+            <div class="chips" data-group="when">
+              <span class="chip on">이른 아침</span><span class="chip">비 오는 오후</span><span class="chip">깊은 밤</span><span class="chip">환절기</span>
+            </div>
+          </div>
+          <div class="chipgroup">
+            <div class="glabel">지금의 마음</div>
+            <div class="chips" data-group="mood">
+              <span class="chip">고요함</span><span class="chip on">설렘</span><span class="chip">위로가 필요한</span><span class="chip">단단해지고 싶은</span>
+            </div>
+          </div>
+          <div class="result" id="s4result"></div>
         </div>
       </div>
-      <div class="chipgroup">
-        <div class="glabel">지금의 마음</div>
-        <div class="chips" data-group="mood">
-          <span class="chip">고요함</span><span class="chip">설렘</span><span class="chip">위로가 필요한</span><span class="chip">단단해지고 싶은</span>
-        </div>
+      <!-- 우: 병풍 이미지 시퀀스 (스크롤에 따라 프레임 교체 → 아코디언 펼쳐짐) -->
+      <div class="s4seq reveal d1">
+        <img id="seqimg" src="assets/s4seq/f001.jpg" alt="병풍(아코디언) 패키지가 펼쳐지는 모습">
+        <span class="seqcap">Byeongpung · scroll to unfold</span>
       </div>
-      <div class="result" id="s4result"></div>
     </div>
   </div>
 </section>
@@ -401,6 +435,7 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 07 · 함께 걷기 ═══ -->
 <section id="s7">
+  <div class="s7bg"><video id="s7video" autoplay muted loop playsinline preload="auto" src="assets/s7-bg.mp4"></video></div>
   <div class="wrap">
     <div class="head">
       <span class="label reveal">06 · Walking Together · 함께 걷기</span>
@@ -435,8 +470,7 @@ section{position:relative;padding:0 40px;}
     <a class="cta reveal d3" href="#s0">The Right to Taste</a>
     <div class="fmeta reveal d3">
       취향의 권리 (The Right to Taste) · tea Apothēca<br>
-      취향의권리.com · teablendingkit.kr<br>
-      <a href="../design4/index.html">design 4 보기</a>
+      취향의권리.com · teablendingkit.kr
     </div>
   </div>
 </section>
@@ -486,8 +520,61 @@ var io=new IntersectionObserver(function(es){
 },{threshold:.16});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
 
-// ————— S4 · 정답 없는 블렌딩 —————
-var sel={when:null,mood:null};
+// ————— S2 · 고재 스크롤 스크럽 : 우측 고재 세로 팬 + 좌측 텍스트 순차 등장 —————
+(function(){
+  var sec=document.getElementById('s2'); if(!sec) return;
+  var pan=sec.querySelector('.panimg');
+  var steps=[].slice.call(sec.querySelectorAll('.s2step'));
+  var clamp=function(v){return v<0?0:v>1?1:v;};
+  function onS2(){
+    if(window.innerWidth<=900){ steps.forEach(function(el){el.classList.add('on');}); if(pan)pan.style.objectPosition='center 50%'; return; }
+    var r=sec.getBoundingClientRect();
+    var total=r.height-window.innerHeight;             // 섹션 내 스크롤 가능 거리
+    var p=total>0?clamp(-r.top/total):0;               // 0(진입)~1(끝)
+    if(pan) pan.style.objectPosition='center '+(p*100).toFixed(2)+'%';   // 고재 포커스 위→아래 이동
+    // 텍스트: 팬 진행 구간(약 0.05~0.85)에 걸쳐 하나씩 등장
+    var start=0.05, end=0.85, n=steps.length;
+    steps.forEach(function(el,i){
+      var trig=start+(end-start)*(i/n);
+      el.classList.toggle('on', p>=trig);
+    });
+  }
+  window.addEventListener('scroll', onS2, {passive:true});
+  window.addEventListener('resize', onS2);
+  onS2();
+})();
+
+// ————— S4 · 병풍 이미지 시퀀스 스크롤 스크럽 (스크롤에 따라 아코디언 펼침) —————
+(function(){
+  var sec=document.getElementById('s4'); if(!sec) return;
+  var seqimg=document.getElementById('seqimg'); if(!seqimg) return;
+  var N=48, pad=function(n){return ('00'+n).slice(-3);};
+  var frames=[];
+  for(var i=1;i<=N;i++){ var im=new Image(); im.src='assets/s4seq/f'+pad(i)+'.jpg'; frames.push(im); }
+  var seq=sec.querySelector('.s4seq');
+  var clamp=function(v){return v<0?0:v>1?1:v;}, cur=-1;
+  function setFrame(idx){ if(idx!==cur){ cur=idx; seqimg.src=frames[idx].src; } }
+  function onS4(){
+    var p;
+    if(window.innerWidth<=900){
+      // 모바일: 스크롤 고정 없이 — 병풍이 뷰포트를 지나가는 동안 프레임 스크럽
+      var er=seq.getBoundingClientRect(), vh=window.innerHeight;
+      p=clamp((vh - er.top)/(vh + er.height));
+    } else {
+      // 데스크톱: 핀 고정 섹션 진행도
+      var r=sec.getBoundingClientRect();
+      var total=r.height-window.innerHeight;
+      p=total>0?clamp(-r.top/total):0;
+    }
+    setFrame(Math.round(p*(N-1)));                          // 0→N-1 프레임 스크럽
+  }
+  window.addEventListener('scroll', onS4, {passive:true});
+  window.addEventListener('resize', onS4);
+  onS4();
+})();
+
+// ————— S4 · 정답 없는 블렌딩 (기본값: 이른 아침 · 설렘) —————
+var sel={when:'이른 아침',mood:'설렘'};
 var blendmap={
   '이른 아침':'맑게 깨어나는','비 오는 오후':'차분히 가라앉는','깊은 밤':'고요히 물드는','환절기':'몸을 돌보는',
   '고요함':'레몬밤과 카모마일의 결','설렘':'장미와 히비스커스의 결','위로가 필요한':'라벤더의 결','단단해지고 싶은':'생강과 진피의 결'
@@ -509,6 +596,7 @@ function renderS4(){
     +'<span class="foot">정답은 없습니다. 그저, 당신입니다.</span>';
   r.classList.add('show');
 }
+renderS4();   // 기본값 결과를 로드 시 표시
 </script>
 </body>
 </html>
