@@ -56,7 +56,19 @@ img{display:block;max-width:100%;}
 .nav .menu{display:flex;gap:32px;font-family:var(--en);font-size:14.5px;letter-spacing:.22em;text-transform:uppercase;}
 .nav .menu a{color:inherit;text-decoration:none;opacity:.75;transition:opacity .2s;}
 .nav .menu a:hover{opacity:1;}
-@media(max-width:720px){.nav .menu{display:none;}.nav{padding:18px 22px;}}
+.navtoggle{display:none;align-items:center;gap:9px;background:none;border:none;color:inherit;cursor:pointer;
+  font-family:var(--kr);font-size:12.5px;letter-spacing:.16em;padding:6px 2px;}
+.navtoggle .bars{position:relative;display:inline-block;width:20px;height:11px;}
+.navtoggle .bars i{position:absolute;left:0;width:100%;height:1.4px;background:currentColor;}
+.navtoggle .bars i:nth-child(1){top:0;}.navtoggle .bars i:nth-child(2){top:5px;}.navtoggle .bars i:nth-child(3){top:10px;}
+.mobilemenu{position:fixed;inset:0;z-index:350;background:rgba(242,238,229,.98);backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;
+  opacity:0;visibility:hidden;transition:opacity .35s ease;}
+.mobilemenu.open{opacity:1;visibility:visible;}
+.mobilemenu a{font-family:var(--kr);font-weight:400;font-size:27px;letter-spacing:.2em;color:var(--ink);text-decoration:none;}
+.mobilemenu a .en{display:block;margin-top:5px;font-family:var(--en);font-style:italic;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.mobilemenu .close{position:absolute;top:20px;right:24px;background:none;border:none;color:var(--ink);font-size:30px;line-height:1;cursor:pointer;}
+@media(max-width:720px){.nav .menu{display:none;}.nav{padding:18px 22px;}.navtoggle{display:inline-flex;}}
 
 /* ————— S0 · cinematic prologue ————— */
 #s0{position:relative;height:100vh;background:#8a7f6d;overflow:hidden;}
@@ -189,9 +201,13 @@ section{position:relative;padding:0 40px;}
 #s5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,19,.05),transparent 26%,transparent 72%,rgba(30,26,19,.12));}
 #s5 .wrap{position:relative;z-index:2;width:100%;}
 #s5 .box{max-width:640px;margin-left:auto;text-align:right;padding:100px clamp(24px,2.2vw,48px);
-  background:radial-gradient(145% 82% at 74% 45%,rgba(245,241,232,.95) 0%,rgba(245,241,232,.68) 40%,rgba(245,241,232,0) 74%);}
+  background:radial-gradient(148% 92% at 74% 47%,rgba(245,241,232,.95) 0%,rgba(245,241,232,.7) 44%,rgba(245,241,232,0) 82%);}
 #s5 .box>*{text-shadow:0 1px 3px rgba(245,241,232,.5);}
 #s5 .display{font-size:clamp(26px,3.2vw,42px);}
+@media(max-width:600px){
+  #s5{align-items:flex-start;}
+  #s5 .box{padding-top:84px;padding-bottom:48px;}
+}
 
 /* 06 키트 = 그릇 */
 #s6{background:var(--sand);padding-top:150px;padding-bottom:150px;}
@@ -249,7 +265,15 @@ section{position:relative;padding:0 40px;}
     <a href="#s6">키트</a>
     <a href="#s7">함께</a>
   </div>
+  <button class="navtoggle" id="navtoggle" aria-label="전체메뉴 보기" aria-expanded="false">전체메뉴<span class="bars"><i></i><i></i><i></i></span></button>
 </nav>
+<div class="mobilemenu" id="mobilemenu" aria-hidden="true">
+  <button class="close" id="mmclose" aria-label="메뉴 닫기">&times;</button>
+  <a href="#s1">이야기<span class="en">The Story</span></a>
+  <a href="#s5">차<span class="en">Tea</span></a>
+  <a href="#s6">키트<span class="en">Kit</span></a>
+  <a href="#s7">함께<span class="en">Together</span></a>
+</div>
 
 <!-- ═══ S0 · Prologue — 히어로 영상(잎이 흩날려 로고가 드러남) + 선명 로고 오버레이 ═══ -->
 <section id="s0">
@@ -402,7 +426,7 @@ section{position:relative;padding:0 40px;}
       <h2 class="display reveal d1" style="margin-top:24px;color:#332c22;">우리는 이 믿음을 담는<br>하나의 방식으로,<br><em style="color:#9c4f2e;">차를 블렌딩</em>합니다.</h2>
       <p class="body reveal d2" style="margin-top:26px;color:#463f2d;">차를 파는 일이 아니라, 취향을 짓는 일.</p>
       <p class="reveal d3" style="margin-top:15px;font-size:clamp(17px,2vw,22px);color:#332c22;letter-spacing:-.01em;line-height:1.5;">상품이 아니라, <em style="color:#9c4f2e;font-style:normal;">경험</em>을 건넵니다.</p>
-      <p class="enline reveal d3" style="margin-top:22px;color:#544b3c;">blend since 1975 · 청주 ↔ Chula Vista</p>
+      <p class="enline reveal d3" style="margin-top:22px;color:#3a3223;letter-spacing:.12em;text-shadow:0 0 8px rgba(245,241,232,.92),0 1px 2px rgba(245,241,232,.75);">blend since 1975 · 청주 ↔ Chula Vista</p>
     </div>
   </div>
 </section>
@@ -519,6 +543,17 @@ if(v){
   v.addEventListener('error', function(){ v.style.display='none'; fb.style.display='block'; heroDone(); }, true);
   setTimeout(heroDone, 7000);                                     // 안전장치(기존 11s에서 4s 당김)
 } else { heroDone(); }
+
+// ————— 모바일 전체메뉴 오버레이 —————
+(function(){
+  var t=document.getElementById('navtoggle'), m=document.getElementById('mobilemenu'), c=document.getElementById('mmclose');
+  if(!t||!m) return;
+  function setOpen(o){ m.classList.toggle('open',o); t.setAttribute('aria-expanded',o); m.setAttribute('aria-hidden',!o); document.body.style.overflow=o?'hidden':''; }
+  t.addEventListener('click', function(){ setOpen(true); });
+  if(c) c.addEventListener('click', function(){ setOpen(false); });
+  m.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setOpen(false); }); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') setOpen(false); });
+})();
 
 // ————— progress + nav —————
 var prog=document.getElementById('prog'), nav=document.getElementById('nav');
