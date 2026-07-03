@@ -46,8 +46,6 @@ img{display:block;max-width:100%;}
 
 /* progress + demo */
 .progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--olive);z-index:400;}
-.demomark{position:fixed;right:14px;bottom:14px;z-index:400;font-size:11px;letter-spacing:.05em;color:var(--muted);
-  background:rgba(242,238,229,.88);border:1px solid var(--line);border-radius:999px;padding:6px 13px;backdrop-filter:blur(4px);}
 
 /* ————— nav ————— */
 .nav{position:fixed;top:0;left:0;width:100%;padding:22px 40px;display:flex;justify-content:space-between;align-items:center;
@@ -55,7 +53,7 @@ img{display:block;max-width:100%;}
 .nav.dark{color:var(--ink);}
 .nav.solid{background:rgba(242,238,229,.9);color:var(--ink);padding:14px 40px;backdrop-filter:blur(8px);border-bottom:1px solid rgba(207,198,178,.5);}
 .nav .brand{display:flex;align-items:center;gap:10px;font-family:var(--kr);font-weight:400;font-size:17px;letter-spacing:.34em;color:inherit;text-decoration:none;}
-.nav .menu{display:flex;gap:30px;font-family:var(--en);font-size:12px;letter-spacing:.22em;text-transform:uppercase;}
+.nav .menu{display:flex;gap:32px;font-family:var(--en);font-size:14.5px;letter-spacing:.22em;text-transform:uppercase;}
 .nav .menu a{color:inherit;text-decoration:none;opacity:.75;transition:opacity .2s;}
 .nav .menu a:hover{opacity:1;}
 @media(max-width:720px){.nav .menu{display:none;}.nav{padding:18px 22px;}}
@@ -110,7 +108,7 @@ section{position:relative;padding:0 40px;}
   #intro .mtext .display{font-size:clamp(26px,6vw,40px);}
   #intro .mcards{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
   #intro .card{position:static;width:auto;height:auto;aspect-ratio:1/1;box-shadow:0 12px 26px rgba(60,48,28,.1);}
-  #intro .card.p2,#intro .card.p3{grid-column:1 / -1;aspect-ratio:16/10;}
+  #intro .card.p2,#intro .card.p3,#intro .card.p6{grid-column:1 / -1;aspect-ratio:16/10;}
 }
 
 /* chapter rows (01 질문) */
@@ -120,6 +118,8 @@ section{position:relative;padding:0 40px;}
 .chapter .numrow{display:flex;align-items:flex-end;gap:22px;margin-bottom:34px;}
 .chapter .numrow .label{padding-bottom:16px;}
 .chapter .imgcol{aspect-ratio:4/4.6;}
+.chapter .imgcol.s1quad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;}
+.chapter .imgcol.s1quad .frame{width:100%;height:100%;border-radius:2px;}
 @media(max-width:900px){.chapter .grid,.chapter .grid.flip{grid-template-columns:1fr;gap:44px;}.chapter{padding-top:100px;padding-bottom:100px;}}
 
 /* 02 고재 — wood metaphor (스크롤 스크럽: 우측 고재 세로 팬 + 좌측 텍스트 순차 등장) */
@@ -155,7 +155,7 @@ section{position:relative;padding:0 40px;}
 #s4 .s4sticky{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
 #s4 .s4inner{max-width:1400px;margin:0 auto;width:100%;padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:3.5vw;align-items:center;}
 #s4 .head{max-width:640px;}
-#s4 .s4seq{position:relative;width:100%;aspect-ratio:4/3;background:#EAE4D6;border-radius:6px;overflow:hidden;box-shadow:0 26px 60px rgba(60,48,28,.14);}
+#s4 .s4seq{position:relative;width:100%;aspect-ratio:4/3;background:#EAE4D6;border-radius:6px;overflow:hidden;}
 #s4 .s4seq img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 #s4 .s4seq .seqcap{position:absolute;left:0;bottom:14px;width:100%;text-align:center;font-family:var(--en);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);z-index:2;}
 @media(max-width:900px){
@@ -171,6 +171,11 @@ section{position:relative;padding:0 40px;}
 .chip.on{background:var(--olive);color:#f4f0e5;border-color:var(--olive);}
 .chipgroup{margin-top:26px;}
 .chipgroup .glabel{font-family:var(--en);font-style:italic;font-size:13.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
+@media(max-width:600px){
+  .chip{padding:8px 16px;}
+  .chips{gap:9px;margin:16px 0 4px;}
+  .chipgroup{margin-top:18px;}
+}
 .result{margin-top:40px;min-height:110px;font-weight:300;font-size:clamp(21px,2.7vw,32px);line-height:1.72;color:var(--ink);
   opacity:0;transform:translateY(10px);transition:opacity .9s,transform .9s;}
 .result.show{opacity:1;transform:none;}
@@ -190,8 +195,8 @@ section{position:relative;padding:0 40px;}
 
 /* 06 키트 = 그릇 */
 #s6{background:var(--sand);padding-top:150px;padding-bottom:150px;}
-#s6 .grid{display:grid;grid-template-columns:1fr 1fr;gap:7vw;align-items:center;}
-#s6 .noteimg{filter:drop-shadow(0 28px 48px rgba(45,36,22,.34));border-radius:4px;max-height:74vh;width:auto;max-width:100%;margin:0 auto;}
+#s6 .grid{display:grid;grid-template-columns:1fr 1.4fr;gap:5.5vw;align-items:center;}
+#s6 .noteimg{max-height:90vh;width:auto;max-width:100%;margin:0 auto;filter:drop-shadow(0 16px 26px rgba(45,36,22,.30));}
 #s6 .lines{margin-top:44px;border-top:1px solid rgba(90,80,60,.25);}
 #s6 .linerow{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid rgba(90,80,60,.25);align-items:baseline;}
 #s6 .linerow .no{font-family:var(--en);font-weight:300;font-size:30px;color:var(--clay);}
@@ -203,16 +208,17 @@ section{position:relative;padding:0 40px;}
 #s7{position:relative;padding-top:150px;padding-bottom:170px;background:var(--cream);overflow:hidden;}
 #s7 .s7bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
 #s7 .s7bg video{width:100%;height:100%;object-fit:cover;opacity:.22;}
+@media(max-width:600px){#s7 .s7bg video{object-position:left center;}}
 #s7 .s7bg::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,var(--cream) 0%,rgba(242,238,229,.62) 22%,rgba(242,238,229,.55) 50%,rgba(242,238,229,.62) 78%,var(--cream) 100%);}
 #s7 .wrap{position:relative;z-index:1;}
 #s7 .head{text-align:center;max-width:620px;margin:0 auto 70px;}
 #s7 .rows{max-width:860px;margin:0 auto;border-top:1px solid var(--line);}
-#s7 .row{display:grid;grid-template-columns:90px 1fr 2fr;gap:30px;padding:38px 6px;border-bottom:1px solid var(--line);align-items:baseline;}
-#s7 .row .no{font-family:var(--en);font-style:italic;font-weight:300;font-size:15px;letter-spacing:.2em;color:var(--clay);}
+#s7 .row{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:9px;padding:40px 6px;border-bottom:1px solid var(--line);}
+#s7 .row .no{font-family:var(--en);font-style:italic;font-weight:400;font-size:15px;letter-spacing:.2em;color:#7E4A28;}
 #s7 .row h4{font-weight:400;font-size:19px;color:var(--charcoal);letter-spacing:.04em;}
-#s7 .row p{font-size:14.5px;color:#5d5747;line-height:1.95;}
-@media(max-width:760px){#s7 .row{grid-template-columns:1fr;gap:8px;}}
+#s7 .row p{font-size:14.5px;color:#5d5747;line-height:1.95;max-width:600px;margin:0 auto;}
+@media(max-width:760px){#s7 .row{gap:7px;padding:32px 6px;}}
 
 /* footer */
 #foot{background:var(--charcoal);color:#e5dbc6;text-align:center;padding-top:150px;padding-bottom:90px;}
@@ -234,7 +240,6 @@ section{position:relative;padding:0 40px;}
 <body>
 
 <div class="progress" id="prog"></div>
-<div class="demomark">데모 · design 5 — 시네마틱 프롤로그</div>
 
 <nav class="nav" id="nav">
   <a class="brand" href="#s0">취향의권리</a>
@@ -313,7 +318,12 @@ section{position:relative;padding:0 40px;}
           그러나 정말 — 정답이, 있었을까요.
         </p>
       </div>
-      <div class="imgcol frame reveal d2"><img src="assets/s1-hand.jpg" alt="빛이 드는 오래된 나무 위의 손"></div>
+      <div class="imgcol s1quad reveal d2">
+        <div class="frame"><img src="assets/s1-rose.jpg" alt="말린 장미봉오리"></div>
+        <div class="frame"><img src="assets/s1-orange.jpg" alt="말린 오렌지 슬라이스"></div>
+        <div class="frame"><img src="assets/s1-wood.jpg" alt="고재(古材)의 결 — 시간의 무늬"></div>
+        <div class="frame"><img src="assets/s1-tea.jpg" alt="말린 녹차잎"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -428,7 +438,7 @@ section{position:relative;padding:0 40px;}
         <p class="enline reveal d3" style="margin-top:30px;">A TIME TO DISCOVER MY TASTE</p>
       </div>
       <div class="frame reveal d1" style="overflow:visible;">
-        <img class="noteimg" src="assets/s6-note.jpg" alt="취향의 권리 티 블렌딩 노트 — 고재 각인">
+        <img class="noteimg" src="assets/diary.png" alt="취향의 권리 티 블렌딩 노트 — 고재 각인">
         <p class="caption" style="text-align:center;">Tea Blending Note · 취향의 기록</p>
       </div>
     </div>
@@ -491,7 +501,8 @@ document.getElementById('footemblem').innerHTML=emblem(42,'#E9C9A8','rgba(233,20
 // ————— hero : 잎이 흩날린 뒤 카피 등장 —————
 var v=document.getElementById('heroVideo'), s0text=document.getElementById('s0text'),
     cue=document.getElementById('cue'), fb=document.getElementById('heroFallback');
-function heroDone(){ s0text.classList.add('show'); cue.classList.add('show'); }
+var heroShown=false;
+function heroDone(){ if(heroShown) return; heroShown=true; s0text.classList.add('show'); cue.classList.add('show'); }
 if(v){
   function tryPlay(){ var p=v.play&&v.play(); if(p&&p.catch) p.catch(function(){}); }
   tryPlay();
@@ -501,9 +512,12 @@ if(v){
   }
   document.addEventListener('visibilitychange', function(){ if(!document.hidden) tryPlay(); });
   ['pointerdown','touchstart','scroll','keydown'].forEach(function(ev){ window.addEventListener(ev, tryPlay, {once:true, passive:true}); });
-  v.addEventListener('ended', heroDone);                          // 잎이 다 흩날린 뒤 카피
+  v.addEventListener('timeupdate', function(){                    // 영상 종료 4초 전에 카피 등장
+    if(v.duration && v.currentTime >= v.duration - 4) heroDone();
+  });
+  v.addEventListener('ended', heroDone);                          // (안전) 영상이 끝나면 반드시
   v.addEventListener('error', function(){ v.style.display='none'; fb.style.display='block'; heroDone(); }, true);
-  setTimeout(heroDone, 11000);                                    // 안전장치
+  setTimeout(heroDone, 7000);                                     // 안전장치(기존 11s에서 4s 당김)
 } else { heroDone(); }
 
 // ————— progress + nav —————
@@ -561,7 +575,7 @@ document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
     if(window.innerWidth<=900){
       // 모바일: 스크롤 고정 없이 — 병풍이 뷰포트를 지나가는 동안 프레임 스크럽
       var er=seq.getBoundingClientRect(), vh=window.innerHeight;
-      p=clamp((vh - er.top)/(vh + er.height));
+      p=clamp((vh - er.top)/(vh*0.8));   // 더 일찍 시작·완료: 상단 20% 지점에서 마지막 프레임
     } else {
       // 데스크톱: 핀 고정 섹션 진행도
       var r=sec.getBoundingClientRect();
