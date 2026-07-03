@@ -188,10 +188,10 @@ section{position:relative;padding:0 40px;}
 #s5 .bg img,#s5 .bg video{width:100%;height:100%;object-fit:cover;display:block;}
 #s5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,19,.05),transparent 26%,transparent 72%,rgba(30,26,19,.12));}
 #s5 .wrap{position:relative;z-index:2;width:100%;}
-#s5 .box{max-width:520px;margin-left:auto;text-align:right;padding:100px 3.5vw;
+#s5 .box{max-width:640px;margin-left:auto;text-align:right;padding:100px clamp(24px,2.2vw,48px);
   background:radial-gradient(145% 82% at 74% 45%,rgba(245,241,232,.95) 0%,rgba(245,241,232,.68) 40%,rgba(245,241,232,0) 74%);}
 #s5 .box>*{text-shadow:0 1px 3px rgba(245,241,232,.5);}
-#s5 .display{font-size:clamp(26px,3.6vw,46px);}
+#s5 .display{font-size:clamp(26px,3.2vw,42px);}
 
 /* 06 키트 = 그릇 */
 #s6{background:var(--sand);padding-top:150px;padding-bottom:150px;}
@@ -277,11 +277,10 @@ section{position:relative;padding:0 40px;}
     <!-- 중앙 텍스트 -->
     <div class="mtext">
       <span class="label reveal">Tea Apothēca · blend since 1975</span>
-      <h2 class="display reveal d1">취향은 정해지는 것이 아니라,<br><span class="softserif">완성되어</span> 갑니다.</h2>
+      <h2 class="display reveal d1">취향은 정해지는 것이 아니라,<br><span class="softserif">발견하고, 만들어가는</span> 것입니다.</h2>
       <p class="body reveal d2" style="margin-top:22px;">
         이곳은 상품을 소개하는 페이지가 아닙니다.<br>
-        취향이라는 오래된 질문에 관한, 한 편의 에세이입니다.<br>
-        서두르지 않으셔도 됩니다. 천천히, 내려가 주세요.
+        향을 고르고, 섞고, 이름을 붙이는 그 모든 순간이 곧 자신을 알아가는 시간입니다.
       </p>
       <svg class="squig reveal d3" width="118" height="44" viewBox="0 0 120 46" fill="none">
         <path d="M4 8 C 30 40, 52 2, 74 22 S 108 44, 116 14" stroke="#B07D5B" stroke-width="1"/>
@@ -402,6 +401,7 @@ section{position:relative;padding:0 40px;}
       <span class="label reveal" style="color:#5e4327;">04 · And Then, Tea · 그리고, 차</span>
       <h2 class="display reveal d1" style="margin-top:24px;color:#332c22;">우리는 이 믿음을 담는<br>하나의 방식으로,<br><em style="color:#9c4f2e;">차를 블렌딩</em>합니다.</h2>
       <p class="body reveal d2" style="margin-top:26px;color:#463f2d;">차를 파는 일이 아니라, 취향을 짓는 일.</p>
+      <p class="reveal d3" style="margin-top:15px;font-size:clamp(17px,2vw,22px);color:#332c22;letter-spacing:-.01em;line-height:1.5;">상품이 아니라, <em style="color:#9c4f2e;font-style:normal;">경험</em>을 건넵니다.</p>
       <p class="enline reveal d3" style="margin-top:22px;color:#544b3c;">blend since 1975 · 청주 ↔ Chula Vista</p>
     </div>
   </div>
