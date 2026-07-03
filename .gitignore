@@ -15,6 +15,7 @@ design4/assets/s0hero-*.png
 # 중복/임시 파일
 design5/assets/hf_*.mp4
 design5/assets/*\ 2.png
+design5/assets/ChatGPT*
 
 # design5 루트의 참고/소스 이미지 (결과물 아님 — index.html은 assets/만 참조)
 design5/*.png

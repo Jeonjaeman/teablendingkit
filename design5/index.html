@@ -11,7 +11,7 @@
 <style>
 :root{
   --cream:#F2EEE5; --paper:#EAE4D6; --sand:#E0D6C4;
-  --charcoal:#2C2B24; --ink:#3A382E; --muted:#8C8676;
+  --charcoal:#2C2B24; --ink:#34322a; --muted:#7c7768;
   --clay:#B07D5B; --olive:#5E6447; --gold:#E9C9A8; --line:#CFC6B2;
   --en:"Cormorant Garamond", serif; --kr:"Noto Serif KR", serif;
 }
@@ -22,17 +22,17 @@ body{background:var(--cream);color:var(--ink);font-family:var(--kr);font-weight:
 img{display:block;max-width:100%;}
 
 /* ————— shared editorial atoms ————— */
-.label{font-family:var(--en);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);}
+.label{font-family:var(--en);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);}
 .label.kr{font-family:var(--kr);font-size:12px;letter-spacing:.5em;}
 .num{font-family:var(--en);font-weight:300;font-size:clamp(64px,8vw,110px);line-height:1;color:var(--ink);}
 .hairline{width:100%;height:1px;background:var(--line);}
 .vline{width:1px;background:var(--line);}
-.display{font-family:var(--kr);font-weight:200;font-size:clamp(30px,4.6vw,58px);line-height:1.5;letter-spacing:-.01em;color:var(--ink);}
+.display{font-family:var(--kr);font-weight:300;font-size:clamp(30px,4.6vw,58px);line-height:1.5;letter-spacing:-.01em;color:var(--ink);}
 .display em{font-family:var(--en);font-style:italic;font-weight:400;color:var(--clay);letter-spacing:0;}
 .display .softserif{font-weight:400;color:var(--olive);}
-.body{font-size:clamp(14px,1.35vw,16.5px);color:#5d5847;line-height:2.15;}
+.body{font-size:clamp(15.5px,1.5vw,18px);font-weight:400;color:#4f4a3c;line-height:2.05;}
 .enline{font-family:var(--en);font-style:italic;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
-.caption{font-family:var(--en);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-top:14px;}
+.caption{font-family:var(--en);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:14px;}
 .arch{border-radius:999px 999px 0 0;overflow:hidden;}
 .arch img{width:100%;height:100%;object-fit:cover;}
 .frame{overflow:hidden;}
@@ -153,7 +153,7 @@ section{position:relative;padding:0 40px;}
 /* 04 interaction — 좌: 인터랙션 / 우: 병풍 이미지시퀀스 스크롤 스크럽 */
 #s4{position:relative;background:var(--paper);height:260vh;}
 #s4 .s4sticky{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
-#s4 .s4inner{max-width:1240px;margin:0 auto;width:100%;padding:100px 40px;display:grid;grid-template-columns:1fr 0.92fr;gap:5vw;align-items:center;}
+#s4 .s4inner{max-width:1400px;margin:0 auto;width:100%;padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:3.5vw;align-items:center;}
 #s4 .head{max-width:640px;}
 #s4 .s4seq{position:relative;width:100%;aspect-ratio:4/3;background:#EAE4D6;border-radius:6px;overflow:hidden;box-shadow:0 26px 60px rgba(60,48,28,.14);}
 #s4 .s4seq img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
@@ -165,13 +165,13 @@ section{position:relative;padding:0 40px;}
   #s4 .s4seq{order:2;}
 }
 .chips{display:flex;flex-wrap:wrap;gap:11px;margin:24px 0 6px;max-width:720px;}
-.chip{font-family:var(--kr);font-size:14.5px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;
+.chip{font-family:var(--kr);font-size:15.5px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;
   padding:9px 22px;cursor:pointer;transition:all .3s;user-select:none;}
 .chip:hover{border-color:var(--olive);}
 .chip.on{background:var(--olive);color:#f4f0e5;border-color:var(--olive);}
 .chipgroup{margin-top:26px;}
-.chipgroup .glabel{font-family:var(--en);font-style:italic;font-size:13px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
-.result{margin-top:40px;min-height:110px;font-weight:200;font-size:clamp(20px,2.6vw,31px);line-height:1.75;color:var(--ink);
+.chipgroup .glabel{font-family:var(--en);font-style:italic;font-size:13.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
+.result{margin-top:40px;min-height:110px;font-weight:300;font-size:clamp(21px,2.7vw,32px);line-height:1.72;color:var(--ink);
   opacity:0;transform:translateY(10px);transition:opacity .9s,transform .9s;}
 .result.show{opacity:1;transform:none;}
 .result em{font-family:var(--en);font-style:italic;color:var(--clay);}
@@ -180,21 +180,23 @@ section{position:relative;padding:0 40px;}
 /* 05 그리고, 차 — full-bleed */
 #s5{padding:0;position:relative;min-height:100vh;display:flex;align-items:center;}
 #s5 .bg{position:absolute;inset:0;}
-#s5 .bg img{width:100%;height:100%;object-fit:cover;}
-#s5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(242,238,229,.06),rgba(242,238,229,.02) 40%,rgba(70,58,42,.18));}
+#s5 .bg img,#s5 .bg video{width:100%;height:100%;object-fit:cover;display:block;}
+#s5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,19,.05),transparent 26%,transparent 72%,rgba(30,26,19,.12));}
 #s5 .wrap{position:relative;z-index:2;width:100%;}
-#s5 .box{max-width:460px;margin-left:auto;text-align:right;padding:120px 0;}
+#s5 .box{max-width:520px;margin-left:auto;text-align:right;padding:100px 3.5vw;
+  background:radial-gradient(145% 82% at 74% 45%,rgba(245,241,232,.95) 0%,rgba(245,241,232,.68) 40%,rgba(245,241,232,0) 74%);}
+#s5 .box>*{text-shadow:0 1px 3px rgba(245,241,232,.5);}
 #s5 .display{font-size:clamp(26px,3.6vw,46px);}
 
 /* 06 키트 = 그릇 */
 #s6{background:var(--sand);padding-top:150px;padding-bottom:150px;}
 #s6 .grid{display:grid;grid-template-columns:1fr 1fr;gap:7vw;align-items:center;}
-#s6 .noteimg{box-shadow:0 34px 70px rgba(45,36,22,.3);border-radius:4px;max-height:74vh;width:auto;max-width:100%;margin:0 auto;}
+#s6 .noteimg{filter:drop-shadow(0 28px 48px rgba(45,36,22,.34));border-radius:4px;max-height:74vh;width:auto;max-width:100%;margin:0 auto;}
 #s6 .lines{margin-top:44px;border-top:1px solid rgba(90,80,60,.25);}
 #s6 .linerow{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid rgba(90,80,60,.25);align-items:baseline;}
 #s6 .linerow .no{font-family:var(--en);font-weight:300;font-size:30px;color:var(--clay);}
 #s6 .linerow h4{font-weight:400;font-size:18px;color:var(--charcoal);letter-spacing:.14em;}
-#s6 .linerow p{font-size:13.5px;color:#6b6350;margin-top:6px;line-height:1.9;}
+#s6 .linerow p{font-size:14.5px;color:#5d5747;margin-top:6px;line-height:1.9;}
 @media(max-width:900px){#s6 .grid{grid-template-columns:1fr;gap:52px;}}
 
 /* 07 함께 걷기 — numbered editorial list (은은한 배경 영상) */
@@ -209,7 +211,7 @@ section{position:relative;padding:0 40px;}
 #s7 .row{display:grid;grid-template-columns:90px 1fr 2fr;gap:30px;padding:38px 6px;border-bottom:1px solid var(--line);align-items:baseline;}
 #s7 .row .no{font-family:var(--en);font-style:italic;font-weight:300;font-size:15px;letter-spacing:.2em;color:var(--clay);}
 #s7 .row h4{font-weight:400;font-size:19px;color:var(--charcoal);letter-spacing:.04em;}
-#s7 .row p{font-size:13.5px;color:#6b6350;line-height:1.95;}
+#s7 .row p{font-size:14.5px;color:#5d5747;line-height:1.95;}
 @media(max-width:760px){#s7 .row{grid-template-columns:1fr;gap:8px;}}
 
 /* footer */
@@ -219,7 +221,7 @@ section{position:relative;padding:0 40px;}
 #foot .cta{margin-top:40px;display:inline-block;font-family:var(--en);letter-spacing:.2em;text-transform:uppercase;font-size:12px;
   color:#e8ddc6;text-decoration:none;border:1px solid rgba(233,201,168,.4);border-radius:999px;padding:14px 34px;transition:background .3s;}
 #foot .cta:hover{background:rgba(233,201,168,.12);}
-#foot .fmeta{margin-top:70px;padding-top:30px;border-top:1px solid rgba(233,201,168,.16);font-size:12px;color:#9c917c;line-height:2.1;letter-spacing:.04em;}
+#foot .fmeta{margin-top:70px;padding-top:30px;border-top:1px solid rgba(233,201,168,.16);font-size:12.5px;color:#a99e88;line-height:2.1;letter-spacing:.04em;}
 #foot .fmeta a{color:#c8b998;text-decoration:none;border-bottom:1px solid rgba(200,185,152,.35);}
 
 @media(prefers-reduced-motion:reduce){
@@ -384,13 +386,13 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 05 · 그리고, 차 ═══ -->
 <section id="s5">
-  <div class="bg"><img src="assets/s5-tea.jpg" alt="차를 감싼 손 — 믿음의 실천"></div>
+  <div class="bg"><video autoplay muted loop playsinline poster="assets/s5-tea.jpg" aria-label="차를 감싼 손 — 그릇 위로 피어오르는 김"><source src="assets/s5-bg.mp4" type="video/mp4"></video></div>
   <div class="wrap">
     <div class="box">
-      <span class="label reveal" style="color:#8a6a4d;">04 · And Then, Tea · 그리고, 차</span>
-      <h2 class="display reveal d1" style="margin-top:24px;color:#3c352a;">우리는 이 믿음을 담는<br>하나의 방식으로,<br><em style="color:#A9603F;">차를 블렌딩</em>합니다.</h2>
-      <p class="body reveal d2" style="margin-top:26px;color:#5a5243;">차를 파는 일이 아니라, 취향을 짓는 일.</p>
-      <p class="enline reveal d3" style="margin-top:22px;color:#7d735f;">blend since 1975 · 청주 ↔ Chula Vista</p>
+      <span class="label reveal" style="color:#5e4327;">04 · And Then, Tea · 그리고, 차</span>
+      <h2 class="display reveal d1" style="margin-top:24px;color:#332c22;">우리는 이 믿음을 담는<br>하나의 방식으로,<br><em style="color:#9c4f2e;">차를 블렌딩</em>합니다.</h2>
+      <p class="body reveal d2" style="margin-top:26px;color:#463f2d;">차를 파는 일이 아니라, 취향을 짓는 일.</p>
+      <p class="enline reveal d3" style="margin-top:22px;color:#544b3c;">blend since 1975 · 청주 ↔ Chula Vista</p>
     </div>
   </div>
 </section>
