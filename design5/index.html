@@ -113,14 +113,14 @@ section{position:relative;padding:0 40px;}
 #intro .p5{left:72%;top:70%;width:19%;height:24%;}      /* 우하 소형 */
 #intro .p6{left:41%;top:80%;width:18%;height:20%;}      /* 하단 중앙 소형 */
 @media(max-width:920px){
-  #intro{padding:90px 22px 0;}
-  #intro .mood{aspect-ratio:auto;max-width:none;height:560vh;position:relative;}
+  #intro{padding:90px 22px 0;height:560vh;position:relative;}
+  #intro .mood{aspect-ratio:auto;max-width:none;position:sticky;top:72px;height:calc(100vh - 72px);display:flex;flex-direction:column;overflow:hidden;}
   #intro .msquig{display:none;}
-  #intro .mtext{position:static;width:100%;margin:0 auto;padding:0 0 6vh;}
+  #intro .mtext{position:static;width:100%;margin:0 auto;padding:0 0 1.5vh;flex:0 0 auto;}
   #intro .mtext .display{font-size:clamp(26px,6vw,40px);}
-  /* 모바일: 화면 고정(pin) 무대 + 카드를 겹쳐 놓고 스크롤로 벗겨내는 3D 스택 */
-  #intro .mcards{position:sticky;top:0;height:100vh;display:block;perspective:1500px;}
-  #intro .card{position:absolute;top:50%;left:50%;width:92vw;max-width:470px;height:auto;aspect-ratio:0.72;margin:0;
+  /* 모바일: #intro 전체가 화면에 고정(pin)된 채, 아래 mcards 무대에서 카드 애니메이션 진행 */
+  #intro .mcards{position:relative;flex:1 1 auto;display:block;perspective:1500px;}
+  #intro .card{position:absolute;top:50%;left:50%;width:64vw;max-width:330px;height:auto;aspect-ratio:0.72;margin:0;
     border-radius:14px;transform:translate(-50%,-50%);transform-origin:center 42%;backface-visibility:hidden;
     will-change:transform,opacity;box-shadow:0 26px 64px rgba(60,48,28,.34);}
   #intro .card.rc,#intro .card.arch{border-radius:14px;}
@@ -562,21 +562,21 @@ if(v){
 // ————— 모바일 무드보드: 화면 고정(pin) + 아래에서 올라와 겹치고, 지난 이미지는 위로 멀어지는(원근) 스택 —————
 (function(){
   var mq=window.matchMedia('(max-width:920px)');
-  var mood=document.querySelector('#intro .mood');
-  var mtext=document.querySelector('#intro .mtext');
+  var intro=document.getElementById('intro');
   var cards=[].slice.call(document.querySelectorAll('#intro .card'));
-  if(!mood||!cards.length) return;
+  if(!intro||!cards.length) return;
   var N=cards.length;
   function clamp(v){return v<0?0:v>1?1:v;}
   function reset(){ cards.forEach(function(c){ c.style.opacity=''; c.style.transform=''; c.style.zIndex=''; }); }
   function upd(){
     if(!mq.matches){ reset(); return; }
     var vh=window.innerHeight;
-    var mr=mood.getBoundingClientRect();
-    var startOffset=mtext?mtext.offsetHeight:0;              // 텍스트가 지나간 뒤부터
-    var denom=Math.max(1,(mr.height-vh)-startOffset);
-    var p=clamp((-mr.top - startOffset)/denom);
-    var activeF=p*(N-1);                                     // 지금 중앙에 오는 이미지(소수)
+    var ir=intro.getBoundingClientRect();                    // #intro 전체가 고정 트랙
+    var padTop=parseFloat(getComputedStyle(intro).paddingTop)||0;
+    var denom=Math.max(1,(ir.height-vh)-padTop);
+    var p=clamp((-ir.top - padTop)/denom);
+    var ap=clamp(p/0.9);                                     // 마지막 10%는 마지막 이미지 유지
+    var activeF=ap*(N-1);                                    // 지금 중앙에 오는 이미지(소수)
     cards.forEach(function(c,i){
       c.style.zIndex=String(i+1);                            // 나중 이미지가 위 → 밑에서 올라오며 겹침
       var d=i-activeF;
