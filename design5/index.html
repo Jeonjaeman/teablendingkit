@@ -71,7 +71,7 @@ img{display:block;max-width:100%;}
 @media(max-width:720px){.nav .menu{display:none;}.nav{padding:18px 22px;}.navtoggle{display:inline-flex;}}
 
 /* ————— S0 · cinematic prologue ————— */
-#s0{position:relative;height:100vh;background:#8a7f6d;overflow:hidden;}
+#s0{position:relative;height:100dvh;background:#8a7f6d;overflow:hidden;}
 #s0 video,#s0 .fallback{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
 #s0 .veil{position:absolute;inset:0;pointer-events:none;z-index:3;
   background:radial-gradient(130% 95% at 50% 44%,transparent 50%,rgba(30,26,19,.34) 100%),
@@ -114,7 +114,7 @@ section{position:relative;padding:0 40px;}
 #intro .p6{left:41%;top:80%;width:18%;height:20%;}      /* 하단 중앙 소형 */
 @media(max-width:920px){
   #intro{padding:90px 22px 0;height:560vh;position:relative;}
-  #intro .mood{aspect-ratio:auto;max-width:none;position:sticky;top:72px;height:calc(100vh - 72px);display:flex;flex-direction:column;overflow:hidden;}
+  #intro .mood{aspect-ratio:auto;max-width:none;position:sticky;top:72px;height:calc(100dvh - 72px);display:flex;flex-direction:column;overflow:hidden;}
   #intro .msquig{display:none;}
   #intro .mtext{position:static;width:100%;margin:0 auto;padding:0 0 1.5vh;flex:0 0 auto;}
   #intro .mtext .display{font-size:clamp(26px,6vw,40px);}
@@ -140,8 +140,8 @@ section{position:relative;padding:0 40px;}
 
 /* 02 고재 — wood metaphor (스크롤 스크럽: 우측 고재 세로 팬 + 좌측 텍스트 순차 등장) */
 #s2{position:relative;background:var(--charcoal);color:#efe7d6;padding:0;height:340vh;}
-#s2 .s2sticky{position:sticky;top:0;height:100vh;overflow:hidden;}
-#s2 .split{display:grid;grid-template-columns:1.05fr 1fr;height:100vh;align-items:stretch;}
+#s2 .s2sticky{position:sticky;top:0;height:100dvh;overflow:hidden;}
+#s2 .split{display:grid;grid-template-columns:1.05fr 1fr;height:100dvh;align-items:stretch;}
 #s2 .txt{padding:0 6vw;display:flex;flex-direction:column;justify-content:center;}
 #s2 .display{color:#f0e8d7;}
 #s2 .display em{color:var(--gold);}
@@ -168,7 +168,7 @@ section{position:relative;padding:0 40px;}
 
 /* 04 interaction — 좌: 인터랙션 / 우: 병풍 이미지시퀀스 스크롤 스크럽 */
 #s4{position:relative;background:var(--paper);height:260vh;}
-#s4 .s4sticky{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;overflow:hidden;}
+#s4 .s4sticky{position:sticky;top:0;min-height:100dvh;display:flex;align-items:center;overflow:hidden;}
 #s4 .s4inner{max-width:1400px;margin:0 auto;width:100%;padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:3.5vw;align-items:center;}
 #s4 .head{max-width:640px;}
 #s4 .s4seq{position:relative;width:100%;aspect-ratio:4/3;background:#EAE4D6;border-radius:6px;overflow:hidden;}
@@ -199,7 +199,7 @@ section{position:relative;padding:0 40px;}
 .result .foot{display:block;margin-top:16px;font-size:14px;color:var(--muted);}
 
 /* 05 그리고, 차 — full-bleed */
-#s5{padding:0;position:relative;min-height:100vh;display:flex;align-items:center;}
+#s5{padding:0;position:relative;min-height:100dvh;display:flex;align-items:center;}
 #s5 .bg{position:absolute;inset:0;}
 #s5 .bg img,#s5 .bg video{width:100%;height:100%;object-fit:cover;display:block;}
 #s5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,26,19,.05),transparent 26%,transparent 72%,rgba(30,26,19,.12));}
