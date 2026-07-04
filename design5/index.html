@@ -282,7 +282,7 @@ section{position:relative;padding:0 40px;}
 <!-- ═══ S0 · Prologue — 히어로 영상(잎이 흩날려 로고가 드러남) + 선명 로고 오버레이 ═══ -->
 <section id="s0">
   <video id="heroVideo" autoplay muted playsinline preload="auto" poster="assets/s0-hero-start.jpg">
-    <source src="assets/s0-hero.mp4" type="video/mp4">
+    <source data-src="assets/s0-hero.mp4" data-src-mobile="assets/s0-hero-m.mp4" type="video/mp4">
   </video>
   <img class="fallback" id="heroFallback" src="assets/s0-logo-clean.jpg" alt="고재에 각인된 취향의 권리" style="display:none;">
   <div class="veil"></div>
@@ -423,7 +423,7 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 05 · 그리고, 차 ═══ -->
 <section id="s5">
-  <div class="bg"><video autoplay muted loop playsinline preload="none" poster="assets/s5-tea.jpg" data-lazyvideo aria-label="차를 감싼 손 — 그릇 위로 피어오르는 김"><source data-src="assets/s5-bg.mp4" type="video/mp4"></video></div>
+  <div class="bg"><video autoplay muted loop playsinline preload="none" poster="assets/s5-tea.jpg" data-lazyvideo aria-label="차를 감싼 손 — 그릇 위로 피어오르는 김"><source data-src="assets/s5-bg.mp4" data-src-mobile="assets/s5-bg-m.mp4" type="video/mp4"></video></div>
   <div class="wrap">
     <div class="box">
       <span class="label reveal" style="color:#5e4327;">04 · And Then, Tea · 그리고, 차</span>
@@ -475,7 +475,7 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 07 · 함께 걷기 ═══ -->
 <section id="s7">
-  <div class="s7bg"><video id="s7video" autoplay muted loop playsinline preload="none" data-lazyvideo data-src="assets/s7-bg.mp4"></video></div>
+  <div class="s7bg"><video id="s7video" autoplay muted loop playsinline preload="none" data-lazyvideo data-src="assets/s7-bg.mp4" data-src-mobile="assets/s7-bg-m.mp4"></video></div>
   <div class="wrap">
     <div class="head">
       <span class="label reveal">06 · Walking Together · 함께 걷기</span>
@@ -532,6 +532,8 @@ var v=document.getElementById('heroVideo'), s0text=document.getElementById('s0te
 var heroShown=false;
 function heroDone(){ if(heroShown) return; heroShown=true; s0text.classList.add('show'); cue.classList.add('show'); }
 if(v){
+  var hsrc=v.querySelector('source[data-src]');                 // 화면 크기에 맞는 소스 선택(모바일=경량본)
+  if(hsrc){ hsrc.src=(window.matchMedia('(max-width:720px)').matches && hsrc.getAttribute('data-src-mobile')) || hsrc.getAttribute('data-src'); v.load(); }
   function tryPlay(){ var p=v.play&&v.play(); if(p&&p.catch) p.catch(function(){}); }
   tryPlay();
   // 지연 자동재생 대비 (모바일/절전/가시성 정책)
@@ -552,11 +554,13 @@ if(v){
 (function(){
   var vids=[].slice.call(document.querySelectorAll('video[data-lazyvideo]'));
   if(!vids.length) return;
+  var isMobile=window.matchMedia('(max-width:720px)').matches;      // 모바일이면 경량본 선택
+  function srcOf(node){ return (isMobile && node.getAttribute('data-src-mobile')) || node.getAttribute('data-src'); }
   function load(el){
     if(el.dataset.loaded) return; el.dataset.loaded='1';
     var srcEl=el.querySelector('source[data-src]');
-    if(srcEl){ srcEl.src=srcEl.getAttribute('data-src'); }
-    else if(el.getAttribute('data-src')){ el.src=el.getAttribute('data-src'); }
+    if(srcEl){ srcEl.src=srcOf(srcEl); }
+    else if(el.getAttribute('data-src')){ el.src=srcOf(el); }
     el.load();
     var p=el.play&&el.play(); if(p&&p.catch) p.catch(function(){});
   }
