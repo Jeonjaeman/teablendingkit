@@ -423,7 +423,7 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 05 · 그리고, 차 ═══ -->
 <section id="s5">
-  <div class="bg"><video autoplay muted loop playsinline poster="assets/s5-tea.jpg" aria-label="차를 감싼 손 — 그릇 위로 피어오르는 김"><source src="assets/s5-bg.mp4" type="video/mp4"></video></div>
+  <div class="bg"><video autoplay muted loop playsinline preload="none" poster="assets/s5-tea.jpg" data-lazyvideo aria-label="차를 감싼 손 — 그릇 위로 피어오르는 김"><source data-src="assets/s5-bg.mp4" type="video/mp4"></video></div>
   <div class="wrap">
     <div class="box">
       <span class="label reveal" style="color:#5e4327;">04 · And Then, Tea · 그리고, 차</span>
@@ -475,7 +475,7 @@ section{position:relative;padding:0 40px;}
 
 <!-- ═══ 07 · 함께 걷기 ═══ -->
 <section id="s7">
-  <div class="s7bg"><video id="s7video" autoplay muted loop playsinline preload="auto" src="assets/s7-bg.mp4"></video></div>
+  <div class="s7bg"><video id="s7video" autoplay muted loop playsinline preload="none" data-lazyvideo data-src="assets/s7-bg.mp4"></video></div>
   <div class="wrap">
     <div class="head">
       <span class="label reveal">06 · Walking Together · 함께 걷기</span>
@@ -547,6 +547,26 @@ if(v){
   v.addEventListener('error', function(){ v.style.display='none'; fb.style.display='block'; heroDone(); }, true);
   setTimeout(heroDone, 7000);                                     // 안전장치(기존 11s에서 4s 당김)
 } else { heroDone(); }
+
+// ————— 배경 영상 지연 로딩 (모바일 데이터 절약: 뷰포트 근처에서만 다운로드) —————
+(function(){
+  var vids=[].slice.call(document.querySelectorAll('video[data-lazyvideo]'));
+  if(!vids.length) return;
+  function load(el){
+    if(el.dataset.loaded) return; el.dataset.loaded='1';
+    var srcEl=el.querySelector('source[data-src]');
+    if(srcEl){ srcEl.src=srcEl.getAttribute('data-src'); }
+    else if(el.getAttribute('data-src')){ el.src=el.getAttribute('data-src'); }
+    el.load();
+    var p=el.play&&el.play(); if(p&&p.catch) p.catch(function(){});
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ load(e.target); io.unobserve(e.target); } });
+    },{rootMargin:'300px 0px'});                                  // 뷰포트 300px 전에 미리 로드 → 도달 시 이미 재생
+    vids.forEach(function(v){ io.observe(v); });
+  } else { vids.forEach(load); }                                 // 폴백: 즉시 로드
+})();
 
 // ————— 모바일 전체메뉴 오버레이 —————
 (function(){
