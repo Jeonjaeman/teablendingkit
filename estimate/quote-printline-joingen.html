@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>견적서 · ㈜프린트라인</title>
+<style>
+:root{
+  --navy:#16305c; --blue:#2e5aa8; --soft:#eef3fa; --soft2:#f7fafd;
+  --line:#c9d5e6; --line2:#e2e9f3; --ink:#1a2233; --gray:#6d7890;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#dfe5ee;font-family:'Malgun Gothic','맑은 고딕','Pretendard','Noto Sans KR',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+.toolbar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;padding:13px;text-align:center;}
+.toolbar button{background:var(--blue);color:#fff;border:0;padding:9px 20px;border-radius:4px;font-weight:700;cursor:pointer;font-size:13px;}
+.sheet{width:210mm;margin:22px auto;background:#fff;box-shadow:0 18px 50px rgba(20,40,80,.18);padding:15mm 13mm;}
+@media print{body{background:#fff;}.toolbar{display:none;}.sheet{margin:0;box-shadow:none;width:auto;padding:0;}@page{size:A4;margin:13mm;}}
+
+/* ── 상단 레터헤드 ── */
+.letterhead{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:9px;border-bottom:3px solid var(--navy);}
+.letterhead .lm .en{font-size:29px;font-weight:800;letter-spacing:.16em;color:var(--navy);line-height:1;}
+.letterhead .lm .ko{font-size:11px;color:var(--gray);letter-spacing:.28em;margin-top:7px;}
+.letterhead .rt{text-align:right;font-size:9.5px;color:var(--gray);line-height:1.75;letter-spacing:.02em;}
+.rule2{height:0;border-top:1px solid var(--blue);margin-top:2px;}
+
+h1.tt{text-align:center;font-size:24px;letter-spacing:.62em;font-weight:800;color:var(--navy);margin:9mm 0 7mm;text-indent:.62em;position:relative;}
+h1.tt::after{content:"";display:block;width:26mm;height:3px;background:var(--blue);margin:5mm auto 0;}
+
+/* ── 공급자 / 수신 ── */
+.head{display:table;width:100%;table-layout:fixed;margin-bottom:6mm;}
+.head>div{display:table-cell;vertical-align:top;}
+.supplier{width:49%;padding-right:7mm;}
+.cap{font-size:9px;letter-spacing:.22em;color:var(--blue);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:5px;margin-bottom:8px;}
+.supplier .row{font-size:11.5px;line-height:2.05;white-space:nowrap;}
+.supplier .row .k{display:inline-block;width:19mm;color:var(--gray);}
+.supplier .addr{white-space:normal;line-height:1.7;}
+.recv .to{font-size:15px;font-weight:800;color:var(--navy);padding:1px 0 9px;letter-spacing:.02em;}
+.recv table{width:100%;border-collapse:collapse;font-size:11.5px;}
+.recv td{padding:7px 9px;border-bottom:1px solid var(--line2);}
+.recv td.k{width:25mm;color:var(--gray);background:var(--soft2);}
+.recv td.v{font-weight:700;}
+
+/* ── 합계 배너 ── */
+.sum{display:flex;align-items:center;justify-content:space-between;background:var(--soft);border-left:5px solid var(--navy);padding:11px 16px;margin-bottom:6mm;}
+.sum .l{font-size:12px;font-weight:700;color:var(--navy);}
+.sum .l em{font-style:normal;font-size:14.5px;letter-spacing:.14em;margin-left:10px;border-bottom:1px solid var(--navy);padding:0 8px 2px;}
+.sum .r{font-size:19px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:-.01em;}
+.sum .r span{font-size:12px;font-weight:700;margin-right:5px;color:var(--gray);}
+
+/* ── 품목 테이블 ── */
+table.items{width:100%;border-collapse:collapse;font-size:10.5px;table-layout:fixed;}
+col.c-nm{width:30%}col.c-sp{width:9%}col.c-qt{width:7%}col.c-up{width:12%}col.c-am{width:14%}col.c-tx{width:11%}col.c-rm{width:17%}
+table.items thead th{background:var(--navy);color:#fff;font-weight:700;font-size:11px;letter-spacing:.22em;text-indent:.22em;padding:9px 6px;border:none;}
+table.items thead th+th{border-left:1px solid rgba(255,255,255,.22);}
+table.items tbody td{padding:8px 7px;border-bottom:1px solid var(--line2);}
+table.items tbody tr:nth-child(even) td{background:var(--soft2);}
+td.nm{font-weight:600;word-break:keep-all;}
+td.sp,td.qt{text-align:center;color:var(--gray);}
+td.up,td.am,td.tx{text-align:right;font-variant-numeric:tabular-nums;}
+td.rm{text-align:center;color:var(--gray);font-size:9.5px;word-break:keep-all;}
+tr.blank td{height:21px;background:#fff !important;}
+tr.sub td{background:var(--soft) !important;font-weight:800;color:var(--navy);border-top:1.5px solid var(--navy);border-bottom:1px solid var(--line);}
+tr.sub td.nm{text-align:center;letter-spacing:.28em;text-indent:.28em;}
+tr.total td{background:var(--navy) !important;color:#fff;font-weight:800;font-size:14.5px;padding:11px 8px;border:none;}
+tr.total td.lb{letter-spacing:.4em;text-indent:.4em;font-size:12.5px;}
+tr.total td.vl{text-align:right;font-variant-numeric:tabular-nums;}
+
+.foot{background:var(--soft2);border:1px solid var(--line2);border-top:none;text-align:center;font-size:10.5px;padding:9px;color:var(--blue);letter-spacing:.18em;font-weight:600;}
+
+.notes{margin-top:6mm;font-size:9.5px;line-height:1.95;color:var(--gray);border-top:1px solid var(--line2);padding-top:4mm;}
+.notes b{color:var(--navy);}
+.sign{margin-top:9mm;text-align:right;font-size:11px;color:var(--ink);line-height:1.9;}
+.sign .l{color:var(--gray);font-size:10px;letter-spacing:.1em;}
+.sign .co{font-size:16px;font-weight:800;color:var(--navy);letter-spacing:.02em;margin-top:2px;}
+@media(max-width:760px){.sheet{width:100%;padding:16px;}.head,.head>div{display:block;width:auto;padding:0;}.recv{margin-top:6mm;}.letterhead{flex-direction:column;align-items:flex-start;gap:10px;}.letterhead .rt{text-align:left;}.sum{flex-direction:column;align-items:flex-start;gap:8px;}}
+</style></head>
+<body>
+<div class="toolbar"><button onclick="window.print()">PDF로 저장 / 인쇄</button></div>
+<section class="sheet">
+
+  <div class="letterhead">
+    <div class="lm">
+      <div class="en">PRINTLINE</div>
+      <div class="ko">주식회사 프린트라인</div>
+    </div>
+    <div class="rt">
+      경기도 성남시 분당구 성남대로 165, 천사의도시 1차 238호<br>
+      TEL. 031-782-4733 &nbsp;·&nbsp; printline1@daum.net &nbsp;·&nbsp; printline.kr
+    </div>
+  </div>
+  <div class="rule2"></div>
+
+  <h1 class="tt">견 적 서</h1>
+
+  <div class="head">
+    <div class="supplier">
+      <div class="cap">공 급 자</div>
+      <div class="row"><span class="k">등록번호</span>567-81-00064</div>
+      <div class="row"><span class="k">상 호</span>㈜프린트라인</div>
+      <div class="row"><span class="k">대표자</span>신 동 일</div>
+      <div class="row addr"><span class="k">주 소</span>경기도 성남시 분당구 성남대로 165,<br><span class="k"></span>천사의도시 1차 238호</div>
+      <div class="row"><span class="k">전 화</span>031-782-4733</div>
+    </div>
+    <div class="recv">
+      <div class="cap">수 신</div>
+      <div class="to">조인젠 블렌드 &nbsp;이소연 &nbsp;귀하</div>
+      <table>
+        <tr><td class="k">견적건명</td><td class="v">티 블렌딩 키트 브랜드 쇼핑몰 구축</td></tr>
+        <tr><td class="k">견적일자</td><td class="v">2026년 09월 07일</td></tr>
+        <tr><td class="k">유효기간</td><td class="v">견적일로부터 30일</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sum">
+    <div class="l">합계금액 (부가세 포함) 일금 <em>육백사십구만</em> 원정</div>
+    <div class="r"><span>₩</span>6,490,000</div>
+  </div>
+
+  <table class="items">
+    <colgroup><col class="c-nm"><col class="c-sp"><col class="c-qt"><col class="c-up"><col class="c-am"><col class="c-tx"><col class="c-rm"></colgroup>
+    <thead>
+      <tr><th>품 명</th><th>규 격</th><th>수 량</th><th>단 가</th><th>공급금액</th><th>세 액</th><th>비 고</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="nm">브랜드 전략 워크숍 (2회)</td><td class="sp">2회</td><td class="qt">1</td><td class="up">1,200,000</td><td class="am">1,200,000</td><td class="tx">120,000</td><td class="rm">핵심가치 · 페르소나</td></tr>
+      <tr><td class="nm">메인 경험 UX · UI 설계</td><td class="sp">1식</td><td class="qt">1</td><td class="up">1,800,000</td><td class="am">1,800,000</td><td class="tx">180,000</td><td class="rm">스크롤 연출 포함</td></tr>
+      <tr><td class="nm">서브페이지 설계</td><td class="sp">4P</td><td class="qt">1</td><td class="up">1,000,000</td><td class="am">1,000,000</td><td class="tx">100,000</td><td class="rm">스토리 · 교육 · 저널</td></tr>
+      <tr><td class="nm">비주얼 가이드 제작</td><td class="sp">1식</td><td class="qt">1</td><td class="up">600,000</td><td class="am">600,000</td><td class="tx">60,000</td><td class="rm">컴포넌트 가이드</td></tr>
+      <tr><td class="nm">카페24 퍼블리싱 · 구축</td><td class="sp">1식</td><td class="qt">1</td><td class="up">700,000</td><td class="am">700,000</td><td class="tx">70,000</td><td class="rm">커스텀 스킨</td></tr>
+      <tr><td class="nm">상품 상세 레이아웃</td><td class="sp">1식</td><td class="qt">1</td><td class="up">300,000</td><td class="am">300,000</td><td class="tx">30,000</td><td class="rm">구매 동선 설계</td></tr>
+      <tr><td class="nm">오픈 QA · 인수</td><td class="sp">1식</td><td class="qt">1</td><td class="up">300,000</td><td class="am">300,000</td><td class="tx">30,000</td><td class="rm">운영 매뉴얼 전달</td></tr>
+      <tr class="blank"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank"><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="sub"><td class="nm">소 합 계</td><td></td><td></td><td></td><td class="am">5,900,000</td><td class="tx">590,000</td><td></td></tr>
+      <tr class="total"><td class="lb" colspan="4">합 계 금 액</td><td class="vl" colspan="3">6,490,000</td></tr>
+    </tbody>
+  </table>
+  <div class="foot">PRINTLINE · BRAND COMMERCE BUILD</div>
+
+  <div class="notes">
+    <b>· 상기 금액은 공급가액 5,900,000원 (VAT 별도) 기준이며, 부가세 590,000원 포함 시 합계 6,490,000원입니다.</b><br>
+    · 작업기간: 착수일로부터 약 10~12주 (브랜드 전략 워크숍 2회 → 비주얼 시스템 → 퍼블리싱, 단계별 시안 확인 후 진행)<br>
+    · 포함: 브랜드 전략 워크숍 2회, 비주얼 가이드 문서, 메인 · 서브 UX/UI 설계, 카페24 퍼블리싱 · 구축, 상품 상세 레이아웃, 디바이스 QA, 중간 리뷰 3회<br>
+    · 별도: 상품 촬영, 로고 · 패키지 디자인, 상세페이지 개별 제작, 유료 앱 · 스킨, PG 결제 수수료, SMS · 알림톡 충전비, 광고비<br>
+    · 본 견적은 제공 자료 기준이며, 범위 변경 시 별도 협의합니다.
+  </div>
+
+  <div class="sign">
+    <div class="l">위와 같이 견적합니다.</div>
+    <div class="co">㈜프린트라인</div>
+  </div>
+
+</section>
+</body></html>

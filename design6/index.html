@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>취향의 표본실 — The Right to Taste · Botanical Archive</title>
+<meta name="description" content="열두 가지 재료, 취향을 찾아가는 여정. 정답을 알려주는 아카이브가 아니라, 당신의 취향이 어디에 머무는지 발견하는 표본실." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400&family=Noto+Sans+KR:wght@300;400&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/EasePack.min.js"></script>
+<link rel="stylesheet" href="../shared/taste-test.css">
+<script src="../shared/taste-test.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   취향의 표본실 · design6 (WebGL)
+   레퍼런스: 100lostspecies.com (Immersive Garden × 60fps)
+   — Three.js 원통형 타일 링(반지름 10.5 · 3열 패럴랙스 .8/1/.6) + 가상 스크롤,
+     globe/stagger 유니버스 전환, 상세 열림 시 타일이 스크롤을 따라 좌상단 대각선으로 이동
+   — 흰 캔버스 + 세리프 Thin + 검정 라벨, 직각·무그림자, 위치는 cubic / opacity는 linear
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --fs:16px;
+  --paper:#FFFFFF; --paper-warm:#F6F3EC; --ink:#0F0F0E; --ink-soft:#4A4844; --ink-mute:#8B877E;
+  --dark:#1C1C1C; --black:#000;
+  --u-visual:#92A878; --u-names:#5B8CA9; --u-taste:#D6C4A0;
+  --u:var(--u-visual);
+  --gold:#BE9C5D; --warn:#970317;
+  --serif-en:"Cormorant Garamond", Georgia, serif;
+  --serif-kr:"Noto Serif KR", serif;
+  --sans:"Noto Sans KR", -apple-system, "Pretendard", sans-serif;
+  --mono:"Courier Prime", "Courier New", monospace;
+  --ease-io:cubic-bezier(.66,0,.34,1);
+  --ease-out:cubic-bezier(.32,.94,.60,1);
+  --pos-in:cubic-bezier(.4,0,.1,1);
+  --pos-out:cubic-bezier(.9,0,.4,1);
+  --hd:72px; --edge:20px;
+}
+@media(min-width:768px){:root{--hd:88px;--edge:58px;}}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#E9E3D8;color:var(--ink);font-family:var(--serif-kr);font-weight:200;font-size:var(--fs);line-height:1.5;
+  overflow:hidden;-webkit-font-smoothing:antialiased;word-break:keep-all;letter-spacing:0;user-select:none;touch-action:none;}
+img{display:block;pointer-events:none;max-width:100%;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;line-height:1em;outline:transparent;}
+a{color:inherit;text-decoration:none;}
+ul{list-style:none;}
+::selection{background:transparent;}
+
+/* ─── 그레인 ─── */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:900;opacity:.055;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain 1.1s steps(6) infinite;mix-blend-mode:multiply;}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+.page{position:fixed;inset:0;pointer-events:none;}
+.page > *{pointer-events:auto;}
+
+/* ═══ GL 캔버스 ═══ */
+#canvas-wrapper{position:fixed;inset:0;z-index:1;background:var(--paper);opacity:0;transition:opacity 1.6s linear;}
+#canvas-wrapper.on{opacity:1;}
+#canvas-wrapper canvas{display:block;width:100%;height:100%;}
+#stage{position:fixed;inset:0;z-index:2;pointer-events:none;}
+#stage .hd-fade{position:absolute;left:0;right:0;top:0;height:20vh;background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,0));}
+#stage .ft-fade{position:absolute;left:0;right:0;bottom:0;height:20vh;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.55));}
+.rowlabel{position:absolute;right:var(--edge);text-align:right;padding:10px 14px;background:rgba(255,255,255,.86);font-family:var(--serif-en);font-weight:300;font-size:15px;line-height:1.2;color:var(--ink);opacity:0;transition:opacity .8s linear;}
+.rowlabel small{display:block;font-family:var(--sans);font-weight:300;font-size:11px;color:var(--ink-mute);margin-top:6px;}
+#stage.mode-taste .rowlabel{opacity:1;}
+#lblTaste{top:calc(50% - 36vh);} #lblDepth{top:calc(50% + 1vh);}
+
+/* Names 리스트 */
+#names{position:absolute;left:66%;top:43%;z-index:4;opacity:0;visibility:hidden;transition:opacity .8s linear,visibility 0s .8s;pointer-events:auto;}
+#names.on{opacity:1;visibility:visible;transition:opacity .8s linear .4s,visibility 0s;}
+#names ul{position:relative;}
+#names li{position:absolute;left:0;top:0;white-space:nowrap;font-family:var(--serif-kr);font-weight:200;font-size:clamp(22px,2.4vw,32px);line-height:1.1;
+  color:var(--ink);transition:color .2s linear;cursor:pointer;padding-bottom:10px;margin-bottom:-10px;will-change:transform,opacity;}
+#names li .en{font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:.62em;color:var(--ink-mute);margin-left:.5em;}
+#names li.active{color:var(--u);}
+@media(hover:hover) and (pointer:fine){#names li:hover{color:var(--u);}}
+#names .linecursor{position:absolute;left:-28px;top:.62em;width:16px;height:1px;background:var(--u);}
+@media(max-width:767px){#names{left:46%;} #names li{font-size:20px;} #names li .en{display:none;} #names .linecursor{left:-20px;width:12px;}}
+
+/* ═══ GATE ═══ */
+#gate{z-index:800;background:#E9E3D8 url(assets/plaster-eu-1.jpg) center/cover;color:var(--ink);display:flex;align-items:center;justify-content:center;text-align:center;
+  perspective:1100px;overflow:hidden;transition:opacity 1.2s linear;}
+#gate.leaving{opacity:0;pointer-events:none;}
+#gate .frag{position:absolute;left:50%;top:50%;width:64px;height:104px;background-size:cover;background-position:center;
+  opacity:0;transform-style:preserve-3d;will-change:transform;
+  animation:fragIn 2.4s var(--ease-out) forwards, fragFloat var(--dur,14s) ease-in-out var(--dl,0s) infinite alternate;}
+#gate .frag::after{content:"";position:absolute;inset:0;box-shadow:0 18px 40px rgba(60,50,35,.18);}
+@keyframes fragIn{to{opacity:.6}}
+@keyframes fragFloat{from{transform:translate3d(var(--x),var(--y),var(--z)) rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--rz))}
+  to{transform:translate3d(calc(var(--x) + var(--dx)),calc(var(--y) + var(--dy)),calc(var(--z) + 40px)) rotateX(calc(var(--rx) + 12deg)) rotateY(calc(var(--ry) - 16deg)) rotateZ(calc(var(--rz) + 6deg))}}
+#gate.leaving .frag{animation:fragOut 2s var(--pos-out) forwards;}
+@keyframes fragOut{to{transform:translate3d(var(--x),var(--y),700px) rotateY(60deg);opacity:0}}
+#gate .inner::before{content:"";position:absolute;inset:-70px -120px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(233,227,216,.94) 28%,rgba(233,227,216,0) 70%);}
+#gate .inner{position:relative;z-index:2;max-width:820px;padding:0 var(--edge);display:flex;flex-direction:column;align-items:center;gap:46px;}
+#gate .mark{width:62px;height:62px;color:#1c1c1c;}
+#gate .mark svg{width:100%;height:100%;}
+#gate h1{font-family:var(--serif-kr);font-weight:200;font-size:clamp(30px,5.4vw,64px);line-height:1.12;color:var(--ink);}
+#gate h1 .en{display:block;font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:.44em;margin-top:.45em;color:var(--ink-mute);letter-spacing:.02em;}
+#gate p{font-family:var(--sans);font-weight:300;font-size:14px;line-height:1.9;color:var(--ink-soft);max-width:520px;}
+#gate .enter{position:relative;overflow:hidden;background:#1c1c1c;color:#fff;height:44px;padding:0 34px;font-family:var(--sans);font-weight:400;font-size:14px;
+  --hover-color:var(--u-taste);opacity:0;transform:translateY(12px);transition:opacity .5s linear .3s,transform .8s var(--ease-out) .3s;}
+#gate .enter.ready{opacity:1;transform:none;}
+#gate .enter span{position:relative;z-index:1;}
+#gate .credit{position:absolute;left:0;right:0;bottom:26px;font-family:var(--sans);font-weight:300;font-size:11px;line-height:1.6;color:var(--ink-mute);}
+#gate .credit b{font-weight:400;color:var(--ink);}
+#gate .pct{position:absolute;top:calc(var(--hd) - 20px);left:0;right:0;font-family:var(--serif-en);font-weight:300;font-size:13px;color:var(--ink-mute);letter-spacing:.06em;}
+
+.button-hover{position:relative;overflow:hidden;}
+.button-hover::before{content:"";position:absolute;top:101%;left:-1%;width:102%;height:102%;background:var(--hover-color,var(--u));transition:transform .4s var(--ease-io);}
+@media(hover:hover) and (pointer:fine){
+  .button-hover:hover::before{transform:translate3d(0,-100%,0);}
+  .button-hover:hover span{color:#fff;}
+}
+
+/* ═══ HEADER ═══ */
+#header{position:fixed;left:0;right:0;top:0;height:var(--hd);z-index:600;display:flex;align-items:flex-start;justify-content:space-between;
+  padding:14px var(--edge) 0;pointer-events:none;opacity:0;transition:opacity .8s linear;}
+#header.on{opacity:1;}
+#header > *{pointer-events:auto;}
+#header .left{display:flex;align-items:center;gap:13px;}
+.rolling-logo{width:60px;height:60px;overflow:hidden;background:var(--u-taste);position:relative;flex:0 0 auto;}
+.rolling-logo .strip{position:absolute;left:0;top:0;width:60px;height:240px;animation:roll 7s steps(1) infinite;}
+.rolling-logo .f{width:60px;height:60px;display:flex;align-items:center;justify-content:center;color:#1c1c1c;}
+.rolling-logo .f svg{width:38px;height:38px;}
+.rolling-logo .f.kr{font-family:var(--serif-kr);font-weight:300;font-size:12px;letter-spacing:.12em;}
+.rolling-logo .f.en{font-family:var(--mono);font-size:8.5px;line-height:1.3;text-align:center;}
+@keyframes roll{0%,32%{transform:translate3d(0,0,0)}33%,65%{transform:translate3d(0,-60px,0)}66%,99%{transform:translate3d(0,-120px,0)}100%{transform:translate3d(0,-180px,0)}}
+.tabs{display:flex;gap:6px;flex-direction:column;}
+@media(min-width:768px){.tabs{flex-direction:row;gap:8px;}}
+.tab{--selected-color:var(--u-visual);height:32px;padding:0 12px;background:var(--dark);color:#fff;font-family:var(--serif-kr);font-weight:300;font-size:12px;
+  display:inline-flex;align-items:center;gap:8px;transition:background .4s linear;}
+@media(min-width:768px){.tab{height:40px;padding:0 14px;font-size:14px;}}
+.tab::before{background:var(--selected-color);}
+.tab.active{background:var(--selected-color);}
+.tab .en{font-family:var(--serif-en);font-style:italic;font-size:.92em;opacity:.8;font-variant-ligatures:none;}
+#header .scroll{position:absolute;left:50%;top:26px;transform:translateX(-50%);font-family:var(--sans);font-weight:400;font-size:13px;color:var(--ink);display:none;transition:opacity .6s linear;}
+@media(min-width:1100px){#header .scroll{display:block;top:34px;}}
+#header .scroll.hide{opacity:0;}
+.ulink{position:relative;font-family:var(--sans);font-weight:400;font-size:13px;color:var(--ink);padding-bottom:2px;white-space:nowrap;}
+.ulink::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:0 0;transition:transform .6s ease-in-out;}
+@media(hover:hover) and (pointer:fine){.ulink:hover::after{transform:scaleX(1);}}
+#header .right{margin-top:12px;display:flex;gap:22px;align-items:center;}
+@media(min-width:768px){#header .right{margin-top:20px;gap:28px;}}
+@media(max-width:767px){#header .right{flex-direction:column;align-items:flex-end;gap:10px;margin-top:8px;} .ulink{font-size:12px;}}
+
+/* ═══ FOOTER BAR ═══ */
+#footer{position:fixed;left:0;right:0;bottom:0;z-index:600;padding:0 var(--edge) 22px;display:flex;align-items:flex-end;justify-content:space-between;pointer-events:none;
+  opacity:0;transition:opacity .8s linear;}
+#footer.on{opacity:1;}
+#footer > *{pointer-events:auto;}
+#footer .tuto{max-width:240px;font-family:var(--sans);font-weight:300;font-size:12px;line-height:1.55;color:var(--ink);}
+#footer .tuto b{display:block;font-family:var(--serif-en);font-weight:300;font-size:13px;margin-bottom:4px;color:var(--ink-mute);}
+#countdown-w{display:flex;height:40px;gap:10px;position:absolute;left:50%;bottom:38px;transform:translate3d(-50%,0,0);}
+#countdown-w .left{background:var(--dark);padding:0 18px;font-family:var(--sans);font-weight:400;font-size:16px;line-height:40px;color:#fff;font-variant-numeric:tabular-nums;}
+#countdown-w .information{width:40px;height:40px;background:var(--u);color:#000;font-family:var(--serif-en);font-style:italic;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .4s linear;--hover-color:var(--dark);}
+#countdown-w.warning .information{background:var(--warn);}
+#countdown-w .information span{position:relative;z-index:1;}
+.ring{width:28px;height:28px;position:relative;color:var(--ink);}
+.ring i{position:absolute;inset:0;border:1px solid currentColor;border-radius:50%;animation:pulse 5s linear infinite alternate;}
+.ring i:nth-child(2){inset:5px;animation-delay:-1.6s;}
+.ring i:nth-child(3){inset:10px;animation-delay:-3.2s;}
+@keyframes pulse{from{opacity:.25}to{opacity:.9}}
+
+/* ═══ CURSOR ═══ */
+#cursor{position:fixed;left:0;top:0;margin:23px 0 0 10px;pointer-events:none;z-index:999;opacity:0;transition:opacity .4s linear .2s;}
+#cursor div{padding:1px 8px;background:#000;transform:scale3d(0,0,1);transform-origin:0 0;transition:all .4s var(--pos-out);white-space:nowrap;}
+#cursor.pointer div{transform:scale3d(1,1,1);transition:all .6s var(--pos-in) .2s;}
+#cursor span{font-family:var(--sans);font-weight:400;font-size:12px;line-height:24px;color:#fff;}
+@media(hover:hover) and (pointer:fine){body.entered.moved #cursor{opacity:1;}}
+
+/* ═══ PROJECT (상세) — 히어로는 GL 타일, 텍스트만 DOM ═══ */
+#project{z-index:700;opacity:0;visibility:hidden;transition:opacity .8s linear,visibility 0s .8s;overflow:hidden;}
+#project.on{opacity:1;visibility:visible;transition:opacity .8s linear,visibility 0s;}
+#project .scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:none;}
+#project .scroller::-webkit-scrollbar{display:none;}
+#project .heroSpace{height:100svh;}
+#pHead{position:fixed;left:0;top:0;z-index:2;text-align:center;pointer-events:none;will-change:transform;transform-origin:50% 0;}
+#pHead h2{font-family:var(--serif-kr);font-weight:200;font-size:clamp(26px,3.2vw,40px);line-height:1.1;overflow:hidden;white-space:nowrap;}
+#pHead h2 .en{display:block;font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:.55em;color:var(--ink-mute);margin-top:.35em;}
+#pHead .meta{margin-top:18px;font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-mute);display:flex;gap:18px;align-items:center;justify-content:center;white-space:nowrap;}
+#pHead .meta i{display:inline-block;width:8px;height:8px;background:var(--u);}
+#project .col{width:31.2vw;min-width:min(400px,calc(100vw - 40px));max-width:700px;margin:0 auto;}
+#project .t1{margin:120px auto 0;font-family:var(--serif-kr);font-weight:300;font-size:clamp(16px,1.45vw,20px);line-height:1.8;color:var(--ink);}
+#project .t1 p + p{margin-top:1.6em;}
+#project .role{margin:70px auto 0;} #project .role h3{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:14px;letter-spacing:.04em;color:var(--ink-mute);}
+#project .role ul{margin-top:14px;border-top:1px solid rgba(0,0,0,.12);} #project .role li{display:flex;gap:22px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,.12);font-family:var(--serif-kr);font-weight:300;font-size:15px;line-height:1.7;} #project .role li b{font-family:var(--sans);font-weight:400;font-size:11px;color:var(--ink-mute);flex:0 0 4em;padding-top:.3em;}
+#project .imgs{margin:270px auto 0;display:flex;justify-content:center;}
+#project .imgs .fig{width:min(520px,70vw);aspect-ratio:530/962;max-height:74vh;background:center/cover no-repeat;}
+#project .imgs.small{margin:140px auto 0;} #project .imgs.small .fig{width:min(260px,40vw);max-height:40vh;}
+#project .t2{margin:150px auto 0;font-family:var(--serif-kr);font-weight:300;font-size:clamp(16px,1.45vw,20px);line-height:1.8;}
+#project .t2 .lettrine{float:left;font-family:var(--serif-en);font-weight:300;font-size:4.2em;line-height:.8;margin:.08em .12em 0 0;color:var(--u);}
+#project .t2 h3{font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:14px;letter-spacing:.04em;color:var(--ink-mute);margin-bottom:22px;}
+#project .t2 ul{margin-top:38px;border-top:1px solid rgba(0,0,0,.12);}
+#project .t2 li{padding:16px 0;border-bottom:1px solid rgba(0,0,0,.12);display:flex;gap:22px;font-size:.9em;line-height:1.6;}
+#project .t2 li b{font-family:var(--sans);font-weight:400;font-size:11px;color:var(--ink-mute);flex:0 0 5.5em;padding-top:.35em;}
+#project .credit{margin:100px auto 0;font-family:var(--sans);font-weight:300;font-size:12px;line-height:20px;color:var(--ink-mute);text-align:center;}
+#project .credit em{font-family:var(--mono);font-style:normal;}
+#project .next{margin:25vh 0 0;height:50vh;display:flex;align-items:center;justify-content:center;gap:46px;flex-direction:column;}
+@media(min-width:768px){#project .next{flex-direction:row;}}
+#project .next .nxt{width:80px;height:80px;background:var(--u);--hover-color:var(--dark);display:flex;align-items:center;justify-content:center;color:#000;}
+#project .next .nxt span{position:relative;z-index:1;font-family:var(--serif-en);font-size:26px;line-height:1;font-weight:300;}
+#project .next .lbl{font-family:var(--serif-kr);font-weight:200;font-size:clamp(22px,2.6vw,34px);line-height:1.15;text-align:center;}
+#project .next .lbl small{display:block;font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-mute);margin-bottom:10px;}
+#project .close{position:fixed;right:var(--edge);top:34px;z-index:2;}
+#project .plogo{position:fixed;left:var(--edge);top:14px;display:flex;align-items:center;gap:13px;z-index:2;}
+#project .plogo .box{width:44px;height:44px;background:var(--u-taste);display:flex;align-items:center;justify-content:center;color:#1c1c1c;}
+#project .plogo .box svg{width:28px;height:28px;}
+#project .plogo .name{font-family:var(--serif-kr);font-weight:300;font-size:14px;line-height:1.15;}
+#project .plogo .name .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:12px;color:var(--ink-mute);}
+#project .scrollhint{position:fixed;left:50%;top:34px;transform:translateX(-50%);font-family:var(--sans);font-weight:400;font-size:13px;color:var(--ink);transition:opacity .6s linear;}
+#project .scrollhint.hide{opacity:0;}
+
+.sixty-word{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.sixty-word > span{display:inline-block;transform:translateY(100%);opacity:0;}
+.revealed .sixty-word > span{transform:none;opacity:1;transition:transform 1.3s var(--ease-out) var(--d,0s),opacity 1.1s linear var(--d,0s);}
+
+/* ═══ 공용 라이트 페이지 (키트 · 클래스) ═══ */
+.lightpage{z-index:710;background:var(--paper-warm);color:var(--ink);opacity:0;visibility:hidden;transition:opacity .9s linear,visibility 0s .9s;}
+.lightpage.on{opacity:1;visibility:visible;transition:opacity .9s linear,visibility 0s;}
+.lightpage::before{content:"";position:absolute;inset:0;background:url(assets/plaster-2.jpg) center/cover;opacity:.16;mix-blend-mode:multiply;pointer-events:none;}
+.lightpage .scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;}
+.lightpage .scroller::-webkit-scrollbar{display:none;}
+.lightpage .content{position:relative;max-width:1180px;margin:0 auto;padding:calc(var(--hd) + 90px) var(--edge) 140px;}
+.lightpage .eyebrow{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:15px;color:var(--ink-mute);letter-spacing:.04em;}
+.lightpage h1{font-family:var(--serif-kr);font-weight:200;font-size:clamp(34px,4.8vw,66px);line-height:1.18;margin-top:18px;max-width:900px;}
+.lightpage .lead{max-width:560px;margin-top:40px;font-family:var(--serif-kr);font-weight:300;font-size:clamp(16px,1.35vw,19px);line-height:1.85;color:var(--ink-soft);}
+.lightpage .lead p + p{margin-top:1.2em;}
+.lightpage .close{position:fixed;right:var(--edge);top:34px;z-index:2;}
+.lightpage .plogo{position:fixed;left:var(--edge);top:14px;display:flex;align-items:center;gap:13px;z-index:2;}
+.lightpage .plogo .box{width:44px;height:44px;background:var(--u-taste);display:flex;align-items:center;justify-content:center;color:#1c1c1c;}
+.lightpage .plogo .box svg{width:28px;height:28px;}
+.lightpage .plogo .name{font-family:var(--serif-kr);font-weight:300;font-size:14px;line-height:1.15;}
+.lightpage .plogo .name .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:12px;color:var(--ink-mute);}
+.kits{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:150px;}
+@media(max-width:860px){.kits{grid-template-columns:1fr;gap:90px;}}
+.kit{position:relative;}
+.kit .name{font-family:var(--serif-en);font-weight:300;font-size:clamp(48px,6vw,84px);line-height:1;color:var(--ink);}
+.kit .name small{display:block;font-family:var(--serif-kr);font-weight:200;font-size:.28em;color:var(--ink-mute);margin-top:.5em;}
+.kit .strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:34px;}
+.kit .strip div{aspect-ratio:530/962;background:center/cover no-repeat;cursor:pointer;transition:transform .4s var(--ease-io);}
+@media(hover:hover) and (pointer:fine){.kit .strip div:hover{transform:translateY(-4px);}}
+.kit .list{margin-top:34px;border-top:1px solid rgba(0,0,0,.14);}
+.kit .list li{display:flex;gap:18px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.14);font-family:var(--serif-kr);font-weight:300;font-size:15px;line-height:1.6;}
+.kit .list li b{font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:13px;color:var(--ink-mute);flex:0 0 5em;padding-top:.25em;}
+.kit .photo{margin-top:34px;aspect-ratio:4/5;background:center/cover no-repeat;}
+.kit .accent{position:absolute;right:0;top:12px;width:12px;height:12px;background:var(--kc);}
+.trio{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;margin-top:150px;align-items:end;}
+@media(max-width:860px){.trio{grid-template-columns:1fr 1fr;} .trio .a{grid-column:1/-1;}}
+.trio div{background:center/cover no-repeat;}
+.trio .a{aspect-ratio:1122/1402;} .trio .b{aspect-ratio:1;} .trio .c{aspect-ratio:1160/1610;}
+.trio figcaption{margin-top:12px;font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-mute);}
+.kitq{margin-top:30px;padding-left:18px;border-left:1px solid var(--kc,var(--u));font-family:var(--serif-kr);font-weight:200;font-size:clamp(20px,2vw,26px);line-height:1.4;}
+.kitq small{display:block;margin-top:8px;font-size:.62em;color:var(--ink-mute);font-weight:300;}
+.fn{font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-mute);line-height:1.7;}
+.setblock{margin-top:150px;padding-top:40px;border-top:1px solid rgba(0,0,0,.2);}
+.setblock h2{font-family:var(--serif-kr);font-weight:200;font-size:clamp(30px,4.2vw,56px);line-height:1.2;margin-top:18px;max-width:820px;}
+.setlead{max-width:640px;margin-top:30px;font-family:var(--serif-kr);font-weight:300;font-size:clamp(15px,1.3vw,18px);line-height:1.85;color:var(--ink-soft);}
+.setlead.small{font-size:15px;}
+.setvals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 24px;margin-top:34px;max-width:900px;}
+@media(max-width:860px){.setvals{grid-template-columns:1fr 1fr;}}
+.setvals li{border-top:1px solid rgba(0,0,0,.14);padding-top:12px;font-family:var(--serif-kr);font-weight:300;font-size:15px;line-height:1.6;}
+.recipes{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-top:150px;}
+@media(max-width:860px){.recipes{grid-template-columns:1fr;gap:70px;}}
+.recipes .fn{grid-column:1/-1;margin-top:-20px;}
+.rlist{margin-top:22px;border-top:1px solid rgba(0,0,0,.2);}
+.rlist li{padding:22px 0;border-bottom:1px solid rgba(0,0,0,.14);}
+.rlist b{display:block;font-family:var(--serif-kr);font-weight:300;font-size:21px;}
+.rlist i{display:block;margin-top:6px;font-family:var(--mono);font-style:normal;font-size:13px;color:var(--ink);}
+.rlist span{display:block;margin-top:10px;font-family:var(--serif-kr);font-weight:300;font-size:14.5px;line-height:1.8;color:var(--ink-soft);}
+.compo{margin-top:150px;}
+.clist{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px 24px;list-style:none;counter-reset:c;}
+@media(max-width:860px){.clist{grid-template-columns:1fr 1fr;}}
+.clist li{counter-increment:c;border-top:1px solid rgba(0,0,0,.14);padding:12px 0 6px;font-family:var(--serif-kr);font-weight:300;font-size:16px;line-height:1.5;}
+.clist li::before{content:counter(c,decimal-leading-zero);display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:13px;color:var(--ink-mute);margin-bottom:6px;}
+.clist li em{font-style:normal;font-weight:400;}
+.clist li small{display:block;font-family:var(--sans);font-weight:300;font-size:12px;color:var(--ink-mute);margin-top:4px;}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:70px;}
+@media(max-width:860px){.why{grid-template-columns:1fr;}}
+.why h4{font-family:var(--serif-kr);font-weight:300;font-size:19px;} .why p{margin-top:12px;font-family:var(--serif-kr);font-weight:300;font-size:15px;line-height:1.85;color:var(--ink-soft);}
+.bigline{margin-top:150px;font-family:var(--serif-kr);font-weight:200;font-size:clamp(28px,4vw,54px);line-height:1.25;max-width:900px;}
+.bigline .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:.5em;color:var(--ink-mute);margin-top:.6em;}
+.ctaRow{margin-top:60px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+.cta{position:relative;overflow:hidden;background:var(--dark);color:#fff;height:48px;padding:0 30px;font-family:var(--sans);font-weight:400;font-size:14px;display:inline-flex;align-items:center;--hover-color:var(--u-taste);}
+.cta span{position:relative;z-index:1;}
+.cta.light{background:transparent;color:var(--ink);border:1px solid rgba(0,0,0,.25);}
+.programs{margin-top:150px;border-top:1px solid rgba(0,0,0,.14);}
+.programs li{display:grid;grid-template-columns:90px 1fr 1.2fr;gap:30px;padding:40px 0;border-bottom:1px solid rgba(0,0,0,.14);align-items:start;}
+@media(max-width:860px){.programs li{grid-template-columns:1fr;gap:14px;padding:30px 0;}}
+.programs .no{font-family:var(--serif-en);font-weight:300;font-size:30px;color:var(--u-visual);line-height:1;}
+.programs h3{font-family:var(--serif-kr);font-weight:300;font-size:clamp(22px,2.2vw,30px);line-height:1.3;}
+.programs h3 small{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:.55em;color:var(--ink-mute);margin-top:6px;}
+.programs p{font-family:var(--serif-kr);font-weight:300;font-size:15.5px;line-height:1.85;color:var(--ink-soft);}
+.duo{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:120px;align-items:end;}
+@media(max-width:860px){.duo{grid-template-columns:1fr;}}
+.duo div{background:center/cover no-repeat;}
+.duo .a{aspect-ratio:1400/933;} .duo .b{aspect-ratio:4/5;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:120px;}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr;}}
+.steps li{border-top:1px solid rgba(0,0,0,.2);padding-top:18px;}
+.steps li b{font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:14px;color:var(--ink-mute);}
+.steps li h4{font-family:var(--serif-kr);font-weight:300;font-size:22px;margin-top:10px;}
+.steps li p{font-family:var(--serif-kr);font-weight:300;font-size:14.5px;line-height:1.8;color:var(--ink-soft);margin-top:10px;}
+
+/* ═══ ABOUT ═══ */
+#about{z-index:715;background:var(--black);color:#fff;opacity:0;visibility:hidden;transition:opacity 1s linear,visibility 0s 1s;}
+#about.on{opacity:1;visibility:visible;transition:opacity 1s linear,visibility 0s;}
+#about .scroller{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;}
+#about .scroller::-webkit-scrollbar{display:none;}
+#about .frags{position:absolute;inset:0;perspective:1100px;pointer-events:none;overflow:hidden;}
+#about .frags .frag{position:absolute;left:50%;top:50%;width:52px;height:84px;background-size:cover;opacity:.16;
+  animation:fragFloat var(--dur,16s) ease-in-out var(--dl,0s) infinite alternate;}
+#about .frags .frag::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.6);}
+#about .content{position:relative;max-width:785px;margin:0 auto;padding:calc(var(--hd) + 120px) var(--edge) 140px;}
+#about h1{font-family:var(--serif-kr);font-weight:200;font-size:clamp(36px,5vw,72px);line-height:1.18;}
+#about .para{max-width:510px;margin-top:300px;font-family:var(--sans);font-weight:300;font-size:clamp(15px,1.3vw,18px);line-height:1.8;color:rgba(255,255,255,.82);}
+#about .para p + p{margin-top:1.4em;}
+#about .big{margin-top:300px;font-family:var(--serif-en);font-weight:300;font-style:italic;font-size:clamp(56px,10.9vw,174px);line-height:.82;letter-spacing:-.01em;}
+#about .big .kr{display:block;font-family:var(--serif-kr);font-style:normal;font-weight:200;font-size:.22em;line-height:1.5;margin-top:.6em;color:rgba(255,255,255,.7);}
+#about .bigimg{margin:200px auto 0;width:min(543px,86vw);aspect-ratio:287/360;background:center/cover no-repeat;}
+#about table{margin-top:200px;width:100%;border-collapse:collapse;font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.7;color:rgba(255,255,255,.75);}
+#about td{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.15);vertical-align:top;}
+#about td:first-child{width:38%;color:rgba(255,255,255,.45);}
+#about .share{margin-top:180px;text-align:center;}
+#about .share button{font-family:var(--serif-kr);font-weight:200;font-size:clamp(40px,7vw,92px);line-height:1;position:relative;color:#fff;}
+#about .share button::after{content:"";position:absolute;left:0;bottom:-8px;width:100%;height:1px;background:#fff;transform:scaleX(0);transform-origin:0 0;transition:transform .8s ease-in-out;}
+@media(hover:hover) and (pointer:fine){#about .share button:hover::after{transform:scaleX(1);}}
+#about .share .msg{margin-top:26px;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:15px;color:var(--gold);opacity:0;transition:opacity .4s linear;}
+#about .share.copied .msg{opacity:1;}
+#about .close{position:fixed;right:var(--edge);top:34px;color:#fff;z-index:2;}
+#about .alogo{position:fixed;left:var(--edge);top:14px;display:flex;align-items:center;gap:13px;color:#fff;z-index:2;}
+#about .alogo .box{width:44px;height:44px;background:var(--u-taste);display:flex;align-items:center;justify-content:center;color:#1c1c1c;}
+#about .alogo .box svg{width:28px;height:28px;}
+#about .alogo .name{font-family:var(--serif-kr);font-weight:300;font-size:14px;line-height:1.15;}
+#about .alogo .name .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:12px;opacity:.7;}
+
+/* ═══ ENDING ═══ */
+#ending{z-index:720;background:var(--black);color:#fff;opacity:0;visibility:hidden;transition:opacity 1.5s linear,visibility 0s 1.5s;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;padding:calc(var(--hd) + 20px) var(--edge) 40px;}
+#ending.on{opacity:1;visibility:visible;transition:opacity 1.5s linear,visibility 0s;}
+#ending .top{font-family:var(--sans);font-weight:300;font-size:12px;color:rgba(255,255,255,.55);}
+#ending .mid{max-width:max(60vw,870px);width:100%;}
+#ending h2{font-family:var(--serif-kr);font-weight:200;font-size:clamp(28px,5.6vw,82px);line-height:1.1;}
+#ending .sub{margin-top:36px;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:clamp(16px,1.6vw,22px);color:var(--gold);}
+#ending .sub .kr{display:block;font-family:var(--serif-kr);font-style:normal;font-weight:200;font-size:.78em;color:rgba(255,255,255,.65);margin-top:8px;}
+#ending .logos{display:flex;gap:47px;justify-content:center;margin-top:70px;flex-wrap:wrap;}
+#ending .logos button{width:min(280px,80vw);height:150px;border:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff;transition:background .4s linear,border-color .4s linear;}
+#ending .logos button .big{font-family:var(--serif-en);font-weight:300;font-size:40px;line-height:1;}
+#ending .logos button .kr{font-family:var(--serif-kr);font-weight:200;font-size:14px;color:rgba(255,255,255,.7);}
+@media(hover:hover) and (pointer:fine){#ending .logos button:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.5);}}
+#ending .bot{font-family:var(--sans);font-weight:300;font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;}
+#ending .close{position:fixed;right:var(--edge);top:34px;color:#fff;}
+
+#blocker{position:fixed;inset:0;z-index:1000;display:none;}
+#blocker.on{display:block;}
+.fast #gate,.fast #canvas-wrapper,.fast #about,.fast #ending,.fast #project,.fast #names,.fast #header,.fast #footer,.fast .lightpage,.fast .sixty-word>span{transition:none!important;}
+
+@media(prefers-reduced-motion:reduce){
+  .grain,.rolling-logo .strip,.ring i{animation:none;}
+  #gate .frag{animation:fragIn 1s linear forwards;}
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div id="blocker"></div>
+
+<!-- ═══ GATE ═══ -->
+<div id="gate" class="page">
+  <div class="frags" id="gateFrags"></div>
+  <div class="pct" id="pct">Loading — 0%</div>
+  <div class="inner">
+    <div class="mark"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div>
+    <h1>어떤 날에는 꽃처럼 향긋하게,<br>어떤 날에는 커피처럼 깊게.
+      <span class="en">The Right to Taste — A Botanical Archive</span></h1>
+    <p>오늘의 나에게 맞는 한 잔을 직접 만들어보세요.<br>12가지 식물 원료로 향과 깊이를 조절하며 나만의 차와 로스트를 완성하는 티 블렌딩 체험 키트.</p>
+    <button class="enter button-hover" id="enter"><span>들어가기 &nbsp;·&nbsp; Enter</span></button>
+  </div>
+  <div class="credit">취향의 권리 · <b>Tea Apothēca</b> — 취향은 정해지는 것이 아니라 완성되어 갑니다.<br>A website concept by <b>탱탱소프트</b> · design6</div>
+</div>
+
+<!-- ═══ GL ═══ -->
+<div id="canvas-wrapper"></div>
+<div id="stage">
+  <div class="hd-fade"></div><div class="ft-fade"></div>
+  <div class="rowlabel" id="lblTaste"><span>VER.1 · Aroma</span><small>아로마 티 블렌딩 — 향을 발견하는 키트</small></div>
+  <div class="rowlabel" id="lblDepth"><span>VER.2 · Roast</span><small>루트 앤드 그레인 로스트 — 나만의 로스트를 만드는 키트</small></div>
+  <div id="names"><div class="linecursor" id="lineCursor"></div><ul id="namesList"></ul></div>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<div id="header">
+  <div class="left">
+    <div class="rolling-logo"><div class="strip">
+      <div class="f"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div>
+      <div class="f kr">취향의권리</div>
+      <div class="f en">the right<br>to taste</div>
+      <div class="f"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div>
+    </div></div>
+    <div class="tabs" id="tabs">
+      <button class="tab button-hover active" data-mode="visual" style="--selected-color:#92A878"><span>그림으로</span><span class="en">By Visuals</span></button>
+      <button class="tab button-hover" data-mode="names" style="--selected-color:#5B8CA9"><span>이름으로</span><span class="en">By Names</span></button>
+      <button class="tab button-hover" data-mode="taste" style="--selected-color:#D6C4A0"><span>키트로</span><span class="en">By VER.1 · VER.2</span></button>
+    </div>
+  </div>
+  <div class="scroll" id="scrollHint">Scroll to explore · 스크롤로 탐색</div>
+  <div class="right">
+    <button class="ulink" id="testBtn">취향 테스트 · 1분</button>
+    <button class="ulink" id="kitBtn">키트 · The Kit</button>
+    <button class="ulink" id="classBtn">클래스 · Class</button>
+    <button class="ulink" id="aboutBtn">About · 취향의 권리란</button>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div id="footer">
+  <div class="tuto" id="tuto"><b>The Right to Taste</b>휠은 좌우로, 마우스는 위아래로.<br>카드를 누르면 재료의 이야기가 열립니다.</div>
+  <div id="countdown-w"><div class="left" id="timer">03 : 00</div><button class="information button-hover" id="infoBtn" title="우림 시간"><span>i</span></button></div>
+  <div class="ring" aria-hidden="true"><i></i><i></i><i></i></div>
+</div>
+
+<div id="cursor"><div><span id="cursorText">보기</span></div></div>
+
+<!-- ═══ PROJECT ═══ -->
+<div id="project" class="page">
+  <div class="plogo"><div class="box"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div><div class="name">취향의 표본실<span class="en">Botanical Archive</span></div></div>
+  <div class="scrollhint" id="pScrollHint">Scroll to explore</div>
+  <button class="ulink close" id="projectClose">Close · 닫기</button>
+  <div id="pHead"><h2 id="pTitle"></h2><div class="meta" id="pMeta"></div></div>
+  <div class="scroller" id="projectScroller">
+    <div class="heroSpace"></div>
+    <div class="col t1" id="pText1"></div>
+    <div class="col role" id="pRole"></div>
+    <div class="imgs"><div class="fig" id="pImg1"></div></div>
+    <div class="col t2" id="pText2"></div>
+    <div class="credit" id="pCredit"></div>
+    <div class="imgs small"><div class="fig" id="pImg2"></div></div>
+    <div class="next"><button class="nxt button-hover" id="pNext"><span>→</span></button><div class="lbl" id="pNextLbl"></div></div>
+  </div>
+</div>
+
+<!-- ═══ KIT ═══ -->
+<div id="kit" class="page lightpage">
+  <div class="plogo"><div class="box"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div><div class="name">취향의 권리<span class="en">the right to taste</span></div></div>
+  <button class="ulink close" data-close="kit">Close · 닫기</button>
+  <div class="scroller">
+    <div class="content">
+      <div class="eyebrow">The Kit — 티 블렌딩 체험 키트</div>
+      <h1 class="split">차를 고르기만 하셨나요? 이제 향과 깊이를 직접 블렌딩해보세요.</h1>
+      <div class="lead">
+        <p>12가지 식물 원료로 향과 깊이를 조절하며 나만의 차와 로스트를 완성하는 티 블렌딩 체험 키트. 우리는 완성된 맛을 건네지 않습니다. 당신이 자신의 맛을 완성할 수 있도록 원료와 시간을 건넵니다.</p>
+        <p>한 잔에는 정답이 없지만, 나에게 맞는 비율은 있습니다. 취향은 정해지는 것이 아니라 완성되어 갑니다.</p>
+      </div>
+      <div class="ctaRow" style="margin-top:40px">
+        <a class="cta light button-hover" href="#" data-open="test"><span>나는 향을 좋아할까, 깊이를 좋아할까? — 1분 취향 테스트</span></a>
+      </div>
+
+      <div class="kits">
+        <div class="kit" id="kit-ver1" style="--kc:#92A878"><i class="accent"></i>
+          <div class="name">VER.1<small>아로마 티 블렌딩 — 향을 발견하는 키트</small></div>
+          <div class="strip" data-line="taste"></div>
+          <ul class="list">
+            <li><b>Ingredients</b><span>레몬밤 · 히비스커스 · 페퍼민트 · 유자 · 장미 · 카모마일</span></li>
+            <li><b>Concept</b><span>꽃·과일·허브의 향을 조합하며 나의 감각적인 취향을 발견하는 블렌딩 키트</span></li>
+            <li><b>Value</b><span>화사한 꽃향 · 산뜻한 과일 향 · 상쾌한 허브 향 · 선명한 수색 · 핫티와 아이스티 활용 · 향을 중심으로 시작하는 쉬운 블렌딩</span></li>
+            <li><b>For</b><span>꽃과 허브 향을 좋아하는 사람 · 산뜻한 과일차와 아이스티를 좋아하는 사람 · 향으로 기분을 전환하고 싶은 사람 · 티 블렌딩을 처음 경험하는 사람</span></li>
+          </ul>
+          <blockquote class="kitq">오늘의 기분을 닮은 향을 골라보세요.</blockquote>
+          <div class="photo" style="background-image:url(assets/taste-flatlay.jpg)"></div>
+          <div class="ctaRow" style="margin-top:26px"><a class="cta button-hover" href="product.html?p=ver1"><span>오늘의 향 만들기</span></a></div>
+        </div>
+        <div class="kit" id="kit-ver2" style="--kc:#D6C4A0"><i class="accent"></i>
+          <div class="name">VER.2<small>루트 앤드 그레인 로스트 — 나만의 로스트를 만드는 키트</small></div>
+          <div class="strip" data-line="depth"></div>
+          <ul class="list">
+            <li><b>Ingredients</b><span>둥굴레 · 찰수수 · 단팥 · 통보리 · 민들레 뿌리 · 보리<br><small class="fn">※ 통보리는 분쇄하지 않은 보리. 가공 형태와 표시 명칭은 최종 확인.</small></span></li>
+            <li><b>Concept</b><span>볶은 곡물과 뿌리 원료의 비율을 조절해 커피처럼 깊고 진한 풍미를 만드는 로스트 블렌딩 키트</span></li>
+            <li><b>Value</b><span>커피를 연상시키는 깊은 볶음 향 · 곡물과 뿌리에서 오는 구수함 · 쓴맛과 바디감의 조절 · 단맛을 넣지 않아도 느껴지는 풍성한 향미 · 진한 핫 음료와 아이스 로스트 활용 · 커피를 마시던 시간에 즐기는 새로운 선택</span></li>
+            <li><b>For</b><span>커피의 진하고 깊은 분위기를 좋아하는 사람 · 일반적인 곡물차보다 입체적인 맛을 원하는 사람 · 볶은 향·우디함·카카오 같은 풍미를 좋아하는 사람 · 자신에게 맞는 쓴맛과 구수함을 직접 조절하고 싶은 사람</span></li>
+          </ul>
+          <blockquote class="kitq">커피의 분위기는 남기고, 원료는 곡물과 뿌리로 바꿨습니다.<small>오늘은 커피 대신, 나만의 로스트를 블렌딩해보세요.</small></blockquote>
+          <div class="photo" style="background-image:url(assets/depth-dishes.jpg)"></div>
+          <div class="ctaRow" style="margin-top:26px"><a class="cta button-hover" href="product.html?p=ver2"><span>나만의 로스트 만들기</span></a></div>
+        </div>
+      </div>
+
+      <div class="setblock" id="kit-set">
+        <div class="eyebrow">TWO KIT SET — 프리미엄 아로마 로스트</div>
+        <h2>깊이는 로스트로 만들고,<br>취향은 향으로 완성하세요.</h2>
+        <p class="setlead">커피 같은 깊이에 과일과 허브의 향을 더해, 첫 향부터 마지막 여운까지 직접 설계하는 프리미엄 아로마 로스트. VER.2의 깊은 로스트 풍미 위에 VER.1의 과일·꽃·허브 향을 더해 고급 향미 커피를 연상시키는 입체적인 한 잔을 만드는 확장형 키트입니다.</p>
+        <ul class="setvals">
+          <li>총 12가지 원료</li><li>차와 로스트의 경계를 넘나드는 새로운 조합</li><li>향과 바디감을 따로 조절하는 경험</li><li>과일 향·꽃향·허브 향을 입힌 로스트</li><li>ONE KIT에서는 만들 수 없는 교차 레시피</li><li>블렌딩 경험자와 특별한 선물 수요에 적합</li>
+        </ul>
+        <p class="setlead small">VER.2만으로 깊은 로스트를 만들 수 있습니다. 여기에 VER.1의 유자·장미·페퍼민트를 더하면 같은 로스트도 밝게, 우아하게, 상쾌하게 달라집니다.</p>
+        <div class="ctaRow"><a class="cta button-hover" href="product.html?p=set"><span>12가지 원료로 향과 깊이 설계하기</span></a></div>
+      </div>
+
+      <div class="recipes">
+        <div class="rcol">
+          <div class="eyebrow">VER.2 Recipes — 루트 로스트 레시피</div>
+          <ul class="rlist">
+            <li><b>브라질리언 로스트</b><i>민들레 뿌리 2 : 단팥 2 : 찰수수 1 : 둥굴레 0.5</i><span>깊게 볶은 듯한 첫 향에 단팥과 찰수수의 부드러운 구수함이 이어집니다. 커피처럼 진하지만 곡물과 뿌리 원료만의 편안한 여운을 가진 블렌드입니다.</span></li>
+            <li><b>골든 그레인</b><i>둥굴레 2 : 통보리 1 : 단팥 1</i><span>둥굴레의 둥근 풍미에 통보리의 맑은 구수함과 단팥의 부드러운 여운을 더했습니다. 쓴맛이 강하지 않아 루트 로스트를 처음 경험하는 사람에게 잘 어울립니다.</span></li>
+            <li><b>딥 우드 로스트</b><i>민들레 뿌리 2 : 둥굴레 2 : 단팥 1</i><span>볶은 뿌리와 나무를 연상시키는 깊은 향, 둥굴레의 부드러운 바디감, 단팥의 고소한 마무리. 조용히 집중하고 싶은 오후에 어울리는 진한 한 잔입니다.</span></li>
+            <li><b>어스 밸런스</b><i>민들레 뿌리 2 : 둥굴레 2 : 단팥 1 : 찰수수 1</i><span>깊은 볶음 향으로 시작해 곡물의 담백함으로 끝나는 균형 잡힌 블렌드. 원료마다 다른 향이 차례로 드러나 한 모금 안에서도 맛의 변화를 느낄 수 있습니다.</span></li>
+            <li><b>선셋 그레인</b><i>통보리 2 : 보리 1 : 단팥 1 : 둥굴레 0.5</i><span>통보리와 보리의 서로 다른 구수함에 단팥과 둥굴레의 부드러움을 더했습니다. 강한 쓴맛보다 따뜻하고 고요한 여운을 원하는 날에 잘 어울립니다.</span></li>
+          </ul>
+        </div>
+        <div class="rcol">
+          <div class="eyebrow">Cross Recipes — 교차 블렌딩 (TWO KIT SET)</div>
+          <ul class="rlist">
+            <li><b>유자 로스트</b><i>유자 + 민들레 뿌리 + 단팥</i><span>유자의 밝은 첫 향 뒤에 깊은 볶음 향과 부드러운 고소함이 이어지는 시트러스 로스트</span></li>
+            <li><b>로즈 그레인</b><i>장미 + 카모마일 + 통보리</i><span>우아한 꽃향과 맑은 곡물의 여운이 만나는 플로럴 로스트</span></li>
+            <li><b>민트 로스트</b><i>페퍼민트 + 레몬밤 + 보리 또는 통보리</i><span>상쾌하게 시작해 구수하고 깔끔하게 끝나는 허벌 로스트</span></li>
+            <li><b>로지 레드빈</b><i>장미 + 단팥 + 둥굴레</i><span>장미의 우아함과 단팥의 고소함, 둥굴레의 부드러운 바디감이 만나는 블렌드</span></li>
+            <li><b>루비 그레인</b><i>히비스커스 + 유자 + 찰수수</i><span>선명한 산미와 따뜻한 곡물의 여운이 대비를 이루는 프루티 그레인 블렌드</span></li>
+          </ul>
+        </div>
+        <p class="fn">※ 비율·명칭은 시음 후 최종 확정합니다. 추천 비율은 취향을 발견하기 위한 첫 번째 기준입니다. 한 번 맛본 뒤 마음에 드는 원료를 반 스푼씩 조절해보세요. 달라진 비율이 바로 당신의 레시피가 됩니다.</p>
+      </div>
+
+      <div class="trio">
+        <figure class="a"><div class="a" style="background-image:url(assets/accordion.jpg)"></div><figcaption>병풍(아코디언) 인서트 — 칸마다 파우치와 엽서가 꽂힙니다</figcaption></figure>
+        <figure class="b"><div class="b" style="background-image:url(assets/box-front.jpg)"></div><figcaption>미장 아이보리 겉박스 · VER.1 / VER.2</figcaption></figure>
+        <figure class="c"><div class="c" style="background-image:url(assets/pouch.jpg)"></div><figcaption>크래프트 파우치</figcaption></figure>
+      </div>
+
+      <div class="compo">
+        <div class="eyebrow">What's inside — 상품 구성</div>
+        <ol class="clist">
+          <li><em>블렌딩 원료 6종</em><small>직접 조합하는 여섯 가지 원료</small></li><li>공티백</li><li>계량용 티스푼</li><li>스쿱</li><li>원료 태그</li><li>원료 카드</li><li><em>블렌딩 가이드</em><small>처음 시작할 수 있도록 돕는 안내</small></li><li><em>티 블렌딩 에세이 노트</em><small>취향과 레시피를 남기는 기록</small></li><li>스티커</li>
+        </ol>
+        <div class="why">
+          <div><h4>직접 블렌딩해야 하는 이유</h4><p>같은 원료도 반 스푼의 차이로 향과 깊이가 달라집니다. 직접 맛보고 조절하는 과정에서 막연했던 취향이 구체적인 레시피가 됩니다.</p></div>
+          <div><h4>에세이 노트가 필요한 이유</h4><p>향은 지나가지만 기록은 취향을 남깁니다. 선택한 원료와 비율, 첫 향과 마지막 여운을 기록하면 한 번의 경험이 나만의 레시피가 됩니다.</p></div>
+          <div><h4>선물로 건넨다면</h4><p>정해진 맛을 선물하는 대신, 자신의 취향을 발견할 시간을 선물하세요.</p></div>
+        </div>
+      </div>
+
+      <div class="bigline">취향은 정해지는 것이 아니라, 완성되어 갑니다.<span class="en">Taste is not decided. It is completed, slowly.</span></div>
+      <div class="ctaRow">
+        <a class="cta button-hover" href="#" data-open="ending"><span>내 취향의 한 잔, 가장 먼저 만나보기</span></a>
+        <a class="cta light button-hover" href="#" data-open="test"><span>1분 취향 테스트</span></a>
+        <a class="cta light button-hover" href="#" data-open="class"><span>클래스에서 함께 열기</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TASTE TEST ═══ -->
+<div id="test" class="page lightpage">
+  <div class="plogo"><div class="box"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div><div class="name">취향의 권리<span class="en">the right to taste</span></div></div>
+  <button class="ulink close" data-close="test">Close · 닫기</button>
+  <div class="scroller">
+    <div class="content"><div id="ttRoot"></div></div>
+  </div>
+</div>
+
+<!-- ═══ CLASS ═══ -->
+<div id="class" class="page lightpage">
+  <div class="plogo"><div class="box"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div><div class="name">취향의 권리<span class="en">the right to taste</span></div></div>
+  <button class="ulink close" data-close="class">Close · 닫기</button>
+  <div class="scroller">
+    <div class="content">
+      <div class="eyebrow">Class — 함께 걷기</div>
+      <h1 class="split">가르치지 않습니다.<br>함께 발견합니다.</h1>
+      <div class="lead">
+        <p>정해진 답을 전하는 강의가 아니라, 각자의 취향을 여는 시간입니다. 허브를 관찰하고, 향을 맡고, 우려 마시고, 기록합니다. 같은 허브라도 계절과 시간, 그리고 나의 컨디션에 따라 전혀 다른 모습으로 다가오기 때문입니다.</p>
+      </div>
+      <ul class="programs">
+        <li><span class="no">01</span><h3>기관 출강<small>Institutions</small></h3><p>도서관·문화센터·학교·복지관. VER.1 또는 VER.2의 여섯 가지 원료로 한 잔을 블렌딩해 우리고, 각자의 에세이 노트에 기록합니다. 회당 90분, 10~30명.</p></li>
+        <li><span class="no">02</span><h3>강사 과정<small>Instructor Course</small></h3><p>원물의 관능(향·맛·수색·여운)을 읽는 법과 블렌딩 노트를 안내하는 법을 익힙니다. 4회 과정, 수료 후 키트 워크숍을 열 수 있습니다.</p></li>
+        <li><span class="no">03</span><h3>기업 워크숍<small>Corporate Workshop</small></h3><p>팀이 함께 자신의 결을 발견하는 시간. 개인 키트 제공, 완성한 블렌딩에 이름을 붙여 서로에게 건넵니다. 60~120분.</p></li>
+      </ul>
+      <div class="duo">
+        <div class="a" style="background-image:url(assets/class.jpg)"></div>
+        <div class="b" style="background-image:url(assets/hands-herbs.jpg)"></div>
+      </div>
+      <ul class="steps">
+        <li><b>01 · Observe</b><h4>관찰</h4><p>재료를 하나씩 천천히 경험해 보세요. 향을 맡고, 맛을 음미하고, 입안에 남는 여운을 느껴보세요.</p></li>
+        <li><b>02 · Steep</b><h4>우림</h4><p>같은 재료라도 우림 시간과 물의 양에 따라 전혀 다른 모습을 보여줍니다. 가장 마음에 들었던 순간을 찾아보세요.</p></li>
+        <li><b>03 · Blend</b><h4>블렌딩</h4><p>조금 더 상큼했으면, 조금 더 깊었으면 하는 작은 생각 하나면 충분합니다. 재료들은 저마다 다른 역할을 가집니다.</p></li>
+        <li><b>04 · Note</b><h4>기록</h4><p>오늘의 블렌딩에 이름을 붙여 보세요. 그 답들이 모여 당신만의 블렌딩이 됩니다.</p></li>
+      </ul>
+      <div class="bigline">취향은 정해지는 것이 아니라, 완성되어 갑니다.<span class="en">Taste is not decided. It is completed, slowly.</span></div>
+      <div class="ctaRow">
+        <a class="cta button-hover" href="mailto:hello@teablendingkit.kr"><span>클래스 문의 · hello@teablendingkit.kr</span></a>
+        <a class="cta light button-hover" href="#" data-open="kit"><span>키트 보기</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div id="about" class="page">
+  <div class="frags" id="aboutFrags"></div>
+  <div class="alogo"><div class="box"><svg viewBox="0 0 100 100"><use href="#emblem"/></svg></div><div class="name">취향의 권리<span class="en">the right to taste</span></div></div>
+  <button class="ulink close" id="aboutClose">Close · 닫기</button>
+  <div class="scroller">
+    <div class="content">
+      <h1 class="split">취향의 권리는 정답 대신, 충분한 여백을 남겨 둡니다.</h1>
+      <div class="para">
+        <p>우리는 모든 사람의 취향이 다름을 인정합니다. 어떤 취향도 더 우월하거나 정답일 수 없습니다. 누군가는 진한 향을 좋아하고, 누군가는 은은한 향을 좋아합니다. 누군가는 익숙함을, 또 다른 누군가는 새로운 경험을 선택합니다.</p>
+        <p>그래서 우리는 정답을 제시하지 않습니다. 대신 충분한 여백을 남겨둡니다. 그 여백 속에서 당신은 스스로의 감각을 발견하고, 자신만의 취향을 만들어갑니다. 우리는 당신의 안목을 믿습니다. 그리고 당신이 선택할 권리를 존중합니다.</p>
+        <p>이 표본실은 티 블렌딩 키트에 담긴 열두 가지 원료의 기록입니다. 여섯은 향을 발견하는 VER.1 아로마 티, 여섯은 곡물과 뿌리로 나만의 로스트를 만드는 VER.2. 어떤 원료가 가장 좋은지, 어떤 블렌딩이 가장 맛있는지 알려드리지 않습니다. 오직 오늘의 당신에게 무엇이 편안한지를 발견해 가는 과정이 있을 뿐입니다.</p>
+      </div>
+      <div class="para" style="margin-top:120px">
+        <p><b>제품 개발 이야기</b></p>
+        <p>수많은 차를 만들며 알게 된 것은 좋은 레시피가 모든 사람에게 같은 레시피는 아니라는 사실이었습니다. 누군가에게 화사한 장미가 다른 사람에게는 강하게 느껴지고, 누군가에게 익숙한 보리의 구수함이 또 다른 사람에게는 새로운 로스트가 됩니다. 어떤 날에는 꽃과 허브의 향이 필요하고, 어떤 날에는 커피처럼 깊고 진한 한 잔이 필요합니다.</p>
+        <p>「취향의 권리」는 그 차이에서 출발했습니다. 전문가가 정해준 맛을 그대로 따르는 제품이 아니라, 원료를 보고 향을 맡고 비율을 바꾸며 자신의 한 잔을 완성하는 경험입니다. 취향은 하나의 답이 아니라, 오늘의 나를 알아가는 과정입니다.</p>
+      </div>
+      <div class="big">Life is an endless blending.<span class="kr">취향은 정해지는 것이 아니라 완성되어 갑니다.</span></div>
+      <div class="bigimg" style="background-image:url(assets/herbarium-desk.jpg)"></div>
+      <table>
+        <tr><td>Brand</td><td>취향의 권리 · The Right to Taste</td></tr>
+        <tr><td>Publisher</td><td>티아포테카 Tea Apothēca — 『취향의 권리: 차와 블렌딩, 그리고 나만의 삶의 배합』</td></tr>
+        <tr><td>Kits</td><td>VER.1 아로마 티 블렌딩 — 레몬밤 · 히비스커스 · 페퍼민트 · 유자 · 장미 · 카모마일<br>VER.2 루트 앤드 그레인 로스트 — 둥굴레 · 찰수수 · 단팥 · 통보리 · 민들레 뿌리 · 보리<br>TWO KIT SET 프리미엄 아로마 로스트 — 12가지 원료로 향과 깊이를 함께 설계</td></tr>
+        <tr><td>Design &amp; Development</td><td>탱탱소프트 — concept design6, 2026 · WebGL (three.js) + GSAP</td></tr>
+        <tr><td>Reference</td><td>Immersive experience grammar inspired by archival web projects; all texts from the Tea Apothēca manuscript.</td></tr>
+      </table>
+      <div class="share" id="share"><button id="shareBtn">이 표본실을 공유하기</button><div class="msg">The link has been copied — 링크가 복사되었습니다</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ENDING ═══ -->
+<div id="ending" class="page">
+  <button class="ulink close" id="endingClose">Close · 닫기</button>
+  <div class="top">The Right to Taste · 우림 시간 3분</div>
+  <div class="mid">
+    <h2>3분이 지났습니다.<br>차가 우러났습니다.</h2>
+    <div class="sub">What does today's cup taste like?<span class="kr">오늘의 한 잔은 어떤 맛인가요. 아래 키트 중 하나를 고르면, 시간을 다시 드립니다.</span></div>
+    <div class="logos">
+      <button data-line="taste" data-kit="ver1"><span class="big">VER.1</span><span class="kr">아로마 티 · 오늘의 향 만들기</span></button>
+      <button data-line="depth" data-kit="ver2"><span class="big">VER.2</span><span class="kr">루트 로스트 · 나만의 로스트 만들기</span></button>
+      <button data-line="set" data-kit="set"><span class="big">SET</span><span class="kr">12가지 원료로 향과 깊이 설계하기</span></button>
+    </div>
+  </div>
+  <div class="bot">타이머는 허브 한 잔을 우리는 평균 시간(3분)입니다. 서두르지 않아도 괜찮습니다.<br>취향은 정해지는 것이 아니라 완성되어 갑니다.</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="emblem" viewBox="0 0 100 100">
+    <path d="M6 5.5 C 30 4, 52 6.5, 94 5 C 95.5 30, 94 62, 94.5 94.5 C 62 96, 34 93.5, 5.5 94.5 C 4.5 64, 6.5 33, 6 5.5 Z" fill="currentColor"/>
+    <path d="M19 8 Q 40 34 52 37 Q 62 30 84 5.5 Q 66 38 68 44 Q 78 46 92 50 Q 76 52 70 58 Q 78 74 84 88 Q 68 76 60 70 Q 54 78 46 90 Q 48 76 50 64 Q 34 58 8 65 Q 30 54 46 50 Q 40 40 19 8 Z" fill="#F4F1EA"/>
+  </symbol>
+</svg>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+/* ═══════════════════ DATA — 열두 가지 재료 (원고 발췌) ═══════════════════ */
+const SPECIES = [
+ {id:'lemon-balm',kr:'레몬밤',en:'Lemon Balm',latin:'Melissa officinalis',line:'taste',note:'청향 · 은은한 단맛 · 기분 좋은 산미',
+  t1:['생잎은 상쾌한 시트러스 향으로 시작해 은은한 풀향으로 마무리됩니다. 건조잎에서는 생잎에서 압도하던 아로마의 순서가 바뀝니다. 푸른잎 허브 특유의 청향이 먼저 다가오고, 뒤이어 은은한 단맛과 스치듯 지나가는 시트러스 향이 이어집니다.','허브의 간략한 관능을 익힌 뒤 천천히 우린 한 잔을 음미하다 보면, 처음에는 미처 알아채지 못했던 숨어 있는 맛과 향이 하나둘 모습을 드러냅니다. 그 모습은 서두르는 사람에게는 쉽게 허락되지 않습니다.'],
+  t2:'그래서 아침이면 가장 먼저 허브를 우리고, 가장 고요한 시간에 첫 잔을 마십니다. 그 짧은 시간은 오늘의 나를 천천히 깨우고, 몸과 마음의 속도를 맞춰 줍니다. 나와 허브만의 아침 인사라고 할 수 있겠습니다.',
+  notes:[['첫인상','첫 모금에서 가장 먼저 느껴진 맛과 향은 무엇이었나요?'],['변화','차를 마시는 동안 어떤 맛과 향이 이어졌나요?'],['여운','삼킨 뒤, 날숨에서 느껴지는 향과 입안에 남은 감각은 어땠나요?'],['오늘의 한 문장','오늘의 차를 한 문장으로 기록해 보세요.']]},
+ {id:'chamomile',kr:'캐모마일',en:'Chamomile',latin:'Matricaria chamomilla',line:'taste',note:'새콤한 사과 · 수수한 꽃 · 꿀',
+  t1:['따뜻하게 우린 뒤 2~3분이 지나 티포트의 뚜껑을 열면, 귀엽게 새콤한 사과 향과 수수한 꽃의 아로마가 코끝을 간지럽힙니다. 빛이 나는 듯 연둣빛이 살짝 감도는 수색은 바라보는 것만으로도 기분을 밝게 합니다.','쓴맛 뒤로 은근한 단맛이 따라오는 것이 본래의 맛이라고 배웠습니다. 하지만 오랫동안 꾸준히 마시다 보면 어느 순간 쓴맛은 거의 느껴지지 않고, 그 안에 숨어 있던 부드러운 맛과 향이 더 선명하게 다가옵니다.'],
+  t2:'한 가지 향으로 설명하기보다, 마시는 동안 여러 향이 차례로 고개를 내미는 허브입니다. 새콤한 사과와 소박한 꽃향 사이로 마른 건초의 따뜻한 향이 스치고, 잘 익은 머스캣을 닮은 향과 꿀처럼 달콤한 뉘앙스도 천천히 모습을 드러냅니다. 익숙한 한 잔 안에도 아직 발견하지 못한 모습이 남아 있습니다.',
+  notes:[['첫인상','티포트의 뚜껑을 열었을 때 가장 먼저 느껴진 향은 무엇이었나요?'],['아로마','사과 · 꽃 · 꿀 · 건초 · 머스캣 · 허브 · 시트러스 — 당신이 느낀 것에 표시해 보세요.'],['수색','오늘의 캐모마일은 어떤 색이었나요?'],['마신 뒤의 나','속이 편안해졌다 · 긴장이 풀렸다 · 마음이 차분해졌다 · 특별한 변화는 없었다']]},
+ {id:'hibiscus',kr:'히비스커스',en:'Hibiscus',latin:'Hibiscus sabdariffa',line:'taste',note:'선명한 산미 · 루비빛 수색 · 자유로움',
+  t1:['히비스커스는 우릴수록 신맛이 점점 선명해집니다. 그래서 블렌딩할 때는 히비스커스를 주연으로 사용할 것인지, 조연으로 사용할 것인지 먼저 결정해야 합니다. 같은 허브라도 그 역할에 따라 블렌드의 분위기가 완전히 달라집니다.','강한 신맛 때문에 처음에는 아로마를 찾아내기가 쉽지 않습니다. 분명 꽃향이 느껴지지만, 흔히 떠올리는 부드럽고 달콤한 꽃향과는 결이 달라 쉽게 꽃향으로 인식하지 못하기도 합니다.'],
+  t2:'코로만 향을 맡기보다 입안에서 천천히 음미하고, 삼킨 뒤 코와 입을 통해 흘러나오는 날숨에 조금 더 집중해 보세요. 그때 비로소 히비스커스가 숨겨 두었던 또 다른 얼굴을 만날 수 있습니다. 어디에서나 자신의 모습을 있는 그대로 드러낼 줄 아는, 솔직하고 매력적인 허브입니다.',
+  notes:[['사용량','¼ · ½ · ¾ · 1 티스푼'],['신맛의 강도','매우 약함 · 약함 · 적당함 · 강함 · 매우 강함'],['오늘의 역할','주연이었다 · 조연이었다 · 다른 허브를 돋보이게 해 주었다'],['수색','연한 분홍 · 루비 레드 · 와인빛 · 자줏빛']]},
+ {id:'peppermint',kr:'페퍼민트',en:'Peppermint',latin:'Mentha piperita',line:'taste',note:'시원한 멘톨 · 맑음 · 깊은 숨',
+  t1:['처음에는 시원한 멘톨 향이 가장 먼저 다가옵니다. 뒤이어 은은한 단맛과 깨끗한 허브 향이 입안을 맑게 정리해 줍니다. 뜨거운 물을 만나면 시원함만 남을 것 같지만 의외로 부드럽고 달큰한 면이 있습니다.','많은 사람들이 상쾌함을 먼저 생각하지만, 천천히 마셔보면 이 허브가 가진 가장 큰 매력은 ‘맑음’에 있습니다. 복잡했던 생각들이 잠시 멈추고, 답답했던 마음에 바람이 한 번 지나가는 느낌이 듭니다.'],
+  t2:'가끔은 몸보다 생각이 먼저 지칠 때가 있습니다. 그럴 때 페퍼민트를 찾습니다. 시원한 향을 맡으며 깊게 숨을 들이마시다 보면, 생각보다 많은 것들이 조금씩 정리되기 시작합니다. 무엇을 더 해야 하는지가 아니라, 무엇을 내려놓아야 하는지를 알려주는 허브입니다.',
+  notes:[['우려내는 동안','따뜻한 수증기와 함께 올라오는 향을 천천히 들이마셔 보세요. 어떤 느낌이 드셨나요?'],['마신 뒤의 나','생각이 맑아졌다 · 숨이 편안해졌다 · 몸이 가벼워졌다 · 기분이 상쾌해졌다'],['떠오른 장면','사람 · 장소 · 계절 · 추억'],['오늘의 한 문장','']]},
+ {id:'yuza',kr:'유자',en:'Yuza',latin:'Citrus junos',line:'taste',note:'느린 재료 · 기다림 · 깊어지는 향',
+  t1:['유자는 생각보다 느린 재료입니다. 다른 허브들보다 조금 더 긴 시간을 필요로 합니다. 따뜻한 물을 만나고도 금세 자신의 향과 맛을 모두 보여주지 않습니다. 천천히 우러나며 시간이 지날수록 더 깊고 풍부한 향을 내어줍니다.','그래서 유자를 마실 때는 조금 기다려 보기를 권합니다. 첫 한 모금의 인상도 좋지만, 몇 분의 시간을 더한 뒤 마시는 유자는 전혀 다른 모습을 보여줍니다. 이번 유자는 껍질뿐만 아니라 과육까지 함께 담았습니다.'],
+  t2:'유자를 마시는 시간은 기다림을 경험하는 시간인지도 모르겠습니다. 따뜻한 물 위로 떠오르는 과육과 껍질을 바라보고, 천천히 향을 맡으며 시간을 보내다 보면 어느새 찻잔 안에서 유자가 가장 좋은 모습으로 피어나고 있습니다. 오늘은 조금 서둘러 마시지 않아도 좋습니다.',
+  notes:[['우리는 시간','1분 · 2분 · 3분 · 4분 · 5분 — 가장 마음에 들었던 우림 시간은 몇 분이었나요?'],['가장 크게 변한 것','향 · 단맛 · 산미 · 풍미 · 목 넘김'],['떠오른 장면','사람 · 장소 · 계절 · 음식 · 추억'],['오늘의 한 문장','']]},
+ {id:'rose',kr:'장미',en:'Rose',latin:'Rosa damascena',line:'taste',note:'은은한 꽃향 · 귀엽게 새콤 · 조연의 품격',
+  t1:['장미라고 하면 짙고 화려한 향이 먼저 떠오릅니다. 향수나 화장품처럼 에센셜 오일만을 농축한 장미향에 익숙한 탓입니다. 그래서 처음 건조 장미를 마주하면 조금 의외일지도 모릅니다. 생각보다 향은 강하지 않습니다.','코끝을 간지럽히듯 은은하게 머물고, 맛은 귀엽게 새콤합니다. 화려하게 자신을 드러내기보다 다른 재료들과 자연스럽게 어우러지며 전체의 분위기를 만들어 줍니다.'],
+  t2:'장미는 블렌딩에서 참 재미있는 재료입니다. 주인공처럼 앞에 나서지는 않지만, 없으면 왠지 허전합니다. 다른 재료들의 향과 맛을 조금 더 풍성하게 만들어 주고, 블렌딩에 깊이와 여운을 더해줍니다. 그래서 장미를 주연 못지않은 조연이라고 생각합니다.',
+  notes:[['예상과 실제','생각했던 장미의 향과 실제 느껴지는 향은 같았나요?'],['은은한 향','매우 잘 느껴졌다 · 은은하게 느껴졌다 · 잘 느껴지지 않았다'],['새콤한 맛','매우 잘 느껴졌다 · 은은하게 느껴졌다 · 잘 느껴지지 않았다'],['오늘의 한 문장','']]},
+ {id:'sorghum',kr:'찰수수',en:'Glutinous Sorghum',latin:'Sorghum bicolor',line:'depth',note:'담백하고 순한 곡물의 구수함 · 로스트를 받쳐주는 바탕',
+  t1:['찰수수를 따뜻하게 우리면 담백하고 순한 곡물의 구수함이 먼저 올라옵니다. 튀지 않고 조용한 향이라 처음에는 존재감이 약하다고 느낄 수 있지만, 그 담백함이 있어야 다른 원료들이 제자리를 찾습니다.','블렌딩에서 찰수수는 강한 뿌리 원료를 안정적으로 받쳐 주는 바탕입니다. 민들레 뿌리의 깊은 볶음 향과 단팥의 고소함 사이를 부드럽게 이어 주어, 진하지만 거칠지 않은 로스트가 됩니다.'],
+  t2:'브라질리언 로스트에서는 민들레 뿌리 2 : 단팥 2 : 찰수수 1 : 둥굴레 0.5의 비율로 단팥과 함께 부드러운 구수함을 만들고, 어스 밸런스에서는 뿌리의 깊이와 곡물의 담백함이 균형을 이루게 합니다. 다만 많이 넣으면 로스트의 개성이 약해질 수 있으니, 반 스푼씩 조절해 보세요.',
+  notes:[['담백함','담백하고 순한 곡물의 구수함이 느껴졌나요?'],['역할','뿌리 원료의 강한 향을 얼마나 부드럽게 받쳐 주었나요?'],['어울릴 재료','히비스커스·유자와 만나면 루비 그레인, 민들레 뿌리·단팥과 만나면 브라질리언 로스트가 됩니다.'],['오늘의 한 문장','']]},
+ {id:'dandelion-root',kr:'민들레 뿌리',en:'Dandelion Root',latin:'Taraxacum officinale',line:'depth',note:'흙 · 흑당 · 우디 · 중심을 잡는 허브',
+  t1:['민들레 뿌리를 따뜻하게 우리면 가장 먼저 흙을 닮은 향이 올라옵니다. 이어 흑당을 떠올리게 하는 깊은 단맛과 우디한 향, 구수함이 천천히 퍼집니다. 조금 더 집중해 보면 은은한 바닐라와 볶은 커피, 카카오를 닮은 향도 느껴집니다.','첫맛은 구수하지만, 뒤이어 특유의 쌉싸름함이 입안을 차분하게 정리해 줍니다. 그 쓴맛은 거칠거나 부담스럽기보다 블렌드 전체의 균형을 잡아주는 역할을 합니다.'],
+  t2:'인테리어에서 공간의 분위기를 완성하는 고재 가구처럼, 민들레 뿌리는 화려하지 않아도 존재감이 분명합니다. 블렌드 전체를 안정감 있게 만들어 주는 허브입니다. 누군가에게는 조금 투박하게 느껴질 수도 있지만, 나무와 흙을 닮은 향은 오래 머물고 싶은 향입니다.',
+  notes:[['아로마','흙향 · 흑당향 · 우디함 · 구수함 · 바닐라 · 커피 · 카카오 · 짭조름함'],['쓴맛','거의 없음 · 은은함 · 적당함 · 꽤 강함'],['오늘의 역할','깊이를 더했다 · 중심을 잡았다 · 수색에 무게감을 더했다 · 단독으로도 충분했다'],['오늘의 한 문장','']]},
+ {id:'whole-barley',kr:'통보리',en:'Whole Barley',latin:'Hordeum vulgare · whole grain',line:'depth',note:'맑고 담백한 볶은 곡물 향 · 깨끗한 구수함과 긴 여운',
+  t1:['통보리는 분쇄하지 않은 보리를 통째로 볶아 사용한 원료입니다. 같은 보리라도 알갱이가 살아 있으면 향이 더 맑고 담백해지고, 우려낸 뒤의 여운이 깨끗하게 오래 이어집니다.','골든 그레인에서는 둥굴레의 둥근 풍미에 통보리의 맑은 구수함을 더해 쓴맛이 강하지 않은 순한 로스트를 만들고, 선셋 그레인에서는 보리와 서로 다른 구수함을 겹쳐 저녁에 어울리는 고요한 여운을 만듭니다.'],
+  t2:'통보리는 로스트에 깨끗한 구수함과 긴 여운을 더하는 원료입니다. 장미·카모마일과 만나면 로즈 그레인, 페퍼민트·레몬밤과 만나면 민트 로스트가 되어 꽃과 허브의 향을 곡물의 여운 위에 올려 줍니다. 다만 많이 넣으면 과일·꽃향이 약해질 수 있으니 향을 중심에 두고 싶은 날에는 양을 줄여 보세요.',
+  notes:[['맑은 구수함','보리와 비교해 어떤 점이 다르게 느껴졌나요?'],['여운','삼킨 뒤 곡물의 여운이 얼마나 길게 이어졌나요?'],['어울릴 재료','장미·카모마일(로즈 그레인) · 페퍼민트·레몬밤(민트 로스트) · 둥굴레·단팥(골든 그레인)'],['오늘의 한 문장','']]},
+ {id:'barley',kr:'보리',en:'Barley',latin:'Hordeum vulgare',line:'depth',note:'담백함 · 가장 많은 기억을 담은 재료',
+  t1:['보리라고 하면 아주 익숙한 맛이 먼저 떠오릅니다. 한여름 물 대신 마시던 차가운 보리차, 밥을 말아 먹던 기억, 집집마다 끓여 놓았던 따뜻한 보리차처럼 말입니다. 그래서 처음 보리를 하나의 재료로 마주하면 뜻밖의 인상을 받을 수도 있습니다.','생각보다 풍미가 깊습니다. 구수하고 담백한 맛이 오래 남고, 익숙한 맛이라고 생각했던 보리는 천천히 음미해 보면 생각보다 다양한 모습들을 보여줍니다.'],
+  t2:'보리는 가장 많은 기억을 담고 있는 재료입니다. 누군가에게는 엄마가 끓여주던 보리차의 기억일 수도 있고, 누군가에게는 할머니 집 냉장고에 늘 담겨 있던 보리차의 기억일 수도 있습니다. 그런 기억들이 하나씩 더해져 오늘의 블렌딩은 조금 더 특별해집니다.',
+  notes:[['평소와의 차이','평소 마시던 보리차와 어떤 점이 다르게 느껴졌나요?'],['담백한 풍미','매우 잘 느껴졌다 · 은은하게 느껴졌다 · 잘 느껴지지 않았다'],['떠오른 기억','보리를 마시며 어떤 기억이 떠올랐나요?'],['오늘의 한 문장','']]},
+ {id:'red-bean',kr:'팥',en:'Red Bean',latin:'Vigna angularis',line:'depth',note:'깊고 구수함 · 허벌 커피 · 포만감',
+  t1:['팥은 너무 익숙한 재료로 여겨지곤 합니다. 팥빙수와 붕어빵, 팥죽처럼 늘 달콤한 모습으로만 만나왔기 때문입니다. 그래서 처음 진하게 우려낸 팥을 마시면 조금 낯설게 느껴질 수 있습니다.','그러나 생각보다 깊고 구수합니다. 천천히 우려낸 팥은 부드러운 풍미와 은은한 단맛을 가지고 있고, 마치 따뜻한 로스트 음료를 마시는 듯한 편안함을 줍니다. 자극적이지 않으면서도 충분한 만족감을 느끼게 해줍니다.'],
+  t2:'거의 매일 아침 운동을 마치고 팥 10g을 진하게 우려 마십니다. 500ml 정도의 물에 두 번까지 우려 마시는데, 어느새 커피처럼 즐기는 나만의 로스트가 되었습니다. 팥은 진하게 우려낼수록 더욱 매력적인 재료입니다. 오늘은 조금 진하게 우려 천천히 음미해 보길 권합니다.',
+  notes:[['사용량','5g · 7g · 10g / 물 200 · 300 · 500ml / 3분 · 5분 · 7분 · 10분'],['포만감','매우 만족스러웠다 · 어느 정도 느껴졌다 · 잘 느껴지지 않았다'],['커피와 비교','커피와 비교했을 때 어떤 차이가 느껴졌나요?'],['오늘의 팥','오늘의 팥은 당신에게 어떤 한 잔이었나요?']]},
+ {id:'solomons-seal',kr:'둥굴레',en:"Solomon's Seal",latin:'Polygonatum odoratum',line:'depth',note:'짭조름한 감칠맛 · 바디감 · 든든한 조연',
+  t1:['커피를 좋아하는 사람이라면 ‘짭조름한 감칠맛’이라는 표현이 낯설지 않을 것입니다. 좋은 커피를 마셨을 때 느껴지는 풍부한 바디감과 감칠맛은 생각보다 중요한 관능 요소 중 하나이기 때문입니다. 그런데 그 맛을 둥굴레에서도 느낄 수 있습니다.','둥굴레는 생각보다 진한 풍미를 가진 재료입니다. 적은 양만 사용해도 충분히 깊은 맛이 우러나고, 은은한 짭조름함과 구수한 감칠맛이 입안에 오래 남습니다.'],
+  t2:'블렌딩에서는 전체적인 풍미를 더욱 풍성하게 만들어 주는 역할을 합니다. 화려한 향을 더하는 재료는 아니지만, 맛의 중심을 잡아주고 블렌딩에 깊이와 바디감을 만들어 줍니다. 다른 재료들을 조금 더 맛있게 만들어 주는 든든한 조연 같은 재료입니다.',
+  notes:[['감칠맛','짭조름한 감칠맛이 느껴졌나요?'],['바디감','커피의 바디감을 떠올리게 하는 풍미가 느껴졌나요?'],['어울릴 재료','어떤 재료와 블렌딩하면 잘 어울릴 것 같나요?'],['오늘의 둥굴레','당신에게 어떤 맛으로 기억되나요?']]}
+];
+/* 원료별 역할 (설계서 §5 · §10) */
+const ROLES={
+ 'lemon-balm':{flavor:'레몬과 풋잎을 떠올리게 하는 산뜻함',role:'로스트의 무게를 가볍게 열어주고 첫 향을 밝게 만듦',caution:'많으면 풀잎 향이 강해질 수 있음',cross:'가벼운 허브 향'},
+ 'hibiscus':{flavor:'붉은 과일을 연상시키는 선명한 산미',role:'수색과 산미를 변화시킴',caution:'많으면 로스트의 깊이를 덮을 수 있음',cross:'붉은 과일과 산미'},
+ 'peppermint':{flavor:'차갑고 깨끗한 상쾌함',role:'무거운 로스트를 깔끔하게 전환',caution:'향이 강하므로 소량부터 사용',cross:'상쾌한 향'},
+ 'yuza':{flavor:'밝은 감귤 껍질 향과 은은한 쌉싸름함',role:'로스트에 과일 계열 향을 더하고 첫 향을 선명하게 만듦',caution:'민들레 뿌리와 함께 많아지면 쓴맛이 겹칠 수 있음',cross:'밝은 과일 향'},
+ 'rose':{flavor:'우아하고 풍성한 꽃향',role:'로스트에 고급스럽고 긴 아로마를 더함',caution:'과하면 향수처럼 느껴질 수 있음',cross:'우아한 꽃향'},
+ 'chamomile':{flavor:'사과와 꿀을 연상시키는 부드러운 향',role:'강한 로스트와 꽃·과일 향 사이를 연결',caution:'많으면 전체 인상이 지나치게 부드러워질 수 있음',cross:'부드러운 과일·꽃향'},
+ 'solomons-seal':{flavor:'부드러운 볶은 뿌리와 은은한 단맛의 인상',role:'로스트의 바디감을 둥글게 만들고 원료 사이를 연결',caution:'많으면 질감이 무거워질 수 있음',cross:'바디감'},
+ 'sorghum':{flavor:'담백하고 순한 곡물의 구수함',role:'강한 뿌리 원료를 안정적으로 받쳐줌',caution:'많으면 로스트의 개성이 약해질 수 있음',cross:'담백한 곡물 맛'},
+ 'red-bean':{flavor:'볶은 팥의 고소하고 부드러운 여운',role:'민들레 뿌리의 쓴맛을 둥글게 정돈',caution:'많으면 팥의 인상이 중심이 될 수 있음',cross:'부드러운 고소함'},
+ 'whole-barley':{flavor:'맑고 담백한 볶은 곡물 향 (분쇄하지 않은 보리를 통째로)',role:'로스트에 깨끗한 구수함과 긴 여운을 더함',caution:'많으면 과일·꽃향이 약해질 수 있음',cross:'맑은 구수함'},
+ 'dandelion-root':{flavor:'흙·나무·커피·카카오를 연상시키는 깊은 볶음 향',role:'VER.2의 로스트 풍미와 바디감을 만드는 중심 원료',caution:'많으면 쓴맛과 흙향이 강해질 수 있음',cross:'로스트 중심'},
+ 'barley':{flavor:'익숙하고 선명한 볶은 곡물 향',role:'낯선 뿌리 원료를 친숙하게 연결',caution:'많으면 일반적인 보리차와 비슷해질 수 있음',cross:'친숙한 볶은 향'}
+};
+SPECIES.forEach(sp=>Object.assign(sp,ROLES[sp.id]||{}));
+const LINE={taste:{no:'VER.1',name:'아로마 티 블렌딩',tag:'향을 발견하는 키트'},depth:{no:'VER.2',name:'루트 앤드 그레인 로스트',tag:'나만의 로스트를 만드는 키트'}};
+const UCOLOR={visual:'#92A878',names:'#5B8CA9',taste:'#D6C4A0'};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t;
+const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+const isMobile=()=>innerWidth<768;
+const imgOf=(s,kind)=>`assets/${kind==='color'?'color':'cards'}/${s.id}.jpg`;
+const Q=new URLSearchParams(location.search); const FAST=Q.has('fast'); if(FAST) document.documentElement.classList.add('fast');
+
+gsap.ticker.lagSmoothing(0);   // 저사양·스로틀 환경에서도 실시간 기준으로 진행
+/* 이징 사전 (레퍼런스 CustomEase 실측값) */
+if(window.CustomEase){ gsap.registerPlugin(CustomEase);
+  CustomEase.create('io','0.66,0,0.34,1'); CustomEase.create('out','0.32,0.94,0.60,1');
+  CustomEase.create('posIn','0.4,0,0.1,1'); CustomEase.create('posOut','0.9,0,0.4,1'); CustomEase.create('zoomProject','0.5,0,0.3,1'); }
+const E={io:window.CustomEase?'io':'power2.inOut',out:window.CustomEase?'out':'power3.out',posIn:window.CustomEase?'posIn':'power2.inOut',posOut:window.CustomEase?'posOut':'power2.out',zoom:window.CustomEase?'zoomProject':'power2.inOut'};
+
+/* ═══════════════════ 게이트 파편 (DOM) ═══════════════════ */
+function makeFrags(container,n,spread){
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div'); d.className='frag';
+    const s=SPECIES[i%SPECIES.length];
+    d.style.backgroundImage=`url(${imgOf(s,i%3?'cards':'color')})`;
+    const r=(a,b)=>a+Math.random()*(b-a);
+    d.style.setProperty('--x',r(-spread,spread)+'px'); d.style.setProperty('--y',r(-spread*.6,spread*.6)+'px'); d.style.setProperty('--z',r(-500,220)+'px');
+    d.style.setProperty('--rx',r(-40,40)+'deg'); d.style.setProperty('--ry',r(-50,50)+'deg'); d.style.setProperty('--rz',r(-30,30)+'deg');
+    d.style.setProperty('--dx',r(-40,40)+'px'); d.style.setProperty('--dy',r(-60,60)+'px');
+    d.style.setProperty('--dur',r(10,22)+'s'); d.style.setProperty('--dl',r(-20,0)+'s');
+    d.style.animationDelay=`${r(0,1.4)}s, ${r(-20,0)}s`;
+    const sc=r(.5,1.3); d.style.width=64*sc+'px'; d.style.height=104*sc+'px';
+    container.appendChild(d);
+  }
+}
+makeFrags($('#gateFrags'),42,Math.max(innerWidth,900)*.62);
+makeFrags($('#aboutFrags'),26,Math.max(innerWidth,900)*.6);
+
+/* ═══════════════════ WEBGL WORLD ═══════════════════ */
+const wrap=$('#canvas-wrapper');
+/* 소프트웨어 렌더러(SwiftShader 등) 감지 → 해상도·AA·파티클 수 자동 조정 */
+const SOFT=(()=>{ try{ const c=document.createElement('canvas'); const gl=c.getContext('webgl2')||c.getContext('webgl'); const ext=gl.getExtension('WEBGL_debug_renderer_info'); const r=ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):''; return /swiftshader|llvmpipe|software|mesa offscreen/i.test(r); }catch(e){ return false; } })();
+const renderer=new THREE.WebGLRenderer({antialias:!SOFT,alpha:false,powerPreference:'high-performance'});
+let PR=SOFT?1:Math.min(devicePixelRatio,1.75); renderer.setPixelRatio(PR); renderer.setClearColor(0xffffff,1); wrap.appendChild(renderer.domElement);
+/* 적응형 해상도: 평균 프레임이 느리면 픽셀비를 낮춘다 */
+const PERF={acc:0,n:0}; function adapt(dt){ PERF.acc+=dt; PERF.n++; if(PERF.n<90) return; const avg=PERF.acc/PERF.n; PERF.acc=0; PERF.n=0;
+  if(avg>.045&&PR>.75){ PR=Math.max(.75,PR-.25); renderer.setPixelRatio(PR); } }
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.5,100); camera.position.set(0,0,0);
+const wrapper=new THREE.Group(); scene.add(wrapper);          // 유니버스 전환 시 회전
+const ringG=new THREE.Group(); wrapper.add(ringG);            // 타일 링(원통)
+const V={R:10.5, tileH:1.7, gap:.62, rowGap:2.45, camD:5.7};
+const ASPECT=412/670;
+function camD(){ return isMobile()? 8.2 : (innerWidth/innerHeight<1.3? 6.6 : V.camD); }
+function ringZ(){ return V.R - camD(); }                       // 링 중심 z (카메라 뒤)
+ringG.position.z=ringZ();
+
+/* 셰이더 타일 */
+const tileVert=`varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`;
+const PAD=1.5;   // 평면은 이미지보다 1.5배 크게 — 물결 변형 시 외곽선이 바깥으로 휘어질 여백
+const tileFrag=`precision highp float; uniform sampler2D map; uniform vec3 uTint; uniform float uTintInf,uOpacity,uWhite,uSat,uDeform; varying vec2 vUv;
+ vec3 sat(vec3 c,float s){ float l=dot(c,vec3(.2125,.7154,.0721)); return mix(vec3(l),c,s); }
+ void main(){
+  vec2 st=(vUv-.5)*1.5+.5;                                                 // 이미지 uv (0..1 = 이미지 영역)
+  float p=uDeform;                                                          // 0→1 : 물결이 우하단→좌상단으로 통과
+  vec2 fl=vec2(st.x,1.-st.y);                                             // 아틀라스 좌표계(위가 0)로 뒤집어 레퍼런스와 동일하게
+  float wave=smoothstep(p+.6,0.,length(vec2(p)*3.-vec2(1.-fl.x,fl.y)))*p;  // 레퍼런스 deformationBarrelScale (우상단에서 시작)
+  vec2 fw=fl*(1.-wave*.3)+wave*.3; vec2 suv=vec2(fw.x,1.-fw.y);
+  float a=.006;
+  float alpha=smoothstep(1.,1.-a,fl.x+wave*.3)*smoothstep(0.,a,fl.x-wave*.3)*smoothstep(1.,1.-a,fl.y+wave*.3)*smoothstep(0.,a,fl.y-wave*.3);
+  vec4 c=texture2D(map,clamp(suv,0.,1.)); c.rgb=sat(c.rgb,uSat);
+  float g=uTintInf*smoothstep(-0.6,1.0,st.x); c.rgb=mix(c.rgb,c.rgb*uTint*1.12,g*.45);
+  c.rgb=mix(c.rgb,vec3(1.),smoothstep(.05,.2,wave)*(smoothstep(1.,0.,length(c.rgb))*.3+.7)*.5);   // 물결이 지나간 자리 하얗게
+  c.rgb=mix(c.rgb,vec3(1.),uWhite);
+  gl_FragColor=vec4(c.rgb,alpha*uOpacity); }`;
+const geo=new THREE.PlaneGeometry(1,1);
+const U={opacity:0,globe:0,scatter:1,openOther:0,white:0,tintInf:0,camZ:12,zoom:0};
+const TEX={cards:{},color:{}};
+const tiles=[];                       // {mesh, s, row, i, id, seed, hover}
+let MODE='visual';
+function makeMat(tex){ return new THREE.ShaderMaterial({uniforms:{map:{value:tex},uTint:{value:new THREE.Color(UCOLOR.visual)},uTintInf:{value:0},uOpacity:{value:1},uWhite:{value:0},uSat:{value:1},uDeform:{value:0}},vertexShader:tileVert,fragmentShader:tileFrag,transparent:true,side:THREE.DoubleSide,depthWrite:false}); }
+function buildTiles(){
+  // 3열 × 24 (12종 × 2회 반복) — 모든 모드가 같은 메시를 재사용
+  for(let r=0;r<3;r++) for(let k=0;k<2;k++) SPECIES.forEach((s,j)=>{
+    const i=j+k*SPECIES.length, id=(j+r*4)%SPECIES.length;   // 열마다 시작점 어긋나게
+    const sp=SPECIES[id];
+    const m=new THREE.Mesh(geo,makeMat(TEX.cards[sp.id])); m.userData={s:sp,row:r,i,id,seed:Math.random(),hover:0,vis:true};
+    m.material.uniforms.uSat.value=1+Math.sin(id*1210)*.08;
+    ringG.add(m); tiles.push(m);
+  });
+}
+/* 배경 유체(마블) 플레인 — 상세 페이지 */
+const bgFrag=`precision highp float; uniform float uTime,uAlpha; uniform vec2 uOffset,uCover; uniform vec3 uColor; uniform sampler2D uTex; varying vec2 vUv;
+ void main(){ vec2 uv=(vUv-.5)*uCover+.5; vec3 c=texture2D(uTex,uv).rgb;               // 유럽 미장 텍스처 (cover)
+  c=mix(c,c*mix(vec3(1.),uColor,.06),1.);                                               // 유니버스 색 아주 살짝
+  gl_FragColor=vec4(c,uAlpha); }`;
+const plasterTex=new THREE.TextureLoader().load('assets/plaster-eu-2.jpg',t=>{ t.colorSpace=THREE.NoColorSpace; t.minFilter=THREE.LinearFilter; PL.aspect=t.image.width/t.image.height; setCover(); });
+const PL={aspect:16/9};
+const bgMat=new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uAlpha:{value:0},uOffset:{value:new THREE.Vector2()},uCover:{value:new THREE.Vector2(1,1)},uColor:{value:new THREE.Color(UCOLOR.visual)},uTex:{value:plasterTex}},vertexShader:tileVert,fragmentShader:bgFrag,transparent:true,depthWrite:false});
+function setCover(){ const sa=innerWidth/innerHeight, ta=PL.aspect; bgMat.uniforms.uCover.value.set(sa>ta?1:sa/ta, sa>ta?ta/sa:1); }
+const bg=new THREE.Mesh(new THREE.PlaneGeometry(2,2),bgMat); bg.frustumCulled=false; bg.renderOrder=-10; scene.add(bg);
+bg.material.onBeforeCompile=()=>{}; // (풀스크린 쿼드: 아래 커스텀 정점 셰이더로 교체)
+bgMat.vertexShader=`varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.999,1.); }`;
+
+/* 다이아몬드 파티클 (3D) */
+const diamonds=[]; const dGeo=new THREE.PlaneGeometry(.11,.11);
+for(let i=0;i<(SOFT?18:40);i++){ const m=new THREE.Mesh(dGeo,new THREE.MeshBasicMaterial({color:new THREE.Color(UCOLOR.visual).lerp(new THREE.Color('#ffffff'),.55),transparent:true,opacity:.7,depthWrite:false}));
+  m.rotation.z=Math.PI/4; m.userData={x:(Math.random()*2-1)*7,y:(Math.random()*2-1)*4.2,z:-2.5-Math.random()*9,p:Math.random()*2-1,ph:Math.random()*6.28};
+  scene.add(m); diamonds.push(m); }
+
+/* ─── 입력 (가상 스크롤: target*=.15 감쇠 + 프레임 독립 lerp) ─── */
+const IN={target:{x:0,y:0},smooth:{x:0,y:0},vel:0,mouse:{x:0,y:0},mouseS:{x:0,y:0},dragging:false,dragMoved:false,entered:false};
+const rows=[0,0,0]; let rowY=0, rowsY=0;      // 열별 각도 오프셋(rad) · rowsY = 아카이브 세로 오프셋
+const PAR={visual:[.8,1,.6],names:[1,1,1],taste:[.7,1,.7]};
+function stepAngle(){ const w=V.tileH*ASPECT; return (w+V.gap)/V.R; }   // 인접 타일 각도
+let steerY=0;                                                   // 아카이브 세로 조향 목표 (마우스 Y 위치 / 터치 드래그)
+function onWheel(e){ if(!IN.entered||overlayOpen()) return; const d=e.deltaY*.001, dx=e.deltaX*.001;
+  if(MODE==='names') IN.target.y-=d; else IN.target.x-=(d+dx);     // 휠 = 좌우 이동만
+  $('#scrollHint').classList.add('hide'); }
+addEventListener('wheel',onWheel,{passive:true});
+let pd=null;
+wrap.addEventListener('pointerdown',e=>{ if(!IN.entered||overlayOpen())return; pd={x:e.clientX,y:e.clientY}; IN.dragging=true; IN.dragMoved=false; });
+addEventListener('pointermove',e=>{
+  IN.mouse.x=(e.clientX/innerWidth-.5)*2; IN.mouse.y=(e.clientY/innerHeight-.5)*2; cursorMove(e.clientX,e.clientY); pointerPx.set((e.clientX/innerWidth)*2-1,-(e.clientY/innerHeight)*2+1); pointerDirty=true;
+  if(e.pointerType!=='touch'&&!pd) steerY=-IN.mouse.y*V.rowGap*.95;   // 마우스가 위로 가면 윗열, 아래로 가면 아랫열이 중앙으로
+  if(pd){ const dx=e.clientX-pd.x, dy=e.clientY-pd.y; if(Math.abs(dx)+Math.abs(dy)>4) IN.dragMoved=true;
+    const k=(e.pointerType==='touch'?.0022:.0014);
+    if(MODE==='names') IN.target.y+=dy*k*.6; else { IN.target.x+=dx*k*.6; if(e.pointerType==='touch') steerY=clamp(steerY+dy*.006,-V.rowGap*.95,V.rowGap*.95); } pd={x:e.clientX,y:e.clientY}; $('#scrollHint').classList.add('hide'); }
+});
+addEventListener('pointerup',()=>{ pd=null; IN.dragging=false; setTimeout(()=>IN.dragMoved=false,60); });
+addEventListener('pointercancel',()=>{ pd=null; IN.dragging=false; });
+addEventListener('keydown',e=>{ if(e.key==='Escape'){closeAll();} if(overlayOpen())return;
+  if(e.key==='ArrowRight') MODE==='names'?IN.target.y-=.08:IN.target.x-=.08;
+  if(e.key==='ArrowLeft') MODE==='names'?IN.target.y+=.08:IN.target.x+=.08;
+  if(e.key==='ArrowDown') steerY=clamp(steerY-V.rowGap*.5,-V.rowGap*.95,V.rowGap*.95); if(e.key==='ArrowUp') steerY=clamp(steerY+V.rowGap*.5,-V.rowGap*.95,V.rowGap*.95); });
+
+/* ─── 피킹 ─── */
+const ray=new THREE.Raycaster(), pointerPx=new THREE.Vector2(-9,-9); let pointerDirty=false, hovered=null;
+wrap.addEventListener('click',e=>{ if(!IN.entered||overlayOpen()||IN.dragMoved) return;
+  // 터치(hover 없음)에서도 열리도록 클릭 지점에서 직접 피킹
+  pointerPx.set((e.clientX/innerWidth)*2-1,-(e.clientY/innerHeight)*2+1); ray.setFromCamera(pointerPx,camera);
+  const hit=ray.intersectObjects(tiles.filter(t=>t.visible),false)[0]; const target=hit?hit.object:hovered; if(target) openProject(target.userData.s,target); });
+
+/* ─── 프레임 ─── */
+let last=0; const tmpV=new THREE.Vector3();
+function frame(now){
+  const dt=Math.min(.1,(now-(last||now))/1000); last=now;
+  // 입력 감쇠 + lerp
+  IN.smooth.x=lerp(IN.smooth.x,IN.target.x,clamp(dt*(IN.dragging?4:1.5),0,1)); IN.smooth.y=lerp(IN.smooth.y,IN.target.y,clamp(dt*(IN.dragging?4:1.5),0,1));
+  IN.target.x*=Math.pow(.15,dt*4); IN.target.y*=Math.pow(.15,dt*4);
+  const par=PAR[MODE];
+  for(let r=0;r<3;r++) rows[r]+=IN.smooth.x*par[r]*dt*60*.08;
+  rowY+=IN.smooth.y*dt*60*.08;
+  const prevRowsY=rowsY; if(MODE!=='names'){ rowsY=lerp(rowsY,steerY,clamp(dt*2.2,0,1)); } const vY=Math.abs(rowsY-prevRowsY)/Math.max(dt,.001);   // 마우스 Y 조향 → 열 전체가 위아래로
+  IN.vel=lerp(IN.vel,clamp(IN.smooth.x*700,-10,10),clamp(.08*.7*dt*60,0,1));
+  IN.mouseS.x=lerp(IN.mouseS.x,IN.mouse.x,clamp(dt*.35*2.5,0,1)); IN.mouseS.y=lerp(IN.mouseS.y,IN.mouse.y,clamp(dt*.35*2.5,0,1));
+  // 카메라: 마우스 패럴랙스 + 전환 줌
+  const inten=P.open?.5:5;
+  camera.rotation.x= IN.mouseS.y*inten*.05*.4*(1-U.zoom); camera.rotation.y=-IN.mouseS.x*inten*.05*.4*(1-U.zoom);
+  camera.position.z=U.camZ;
+  ringG.position.z=ringZ();
+  // 타일 배치
+  const step=stepAngle(), N=SPECIES.length*2, L=step*N;
+  tiles.forEach(m=>{
+    const d=m.userData; if(d.follow!=null) return;                  // 열린 프로젝트 타일은 별도 제어
+    let show=true, x=0,y=0,z=0, rx=0,ry=0, sc=1;
+    if(MODE==='visual'){
+      let th=((d.i*step+rows[d.row])%L+L)%L-L/2;                    // -L/2..L/2 (0 = 정면)
+      th+=IN.vel*Math.abs(Math.sin(d.id*86))*.01*.35;              // 속도에 따른 타일별 흔들림
+      let yy=(d.row-1)*V.rowGap+rowsY; let R=V.R+Math.min(1.2,vY*.12);   // 세로 이동 중에는 링이 살짝 멀어짐
+      yy+=Math.sin(d.id*150)*5*U.globe*.35; R-=Math.abs(yy)*.5*U.globe; // globe formation
+      const theta=Math.PI+th;
+      x=R*Math.sin(theta); z=R*Math.cos(theta)+Math.sin(d.id*181)*2*U.scatter; y=yy; ry=theta+Math.PI; sc=1;
+      if(Math.cos(theta)>-.35) show=false;
+    } else if(MODE==='names'){
+      if(d.row!==1||d.i>=SPECIES.length){show=false;}
+      else{ const hN=SPECIES.length, hStep=(V.tileH*.6+.36)/V.R, hL=hStep*hN;
+        const th=((d.i*hStep+rowY)%hL+hL)%hL-hL/2; const theta=Math.PI+th; const R=V.R;
+        x=isMobile()?-.55:-1.7; y=R*Math.sin(theta)+Math.sin(d.id*150)*5*U.globe*.35; z=R*Math.cos(theta)+Math.sin(d.id*181)*2*U.scatter;
+        rx=Math.PI-theta; sc=.6; if(Math.cos(theta)>-.35) show=false; }
+    } else { // taste: row0 = Taste, row2 = Depth
+      if(d.row===1){show=false;}
+      else{ const list=SPECIES.filter(s=>s.line===(d.row===0?'taste':'depth')); const j=list.indexOf(d.s); if(j<0) show=false;
+        else{ const k=Math.floor(d.i/SPECIES.length), n=list.length*2, ts=.82, tStep=(V.tileH*ts*ASPECT+V.gap*.8)/(V.R-.5), tL=tStep*n;
+          const th=(((j+k*list.length)*tStep+rows[d.row]*.9)%tL+tL)%tL-tL/2; const theta=Math.PI+th; let R=V.R-.5;
+          let yy=(d.row===0?1:-1)*(V.tileH*ts*.5+.42)+rowsY*.6; yy+=Math.sin(d.id*150)*5*U.globe*.35; R-=Math.abs(yy)*.5*U.globe; R+=Math.min(1.2,vY*.12);
+          x=R*Math.sin(theta); y=yy; z=R*Math.cos(theta)+Math.sin(d.id*181)*2*U.scatter; ry=theta+Math.PI; sc=ts; if(Math.cos(theta)>-.35) show=false; } }
+    }
+    m.visible=show&&U.opacity>0.001; if(!show) return;
+    const hs=1+.02*d.hover, other=1-U.openOther;
+    m.position.set(x,y,z); m.rotation.set(rx,ry,0);
+    m.scale.set(V.tileH*ASPECT*sc*hs*other*PAD,V.tileH*sc*hs*other*PAD,1);
+    m.material.uniforms.uOpacity.value=U.opacity; m.material.uniforms.uWhite.value=U.white; m.material.uniforms.uTintInf.value=U.tintInf;
+  });
+  // 열린 프로젝트 타일
+  if(P.mesh) updateProjectTile(dt);
+  // 다이아몬드
+  diamonds.forEach((m,i)=>{ const d=m.userData; const drift=(rows[1]*.9)*(.6+d.p*.3);
+    let px=((d.x+drift)%14+21)%14-7; m.position.set(px,d.y+Math.sin(now*.0004+d.ph)*.18,d.z); m.rotation.z=Math.PI/4+now*.00005*d.p; m.material.opacity=.7*U.opacity; });
+  // 피킹 (hover)
+  if(pointerDirty&&IN.entered&&!overlayOpen()&&!IN.dragging){ pointerDirty=false; ray.setFromCamera(pointerPx,camera);
+    const hit=ray.intersectObjects(tiles.filter(t=>t.visible),false)[0]; const h=hit?hit.object:null;
+    if(h!==hovered){ if(hovered) gsap.to(hovered.userData,{hover:0,duration:.4,ease:'none'}); hovered=h; if(h){ gsap.to(h.userData,{hover:1,duration:.4,ease:'none'}); cursorSet(h.userData.s.kr+' · '+h.userData.s.en); wrap.style.cursor='pointer'; } else { cursorSet(null); wrap.style.cursor=''; } } }
+  if(MODE==='names') updateNames();
+  bgMat.uniforms.uTime.value=now*.001; bg.visible=bgMat.uniforms.uAlpha.value>.001;
+  adapt(dt);
+  renderer.render(scene,camera);
+  requestAnimationFrame(frame);
+}
+function resize(){ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); ringG.position.z=ringZ(); setCover(); }
+addEventListener('resize',resize); resize();
+
+/* ─── 텍스처 로드 → 게이트 준비 ─── */
+(function preload(){
+  const loader=new THREE.TextureLoader(); const list=[]; SPECIES.forEach(s=>{list.push(['cards',s]);list.push(['color',s]);});
+  let done=0; const pct=$('#pct');
+  list.forEach(([k,s])=>{ loader.load(imgOf(s,k),t=>{ t.colorSpace=THREE.NoColorSpace; t.minFilter=THREE.LinearMipmapLinearFilter; t.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy()); TEX[k][s.id]=t; tick(); },undefined,()=>{ TEX[k][s.id]=new THREE.Texture(); tick(); }); });
+  function tick(){ done++; pct.textContent=`Loading — ${Math.round(done/list.length*100)}%`; if(done===list.length){ buildTiles(); pct.style.opacity=0; $('#enter').classList.add('ready'); requestAnimationFrame(frame); } }
+})();
+
+/* ═══════════════════ ENTER ═══════════════════ */
+$('#enter').addEventListener('click',()=>{
+  const gate=$('#gate'); gate.classList.add('leaving'); document.body.classList.add('entered'); IN.entered=true; wrap.classList.add('on');
+  const tl=gsap.timeline();
+  tl.to(U,{camZ:0,duration:3.8,ease:E.posOut},0);
+  tl.to(U,{opacity:1,duration:2,ease:'none'},0);
+  tl.to(U,{scatter:0,duration:3,ease:E.io},0);
+  tl.fromTo(wrapper.rotation,{y:-Math.PI*.25,z:.12},{y:0,z:0,duration:4.5,ease:E.posOut},0);
+  setTimeout(()=>{ if(!P.open){$('#header').classList.add('on');$('#footer').classList.add('on');} },900);
+  setTimeout(()=>{gate.style.display='none';startTimer();},2400);
+});
+
+/* ═══════════════════ 모드 전환 (유니버스) ═══════════════════ */
+function setMode(mode){
+  if(mode===MODE) return; $('#blocker').classList.add('on');
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===mode));
+  const tl=gsap.timeline({onComplete:()=>$('#blocker').classList.remove('on')});
+  tl.to(U,{opacity:0,duration:.9,ease:'none'},0);
+  tl.to(U,{globe:1,duration:1.4,ease:E.io},0);
+  tl.to(U,{scatter:1,duration:1,ease:E.io},0);
+  tl.to(U,{camZ:7,duration:1.6,ease:E.posIn},0);
+  tl.add(()=>{ MODE=mode; rows.fill(0); rowY=0; rowsY=0; steerY=0; IN.target.x=IN.target.y=IN.smooth.x=IN.smooth.y=0; applyMode(mode); },1.4);
+  tl.to(U,{globe:0,scatter:0,duration:3,ease:E.io},1.5);
+  tl.to(U,{opacity:1,duration:2,ease:'none'},1.7);
+  tl.to(U,{camZ:0,duration:3.2,ease:E.posOut},1.5);
+  tl.fromTo(wrapper.rotation,{y:-Math.PI*.25,z:.12},{y:0,z:0,duration:3.6,ease:E.posOut},1.5);
+  tl.to(U,{tintInf:mode==='visual'?0:1,duration:2,ease:'none'},1.5);
+}
+function applyMode(mode){
+  document.documentElement.style.setProperty('--u',UCOLOR[mode]); $('#stage').className='mode-'+mode;
+  $('#names').classList.toggle('on',mode==='names');
+  const col=new THREE.Color(UCOLOR[mode]); tiles.forEach(t=>t.material.uniforms.uTint.value.copy(col)); bgMat.uniforms.uColor.value.copy(col);
+  diamonds.forEach(d=>d.material.color.copy(col).lerp(new THREE.Color('#ffffff'),.55));
+  $('#tuto').innerHTML= mode==='names'?'<b>By Names</b>이름을 따라 내려가며,<br>마음이 머무는 재료에서 멈춰 보세요.'
+    : mode==='taste'?'<b>By VER.1 · VER.2</b>위는 향을 발견하는 아로마 티, 아래는 커피처럼 즐기는 루트 로스트.<br>오늘의 당신은 어느 쪽에 가깝나요.'
+    : '<b>The Right to Taste</b>휠은 좌우로, 마우스는 위아래로.<br>카드를 누르면 재료의 이야기가 열립니다.';
+}
+$$('.tab').forEach(t=>t.addEventListener('click',()=>setMode(t.dataset.mode)));
+
+/* Names 리스트 */
+const namesList=$('#namesList');
+SPECIES.forEach((s,i)=>{const li=document.createElement('li');li.innerHTML=`${s.kr}<span class="en">${s.en}</span>`;li.dataset.i=i;
+  li.addEventListener('click',()=>{ const a=activeIdx(); if(a===i){ const t=tiles.find(t=>t.userData.row===1&&t.userData.i===i); openProject(s,t); } else { const hStep=(V.tileH*.6+.36)/V.R; let dlt=i-a; if(dlt>6)dlt-=12; if(dlt<-6)dlt+=12; IN.target.y-=dlt*hStep*.2; } });
+  li.addEventListener('pointerenter',()=>cursorSet('열기'));li.addEventListener('pointerleave',()=>cursorSet(null));
+  namesList.appendChild(li);});
+function activeIdx(){ const hStep=(V.tileH*.6+.36)/V.R, hL=hStep*12; let best=0,bd=1e9; for(let i=0;i<12;i++){ const th=((i*hStep+rowY)%hL+hL)%hL-hL/2; if(Math.abs(th)<bd){bd=Math.abs(th);best=i;} } return best; }
+function updateNames(){
+  const hStep=(V.tileH*.6+.36)/V.R, hL=hStep*12, lh=isMobile()?34:44;
+  $$('#namesList li').forEach((li,i)=>{ const th=((i*hStep+rowY)%hL+hL)%hL-hL/2; const k=-th/hStep;
+    li.style.transform=`translate3d(0,${(k*lh).toFixed(1)}px,0)`; const a=clamp(1-Math.abs(k)/5.2,0,1); li.style.opacity=(a*a).toFixed(3); li.classList.toggle('active',Math.abs(k)<.5); });
+}
+
+/* ═══════════════════ 커서 ═══════════════════ */
+const cursor=$('#cursor'), cursorText=$('#cursorText'); let cx=0,cy=0,tx=0,ty=0;
+function cursorMove(x,y){tx=x;ty=y;document.body.classList.add('moved');}
+(function cursorTick(){cx=lerp(cx,tx,.28);cy=lerp(cy,ty,.28);cursor.style.transform=`translate3d(${cx}px,${cy}px,0)`;requestAnimationFrame(cursorTick);})();
+function cursorSet(t){ if(t){cursorText.textContent=t;cursor.classList.add('pointer');} else cursor.classList.remove('pointer'); }
+$$('.ulink,.tab,#infoBtn,#enter,.nxt,.cta').forEach(el=>{el.addEventListener('pointerenter',()=>cursorSet('열기'));el.addEventListener('pointerleave',()=>cursorSet(null));});
+
+/* ═══════════════════ TIMER (우림 시간 3:00) ═══════════════════ */
+const T={dur:180,left:180,iv:null};
+function fmt(s){const m=Math.floor(s/60),r=s%60;return `${String(m).padStart(2,'0')} : ${String(r).padStart(2,'0')}`;}
+function startTimer(){ clearInterval(T.iv); T.left=T.dur; $('#timer').textContent=fmt(T.left); gsap.to(U,{white:0,duration:1,ease:'none'});
+  T.iv=setInterval(()=>{ if($('#about').classList.contains('on')||$('#ending').classList.contains('on')) return; T.left--; $('#timer').textContent=fmt(T.left);
+    const cd=$('#countdown-w'); cd.classList.toggle('warning',T.left<15&&T.left%2===1);
+    if(T.left<=0){clearInterval(T.iv);cd.classList.remove('warning');openEnding();} },1000); }
+function openEnding(){ $('#ending').classList.add('on'); gsap.to(U,{white:.75,duration:1.5,ease:'none'}); }
+$('#infoBtn').addEventListener('click',openEnding);
+$$('#ending .logos button').forEach(b=>b.addEventListener('click',()=>{ $('#ending').classList.remove('on'); startTimer(); openKit(b.dataset.kit); }));
+$('#endingClose').addEventListener('click',()=>{ $('#ending').classList.remove('on'); if(T.left<=0) startTimer(); else gsap.to(U,{white:0,duration:1,ease:'none'}); });
+
+/* ═══════════════════ PROJECT (GL 타일 + DOM 텍스트) ═══════════════════ */
+const P={open:false,mesh:null,s:null,t:0,start:null,p:0};
+function overlayOpen(){ return P.open||$('#about').classList.contains('on')||$('#ending').classList.contains('on')||$('#kit').classList.contains('on')||$('#class').classList.contains('on')||$('#test').classList.contains('on'); }
+function splitWords(el){ const words=el.textContent.trim().split(/\s+/); el.innerHTML=words.map((w,i)=>`<span class="sixty-word"><span style="--d:${(i*.06).toFixed(2)}s">${w}</span></span>`).join(' '); }
+function heroTarget(){ const d=camD(); const visH=2*d*Math.tan(THREE.MathUtils.degToRad(22.5)); const h=visH*(isMobile()?.44:.56); return {h, y:visH*(isMobile()?.14:.08), z:-d}; }
+function fillProject(s){
+  document.documentElement.style.setProperty('--u',s.line==='taste'?UCOLOR.taste:UCOLOR.visual);
+  bgMat.uniforms.uColor.value.set(s.line==='taste'?UCOLOR.taste:UCOLOR.visual);
+  $('#pTitle').innerHTML=`${s.kr}<span class="en">${s.en} · <i>${s.latin}</i></span>`;
+  $('#pMeta').innerHTML=`<span><i></i> ${LINE[s.line].no} ${LINE[s.line].name}</span><span>${s.note}</span>`;
+  $('#pRole').innerHTML=`<h3>블렌딩에서의 역할 — ${s.cross||''}</h3><ul><li><b>향미</b><span>${s.flavor||''}</span></li><li><b>역할</b><span>${s.role||''}</span></li><li><b>주의점</b><span>${s.caution||''}</span></li></ul>`;
+  $('#pText1').innerHTML=s.t1.map(p=>`<p>${p}</p>`).join('');
+  $('#pImg1').style.backgroundImage=`url(${imgOf(s,'color')})`; $('#pImg2').style.backgroundImage=`url(${imgOf(SPECIES[(SPECIES.indexOf(s)+1)%SPECIES.length],'cards')})`;
+  $('#pText2').innerHTML=`<h3>Tea Apothēca — 허브 에세이</h3><p><span class="lettrine">${s.en[0]}</span>${s.t2}</p><ul>${s.notes.map(n=>`<li><b>${n[0]}</b><span>${n[1]||'&nbsp;'}</span></li>`).join('')}</ul>`;
+  $('#pCredit').innerHTML=`<em>${s.latin}</em><br>텍스트 — 『취향의 권리』 수정 원고 · 일러스트 — 보태니컬 카드 시리즈<br>같은 허브라도 계절과 시간, 그리고 나의 컨디션에 따라 전혀 다른 모습으로 다가옵니다.`;
+  const nx=SPECIES[(SPECIES.indexOf(s)+1)%SPECIES.length];
+  $('#pNextLbl').innerHTML=`<small>Next — 다음 재료</small>${nx.kr} <span style="font-family:var(--serif-en);font-style:italic;color:var(--ink-mute);font-size:.7em">${nx.en}</span>`;
+  $('#pNext').onclick=()=>nextProject(nx);
+  const h=$('#pTitle'); const first=h.firstChild; const wrapS=document.createElement('span'); wrapS.textContent=first.textContent; h.replaceChild(wrapS,first); splitWords(wrapS);
+  h.classList.remove('revealed'); void h.offsetWidth; setTimeout(()=>h.classList.add('revealed'),900);
+}
+function openProject(s,mesh){
+  if(!mesh) mesh=tiles.find(t=>t.userData.s===s&&t.visible)||tiles.find(t=>t.userData.s===s);
+  P.open=true; P.s=s; P.mesh=mesh; P.p=0; hovered=null; cursorSet(null); wrap.style.cursor='';
+  scene.attach(mesh); mesh.userData.follow=1;
+  P.start={pos:mesh.position.clone(),rot:mesh.rotation.clone(),scale:mesh.scale.clone()};
+  fillProject(s);
+  const sc=$('#projectScroller'); sc.scrollTop=0; $('#pScrollHint').classList.remove('hide');
+  $('#project').classList.add('on'); $('#header').classList.remove('on'); $('#footer').classList.remove('on');
+  gsap.killTweensOf(P); gsap.to(P,{t:1,duration:2,ease:E.zoom});
+  rippleIn(mesh);
+  gsap.to(U,{openOther:1,duration:1.5,ease:E.zoom});
+  gsap.to(bgMat.uniforms.uAlpha,{value:1,duration:1.6,ease:'none',delay:.2});
+  gsap.to(U,{zoom:1,duration:1.5,ease:'none'});
+}
+/* 진입 물결: 레퍼런스 uDeformationProgress 0→1, 3.5s, ease slow(0.1,0.1) */
+function rippleIn(mesh,dur=3.5,delay=0){ const u=mesh.material.uniforms.uDeform; gsap.killTweensOf(u); u.value=0;
+  gsap.fromTo(u,{value:0},{value:1,duration:dur,delay,ease:window.SlowMo?'slow(0.1,0.1,false)':'power1.inOut',onComplete:()=>{u.value=0;}}); }
+/* 상세 페이지 GL 이미지 — DOM 스페이서 위치를 따라 우하단→좌상단 대각선으로 흐른다 */
+const PIMG={list:[]};
+function setupProjectImages(s){
+  PIMG.list.forEach(o=>{scene.remove(o.mesh);}); PIMG.list=[];
+  const nx=SPECIES[(SPECIES.indexOf(s)+1)%SPECIES.length];
+  const defs=[{tex:TEX.color[s.id],spacer:$('#pImg1'),size:isMobile()?.62:.72,rot:1},{tex:TEX.cards[nx.id],spacer:$('#pImg2'),size:isMobile()?.34:.36,rot:-1}];
+  defs.forEach(d=>{ const m=new THREE.Mesh(geo,makeMat(d.tex)); m.material.uniforms.uTint.value.copy(bgMat.uniforms.uColor.value); m.visible=false; scene.add(m);
+    PIMG.list.push({mesh:m,spacer:d.spacer,size:d.size,rot:d.rot}); });
+}
+function updateProjectImages(){
+  const d=camD(), visH=2*d*Math.tan(THREE.MathUtils.degToRad(22.5)), visW=visH*camera.aspect;
+  PIMG.list.forEach(o=>{
+    const r=o.spacer.getBoundingClientRect(); const cy=r.top+r.height/2; const u=.5-cy/innerHeight;   // -0.5(화면 아래) .. 0.5(화면 위)
+    const on=u>-1.1&&u<1.1; o.mesh.visible=on&&P.open; if(!on) return;
+    const h=visH*o.size; const x=-u*visW*.62, y=u*visH*1.35;                                          // 대각선 경로 (스크롤보다 1.35배 빠르게)
+    o.mesh.position.set(x,y,-d-.4); o.mesh.rotation.set(0,-u*.5*o.rot,-u*.06*o.rot); o.mesh.scale.set(h*ASPECT*PAD,h*PAD,1);
+    const q=clamp((u+.55)/.55,0,1); o.mesh.material.uniforms.uDeform.value=q<1?q:0;                    // 들어올 때 물결이 한 번 지나감
+    o.mesh.material.uniforms.uOpacity.value=clamp((u+.7)/.25,0,1)*clamp((.75-u)/.25,0,1)*U.zoom;
+  });
+}
+function updateProjectTile(dt){
+  const m=P.mesh, ht=heroTarget(), p=P.p;
+  // 스크롤 패럴랙스: 위(+3.2) · 왼쪽(-.9) · 뒤(-.6) · 회전 -.45rad — 레퍼런스 uCurrentTileParallax/uRotationOnScroll
+  const visH=2*camD()*Math.tan(THREE.MathUtils.degToRad(22.5)); const sAll=$('#projectScroller').scrollTop/innerHeight;
+  const tgt={x:0, y:ht.y+sAll*visH, z:ht.z, ry:0, sx:ht.h*ASPECT*PAD, sy:ht.h*PAD};   // 페이지와 1:1로 위로 스크롤 (대각선 없음)
+  const t=P.t;
+  m.position.set(lerp(P.start.pos.x,tgt.x,t),lerp(P.start.pos.y,tgt.y,t),lerp(P.start.pos.z,tgt.z,t));
+  m.rotation.set(lerp(P.start.rot.x,0,t),lerp(P.start.rot.y,tgt.ry,t),lerp(P.start.rot.z,0,t));
+  m.scale.set(lerp(P.start.scale.x,tgt.sx,t),lerp(P.start.scale.y,tgt.sy,t),1);
+  m.material.uniforms.uOpacity.value=1; m.material.uniforms.uWhite.value=U.white; m.visible=true;
+  // DOM 헤드(제목)를 타일 하단 중앙에 투영 — 타일과 함께 대각선 이동·회전
+  tmpV.set(0,-.5/PAD,0).applyMatrix4(m.matrixWorld); tmpV.project(camera);
+  const sx=(tmpV.x*.5+.5)*innerWidth, sy=(-tmpV.y*.5+.5)*innerHeight;
+  const head=$('#pHead'); head.style.transform=`translate(-50%,0) translate(${sx.toFixed(1)}px,${(sy+26).toFixed(1)}px)`; head.style.opacity=t.toFixed(2);
+}
+$('#projectScroller').addEventListener('scroll',e=>{ P.p=clamp(e.target.scrollTop/innerHeight,0,1); $('#pScrollHint').classList.toggle('hide',e.target.scrollTop>40); },{passive:true});
+function closeProject(){
+  if(!P.open) return; const m=P.mesh; P.open=false;
+  $('#project').classList.remove('on'); document.documentElement.style.setProperty('--u',UCOLOR[MODE]); bgMat.uniforms.uColor.value.set(UCOLOR[MODE]);
+  gsap.killTweensOf(P);
+  // 링 위 원래 자리로 복귀 (현재 링 좌표를 월드로 환산해 목표로)
+  ringG.updateMatrixWorld(); const back=ringPoseOf(m);
+  gsap.to(m.position,{x:back.pos.x,y:back.pos.y,z:back.pos.z,duration:1.6,ease:E.posOut});
+  gsap.to(m.rotation,{x:back.rot.x,y:back.rot.y,z:back.rot.z,duration:1.6,ease:E.posOut});
+  gsap.to(m.scale,{x:back.scale.x,y:back.scale.y,duration:1.6,ease:E.posOut,onUpdate:()=>{},onComplete:()=>{ ringG.attach(m); delete m.userData.follow; P.mesh=null; }});
+  gsap.to(U,{openOther:0,duration:1.6,ease:E.posOut,zoom:0});
+  gsap.to(bgMat.uniforms.uAlpha,{value:0,duration:.8,ease:'none'});
+  m.material.uniforms.uDeform.value=0;
+  $('#pHead').style.opacity=0;
+  $('#header').classList.add('on'); $('#footer').classList.add('on');
+}
+function ringPoseOf(m){ // 현재 링 파라미터 기준 월드 포즈 (visual 모드 근사)
+  const d=m.userData, step=stepAngle(), N=SPECIES.length*2, L=step*N;
+  let th=((d.i*step+rows[d.row])%L+L)%L-L/2; const theta=Math.PI+th;
+  const local=new THREE.Vector3(V.R*Math.sin(theta),(d.row-1)*V.rowGap+rowsY,V.R*Math.cos(theta));
+  if(MODE==='names'){ const hStep=(V.tileH*.6+.36)/V.R, hL=hStep*12; const t2=((d.i*hStep+rowY)%hL+hL)%hL-hL/2; const th2=Math.PI+t2; local.set(isMobile()?-.55:-1.7,V.R*Math.sin(th2),V.R*Math.cos(th2)); }
+  const pos=ringG.localToWorld(local.clone());
+  const q=new THREE.Quaternion(); ringG.getWorldQuaternion(q); const rot=new THREE.Euler().setFromQuaternion(q.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(MODE==='names'?Math.PI-(Math.PI+0):0, MODE==='names'?0:theta+Math.PI,0))));
+  const sc=MODE==='names'?.6:1; return {pos,rot,scale:new THREE.Vector3(V.tileH*ASPECT*sc*PAD,V.tileH*sc*PAD,1)};
+}
+function nextProject(nx){
+  const cur=P.mesh, sc=$('#projectScroller');
+  gsap.to(cur.scale,{x:0,y:0,duration:.7,ease:E.posIn,onComplete:()=>{ ringG.attach(cur); delete cur.userData.follow; }});
+  gsap.to(sc,{scrollTop:0,duration:.6,ease:E.io});
+  const m=tiles.find(t=>t.userData.s===nx&&t.visible)||tiles.find(t=>t.userData.s===nx);
+  scene.attach(m); m.userData.follow=1; m.scale.set(0,0,1);
+  P.mesh=m; P.s=nx; P.p=0; P.t=0; P.start={pos:m.position.clone(),rot:new THREE.Euler(0,0,0),scale:new THREE.Vector3(0,0,1)};
+  setTimeout(()=>{ fillProject(nx); gsap.to(P,{t:1,duration:2,ease:E.zoom}); rippleIn(m); },500);
+}
+$('#projectClose').addEventListener('click',closeProject);
+
+/* ═══════════════════ 라이트 페이지 (키트·클래스) · ABOUT ═══════════════════ */
+function openPage(id){ const el=$('#'+id); el.classList.add('on'); const h=el.querySelector('h1'); if(h){ if(!h.dataset.split){splitWords(h);h.dataset.split=1;} h.classList.remove('revealed'); setTimeout(()=>h.classList.add('revealed'),350); } el.querySelector('.scroller').scrollTop=0; }
+function closePage(id){ $('#'+id).classList.remove('on'); }
+$('#kitBtn').addEventListener('click',()=>openPage('kit')); $('#classBtn').addEventListener('click',()=>openPage('class')); $('#testBtn').addEventListener('click',()=>openPage('test'));
+function openKit(kit){ ['test','class'].forEach(closePage); openPage('kit'); const t=$('#kit-'+(kit||'ver1')); if(t) setTimeout(()=>{ t.scrollIntoView({behavior:'smooth',block:'start'}); },420); }
+window.TasteTest&&TasteTest.mount($('#ttRoot'),{onKit:openKit,onRetry:()=>{ $('#test .scroller').scrollTop=0; }});
+$$('[data-close]').forEach(b=>b.addEventListener('click',()=>closePage(b.dataset.close)));
+$$('[data-open]').forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const to=a.dataset.open; ['kit','class','test'].forEach(closePage); if(to==='ending') openEnding(); else openPage(to); }));
+// 키트 페이지 카드 스트립
+$$('.kit .strip').forEach(st=>{ SPECIES.filter(s=>s.line===st.dataset.line).forEach(s=>{ const d=document.createElement('div'); d.style.backgroundImage=`url(${imgOf(s,'color')})`; d.title=s.kr; d.addEventListener('click',()=>{ closePage('kit'); openProject(s,null); }); st.appendChild(d); }); });
+$('#aboutBtn').addEventListener('click',()=>{ const a=$('#about'); a.classList.add('on'); const h=a.querySelector('h1'); if(!h.dataset.split){splitWords(h);h.dataset.split=1;} h.classList.remove('revealed'); setTimeout(()=>h.classList.add('revealed'),400); });
+$('#aboutClose').addEventListener('click',()=>$('#about').classList.remove('on'));
+$('#shareBtn').addEventListener('click',()=>{ const url=location.href; (navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).catch(()=>{}).finally(()=>{$('#share').classList.add('copied');setTimeout(()=>$('#share').classList.remove('copied'),2600);}); });
+function closeAll(){ if(P.open) closeProject(); $('#about').classList.remove('on'); closePage('kit'); closePage('class'); closePage('test'); if($('#ending').classList.contains('on')){$('#ending').classList.remove('on'); if(T.left<=0) startTimer(); else gsap.to(U,{white:0,duration:1,ease:'none'});} }
+
+window.__d={U,tiles,TEX,P,IN,camera,wrapper,ringG,setMode,openProject,openPage,SPECIES,frame,rows:()=>rows,
+  jump:(sec)=>{ gsap.globalTimeline.time(gsap.globalTimeline.time()+sec); const n=performance.now(); for(let i=0;i<6;i++) frame(n+i*16); }};
+/* 검수용 URL 훅: ?enter · ?mode=names|taste · ?open=rose · ?about · ?ending · ?page=kit|class · &fast · &p=0.5(상세 스크롤) */
+(function(){ if(!(Q.has('enter')||Q.has('mode')||Q.has('open')||Q.has('about')||Q.has('ending')||Q.has('page'))) return;
+  const wait=setInterval(()=>{ if(!$('#enter').classList.contains('ready')) return; clearInterval(wait); $('#enter').click();
+    if(Q.has('jump')){ // 헤드리스 캡처용: GSAP 글로벌 타임라인을 앞으로 감아 최종 상태를 즉시 렌더
+      const J=window.__d.jump; J(12); if(Q.has('vy')){ IN.target.y=parseFloat(Q.get('vy')); const n=performance.now(); for(let i=0;i<40;i++) frame(n+i*16); } if(Q.get('mode')){ setMode(Q.get('mode')); J(9); }
+      if(Q.get('open')){ const s=SPECIES.find(x=>x.id===Q.get('open'))||SPECIES[0]; openProject(s,null); J(4); if(Q.has('deform')){ const u=P.mesh.material.uniforms.uDeform; gsap.killTweensOf(u); u.value=parseFloat(Q.get('deform')); J(.05); } if(Q.has('p')){ const p=parseFloat(Q.get('p')); $('#projectScroller').scrollTop=innerHeight*p; P.p=clamp(p,0,1); J(.2); } }
+      if(Q.has('about')) $('#aboutBtn').click(); if(Q.has('ending')) openEnding(); if(Q.get('page')) openPage(Q.get('page')); if(Q.has('result')) openPage('test'); return; }
+    setTimeout(()=>{ if(Q.get('mode')) setMode(Q.get('mode'));
+      if(Q.get('open')){ const s=SPECIES.find(x=>x.id===Q.get('open'))||SPECIES[0]; openProject(s,null); if(Q.has('p')) setTimeout(()=>{ $('#projectScroller').scrollTop=innerHeight*parseFloat(Q.get('p')); },2300); }
+      if(Q.has('about')) $('#aboutBtn').click(); if(Q.has('ending')) openEnding(); if(Q.get('page')) openPage(Q.get('page')); if(Q.has('result')) openPage('test'); },FAST?400:2600); },100); })();
+</script>
+</body>
+</html>

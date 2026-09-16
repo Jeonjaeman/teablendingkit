@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>상품 상세 — 취향의 표본실</title>
+<meta name="description" content="취향의 표본실 · 키트 표본 라벨 (design6) — 카페24 product/detail.html 표준 구성을 표본실 문법으로 옮긴 데모" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400&family=Noto+Sans+KR:wght@300;400&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
+<script src="../shared/product-data.js"></script>
+<script src="../shared/product-core.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   취향의 표본실 · design6 상품 상세 — 100lostspecies 문법의 "표본 라벨"
+   흰 종이 + 유럽 미장 + 세리프 Thin + 타자기체 라벨 + 헤어라인, 직각·무그림자.
+   구성 순서는 카페24 product/detail.html 모듈 순서를 그대로 따른다.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --paper:#FFFFFF; --paper-warm:#F6F3EC; --ink:#0F0F0E; --ink-soft:#4A4844; --ink-mute:#8B877E;
+  --dark:#1C1C1C; --u-visual:#92A878; --u-names:#5B8CA9; --u-taste:#D6C4A0; --u:var(--u-taste); --warn:#970317;
+  --line:rgba(0,0,0,.14); --line-strong:rgba(0,0,0,.28);
+  --serif-en:"Cormorant Garamond", Georgia, serif; --serif-kr:"Noto Serif KR", serif;
+  --sans:"Noto Sans KR", -apple-system, "Pretendard", sans-serif; --mono:"Courier Prime", "Courier New", monospace;
+  --ease-io:cubic-bezier(.66,0,.34,1); --ease-out:cubic-bezier(.32,.94,.60,1);
+  --hd:72px; --bar:30px; --edge:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--serif-kr);font-weight:300;font-size:15px;line-height:1.7;color:var(--ink);background:var(--paper-warm);letter-spacing:-.005em;word-break:keep-all;-webkit-font-smoothing:antialiased;}
+body::before{content:"";position:fixed;inset:0;background:url(assets/plaster-eu-2.jpg) center/cover;opacity:.55;mix-blend-mode:multiply;pointer-events:none;z-index:0;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button,select,input{font:inherit;color:inherit;}
+button{background:none;border:0;cursor:pointer;}
+ul,ol{list-style:none;}
+table{border-collapse:collapse;width:100%;}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 var(--edge);}
+.mono{font-family:var(--mono);}
+.tbd{font-family:var(--mono);font-size:11px;color:var(--ink-mute);}
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-mute);border:1px solid var(--line-strong);padding:0 6px;vertical-align:middle;margin-left:8px;}
+.eyebrow{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:15px;color:var(--ink-mute);letter-spacing:.04em;}
+.button-hover{position:relative;overflow:hidden;}
+.button-hover::before{content:"";position:absolute;top:101%;left:-1%;width:102%;height:102%;background:var(--hover-color,var(--u));transition:transform .4s var(--ease-io);}
+@media(hover:hover){.button-hover:hover::before{transform:translate3d(0,-100%,0);} .button-hover:hover span{color:#fff;}}
+.cta{position:relative;overflow:hidden;background:var(--dark);color:#fff;height:48px;padding:0 30px;font-family:var(--sans);font-weight:400;font-size:14px;display:inline-flex;align-items:center;justify-content:center;--hover-color:var(--u-taste);}
+.cta span{position:relative;z-index:1;}
+.cta.light{background:transparent;color:var(--ink);border:1px solid rgba(0,0,0,.25);}
+
+/* ── 데모 바 + 헤더 (표본실 헤더 문법: plogo 박스 + 이름, 우측 Close) ── */
+.demo-bar{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--bar);display:flex;align-items:center;justify-content:center;gap:14px;background:var(--dark);color:rgba(255,255,255,.78);font-family:var(--mono);font-size:11px;letter-spacing:.03em;padding:0 var(--edge);}
+.demo-bar b{color:var(--u-taste);font-weight:400;}
+.demo-bar a{text-decoration:underline;text-underline-offset:3px;color:#fff;}
+header{position:fixed;top:var(--bar);left:0;right:0;z-index:50;height:var(--hd);display:flex;align-items:center;justify-content:space-between;padding:0 var(--edge);
+  background:linear-gradient(rgba(246,243,236,.96),rgba(246,243,236,.86));border-bottom:1px solid var(--line);backdrop-filter:blur(6px);}
+.plogo{display:flex;align-items:center;gap:13px;}
+.plogo .box{width:44px;height:44px;background:var(--u-taste);display:flex;align-items:center;justify-content:center;color:#1c1c1c;}
+.plogo .box svg{width:28px;height:28px;}
+.plogo .name{font-family:var(--serif-kr);font-weight:300;font-size:14px;line-height:1.15;}
+.plogo .name .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:12px;color:var(--ink-mute);}
+.tabsnav{display:flex;gap:26px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;}
+.tabsnav a{position:relative;padding:6px 0;color:var(--ink-soft);}
+.tabsnav a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:0 0;transition:transform .5s var(--ease-io);}
+.tabsnav a.on,.tabsnav a:hover{color:var(--ink);} .tabsnav a.on::after,.tabsnav a:hover::after{transform:scaleX(1);}
+.hd-r{display:flex;gap:22px;align-items:center;font-family:var(--mono);font-size:12px;}
+.hd-r .cart b{font-weight:400;color:var(--ink);}
+.hd-r .close{font-family:var(--sans);font-weight:300;font-size:13px;}
+@media(max-width:860px){.tabsnav{display:none;} .hd-r .hide-m{display:none;}}
+main{padding-top:calc(var(--bar) + var(--hd) + 26px);}
+
+/* ── 경로 (product_headcategory) ── */
+.path{display:flex;gap:12px;align-items:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--ink-mute);padding:0 0 34px;}
+.path .cur{color:var(--ink);}
+
+/* ── 상품 상세 상단 (product_detail) — 표본 프레임 + 라벨 ── */
+.detail{display:grid;grid-template-columns:5fr 6fr;gap:clamp(30px,5vw,80px);align-items:start;}
+@media(max-width:900px){.detail{grid-template-columns:1fr;}}
+.specimen{position:sticky;top:calc(var(--bar) + var(--hd) + 20px);}
+.specimen .frame{position:relative;border:1px solid var(--ink);padding:16px;background:var(--paper);}
+.specimen .keyImg{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--paper-warm);}
+.specimen .keyImg img{width:100%;height:100%;object-fit:cover;transition:opacity .35s linear;}
+.specimen .keyImg img[src*="/cards/"],.specimen .keyImg img[src*="/color/"],.addImg button img[src*="/cards/"],.addImg button img[src*="/color/"]{object-fit:contain;background:var(--paper);}   /* 보태니컬 카드는 통째로 보이게 */
+.specimen .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-mute);letter-spacing:.04em;}
+.specimen .cap .tag{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:20px;color:var(--ink);letter-spacing:0;}
+.addImg{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px;}
+.addImg button{aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);opacity:.6;transition:opacity .3s linear,border-color .3s;background:var(--paper);}
+.addImg button img{width:100%;height:100%;object-fit:cover;}
+.addImg button:hover,.addImg button.on{opacity:1;border-color:var(--ink);}
+.specimen .sns{display:flex;gap:18px;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--ink-mute);}
+.specimen .sns button{position:relative;}
+.specimen .sns button::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:0 0;transition:transform .5s var(--ease-io);}
+.specimen .sns button:hover{color:var(--ink);} .specimen .sns button:hover::after{transform:scaleX(1);}
+.label .no{font-family:var(--serif-en);font-weight:300;font-size:clamp(52px,6.5vw,92px);line-height:.95;color:var(--ink);}
+.label h1{font-family:var(--serif-kr);font-weight:200;font-size:clamp(24px,2.6vw,34px);line-height:1.25;margin-top:14px;}
+.label h1 small{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:.6em;color:var(--ink-mute);margin-top:6px;}
+.label .summary{margin-top:18px;max-width:520px;font-size:15px;line-height:1.8;color:var(--ink-soft);}
+.list{margin-top:30px;border-top:1px solid var(--ink);}
+.list li,.list .row{display:flex;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px;line-height:1.6;}
+.list b{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.04em;color:var(--ink-mute);flex:0 0 7.5em;padding-top:.45em;}
+.list .price{font-family:var(--serif-kr);font-weight:200;font-size:30px;line-height:1;letter-spacing:-.01em;}
+.list .price small{font-size:14px;font-weight:300;color:var(--ink-mute);margin-left:4px;}
+.list .fund{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-top:6px;}
+.opt select{width:100%;height:42px;border:0;border-bottom:1px solid var(--ink);background:transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%230F0F0E' stroke-width='1.2'/></svg>") no-repeat right 4px center;appearance:none;-webkit-appearance:none;font-family:var(--serif-kr);font-weight:300;font-size:14.5px;color:var(--ink);padding-right:28px;}
+.opt .req{font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);margin-top:8px;letter-spacing:.03em;}
+.picked{margin-top:8px;}
+.picked .row{align-items:center;}
+.picked .nm{flex:1;font-size:14px;}
+.picked .nm small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-top:2px;}
+.qty{display:inline-flex;border:1px solid var(--line-strong);}
+.qty button{width:30px;height:32px;font-family:var(--sans);font-weight:300;font-size:17px;color:var(--ink-mute);} .qty button:hover{color:var(--ink);}
+.qty input{width:44px;height:32px;text-align:center;border:0;border-left:1px solid var(--line-strong);border-right:1px solid var(--line-strong);background:transparent;font-family:var(--mono);font-size:13px;}
+.picked .pr{width:100px;text-align:right;font-family:var(--serif-kr);font-weight:300;}
+.picked .del{font-family:var(--sans);font-weight:300;font-size:18px;color:var(--ink-mute);line-height:1;} .picked .del:hover{color:var(--ink);}
+.picked .empty{padding:14px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--ink-mute);}
+.total{display:flex;justify-content:space-between;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--ink);}
+.total .lab{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-mute);}
+.total .sum{font-family:var(--serif-kr);font-weight:200;font-size:32px;line-height:1;}
+.total .sum small{font-family:var(--mono);font-size:11px;color:var(--ink-mute);margin-left:10px;}
+.actions{display:grid;grid-template-columns:1.5fr 1fr 52px;gap:10px;margin-top:22px;}
+.actions .cta{height:52px;padding:0;}
+.actions .wish{font-family:var(--sans);font-size:18px;--hover-color:var(--warn);}
+.actions .wish.on{color:var(--warn);border-color:var(--warn);}
+.notice{margin-top:18px;font-family:var(--sans);font-weight:300;font-size:12px;line-height:1.8;color:var(--ink-mute);}
+.notice li{padding-left:12px;position:relative;} .notice li::before{content:"·";position:absolute;left:2px;}
+
+/* ── 탭 (product_additional) — 타자기체 번호 라벨 ── */
+.tabs{position:sticky;top:calc(var(--bar) + var(--hd));z-index:5;margin-top:clamp(70px,9vw,130px);background:rgba(246,243,236,.94);backdrop-filter:blur(6px);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);}
+.tabs ul{display:flex;gap:clamp(18px,4vw,48px);overflow-x:auto;scrollbar-width:none;}
+.tabs a{display:block;padding:15px 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--ink-mute);white-space:nowrap;position:relative;}
+.tabs a i{font-style:normal;margin-right:8px;color:var(--ink);}
+.tabs a b{font-weight:400;margin-left:6px;color:var(--ink-mute);}
+.tabs a.on{color:var(--ink);} .tabs a.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ink);}
+.panel{padding:clamp(50px,7vw,100px) 0;border-bottom:1px solid var(--line);scroll-margin-top:calc(var(--bar) + var(--hd) + 50px);}
+.panel > h2{font-family:var(--serif-kr);font-weight:200;font-size:clamp(28px,3.6vw,46px);line-height:1.2;margin-top:14px;}
+.panel > h2 .en{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:.5em;color:var(--ink-mute);margin-top:.5em;}
+
+/* 상세정보 */
+.hero-copy{margin-top:40px;max-width:760px;}
+.hero-copy h3{font-family:var(--serif-kr);font-weight:200;font-size:clamp(26px,3.4vw,44px);line-height:1.25;margin-top:14px;}
+.hero-copy p{margin-top:26px;max-width:560px;font-size:clamp(15px,1.25vw,17px);line-height:1.85;color:var(--ink-soft);}
+.photo-band{margin-top:46px;display:grid;grid-template-columns:3fr 2fr;gap:10px;}
+.photo-band img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/2;}
+@media(max-width:700px){.photo-band{grid-template-columns:1fr;}}
+.sec{margin-top:clamp(60px,8vw,110px);}
+.sec > h4{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--ink);font-family:var(--serif-kr);font-weight:200;font-size:26px;line-height:1.2;}
+.sec > h4 small{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--ink-mute);}
+.ing{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:26px;}
+.ing figure{position:relative;}
+.ing .cimg{position:relative;aspect-ratio:412/670;overflow:hidden;background:var(--paper);border:1px solid var(--line);transition:transform .5s var(--ease-io);}
+.ing .cimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s linear;}
+.ing .cimg .b{opacity:0;}
+@media(hover:hover){.ing figure:hover .cimg{transform:translateY(-8px);} .ing figure:hover .cimg .b{opacity:1;}}
+.ing figcaption{margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--ink-mute);}
+.ing figcaption b{display:block;font-family:var(--serif-kr);font-weight:300;font-size:15px;color:var(--ink);}
+.ing figcaption i{display:block;font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:13px;margin-bottom:6px;}
+@media(max-width:900px){.ing{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:520px){.ing{grid-template-columns:repeat(2,1fr);}}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:8px;}
+.cols h5{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:16px;color:var(--ink-mute);padding:22px 0 10px;}
+.cols li{padding:10px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.7;color:var(--ink-soft);}
+@media(max-width:760px){.cols{grid-template-columns:1fr;gap:10px;}}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:8px;}
+.steps li{padding-top:22px;}
+.steps li b{display:block;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;color:var(--ink-mute);}
+.steps li strong{display:block;font-family:var(--serif-kr);font-weight:300;font-size:19px;margin-top:10px;}
+.steps li p{margin-top:8px;font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.75;color:var(--ink-soft);}
+@media(max-width:760px){.steps{grid-template-columns:1fr 1fr;}}
+.recipes dl{margin-top:4px;}
+.recipes .rc{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--line);align-items:start;}
+.recipes dt{font-family:var(--serif-kr);font-weight:300;font-size:19px;line-height:1.3;}
+.recipes dt em{font-family:var(--mono);font-style:normal;font-size:11px;color:var(--ink-mute);margin-right:12px;letter-spacing:.05em;}
+.recipes dt span{display:block;font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-top:6px;letter-spacing:.02em;}
+.recipes dd{font-size:14px;line-height:1.75;color:var(--ink-soft);padding-top:4px;}
+@media(max-width:700px){.recipes .rc{grid-template-columns:1fr;gap:8px;}}
+.pack{display:grid;grid-template-columns:repeat(3,1fr);gap:0 40px;margin-top:8px;}
+.pack li{display:flex;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px;}
+.pack li b{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--ink-mute);letter-spacing:.05em;}
+.pack li.hl::after{content:"";width:8px;height:8px;background:var(--u-taste);margin-left:auto;}
+@media(max-width:760px){.pack{grid-template-columns:1fr;}}
+.legal{margin-top:20px;font-family:var(--sans);font-weight:300;font-size:12.5px;line-height:1.8;color:var(--ink-mute);max-width:760px;}
+.spec{margin-top:8px;}
+.spec th,.spec td{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px;line-height:1.65;}
+.spec th{width:280px;padding-right:20px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.03em;color:var(--ink-mute);}
+.spec th small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:300;}
+@media(max-width:760px){.spec th{width:130px;}}
+
+/* 구매안내 */
+.guide{display:grid;grid-template-columns:1fr 1fr;gap:34px 60px;margin-top:20px;}
+.guide h5{font-family:var(--serif-kr);font-weight:300;font-size:18px;padding:18px 0 8px;border-bottom:1px solid var(--ink);margin-bottom:12px;}
+.guide p,.guide li{font-family:var(--sans);font-weight:300;font-size:13px;line-height:1.85;color:var(--ink-soft);}
+.guide li{position:relative;padding-left:12px;} .guide li::before{content:"–";position:absolute;left:0;}
+.guide .kv li{padding-left:0;} .guide .kv li::before{content:none;}
+.guide .kv b{display:inline-block;min-width:76px;font-weight:400;color:var(--ink);}
+.guide p + p{margin-top:8px;}
+@media(max-width:760px){.guide{grid-template-columns:1fr;}}
+
+/* 게시판 */
+.board{margin-top:20px;border-top:1px solid var(--ink);}
+.board th,.board td{padding:13px 8px;border-bottom:1px solid var(--line);font-size:13px;text-align:center;}
+.board th{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.04em;color:var(--ink-mute);}
+.board .empty td{padding:40px 8px;font-family:var(--mono);font-size:12px;color:var(--ink-mute);}
+.board-btns{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:14px;flex-wrap:wrap;}
+.board-btns .note{font-family:var(--mono);font-size:11px;color:var(--ink-mute);}
+.board-btns .cta{height:40px;padding:0 20px;font-size:13px;}
+
+/* 관련상품 */
+.rel{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:26px;}
+.rel a{display:block;}
+.rel .th{aspect-ratio:4/5;overflow:hidden;border:1px solid var(--line);background:var(--paper);}
+.rel .th img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease-io);}
+@media(hover:hover){.rel a:hover .th img{transform:scale(1.04);}}
+.rel .b{padding-top:14px;}
+.rel .b .no{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-mute);}
+.rel .b strong{display:block;font-family:var(--serif-kr);font-weight:300;font-size:19px;margin-top:6px;}
+.rel .b p{margin-top:6px;font-size:13px;line-height:1.7;color:var(--ink-soft);}
+.rel .b .pr{margin-top:10px;font-family:var(--serif-kr);font-weight:300;font-size:16px;} .rel .b .pr small{font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);margin-left:8px;}
+@media(max-width:760px){.rel{grid-template-columns:1fr 1fr;gap:16px;}}
+
+/* ── 푸터 (표본실 크레딧) ── */
+footer{position:relative;z-index:1;margin-top:clamp(60px,8vw,110px);padding:34px var(--edge) 60px;border-top:1px solid var(--ink);}
+footer .in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;line-height:1.9;color:var(--ink-mute);letter-spacing:.02em;}
+footer b{font-weight:400;color:var(--ink);}
+footer a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px;}
+
+/* ── 토스트 · 모바일 구매바 ── */
+#toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,16px);z-index:100;background:var(--dark);color:#fff;padding:12px 22px;font-family:var(--sans);font-weight:300;font-size:13px;opacity:0;visibility:hidden;transition:opacity .3s linear,transform .4s var(--ease-io),visibility .3s;white-space:nowrap;max-width:calc(100% - 32px);}
+#toast.on{opacity:1;visibility:visible;transform:translate(-50%,0);}
+@media(max-width:900px){
+  .specimen{position:static;}
+  .m-actions{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:1fr 1fr;background:var(--paper);border-top:1px solid var(--ink);}
+  .m-actions button{height:54px;font-family:var(--sans);font-weight:400;font-size:14px;} .m-actions .buy{background:var(--dark);color:#fff;}
+  body{padding-bottom:54px;} #toast{bottom:70px;}
+}
+@media(min-width:901px){.m-actions{display:none;}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="emblem" viewBox="0 0 100 100"><rect x="4" y="4" width="92" height="92" fill="currentColor"/><path d="M50 12 L57 40 L88 34 L62 52 L78 84 L50 64 L26 86 L38 54 L10 40 L43 42 Z" fill="#F4F1EA"/></symbol>
+</svg>
+
+<div class="demo-bar">DEMO · 카페24 <b>product/detail.html</b> 표준 구성 — 가격·배송비·표시사항은 <b>운영 정보 확정 후 교체</b><a href="index.html?enter&page=kit" id="backLink">표본실로 돌아가기</a></div>
+<header>
+  <a class="plogo" href="index.html?enter"><span class="box"><svg><use href="#emblem"/></svg></span><span class="name">취향의 표본실<span class="en">The Right to Taste — The Kit</span></span></a>
+  <nav class="tabsnav"><a href="?p=ver1" data-cat="ver1">VER.1 · AROMA</a><a href="?p=ver2" data-cat="ver2">VER.2 · ROAST</a><a href="?p=set" data-cat="set">TWO KIT SET</a></nav>
+  <div class="hd-r"><a href="#" data-demo class="cart hide-m">Cart (<b id="cartN">0</b>)</a><a href="index.html?enter&page=test" class="hide-m">Taste Test</a><a class="close" href="index.html?enter&page=kit">Close · 닫기</a></div>
+</header>
+
+<main class="wrap">
+  <div class="path"><a href="index.html?enter">Archive</a><span>›</span><a href="index.html?enter&page=kit">The Kit</a><span>›</span><span class="cur" id="pathCur"></span></div>
+
+  <!-- product_detail: 표본 프레임 + 라벨 -->
+  <section class="detail">
+    <div class="specimen">
+      <div class="frame">
+        <div class="keyImg"><img id="keyImg" src="" alt=""></div>
+        <div class="cap"><span id="keyNo">Fig. 01</span><span class="tag" id="keyTag"></span><span>The Right to Taste</span></div>
+      </div>
+      <div class="addImg" id="addImg"></div>
+      <div class="sns"><button type="button" id="copyLink">링크 복사</button><button type="button" data-demo>추천메일 보내기</button><button type="button" data-demo>상품조르기</button></div>
+    </div>
+    <div class="label">
+      <div class="eyebrow">Specimen Label — 키트 표본 라벨</div>
+      <div class="no" id="pNo"></div>
+      <h1 id="pName"></h1>
+      <p class="summary" id="pSummary"></p>
+      <ul class="list">
+        <li><b>상품명</b><span id="tName"></span></li>
+        <li><b>판매가</b><span><span class="price"><span id="tPrice"></span><small>원</small></span><span class="chip">예시가</span><div class="fund">와디즈 펀딩가 · 판매가는 확정 후 표기</div></span></li>
+        <li><b>적립금</b><span id="tPoint"></span></li>
+        <li><b>배송방법</b><span>택배</span></li>
+        <li><b>배송비</b><span>3,000원 (50,000원 이상 구매 시 무료)<span class="chip">예시</span></span></li>
+        <li><b>원산지</b><span>국내 — 원료별 원산지는 표시사항 참조</span></li>
+        <li><b>식품의 유형</b><span>침출차<span class="chip">확정 예정</span></span></li>
+        <li><b>구성</b><span id="tPack"></span></li>
+        <li><b>상품코드</b><span class="mono" id="tCode"></span></li>
+        <li class="opt"><b>포장 선택</b><span style="flex:1"><select id="optSel"></select><div class="req">(최소주문수량 1개 이상 / 최대주문수량 10개 이하)</div></span></li>
+      </ul>
+      <div class="picked list" id="picked" style="border-top:0;margin-top:0"></div>
+      <div class="total"><span class="lab">총 상품금액 (수량)</span><span class="sum"><span id="sum">0</span>원<small><span id="sumN">0</span>개</small></span></div>
+      <div class="actions">
+        <button type="button" class="cta button-hover" id="btnBuy"><span>바로구매</span></button>
+        <button type="button" class="cta light button-hover" id="btnCart"><span>장바구니</span></button>
+        <button type="button" class="cta light wish" id="btnWish" aria-label="관심상품">♡</button>
+      </div>
+      <ul class="notice">
+        <li>추천 비율은 취향을 발견하기 위한 첫 번째 기준입니다. 한 번 맛본 뒤 마음에 드는 원료를 반 스푼씩 조절해보세요.</li>
+        <li>식품 특성상 개봉 후에는 교환·반품이 어렵습니다. 맛·향 등 개인 취향에 따른 반품은 불가합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- product_additional -->
+  <nav class="tabs" id="tabs"><ul>
+    <li><a href="#prdDetail" class="on"><i>01</i>상품상세정보</a></li><li><a href="#prdInfo"><i>02</i>상품구매안내</a></li><li><a href="#prdReview"><i>03</i>상품후기<b>0</b></a></li><li><a href="#prdQnA"><i>04</i>상품문의<b>0</b></a></li><li><a href="#prdRelation"><i>05</i>관련상품</a></li>
+  </ul></nav>
+
+  <section class="panel" id="prdDetail">
+    <div class="eyebrow">01 — Product Detail</div>
+    <h2>상품상세정보<span class="en">What is inside the kit</span></h2>
+    <div class="hero-copy"><div class="eyebrow" id="dEyebrow"></div><h3 id="dHead"></h3><p id="dLead"></p></div>
+    <div class="photo-band" id="dPhotos"></div>
+    <div class="sec"><h4>원료 6종 <small id="ingNote"></small></h4><div class="ing" id="ing"></div></div>
+    <div class="sec"><h4>핵심 가치 · 추천 고객</h4>
+      <div class="cols">
+        <div><h5>이 키트로 할 수 있는 것</h5><ul id="dValue"></ul></div>
+        <div><h5>이런 분께 권합니다</h5><ul id="dFor"></ul></div>
+        <div><h5>직접 블렌딩해야 하는 이유</h5><ul><li>같은 원료도 반 스푼의 차이로 향과 깊이가 달라집니다.</li><li>직접 맛보고 조절하는 과정에서 막연했던 취향이 구체적인 레시피가 됩니다.</li><li>향은 지나가지만 기록은 취향을 남깁니다. 에세이 노트에 첫 향과 마지막 여운을 남겨보세요.</li></ul></div>
+      </div>
+    </div>
+    <div class="sec"><h4>블렌딩 가이드 <small>동봉 가이드 요약</small></h4>
+      <ol class="steps">
+        <li><b>STEP 01</b><strong>향 맡기</strong><p>원료 태그와 카드를 보며 여섯 원료의 향을 하나씩 맡습니다. 좋아하는 향과 낯선 향을 먼저 구분합니다.</p></li>
+        <li><b>STEP 02</b><strong>비율 정하기</strong><p>추천 레시피 비율을 계량 티스푼과 스쿱으로 담습니다. 처음엔 기준 비율 그대로 시작합니다.</p></li>
+        <li><b>STEP 03</b><strong>우리기</strong><p>공티백에 담아 우립니다. 핫·아이스 제조법과 물양·온도·시간은 가이드의 기준표를 따릅니다.</p></li>
+        <li><b>STEP 04</b><strong>기록하기</strong><p>에세이 노트에 원료·비율·첫 향·여운을 적습니다. 다음엔 마음에 드는 원료를 반 스푼 조절해봅니다.</p></li>
+      </ol>
+    </div>
+    <div class="sec recipes"><h4 id="recipeTitle"></h4><dl id="recipes"></dl></div>
+    <div class="sec"><h4>상품 구성 <small>9종 · ■ 가장 강조하는 구성</small></h4><ul class="pack" id="pack"></ul><p class="legal" id="packNote"></p></div>
+    <div class="sec"><h4>상품정보제공고시 <small>전자상거래 상품 등의 정보제공 고시 · (21) 가공식품</small></h4>
+      <table class="spec"><tbody>
+        <tr><th>제품명</th><td id="sName"></td></tr>
+        <tr><th>식품의 유형</th><td>침출차 <span class="tbd">※ 원료 구성에 따라 혼합침출차 여부 확인 중</span></td></tr>
+        <tr><th>생산자 및 소재지<small>(수입품의 경우 생산자, 수입자 및 제조국)</small></th><td>티아포테카 · 충청북도 청주시 <span class="tbd">※ 제조원·판매원 표기 확정 예정</span></td></tr>
+        <tr><th>제조연월일, 소비기한 또는 품질유지기한</th><td>제품 별도 표기 <span class="tbd">※ 원료별 소비기한 확인 후 표기</span></td></tr>
+        <tr><th>포장단위별 내용물의 용량(중량), 수량</th><td id="sWeight"></td></tr>
+        <tr><th>원재료명 및 함량<small>(원산지 표시 포함)</small></th><td id="sIng"></td></tr>
+        <tr><th>영양성분</th><td>해당 없음 <span class="tbd">※ 영양성분 표시대상 식품 여부 확인 중</span></td></tr>
+        <tr><th>유전자변형식품에 해당하는 경우의 표시</th><td>해당 없음</td></tr>
+        <tr><th>소비자 안전을 위한 주의사항</th><td>직사광선을 피해 서늘하고 건조한 곳에 보관하고, 개봉 후에는 밀봉하여 보관하세요. 특정 원료에 알레르기가 있는 분은 원재료명을 확인하세요. <span class="tbd">※ 알레르기 유발물질 표시 확인 중</span></td></tr>
+        <tr><th>수입식품에 해당하는 경우 문구</th><td>해당 시 "수입식품안전관리 특별법에 따른 수입신고를 필함" <span class="tbd">※ 수입 원료 여부 확인 중</span></td></tr>
+        <tr><th>소비자 상담 관련 전화번호</th><td>고객센터 <span class="tbd">※ 확정 후 표기</span></td></tr>
+      </tbody></table>
+      <p class="legal">본 제품은 차(침출차)이며 커피가 아닙니다. VER.2는 커피를 연상시키는 깊은 볶음 향을 곡물과 뿌리 원료로 만든 로스트로, 커피와 동일한 제품이 아니며 건강·치료 효과를 표방하지 않습니다.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="prdInfo">
+    <div class="eyebrow">02 — Info</div>
+    <h2>상품구매안내<span class="en">Payment · Shipping · Returns</span></h2>
+    <div class="guide">
+      <div><h5>상품결제정보</h5><p>고액결제의 경우 안전을 위해 카드사에서 확인전화를 드릴 수도 있습니다. 확인과정에서 도난 카드의 사용이나 타인 명의의 주문 등 정상적인 주문이 아니라고 판단될 경우 임의로 주문을 보류 또는 취소할 수 있습니다.</p><p>무통장 입금은 상품 구매 대금을 PC뱅킹, 인터넷뱅킹, 텔레뱅킹 혹은 가까운 은행에서 직접 입금하시면 됩니다. 주문 시 입력한 입금자명과 실제 입금자의 성명이 반드시 일치하여야 하며, 7일 이내로 입금하셔야 합니다. 입금되지 않은 주문은 자동 취소됩니다.</p></div>
+      <div><h5>배송정보</h5><ul class="kv"><li><b>배송 방법</b> 택배</li><li><b>배송 지역</b> 전국지역</li><li><b>배송 비용</b> 3,000원 (50,000원 이상 무료)<span class="chip">예시</span></li><li><b>배송 기간</b> 2일 ~ 5일</li></ul><p style="margin-top:8px">산간벽지나 도서지방은 별도의 추가금액을 지불하셔야 하는 경우가 있습니다. 고객님께서 주문하신 상품은 입금 확인 후 배송해 드립니다. 다만, 원료 소분·포장 일정에 따라 배송이 다소 지연될 수 있습니다.</p></div>
+      <div><h5>교환 및 반품정보</h5><p><b>교환 및 반품이 가능한 경우</b></p><ul><li>상품을 공급받으신 날로부터 7일 이내. 단, 식품의 특성상 포장을 개봉하였거나 포장이 훼손되어 상품가치가 상실된 경우에는 교환·반품이 불가능합니다.</li><li>공급받으신 상품의 내용이 표시·광고 내용과 다르거나 다르게 이행된 경우에는 공급받은 날로부터 3개월 이내, 그 사실을 알게 된 날로부터 30일 이내.</li></ul><p style="margin-top:10px"><b>교환 및 반품이 불가능한 경우</b></p><ul><li>고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우. 단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외.</li><li>개별 원료 파우치를 개봉하였거나 일부를 소비하여 상품의 가치가 감소한 경우.</li><li>맛·향 등 개인 취향에 따른 교환 및 반품.</li><li>시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우.</li></ul><p style="margin-top:8px">※ 고객님의 마음이 바뀌어 교환·반품을 하실 경우 상품 반송 비용은 고객님께서 부담하셔야 합니다.</p></div>
+      <div><h5>서비스문의</h5><p>블렌딩 방법, 원료 보관, 레시피에 관한 문의는 상품문의 게시판 또는 고객센터로 남겨주세요. 기관 출강·강사 과정·기업 워크숍 문의는 클래스 페이지에서 안내합니다.</p><ul class="kv" style="margin-top:8px"><li><b>고객센터</b> 확정 후 표기</li><li><b>운영시간</b> 평일 10:00 ~ 17:00 (주말·공휴일 휴무)<span class="chip">예시</span></li><li><b>이메일</b> hello@취향의권리.com</li></ul></div>
+    </div>
+  </section>
+
+  <section class="panel" id="prdReview">
+    <div class="eyebrow">03 — Review</div>
+    <h2>상품후기<span class="en">상품의 사용후기를 적어주세요.</span></h2>
+    <table class="board"><thead><tr><th style="width:60px">번호</th><th>제목</th><th style="width:110px">작성자</th><th style="width:110px">작성일</th><th style="width:70px">조회</th><th style="width:90px">평점</th></tr></thead><tbody><tr class="empty"><td colspan="6">게시물이 없습니다. 첫 번째 후기를 남겨주세요.</td></tr></tbody></table>
+    <div class="board-btns"><span class="note">후기 작성 시 적립금 500원<span class="chip">예시</span></span><div style="display:flex;gap:10px"><button class="cta button-hover" type="button" data-demo><span>후기작성하기</span></button><button class="cta light button-hover" type="button" data-demo><span>모두보기</span></button></div></div>
+  </section>
+
+  <section class="panel" id="prdQnA">
+    <div class="eyebrow">04 — Q&amp;A</div>
+    <h2>상품문의<span class="en">상품에 대해 궁금한 점을 해결해 드립니다.</span></h2>
+    <table class="board"><thead><tr><th style="width:60px">번호</th><th>제목</th><th style="width:110px">작성자</th><th style="width:110px">작성일</th><th style="width:90px">답변상태</th></tr></thead><tbody><tr class="empty"><td colspan="5">게시물이 없습니다.</td></tr></tbody></table>
+    <div class="board-btns"><span class="note">답변은 평일 기준 1~2일 내 등록됩니다.</span><div style="display:flex;gap:10px"><button class="cta button-hover" type="button" data-demo><span>상품문의하기</span></button><button class="cta light button-hover" type="button" data-demo><span>모두보기</span></button></div></div>
+  </section>
+
+  <section class="panel" id="prdRelation" style="border-bottom:0">
+    <div class="eyebrow">05 — Related</div>
+    <h2>관련상품<span class="en">함께 보면 좋은 표본</span></h2>
+    <div class="rel" id="rel"></div>
+  </section>
+</main>
+
+<footer><div class="in">
+  <div>취향의 권리 · <b>Tea Apothēca</b> — 취향은 정해지는 것이 아니라 완성되어 갑니다.<br>상호 티아포테카 · 사업자등록번호 · 통신판매업신고 · 대표 · 고객센터 — 확정 후 표기</div>
+  <div style="text-align:right"><a href="?p=ver1">VER.1</a> · <a href="?p=ver2">VER.2</a> · <a href="?p=set">TWO KIT SET</a> · <a href="index.html?enter&page=test">Taste Test</a><br>© 2026 취향의 권리 · 카페24 표준 상품 상세 구성을 따른 데모 · design6</div>
+</div></footer>
+
+<div class="m-actions"><button type="button" class="cart" data-act="cart">장바구니</button><button type="button" class="buy" data-act="buy">바로구매</button></div>
+<div id="toast" role="status"></div>
+
+<script>
+/* design6 에셋 매핑 — 표본은 동판화 카드가 대표, 호버 시 수채 컬러판 */
+const A='assets/';
+ProductPage.mount({
+  titleSuffix:'취향의 표본실',
+  img:{
+    ver1:{imgs:[A+'cards/rose.jpg',A+'color/rose.jpg',A+'taste-flatlay.jpg',A+'cards/yuza.jpg',A+'pouch.jpg'],photos:[A+'herbarium-desk.jpg',A+'taste-flatlay.jpg']},
+    ver2:{imgs:[A+'cards/dandelion-root.jpg',A+'color/dandelion-root.jpg',A+'depth-dishes.jpg',A+'cards/whole-barley.jpg',A+'hands-herbs.jpg'],photos:[A+'depth-dishes.jpg',A+'color/sorghum.jpg']},
+    set:{imgs:[A+'accordion.jpg',A+'cards/yuza.jpg',A+'cards/dandelion-root.jpg',A+'color/whole-barley.jpg',A+'sunset-table.jpg'],photos:[A+'sunset-table.jpg',A+'herbarium-desk.jpg']}
+  },
+  card:id=>`${A}cards/${id}.jpg`, cardAlt:id=>`${A}color/${id}.jpg`,
+  spyOffset:150
+});
+</script>
+</body>
+</html>
