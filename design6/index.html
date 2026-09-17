@@ -59,12 +59,12 @@ ul{list-style:none;}
 .page > *{pointer-events:auto;}
 
 /* ═══ GL 캔버스 ═══ */
-#canvas-wrapper{position:fixed;inset:0;z-index:1;background:var(--paper);opacity:0;transition:opacity 1.6s linear;}
+#canvas-wrapper{position:fixed;inset:0;z-index:1;background:#E9E3D8 url(assets/plaster-eu-2.jpg) center/cover;opacity:0;transition:opacity 1.6s linear;}   /* 아카이브 바탕도 유럽 미장 */
 #canvas-wrapper.on{opacity:1;}
 #canvas-wrapper canvas{display:block;width:100%;height:100%;}
 #stage{position:fixed;inset:0;z-index:2;pointer-events:none;}
-#stage .hd-fade{position:absolute;left:0;right:0;top:0;height:20vh;background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,0));}
-#stage .ft-fade{position:absolute;left:0;right:0;bottom:0;height:20vh;background:linear-gradient(rgba(255,255,255,0),rgba(255,255,255,.55));}
+#stage .hd-fade{position:absolute;left:0;right:0;top:0;height:20vh;background:linear-gradient(rgba(236,231,221,.55),rgba(236,231,221,0));}
+#stage .ft-fade{position:absolute;left:0;right:0;bottom:0;height:20vh;background:linear-gradient(rgba(236,231,221,0),rgba(236,231,221,.6));}
 .rowlabel{position:absolute;right:var(--edge);text-align:right;padding:10px 14px;background:rgba(255,255,255,.86);font-family:var(--serif-en);font-weight:300;font-size:15px;line-height:1.2;color:var(--ink);opacity:0;transition:opacity .8s linear;}
 .rowlabel small{display:block;font-family:var(--sans);font-weight:300;font-size:11px;color:var(--ink-mute);margin-top:6px;}
 #stage.mode-taste .rowlabel{opacity:1;}
@@ -759,8 +759,8 @@ makeFrags($('#aboutFrags'),26,Math.max(innerWidth,900)*.6);
 const wrap=$('#canvas-wrapper');
 /* 소프트웨어 렌더러(SwiftShader 등) 감지 → 해상도·AA·파티클 수 자동 조정 */
 const SOFT=(()=>{ try{ const c=document.createElement('canvas'); const gl=c.getContext('webgl2')||c.getContext('webgl'); const ext=gl.getExtension('WEBGL_debug_renderer_info'); const r=ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):''; return /swiftshader|llvmpipe|software|mesa offscreen/i.test(r); }catch(e){ return false; } })();
-const renderer=new THREE.WebGLRenderer({antialias:!SOFT,alpha:false,powerPreference:'high-performance'});
-let PR=SOFT?1:Math.min(devicePixelRatio,1.75); renderer.setPixelRatio(PR); renderer.setClearColor(0xffffff,1); wrap.appendChild(renderer.domElement);
+const renderer=new THREE.WebGLRenderer({antialias:!SOFT,alpha:true,premultipliedAlpha:false,powerPreference:'high-performance'});
+let PR=SOFT?1:Math.min(devicePixelRatio,1.75); renderer.setPixelRatio(PR); renderer.setClearColor(0xE9E3D8,0); /* 투명 캔버스 — 뒤의 미장 텍스처가 바탕 */ wrap.appendChild(renderer.domElement);
 /* 적응형 해상도: 평균 프레임이 느리면 픽셀비를 낮춘다 */
 const PERF={acc:0,n:0}; function adapt(dt){ PERF.acc+=dt; PERF.n++; if(PERF.n<90) return; const avg=PERF.acc/PERF.n; PERF.acc=0; PERF.n=0;
   if(avg>.045&&PR>.75){ PR=Math.max(.75,PR-.25); renderer.setPixelRatio(PR); } }
@@ -790,7 +790,7 @@ const tileFrag=`precision highp float; uniform sampler2D map; uniform vec3 uTint
   vec4 c=texture2D(map,clamp(suv,0.,1.)); c.rgb=sat(c.rgb,uSat);
   float g=uTintInf*smoothstep(-0.6,1.0,st.x); c.rgb=mix(c.rgb,c.rgb*uTint*1.12,g*.45);
   c.rgb=mix(c.rgb,vec3(1.),smoothstep(.05,.2,wave)*(smoothstep(1.,0.,length(c.rgb))*.3+.7)*.5);   // 물결이 지나간 자리 하얗게
-  c.rgb=mix(c.rgb,vec3(1.),uWhite);
+  c.rgb=mix(c.rgb,vec3(.93,.91,.87),uWhite);   // 엔딩 시 미장 톤으로 바램
   gl_FragColor=vec4(c.rgb,alpha*uOpacity); }`;
 const geo=new THREE.PlaneGeometry(1,1);
 const U={opacity:0,globe:0,scatter:1,openOther:0,white:0,tintInf:0,camZ:12,zoom:0};
