@@ -18,7 +18,7 @@
   header p{margin-top:14px;color:var(--gray);font-size:15px;line-height:1.9}
   header .type{font-family:var(--f-type);font-size:12px;letter-spacing:.28em;color:var(--gray);margin-top:22px}
   .grid{max-width:1240px;margin:36px auto 24px;padding:0 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .card{background:#fff;border:1px solid var(--line);display:flex;flex-direction:column}
+  .card{background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
   .card .frame{height:560px;overflow:hidden;border-bottom:1px solid var(--line);position:relative;background:#eee}
   .card iframe{width:860px;height:2800px;border:0;transform:scale(.4476);transform-origin:0 0;pointer-events:none;display:block}
   .card .body{padding:22px 24px 26px;flex:1;display:flex;flex-direction:column}
@@ -45,7 +45,7 @@
 <header>
   <img src="assets/logo.png" alt="취향의 권리">
   <h1>와디즈 상세페이지 시안 6종</h1>
-  <p>내용과 단락 순서는 대표님 스토리 시안(16섹션) 그대로, 디자인을 세 방향으로 나눴고(D·E·F), 레퍼런스에 충실한 구성(G)과 네이처라이크(H)·자스민영(I) 스타일을 더했습니다.<br>영상·사진은 브랜드 필름(조인젠블렌드)에서 뽑은 실제 소재이고, 글자는 전부 HTML 텍스트입니다.</p>
+  <p>내용과 단락 순서는 대표님 스토리 시안(16섹션) 그대로, 디자인을 세 방향으로 나눴고(D·E·F), 레퍼런스에 충실한 구성(G)과 네이처라이크(H)·자스민영(I) 스타일을 더했습니다.<br>영상·사진은 브랜드 필름(조인젠블렌드)에서 뽑은 실제 소재, 패키지는 최종 인쇄 원고를 입힌 3D 렌더이고, 글자는 전부 HTML 텍스트입니다.</p>
   <div class="type">860PX · 2026-10-20</div>
 </header>
 
@@ -134,8 +134,21 @@
 </details>
 
 <footer>
-  <b>소재</b> · 영상 13클립 = 브랜드 필름 2차 편집본에서 추출(무음 루프) · 스틸 28장 = 촬영 원본 · 비교 두 잔·곡물·구성품·단팥차·패키지·경품 컷 = ComfyUI(Flux) 생성, 글자 없음 · 보태니컬 수채 = 인쇄 스티커 원고<br>
-  <b>남은 작업</b> · 실물 누끼 촬영 후 생성 컷 교체 · 명인 인물 사진 · 체험단 후기 · 시음 확정값(비율·℃·잔 수) · 세트가·수량 · 와디즈 업로드용 섹션 캡처·GIF 변환
+  <b>소재</b> · 영상 13클립 = 브랜드 필름 2차 편집본에서 추출(무음 루프) · 스틸 28장 = 촬영 원본 · 패키지·구성품 = 디자이너 최종 인쇄 원고를 입힌 3D 렌더(정지 컷 + 영상 6종: 회전·뚜껑 열림/닫힘·병풍 펼침/넘김·노트 펼침 넘김) · 엔딩 = 최신 로고로 바꾼 히어로 영상 · 비교 두 잔·곡물·단팥차·경품 컷 = ComfyUI(Flux) 생성, 글자 없음 · 보태니컬 수채 = 인쇄 스티커 원고<br>
+  <b>남은 작업</b> · 남은 생성 컷(두 잔·곡물·단팥차·경품) 실사 교체 · 명인 인물 사진 · 체험단 후기 · 시음 확정값(비율·℃·잔 수) · 세트가·수량 · 띠지 명칭 확정(인쇄본 Taste/Depth ↔ 페이지 HERB/GRAIN) · 와디즈 업로드용 섹션 캡처·GIF 변환
 </footer>
+<script>
+/* 미리보기 iframe(860px)을 카드 폭에 맞춰 축소 — 1단(모바일)에서도 카드를 꽉 채움 */
+(function(){
+  function fit(){
+    document.querySelectorAll('.card .frame').forEach(function(f){
+      var s=f.clientWidth/860, i=f.querySelector('iframe');
+      i.style.transform='scale('+s+')';
+      i.style.height=Math.ceil(f.clientHeight/s)+'px';
+    });
+  }
+  fit(); window.addEventListener('resize',fit);
+})();
+</script>
 </body>
 </html>
