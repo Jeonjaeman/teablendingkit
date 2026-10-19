@@ -24,3 +24,21 @@ design5/*.jpg
 # OS/에디터
 Thumbs.db
 .DS_Store
+wadiz/assets/video/brand_v2.mp4
+wadiz/assets/video/frames/
+
+# 와디즈 작업용 대용량·재생성 가능
+3d/anim/
+3d/anim_preview/
+*.blend
+*.blend1
+
+# 의뢰자·디자이너 원본 (용량 큼, 원본은 드라이브·외장 보관)
+docs/drive-download-*/
+docs/drive-download-*.zip
+docs/촬영/
+패키지\ 최종/
+
+# 의뢰자 카톡 메시지·사진 (data/ 와 같은 이유로 추적 제외)
+docs/KakaoTalk_*.png
+docs/\[Tea\ Aphotheca\]*.txt
