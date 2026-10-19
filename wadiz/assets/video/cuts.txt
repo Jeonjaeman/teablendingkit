@@ -1,0 +1,14 @@
+c01_teapot 0.3 3.9
+c02_books 4.6 2.7
+c03_window_read 7.7 4.1
+c04_pour_cup 13.6 2.8
+c05_jars_spoon 18.0 2.9
+c06_smell 20.6 1.8
+c07_write 24.0 4.4
+c08_canister 33.0 2.9
+c09_pour_water 36.0 1.6
+c10_rest 40.6 4.3
+c11_brew_closeup 45.0 2.9
+c12_window_sit 48.0 4.4
+c13_smile 52.6 4.3
+c14_ending 57.0 5.0

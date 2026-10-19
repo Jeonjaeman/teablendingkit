@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=860">
+<title>취향의 권리 · 와디즈 상세페이지 초안 B — 노트 카드 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Courier+Prime:ital@0;1&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ───────────────────────── 토큰 ───────────────────────── */
+:root{
+  --paper:#F4EFE6; --paper-2:#EAE3D2; --ink:#2B2622; --gray:#6B655E; --line:#A39C93;
+  --dark:#4F4737; --dark-2:#766B54;
+  --herb:#8FA08A; --herb-soft:#DCE3D6; --rose:#B98F8A; --rose-soft:#EBDAD6;
+  --grain:#B08F63; --grain-soft:#E8DCC6; --brown:#6B4F3A;
+  --f-kserif:"Noto Serif KR",serif; --f-kr:"Noto Sans KR",sans-serif;
+  --f-eng:"Cormorant Infant",serif; --f-type:"Courier Prime",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#EDE8DF}
+body{background:#EDE8DF;color:var(--ink);font-family:var(--f-kr);font-weight:300;font-size:16px;line-height:1.75;word-break:keep-all;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+.page{width:860px;margin:0 auto;background:var(--paper) url(assets/photo/plaster-eu-1.jpg) center/cover;overflow:hidden;position:relative}
+
+/* ───────────────────────── 공통 ───────────────────────── */
+.sec{position:relative;padding:88px 56px}
+.sec.tight{padding-top:64px;padding-bottom:64px}
+.sec.flush{padding:0}
+.band{background:var(--dark);color:var(--paper)}
+.band .label,.band .type,.band .small{color:var(--paper-2);opacity:.85}
+.band.soft{background:var(--dark-2)}
+.paper2{background:var(--paper-2)}
+
+.label{font-family:var(--f-eng);font-style:italic;font-weight:400;font-size:17px;letter-spacing:.06em;color:var(--gray);display:block;margin-bottom:14px}
+.label.up{font-style:normal;text-transform:uppercase;letter-spacing:.28em;font-size:13px;font-weight:500}
+.h1{font-family:var(--f-kserif);font-weight:600;font-size:34px;line-height:1.6;color:var(--ink);letter-spacing:-.01em}
+.h2{font-family:var(--f-kserif);font-weight:600;font-size:28px;line-height:1.6;letter-spacing:-.01em}
+.h3{font-family:var(--f-kserif);font-weight:600;font-size:21px;line-height:1.6}
+.h-light{font-weight:300}
+.p{font-size:17px;line-height:1.85;color:var(--ink)}
+.p.g{color:var(--gray)}
+.small{font-size:15px;line-height:1.7;color:var(--gray)}
+.type{font-family:var(--f-type);font-size:14px;letter-spacing:.02em;color:var(--gray)}
+.type.kr{font-size:14px}
+.eng{font-family:var(--f-eng);font-style:italic}
+.center{text-align:center}
+.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mt32{margin-top:32px}.mt48{margin-top:48px}.mt64{margin-top:64px}
+.hair{height:1px;background:var(--line);opacity:.5;border:0}
+.hair.short{width:48px;margin:28px auto}
+.band .hair{background:var(--paper);opacity:.25}
+
+/* 세로 회전 영문 라벨 */
+.vert{position:absolute;top:96px;right:14px;writing-mode:vertical-rl;font-family:var(--f-eng);font-style:italic;font-size:15px;letter-spacing:.22em;color:var(--line);white-space:nowrap}
+.vert.left{right:auto;left:14px;transform:rotate(180deg)}
+.band .vert{color:var(--paper-2);opacity:.5}
+
+/* 카드 공통 */
+.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:24px;position:relative}
+.card.flat{border-color:transparent;box-shadow:0 0 0 1px rgba(163,156,147,.35)}
+.band .card{background:var(--dark-2);border-color:rgba(244,239,230,.25);color:var(--paper)}
+
+/* 색 밴드 */
+.cb{display:inline-block;height:6px;width:40px;border-radius:3px}
+.band-herb{background:var(--herb-soft)}
+.band-grain{background:var(--grain-soft)}
+.t-herb{color:var(--herb)}.t-rose{color:var(--rose)}.t-grain{color:var(--grain)}.t-brown{color:var(--brown)}
+.bg-herb{background:var(--herb)}.bg-rose{background:var(--rose)}.bg-grain{background:var(--grain)}.bg-brown{background:var(--brown)}
+
+/* 플레이스홀더 */
+.ph{border:1.5px dashed var(--line);background:rgba(234,227,210,.75);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;min-height:200px;border-radius:3px}
+.ph span{font-family:var(--f-type);font-size:14px;line-height:1.6;color:var(--gray);max-width:80%}
+.ph.sm{min-height:120px}
+
+/* 풀블리드 사진 / GIF 자리 */
+.shot{position:relative;overflow:hidden;background:var(--paper-2)}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot .gif-note{position:absolute;right:12px;bottom:10px;font-family:var(--f-type);font-size:14px;color:var(--paper);background:rgba(43,38,34,.55);padding:3px 8px;border-radius:2px;letter-spacing:.02em}
+.shot.h480{height:480px}.shot.h420{height:420px}.shot.h360{height:360px}.shot.h300{height:300px}
+
+/* 칩·태그·배지 */
+.chip{display:inline-block;font-size:14px;font-weight:400;padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--ink);margin:0 6px 8px 0;background:var(--paper)}
+.tag{display:inline-block;font-family:var(--f-type);font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:2px;color:var(--gray);margin-right:6px;letter-spacing:.04em}
+.tag.herb{border-color:var(--herb);color:var(--herb)}
+.tag.grain{border-color:var(--grain);color:var(--grain)}
+.tag.ink{border-color:var(--ink);color:var(--ink)}
+.badge{display:inline-block;font-size:14px;font-weight:500;padding:4px 10px;border-radius:2px;background:var(--ink);color:var(--paper);letter-spacing:.02em}
+.badge.grain{background:var(--grain)}
+.badge.herb{background:var(--herb)}
+.badge.outline{background:transparent;border:1px solid var(--line);color:var(--gray);font-weight:400}
+
+/* 그리드 */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* 번호 */
+.num{font-family:var(--f-eng);font-weight:300;font-size:44px;line-height:1;color:var(--grain);display:block;margin-bottom:10px}
+.circ{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--ink);border-radius:50%;font-family:var(--f-eng);font-size:15px;margin-right:10px;flex:none}
+
+/* ───────────────────────── s01 ───────────────────────── */
+#s01 .hero{height:720px;position:relative}
+#s01 .hero::after{content:"";position:absolute;inset:0;background:rgba(43,38,34,.42)}
+#s01 .hero .txt{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--paper);padding:0 56px}
+#s01 .hero .label{color:var(--paper);opacity:.9}
+#s01 .hero .h1{color:var(--paper);font-size:40px;line-height:1.55;font-weight:600}
+#s01 .hero .sub{font-family:var(--f-kserif);font-weight:300;font-size:19px;margin-top:22px;opacity:.95}
+#s01 .hero .txt img.logo{width:92px;height:auto;object-fit:contain;margin-top:40px;filter:brightness(0) invert(1);opacity:.95}
+#s01 .hero .rule{width:1px;height:48px;background:var(--paper);opacity:.6;margin-top:30px}
+.event{display:flex;align-items:center;justify-content:center;gap:0;padding:16px 56px;font-size:15px;font-weight:400;letter-spacing:.02em}
+.event span{padding:0 18px;border-left:1px solid rgba(244,239,230,.35)}
+.event span:first-child{border-left:0}
+.event b{font-weight:500}
+.compare{position:relative;padding:72px 56px 80px}
+.compare .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
+.compare .pair .ph{height:300px}
+.compare .cap{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+
+/* ───────────────────────── s02 ───────────────────────── */
+#s02 .list{display:grid;grid-template-columns:1fr;gap:12px;margin-top:8px}
+#s02 .list .card{display:grid;grid-template-columns:72px 1fr;align-items:start;gap:12px;padding:26px 28px}
+#s02 .list .num{font-size:40px;margin:0;color:var(--grain)}
+#s02 .list .h3{font-weight:400;font-size:20px}
+#s02 .turn{margin:48px 0 0;text-align:center;font-family:var(--f-kserif);font-size:19px;color:var(--gray)}
+#s02 .q{height:520px;position:relative;margin-top:40px}
+#s02 .q::after{content:"";position:absolute;inset:0;background:rgba(244,239,230,.7)}
+#s02 .q .txt{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center}
+#s02 .q .h1{font-size:38px}
+
+/* ───────────────────────── s03 ───────────────────────── */
+#s03 .details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+#s03 .details .shot{height:300px}
+#s03 .chips{margin-top:28px}
+.parts{margin-top:56px;display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:stretch}
+.parts .ph{min-height:100%}
+.parts ol{list-style:none;display:grid;grid-template-columns:1fr;gap:0}
+.parts li{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid rgba(163,156,147,.45);font-size:16px}
+.parts li:last-child{border-bottom:0}
+.parts li .type{margin-left:auto}
+
+/* ───────────────────────── s04 ───────────────────────── */
+#s04 .grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid rgba(244,239,230,.22);margin-top:16px}
+#s04 .cell{padding:48px 32px 44px;border-right:1px solid rgba(244,239,230,.22);border-bottom:1px solid rgba(244,239,230,.22);text-align:center}
+#s04 .cell:nth-child(2n){border-right:0}
+#s04 .cell:nth-child(n+3){border-bottom:0}
+#s04 .big{font-family:var(--f-eng);font-weight:300;font-size:120px;line-height:1;color:var(--paper);letter-spacing:-.02em}
+#s04 .big small{font-size:40px;vertical-align:baseline;margin-left:4px}
+#s04 .big.kr{font-family:var(--f-kserif);font-size:30px;font-weight:600;line-height:1.5;padding:30px 0 26px}
+#s04 .big .unit{font-family:var(--f-kserif);font-size:28px;font-weight:300;margin-right:6px}
+#s04 .desc{margin-top:16px;font-size:16px;color:var(--paper-2)}
+
+/* ───────────────────────── s05 ───────────────────────── */
+.fork{display:block;width:100%;height:auto;margin:36px 0 8px}
+.fork text{font-family:var(--f-kserif);font-weight:600}
+.fork .en{font-family:var(--f-eng);font-style:italic;font-weight:400}
+.ver{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--paper)}
+.ver .top{padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.ver .top .eng{font-size:22px}
+.ver .body{padding:26px 24px 28px}
+.ver .ings{font-family:var(--f-kserif);font-size:19px;font-weight:600;line-height:1.7}
+.ver .who{margin-top:14px;font-size:15px;color:var(--gray);padding-left:12px;border-left:2px solid var(--line)}
+.ver.herb .top{background:var(--herb-soft)}
+.ver.herb .top .eng,.ver.herb .top .type{color:var(--herb)}
+.ver.grain .top{background:var(--grain-soft)}
+.ver.grain .top .eng,.ver.grain .top .type{color:var(--grain)}
+.ver.grain .who{border-color:var(--grain)}
+.ver.herb .who{border-color:var(--herb)}
+.ver .shot{height:300px;border-bottom:1px solid var(--line)}
+
+/* 원료 노트 카드 */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.note{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.note .cbar{height:8px}
+.note.herb .cbar{background:var(--herb-soft)}
+.note.rose .cbar{background:var(--rose-soft)}
+.note.grain .cbar{background:var(--grain-soft)}
+.note.brown .cbar{background:var(--grain-soft)}
+.note .art{height:160px;display:flex;align-items:center;justify-content:center;padding:12px 16px 0}
+.note .art img{max-height:100%;width:auto;object-fit:contain}
+.note .meta{padding:14px 16px 18px;flex:1;display:flex;flex-direction:column}
+.note .en{font-family:var(--f-eng);font-size:20px;font-weight:500;line-height:1.15;color:var(--ink)}
+.note .sci{font-family:var(--f-eng);font-style:italic;font-size:15px;color:var(--gray);line-height:1.3}
+.note .kr{font-family:var(--f-kserif);font-weight:600;font-size:17px;margin-top:8px}
+.note .desc{font-size:16px;line-height:1.6;color:var(--gray);margin-top:6px;min-height:77px}
+.note .bars{margin-top:12px;padding-top:12px;border-top:1px solid rgba(163,156,147,.4)}
+.note .bar{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:8px;margin-top:5px}
+.note .bar .type{font-size:14px}
+.note .bar i{display:flex;gap:3px}
+.note .bar i b{display:block;height:5px;flex:1;background:var(--paper-2);border-radius:1px}
+.note.herb .bar i b.on{background:var(--herb)}
+.note.rose .bar i b.on{background:var(--rose)}
+.note.grain .bar i b.on{background:var(--grain)}
+.note.brown .bar i b.on{background:var(--brown)}
+.note .idx{position:absolute;top:14px;right:14px;font-family:var(--f-eng);font-style:italic;font-size:14px;color:var(--line)}
+.note{position:relative}
+.grouphead{display:flex;align-items:baseline;gap:12px;margin-top:40px}
+.grouphead .eng{font-size:26px}
+.grouphead .type{margin-left:auto}
+
+.setcard{margin-top:40px;border:1px solid var(--ink);border-radius:4px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;background:var(--paper)}
+.setcard .shot{height:100%;min-height:300px}
+.setcard .body{padding:40px 36px;display:flex;flex-direction:column;justify-content:center}
+.setcard .plus{font-family:var(--f-eng);font-size:34px;line-height:1.1;margin-top:18px;color:var(--ink)}
+.setcard .plus b{font-weight:400}
+.setcard .plus .t-herb,.setcard .plus .t-grain{font-weight:500}
+
+/* ───────────────────────── s06 ───────────────────────── */
+#s06 .quote{padding:72px 56px 64px;text-align:center}
+#s06 .quote .h1{color:var(--paper);font-weight:300}
+#s06 .quote .ok{font-family:var(--f-kserif);font-size:22px;margin-top:22px;color:var(--paper-2)}
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;position:relative}
+.steps .card{padding:26px 22px 28px;text-align:center}
+.steps .num{font-size:38px;color:var(--grain)}
+.steps .h3{font-size:20px}
+.steps .small{margin-top:6px}
+.steps .arrow{position:absolute;top:50%;width:12px;height:12px;border-top:1px solid var(--line);border-right:1px solid var(--line);transform:translateY(-50%) rotate(45deg)}
+#s06 .shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px}
+#s06 .shots .shot{height:360px}
+#s06 .close{margin-top:48px;text-align:center;font-family:var(--f-kserif);font-size:22px;font-weight:400}
+
+/* ───────────────────────── s07 ───────────────────────── */
+.days{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.days .card{padding:30px 28px 32px}
+.days .eng{font-size:26px;display:block;margin-bottom:10px}
+.days .h2{font-size:25px}
+.days .herb .eng{color:var(--herb)}
+.days .grain .eng{color:var(--grain)}
+.days .dots{margin-top:18px;font-size:18px;letter-spacing:.14em}
+#s07 .big{font-family:var(--f-kserif);font-weight:600;font-size:44px;line-height:1.5;text-align:center;margin-top:64px}
+#s07 .after{font-family:var(--f-kserif);font-size:20px;text-align:center;margin-top:14px;color:var(--gray)}
+
+/* ───────────────────────── s08 ───────────────────────── */
+.recipes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:40px}
+.recipe{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0;overflow:hidden;display:flex;flex-direction:column}
+.recipe .top{padding:12px 18px;font-family:var(--f-type);font-size:14px;letter-spacing:.04em;line-height:1.5}
+.recipe.v1 .top{background:var(--herb-soft);color:var(--herb)}
+.recipe.vx .top{background:var(--paper-2);color:var(--brown)}
+.recipe.v2 .top{background:var(--grain-soft);color:var(--grain)}
+.recipe .body{padding:22px 18px 20px;flex:1;display:flex;flex-direction:column}
+.recipe .name{font-family:var(--f-kserif);font-weight:600;font-size:22px;line-height:1.4}
+.recipe .ratio{margin-top:16px;display:grid;gap:8px}
+.recipe .ratio .row{display:grid;grid-template-columns:1fr auto;align-items:center;font-size:15px}
+.recipe .ratio .d{letter-spacing:.12em;font-size:15px;line-height:1}
+.recipe.v1 .d{color:var(--herb)}.recipe.vx .d{color:var(--brown)}.recipe.v2 .d{color:var(--grain)}
+.recipe .ratio .d.tbd{color:var(--line)}
+.recipe .ratio-text{font-family:var(--f-type);font-size:14px;color:var(--gray);margin-top:12px}
+.recipe .brew{margin-top:auto;padding-top:14px;border-top:1px solid rgba(163,156,147,.45);display:flex;flex-direction:column;gap:5px}
+.recipe .brew span{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-type);font-size:14px;color:var(--gray)}
+.recipe .brew svg{width:13px;height:13px;stroke:var(--gray);fill:none;stroke-width:1.3}
+#s08 .close{margin-top:44px;text-align:center;font-family:var(--f-kserif);font-size:22px;font-weight:600}
+
+/* ───────────────────────── s08b ───────────────────────── */
+#s08b{position:relative;padding:80px 56px 88px}
+.bubbles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.bubble{background:var(--paper);color:var(--ink);border-radius:18px;padding:18px 20px;font-family:var(--f-kserif);font-size:16px;line-height:1.6;position:relative;text-align:center}
+.bubble::after{content:"";position:absolute;left:30px;bottom:-9px;width:14px;height:14px;background:var(--paper);transform:rotate(45deg)}
+#s08b .so{margin-top:40px;text-align:center;font-family:var(--f-kserif);font-size:18px;color:var(--paper-2)}
+#s08b .h1{color:var(--paper);text-align:center;margin-top:10px}
+#s08b .p{color:var(--paper-2);text-align:center;margin-top:18px}
+.phones{display:grid;grid-template-columns:240px 240px;gap:28px;justify-content:center;margin-top:48px;align-items:start}
+.phone{background:var(--paper);color:var(--ink);border:1.5px solid var(--paper-2);border-radius:30px;padding:18px 16px 20px;box-shadow:0 0 0 6px var(--dark-2)}
+.phone .notch{width:70px;height:5px;background:var(--paper-2);border-radius:3px;margin:0 auto 16px}
+.phone .ptitle{font-family:var(--f-kserif);font-weight:600;font-size:16px;line-height:1.55}
+.phone .plabel{font-family:var(--f-type);font-size:14px;color:var(--gray);letter-spacing:.06em}
+.phone .opts{margin-top:12px;display:grid;gap:6px}
+.phone .opt{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-weight:400;display:flex;align-items:center;gap:8px}
+.phone .opt i{width:10px;height:10px;border:1px solid var(--line);border-radius:50%;flex:none}
+.phone .opt.on{background:var(--herb-soft);border-color:var(--herb)}
+.phone .opt.on i{background:var(--herb);border-color:var(--herb)}
+.phone .prog{margin-top:14px;display:flex;align-items:center;gap:8px}
+.phone .prog .bar{flex:1;height:3px;background:var(--paper-2)}
+.phone .prog .bar b{display:block;width:20%;height:100%;background:var(--herb)}
+.phone .res .name{font-family:var(--f-kserif);font-weight:600;font-size:21px;line-height:1.3;margin-top:4px}
+.phone .res .sub{font-size:14px;color:var(--gray)}
+.phone .res .blk{margin-top:12px;padding-top:10px;border-top:1px solid rgba(163,156,147,.45)}
+.phone .res .blk .plabel{display:block;margin-bottom:4px}
+.phone .res .blk p{font-size:14px;font-weight:400;line-height:1.6}
+.phone .res .blk .d{color:var(--rose);letter-spacing:.08em}
+.phone .res .kit{margin-top:12px;background:var(--herb-soft);border-radius:8px;padding:8px 10px;font-size:14px;font-weight:400;color:var(--ink)}
+.phone .res .kit b{font-weight:500;color:var(--herb)}
+.radarwrap{margin-top:48px;display:grid;grid-template-columns:260px 1fr;gap:36px;align-items:center}
+.radar{width:260px;height:260px;display:block}
+.radar .grid{fill:none;stroke:var(--paper);stroke-opacity:.28;stroke-width:1}
+.radar .axis{stroke:var(--paper);stroke-opacity:.28;stroke-width:1}
+.radar .val{fill:var(--rose);fill-opacity:.42;stroke:var(--rose-soft);stroke-width:1.5}
+.radar .pt{fill:var(--paper)}
+.radar text{font-family:var(--f-kserif);font-size:14px;fill:var(--paper);font-weight:400}
+.radarwrap .legend{color:var(--paper-2)}
+.radarwrap .legend .row{display:grid;grid-template-columns:60px 1fr 24px;gap:10px;align-items:center;font-size:15px;margin-top:8px}
+.radarwrap .legend .row i{height:4px;background:rgba(244,239,230,.18);display:block}
+.radarwrap .legend .row i b{display:block;height:100%;background:var(--rose-soft)}
+.radarwrap .legend .row em{font-family:var(--f-eng);font-style:normal;font-size:16px;text-align:right}
+.cta{margin-top:48px;display:grid;grid-template-columns:150px 1fr;gap:28px;align-items:center}
+.qr{width:150px;height:150px;border:1px solid var(--paper-2);padding:10px;background:var(--paper);display:flex;align-items:center;justify-content:center;text-align:center}
+.qr .type{font-size:14px;color:var(--gray)}
+.qr img,.qr svg{width:100%;height:100%}
+.btn{display:inline-block;border:1px solid var(--paper);color:var(--paper);padding:14px 28px;font-size:17px;font-weight:400;letter-spacing:.02em;border-radius:2px}
+.cta .hint{margin-top:12px;font-family:var(--f-kserif);font-size:16px;color:var(--paper-2)}
+#s08b .last{margin-top:36px;text-align:center;color:var(--paper-2);font-size:16px;line-height:1.8}
+
+/* ───────────────────────── s09 ───────────────────────── */
+#s09 .shot{height:460px;margin-top:40px}
+#s09 .close{margin-top:48px;text-align:center;font-family:var(--f-kserif);font-size:24px;font-weight:600;line-height:1.6}
+
+/* ───────────────────────── s10 ───────────────────────── */
+.maker{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:40px}
+.maker .ph{min-height:340px}
+.maker .card{padding:28px 28px 30px}
+.maker .name{font-family:var(--f-kserif);font-weight:600;font-size:22px;line-height:1.5;margin-top:4px}
+.maker .bio{margin-top:10px;font-size:15px;color:var(--gray);line-height:1.8}
+.maker .books{margin-top:14px;padding-top:12px;border-top:1px solid rgba(163,156,147,.45);font-size:15px;line-height:1.8}
+.maker2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.maker2 .shot{height:260px}
+.maker2 .card{padding:28px}
+#s10 .quote{margin-top:56px;text-align:center;font-family:var(--f-kserif);font-size:26px;line-height:1.7;font-weight:400}
+#s10 .quote::before,#s10 .quote::after{content:"";display:block;width:40px;height:1px;background:var(--line);margin:0 auto 22px}
+#s10 .quote::after{margin:22px auto 0}
+
+/* ───────────────────────── s11 ───────────────────────── */
+.reviews{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:36px}
+.review{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.review .ph{min-height:170px;border-width:0 0 1.5px 0;border-radius:0}
+.review .body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column}
+.review .stars{color:var(--grain);font-size:15px;letter-spacing:.14em}
+.review .txt{font-family:var(--f-kserif);font-size:16px;line-height:1.7;margin-top:10px;flex:1}
+.review .who{margin-top:14px;font-size:15px;color:var(--gray)}
+.review .tags{margin-top:10px}
+
+/* ───────────────────────── s12 ───────────────────────── */
+#s12 .shot{height:420px}
+#s12 .bandtxt{padding:72px 56px}
+#s12 .bandtxt .h1{color:var(--paper);text-align:center}
+#s12 .pack{display:grid;grid-template-columns:1fr 200px 200px;gap:12px;padding:0 56px 88px}
+#s12 .pack .shot,#s12 .pack .ph{height:300px}
+
+/* ───────────────────────── s13 ───────────────────────── */
+#s13 .shots{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-top:36px}
+#s13 .shots .shot,#s13 .shots .ph{height:260px}
+.priceline{margin-top:28px;padding:16px 20px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;align-items:center;font-size:16px}
+.priceline .eng{font-size:22px;font-style:normal}
+.rewards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.reward{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:24px 24px 22px;position:relative;display:flex;flex-direction:column}
+.reward.hot{border-color:var(--ink)}
+.reward .head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.reward .rlabel{font-family:var(--f-type);font-size:12px;color:var(--gray);letter-spacing:.06em}
+.reward .rname{font-family:var(--f-kserif);font-weight:600;font-size:20px;line-height:1.4;margin-top:4px}
+.reward .lim{margin-top:8px}
+.pct{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--grain);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;color:var(--grain);background:var(--paper)}
+.pct b{font-family:var(--f-eng);font-weight:400;font-size:34px;line-height:1}
+.pct b small{font-size:16px;margin-left:1px}
+.pct span{font-family:var(--f-type);font-size:10px;letter-spacing:.08em;margin-top:2px}
+.pct.ink{border-color:var(--ink);color:var(--ink)}
+.pct.ink b{font-size:17px;font-family:var(--f-kserif);font-weight:600}
+.pct.set b{font-size:22px;letter-spacing:.04em}
+.reward .price{margin-top:18px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.reward .price .now{font-family:var(--f-eng);font-size:40px;font-weight:400;line-height:1;color:var(--ink)}
+.reward .price .now small{font-family:var(--f-kserif);font-size:17px;margin-left:3px}
+.reward .price .was{font-family:var(--f-eng);font-size:20px;color:var(--gray);text-decoration:line-through;text-decoration-color:var(--rose)}
+.reward .price .was small{font-size:14px;font-family:var(--f-kr);margin-left:2px}
+.reward ul{list-style:none;margin-top:16px;padding-top:14px;border-top:1px solid rgba(163,156,147,.45);display:grid;gap:6px}
+.reward li{font-size:15px;display:flex;gap:9px;align-items:flex-start;line-height:1.6}
+.reward li::before{content:"";width:12px;height:12px;border:1px solid var(--grain);border-radius:50%;flex:none;margin-top:7px;background:var(--grain);box-shadow:inset 0 0 0 2px var(--paper)}
+.reward.set{border-color:var(--grain);background:var(--grain-soft)}
+.reward.set .pct{border-color:var(--brown);color:var(--brown);background:var(--paper)}
+.reward.set ul{border-top-color:rgba(107,79,58,.3)}
+.reward.set .comp{font-family:var(--f-kserif);font-size:17px;font-weight:600;line-height:1.7;margin-top:16px;padding-top:14px;border-top:1px solid rgba(107,79,58,.3)}
+.notice{margin-top:24px;padding:18px 22px;border:1px solid var(--line);border-radius:4px;font-size:15px;color:var(--gray);line-height:1.8;background:rgba(244,239,230,.6)}
+
+/* ───────────────────────── s14 ───────────────────────── */
+#s14 .lbl{display:inline-block;font-size:14px;font-weight:400;padding:6px 14px;border:1px solid var(--ink);border-radius:999px;margin-bottom:22px}
+#s14 .prize{margin-top:36px}
+#s14 .prize .ph{min-height:260px}
+#s14 .how{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px}
+#s14 .how .card{padding:24px 20px 26px}
+#s14 .how .num{font-size:34px}
+#s14 .how .h3{font-size:18px}
+#s14 .how .small{margin-top:8px;font-size:15px;color:var(--ink);font-weight:300}
+#s14 .how .small b{font-weight:400}
+#s14 .fine{margin-top:20px;font-size:15px;color:var(--gray);line-height:1.8;padding:16px 20px;border-left:2px solid var(--line)}
+#s14 .close{margin-top:48px;text-align:center;font-family:var(--f-kserif);font-size:24px;font-weight:600;line-height:1.6}
+
+/* ───────────────────────── s15 ───────────────────────── */
+.faq{margin-top:28px;border-top:1px solid var(--ink)}
+.faq .qa{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:24px 4px;border-bottom:1px solid rgba(163,156,147,.5)}
+.faq .q{font-family:var(--f-eng);font-size:24px;line-height:1;color:var(--grain);padding-top:4px}
+.faq .qt{font-family:var(--f-kserif);font-weight:600;font-size:18px;line-height:1.6}
+.faq .at{margin-top:10px;font-size:16px;color:var(--gray);line-height:1.85}
+.spec{margin-top:64px}
+.spec table{width:100%;border-collapse:collapse;margin-top:16px;border-top:1px solid var(--ink)}
+.spec th,.spec td{padding:13px 12px;border-bottom:1px solid rgba(163,156,147,.5);font-size:15px;text-align:left;vertical-align:top}
+.spec th{width:160px;font-weight:400;color:var(--ink);background:rgba(234,227,210,.6)}
+.spec td{color:var(--gray);font-family:var(--f-type);font-size:15px}
+
+/* ───────────────────────── s16 ───────────────────────── */
+#s16 .shot{height:460px}
+#s16 .bandtxt{padding:80px 56px 72px;text-align:center}
+#s16 .bandtxt .h1{color:var(--paper);font-size:38px}
+#s16 .bandtxt .sub{margin-top:20px;font-family:var(--f-kserif);font-size:18px;color:var(--paper-2)}
+#s16 .qrs{display:flex;justify-content:center;gap:40px;margin-top:48px}
+#s16 .qrs .one{text-align:center}
+#s16 .qrs .qr{margin:0 auto}
+#s16 .qrs .type{display:block;margin-top:10px;color:var(--paper-2);letter-spacing:.2em;font-size:12px}
+#s16 .ending{height:420px;background:url(assets/photo/plaster-1.jpg) center/cover;display:flex;align-items:center;justify-content:center;position:relative}
+#s16 .ending img{width:150px}
+
+footer.meta{width:860px;margin:0 auto;padding:18px 0 40px;text-align:center;font-family:var(--f-type);font-size:14px;color:var(--gray)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- 섹션 1 · 히어로 -->
+<section id="s01">
+  <div class="hero shot" data-gif="03_창가독서.gif">
+    <img src="assets/photo/sunset-table.jpg" alt="">
+    <div class="txt">
+      <span class="label up">TEA BLENDING KIT</span>
+      <h1 class="h1">같은 재료,<br>비율만 바꿨을 뿐인데.</h1>
+      <p class="sub">오늘의 한 잔은 내가 정합니다.</p>
+      <div class="rule"></div>
+      <img class="logo" src="assets/logo.png" alt="취향의 권리">
+    </div>
+    <span class="gif-note">GIF · 03_창가독서.gif</span>
+  </div>
+
+  <!-- 이벤트 띠 -->
+  <div class="event band">
+    <span><b>울트라 얼리버드 15% 할인</b></span>
+    <span>선착순 100명</span>
+    <span>원료 3팩 + 인퓨저 증정</span>
+  </div>
+
+  <!-- s01-2 비교 두 잔 -->
+  <div class="compare" id="s01-2">
+    <span class="vert">Same leaves, two cups</span>
+    <div class="shot h300" data-gif="09_물붓기.gif">
+      <img src="assets/photo/pour.jpg" alt="">
+      <span class="gif-note">GIF · 09_물붓기.gif</span>
+    </div>
+    <h2 class="h2 mt48">왼쪽은 캐모마일 두 스푼,<br>오른쪽은 장미 한 스푼 더.</h2>
+    <div class="pair">
+      <div class="ph" data-shot="A-1"><span>새로 촬영 A-1 · 왼쪽 잔 · 연한 노란빛</span></div>
+      <div class="ph" data-shot="A-2"><span>새로 촬영 A-2 · 오른쪽 잔 · 붉은빛</span></div>
+    </div>
+    <div class="cap">
+      <span class="type kr">같은 재료로 우린 두 잔, 사진 2장 (같은 잔·같은 빛)</span>
+      <span class="type">A-1 / A-2</span>
+    </div>
+  </div>
+</section>
+
+<!-- 섹션 2 · 공감 -->
+<section id="s02" class="sec paper2">
+  <span class="vert">Have you ever…</span>
+  <div class="list">
+    <div class="card flat">
+      <span class="num">01</span>
+      <p class="h3">티백을 뜯을 때마다<br>매번 같은 맛이라 지겨웠던 적,</p>
+    </div>
+    <div class="card flat">
+      <span class="num">02</span>
+      <p class="h3">블렌딩 카페는 좋았지만<br>매번 시간 내서 찾아가긴 어려웠던 적,</p>
+    </div>
+    <div class="card flat">
+      <span class="num">03</span>
+      <p class="h3">선물로 차를 고르다가<br>결국 무난한 걸로 타협했던 적.</p>
+    </div>
+  </div>
+  <p class="turn">그런데 문득 궁금해졌습니다.</p>
+  <div class="q shot">
+    <img src="assets/photo/cup-linen.jpg" alt="">
+    <div class="txt">
+      <h2 class="h1">나는 어떤 차를<br>좋아하는 사람일까?</h2>
+    </div>
+  </div>
+</section>
+
+<!-- 섹션 3 · 키트 실물 -->
+<section id="s03" class="sec">
+  <span class="vert">What's inside</span>
+  <span class="label">The Kit</span>
+  <h2 class="h1">상자를 열면,<br>여섯 가지 재료가 기다립니다.</h2>
+  <p class="p g mt24">재료를 고르고, 섞고, 우리는 데 필요한 것을<br>하나의 키트에 담았습니다.</p>
+
+  <div class="shot h480 mt48" data-gif="02_브랜드북과도구.gif">
+    <img src="assets/photo/box-front.jpg" alt="">
+    <span class="gif-note">GIF · 02_브랜드북과도구.gif</span>
+  </div>
+  <div class="details">
+    <div class="shot"><img src="assets/photo/accordion.jpg" alt=""></div>
+    <div class="shot"><img src="assets/photo/book-3view.jpg" alt=""></div>
+  </div>
+
+  <div class="chips">
+    <span class="chip">재료 6종</span><span class="chip">빈 티백</span><span class="chip">실물 블렌딩 노트</span>
+  </div>
+
+  <div class="parts">
+    <div class="ph" data-shot="구성품 9종 플랫레이"><span>새로 촬영 · 구성품 9종 플랫레이<br>(누끼, 번호는 HTML로 오버레이)</span></div>
+    <ol>
+      <li><span class="circ">1</span>블렌딩 원료 6종<span class="type">Botanicals</span></li>
+      <li><span class="circ">2</span>공티백<span class="type">Empty bag</span></li>
+      <li><span class="circ">3</span>계량용 티스푼<span class="type">Spoon</span></li>
+      <li><span class="circ">4</span>스쿱<span class="type">Scoop</span></li>
+      <li><span class="circ">5</span>원료 태그<span class="type">Tags</span></li>
+      <li><span class="circ">6</span>원료 카드<span class="type">Cards</span></li>
+      <li><span class="circ">7</span>블렌딩 가이드<span class="type">Guide</span></li>
+      <li><span class="circ">8</span>티 블렌딩 에세이 노트<span class="type">Note</span></li>
+      <li><span class="circ">9</span>스티커<span class="type">Stickers</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 섹션 4 · 숫자 -->
+<section id="s04" class="sec band">
+  <span class="vert">In numbers</span>
+  <span class="label">In numbers</span>
+  <div class="grid">
+    <div class="cell">
+      <div class="big">12</div>
+      <p class="desc">두 버전을 합친 재료 가짓수</p>
+    </div>
+    <div class="cell">
+      <div class="big kr">허브와 곡물로만</div>
+      <p class="desc">저녁에도 편하게 (카페인 표시는 확인 후)</p>
+    </div>
+    <div class="cell" data-tbd="잔 수 최종 확인">
+      <div class="big"><span class="unit">약</span>27<small>잔</small></div>
+      <p class="desc">150ml 기준, 키트 하나로 [최종 확인]</p>
+    </div>
+    <div class="cell">
+      <div class="big">2</div>
+      <p class="desc">HERB와 GRAIN, 두 가지 시작점</p>
+    </div>
+  </div>
+</section>
+
+<!-- 섹션 5 · 두 버전 -->
+<section id="s05" class="sec">
+  <span class="vert">Two versions</span>
+  <span class="label">Two Versions</span>
+  <h2 class="h1 center">어느 쪽이 더<br>당신의 취향인가요?</h2>
+
+  <!-- 두 갈래 인포그래픽 (SVG) -->
+  <svg class="fork" viewBox="0 0 748 230" role="img" aria-label="HERB와 GRAIN 두 갈래">
+    <circle cx="374" cy="20" r="5" style="fill:var(--ink)"/>
+    <line x1="374" y1="25" x2="374" y2="78" style="stroke:var(--line)" stroke-width="1.2"/>
+    <path d="M374 78 C 374 130, 150 100, 150 160" fill="none" style="stroke:var(--herb)" stroke-width="1.6"/>
+    <path d="M374 78 C 374 130, 598 100, 598 160" fill="none" style="stroke:var(--grain)" stroke-width="1.6"/>
+    <circle cx="150" cy="160" r="4" style="fill:var(--herb)"/>
+    <circle cx="598" cy="160" r="4" style="fill:var(--grain)"/>
+    <text x="150" y="196" text-anchor="middle" font-size="19" style="fill:var(--ink)">향긋하게</text>
+    <text x="150" y="222" text-anchor="middle" class="en" font-size="22" style="fill:var(--herb)">HERB</text>
+    <text x="598" y="196" text-anchor="middle" font-size="19" style="fill:var(--ink)">고소하게</text>
+    <text x="598" y="222" text-anchor="middle" class="en" font-size="22" style="fill:var(--grain)">GRAIN</text>
+  </svg>
+
+  <div class="g2 mt24">
+    <div class="ver herb">
+      <div class="shot" data-gif="04_블렌딩재료.gif">
+        <img src="assets/photo/jars.jpg" alt="">
+        <span class="gif-note">GIF · 04_블렌딩재료.gif</span>
+      </div>
+      <div class="top"><span class="eng">VER.1 — HERB</span><span class="type">6 botanicals</span></div>
+      <div class="body">
+        <p class="ings">레몬밤 · 히비스커스 · 페퍼민트<br>유자 · 장미 · 캐모마일</p>
+        <p class="p mt16">향과 색, 감각으로 즐기는<br>화사한 허브 블렌딩</p>
+        <p class="who">새로운 향을 탐색하는 시간을 좋아하는 분에게</p>
+      </div>
+    </div>
+    <div class="ver grain">
+      <div class="ph" data-shot="C" style="height:300px;border-radius:0;border-width:0 0 1.5px 0"><span>새로 촬영 C · 곡물 재료 6종 클로즈업<br>왼쪽 04_블렌딩재료와 같은 구도·같은 유리볼</span></div>
+      <div class="top"><span class="eng">VER.2 — GRAIN</span><span class="type">6 roasted grains</span></div>
+      <div class="body">
+        <p class="ings">둥굴레 · 찰수수 · 단팥<br>현미 · 민들레뿌리 · 보리</p>
+        <p class="p mt16">구수함과 로스팅의 깊이,<br>커피처럼 즐기는 곡물 블렌딩</p>
+        <p class="who">커피를 마시던 시간에 새로운 한 잔을 찾는 분에게</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 원료 노트 카드 12장 -->
+  <div class="grouphead">
+    <span class="eng t-herb">Botanical Notes</span>
+    <span class="type t-herb">VER.1 · HERB · 01–06</span>
+  </div>
+  <div class="notes" data-tbd="막대 값 임의(1~5), 확정 전">
+    <div class="note herb" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">01</span>
+      <div class="art"><img src="assets/botanical-clean/lemon-balm.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Lemon Balm</div><div class="sci">Melissa officinalis</div>
+        <div class="kr">레몬밤</div>
+        <p class="desc">레몬과 풋잎을 떠올리게 하는 산뜻함. 첫 향을 밝게 엽니다.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note rose" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">02</span>
+      <div class="art"><img src="assets/botanical-clean/hibiscus.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Hibiscus</div><div class="sci">Hibiscus sabdariffa</div>
+        <div class="kr">히비스커스</div>
+        <p class="desc">붉은 과일을 연상시키는 선명한 산미. 수색을 바꿉니다.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note herb" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">03</span>
+      <div class="art"><img src="assets/botanical-clean/peppermint.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Peppermint</div><div class="sci">Mentha piperita</div>
+        <div class="kr">페퍼민트</div>
+        <p class="desc">차갑고 깨끗한 상쾌함. 소량부터.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note herb" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">04</span>
+      <div class="art"><img src="assets/botanical-clean/yuza.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Yuza</div><div class="sci">Citrus junos</div>
+        <div class="kr">유자</div>
+        <p class="desc">밝은 감귤 껍질 향과 은은한 쌉싸름함.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note rose" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">05</span>
+      <div class="art"><img src="assets/botanical-clean/rose.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Rose</div><div class="sci">Rosa damascena</div>
+        <div class="kr">장미</div>
+        <p class="desc">우아하고 풍성한 꽃향. 긴 아로마.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note herb" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">06</span>
+      <div class="art"><img src="assets/botanical-clean/chamomile.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Chamomile</div><div class="sci">Matricaria chamomilla</div>
+        <div class="kr">카모마일</div>
+        <p class="desc">사과와 꿀을 연상시키는 부드러운 향.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grouphead">
+    <span class="eng t-grain">Roasted Notes</span>
+    <span class="type t-grain">VER.2 · GRAIN · 07–12</span>
+  </div>
+  <div class="notes" data-tbd="막대 값 임의(1~5), 확정 전">
+    <div class="note brown" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">07</span>
+      <div class="art"><img src="assets/botanical-clean/solomons-seal.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Solomon's Seal</div><div class="sci">Polygonatum odoratum</div>
+        <div class="kr">둥굴레</div>
+        <p class="desc">부드러운 볶은 뿌리와 은은한 단맛. 바디감을 둥글게.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note grain" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">08</span>
+      <div class="art"><img src="assets/botanical-clean/sorghum.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Glutinous Sorghum</div><div class="sci">Sorghum bicolor</div>
+        <div class="kr">찰수수</div>
+        <p class="desc">담백하고 순한 곡물의 구수함. 뿌리 원료를 받쳐줌.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note brown" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">09</span>
+      <div class="art"><img src="assets/botanical-clean/red-bean.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Red Bean</div><div class="sci">Vigna angularis</div>
+        <div class="kr">단팥</div>
+        <p class="desc">볶은 팥의 고소하고 부드러운 여운.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note grain" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">10</span>
+      <div class="art"><img src="assets/botanical-clean/whole-barley.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Whole Barley</div><div class="sci">Hordeum vulgare</div>
+        <div class="kr">통보리</div>
+        <p class="desc">분쇄하지 않은 보리. 맑고 담백한 볶은 곡물 향.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note brown" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">11</span>
+      <div class="art"><img src="assets/botanical-clean/dandelion-root.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Dandelion Root</div><div class="sci">Taraxacum officinale</div>
+        <div class="kr">민들레 뿌리</div>
+        <p class="desc">흙·나무·커피·카카오를 연상시키는 깊은 볶음 향. 중심 원료.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="note grain" data-tbd="bars">
+      <div class="cbar"></div><span class="idx">12</span>
+      <div class="art"><img src="assets/botanical-clean/barley.png" alt=""></div>
+      <div class="meta">
+        <div class="en">Barley</div><div class="sci">Hordeum vulgare</div>
+        <div class="kr">보리</div>
+        <p class="desc">익숙하고 선명한 볶은 곡물 향.</p>
+        <div class="bars">
+          <div class="bar"><span class="type">향</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b class="on"></b><b></b></i></div>
+          <div class="bar"><span class="type">바디</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+          <div class="bar"><span class="type">여운</span><i><b class="on"></b><b class="on"></b><b class="on"></b><b></b><b></b></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SET 카드 -->
+  <div class="setcard">
+    <div class="shot" data-gif="01_티팟세팅.gif">
+      <img src="assets/photo/teapot-flatlay.jpg" alt="">
+      <span class="gif-note">GIF · 01_티팟세팅.gif</span>
+    </div>
+    <div class="body">
+      <span class="label">Two Kit Set</span>
+      <h3 class="h2">둘 다 궁금하다면, SET</h3>
+      <p class="p g mt16">말보다 경험으로 마음을 전하고 싶은 분에게</p>
+      <p class="plus"><span class="t-herb">VER.1</span> <b>+</b> <span class="t-grain">VER.2</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 섹션 6 · 블렌딩 방법 -->
+<section id="s06">
+  <div class="quote band">
+    <h2 class="h1">“그런데 저는<br>블렌딩을 해본 적이 없어요.”</h2>
+    <p class="ok">괜찮습니다.</p>
+  </div>
+  <div class="sec">
+    <span class="vert">Three steps</span>
+    <div class="steps">
+      <div class="card">
+        <span class="num">01</span>
+        <h3 class="h3">따라 해보고</h3>
+        <p class="small">전문가 레시피 그대로</p>
+      </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3 class="h3">바꿔보고</h3>
+        <p class="small">하나를 더하거나 덜어서</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3 class="h3">마지막엔 나의 맛으로</h3>
+        <p class="small">&nbsp;</p>
+      </div>
+      <i class="arrow" style="left:calc(33.33% - 10px)"></i>
+      <i class="arrow" style="left:calc(66.66% - 6px)"></i>
+    </div>
+    <div class="shots">
+      <div class="shot" data-gif="06_향맡기.gif">
+        <img src="assets/photo/hands-herbs.jpg" alt="">
+        <span class="gif-note">GIF · 06_향맡기.gif</span>
+      </div>
+      <div class="shot" data-gif="08_티캐니스터.gif">
+        <img src="assets/photo/jars.jpg" alt="">
+        <span class="gif-note">GIF · 08_티캐니스터.gif</span>
+      </div>
+    </div>
+    <p class="close">향을 맡고, 고르고, 섞고, 우리고, 기록합니다.</p>
+  </div>
+</section>
+
+<!-- 섹션 7 · 같은 재료, 다른 한 잔 -->
+<section id="s07" class="sec paper2">
+  <span class="vert">Today / Someday</span>
+  <div class="days">
+    <div class="card herb">
+      <span class="eng">TODAY</span>
+      <h3 class="h2">오늘은 조금 더<br>향긋하게.</h3>
+      <p class="dots t-herb">●●● ●</p>
+    </div>
+    <div class="card grain">
+      <span class="eng">SOMEDAY</span>
+      <h3 class="h2">어떤 날은 조금 더<br>고소하게.</h3>
+      <p class="dots t-grain">● ●●●</p>
+    </div>
+  </div>
+  <p class="p center mt32">같은 재료도 비율이 달라지면<br>전혀 다른 한 잔이 됩니다.</p>
+  <div class="shot h420 mt48" data-gif="10_티타임휴식.gif">
+    <img src="assets/photo/cup-linen.jpg" alt="">
+    <span class="gif-note">GIF · 10_티타임휴식.gif</span>
+  </div>
+  <p class="big">정답은 없습니다.</p>
+  <p class="after">취향은 그렇게 발견됩니다.</p>
+</section>
+
+<!-- 섹션 8 · 전문가 레시피 -->
+<section id="s08" class="sec">
+  <span class="vert">Recipe cards</span>
+  <span class="label">Blender's Recipes</span>
+  <h2 class="h1">처음엔,<br>전문가의 비율에서 시작하세요.</h2>
+  <p class="p g mt24">시음으로 고른 전문가 레시피 21가지가 함께 들어 있어요.<br>허브 10가지, 곡물 3가지, 허브와 곡물을 섞은 8가지.</p>
+
+  <div class="shot h420 mt48" data-gif="11_우림클로즈업.gif">
+    <img src="assets/photo/hero-bowl.jpg" alt="">
+    <span class="gif-note">GIF · 11_우림클로즈업.gif</span>
+  </div>
+
+  <div class="recipes">
+    <div class="recipe v1">
+      <div class="top">VER.1 · TEA BLENDER'S RECIPE</div>
+      <div class="body">
+        <h3 class="name">로즈가든</h3>
+        <div class="ratio">
+          <div class="row"><span>캐모마일</span><span class="d">●●</span></div>
+          <div class="row"><span>장미</span><span class="d">●</span></div>
+          <div class="row"><span>레몬밤</span><span class="d">●</span></div>
+        </div>
+        <p class="ratio-text">캐모마일 2 : 장미 1 : 레몬밤 1</p>
+        <div class="brew">
+          <span><svg viewBox="0 0 16 16"><path d="M8 2v8"/><circle cx="8" cy="12" r="2.5"/></svg>95~100°C</span>
+          <span><svg viewBox="0 0 16 16"><path d="M8 2c2.5 3.5 4 5.5 4 7.5a4 4 0 0 1-8 0C4 7.5 5.5 5.5 8 2z"/></svg>150ml</span>
+          <span><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>3~5분</span>
+        </div>
+      </div>
+    </div>
+    <div class="recipe vx" data-tbd="원본 10번 레시피 이름·비율">
+      <div class="top">VER.1 + VER.2 · 교차 블렌드</div>
+      <div class="body">
+        <h3 class="name">[레시피 이름 · 원본 10번 그대로]</h3>
+        <div class="ratio">
+          <div class="row"><span>[원료]</span><span class="d tbd">●●</span></div>
+          <div class="row"><span>[원료]</span><span class="d tbd">●</span></div>
+          <div class="row"><span>[원료]</span><span class="d tbd">●</span></div>
+        </div>
+        <p class="ratio-text">[비율 · 원본 10번 그대로]</p>
+        <div class="brew">
+          <span><svg viewBox="0 0 16 16"><path d="M8 2v8"/><circle cx="8" cy="12" r="2.5"/></svg>100°C</span>
+          <span><svg viewBox="0 0 16 16"><path d="M8 2c2.5 3.5 4 5.5 4 7.5a4 4 0 0 1-8 0C4 7.5 5.5 5.5 8 2z"/></svg>150ml</span>
+          <span><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>7~10분</span>
+        </div>
+      </div>
+    </div>
+    <div class="recipe v2" data-tbd="로스터 레시피 이름·비율">
+      <div class="top">VER.2 · ROASTER'S RECIPE · 엘카페 양진호</div>
+      <div class="body">
+        <h3 class="name">[레시피 이름]</h3>
+        <div class="ratio">
+          <div class="row"><span>[원료]</span><span class="d tbd">●●</span></div>
+          <div class="row"><span>[원료]</span><span class="d tbd">●</span></div>
+          <div class="row"><span>[원료]</span><span class="d tbd">●</span></div>
+        </div>
+        <p class="ratio-text">[비율]</p>
+        <div class="brew">
+          <span><svg viewBox="0 0 16 16"><path d="M8 2v8"/><circle cx="8" cy="12" r="2.5"/></svg>100°C</span>
+          <span><svg viewBox="0 0 16 16"><path d="M8 2c2.5 3.5 4 5.5 4 7.5a4 4 0 0 1-8 0C4 7.5 5.5 5.5 8 2z"/></svg>150ml</span>
+          <span><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>10분 이상</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="close">그리고 그다음 레시피는 당신의 것입니다.</p>
+</section>
+
+<!-- 섹션 8b · 나의 취향찾기 -->
+<section id="s08b" class="band">
+  <span class="vert">Find your cup</span>
+  <div class="bubbles">
+    <div class="bubble">“어떤 걸 사야 할지 모르겠어요.”</div>
+    <div class="bubble">“블렌딩은 처음이에요.”</div>
+    <div class="bubble">“실패 없이 맛있게 마시고 싶어요.”</div>
+  </div>
+  <p class="so">그래서 만들었습니다.</p>
+  <h2 class="h1">5개 질문으로 찾는<br>나의 첫 블렌딩</h2>
+  <p class="p">「나의 취향찾기」에 답하면 전문가 레시피 21가지 중<br>지금 나에게 맞는 한 잔과, 그 레시피에 필요한 키트를 알려 드려요.</p>
+
+  <div class="phones">
+    <!-- 질문 화면 -->
+    <div class="phone">
+      <div class="notch"></div>
+      <span class="plabel">Q1</span>
+      <p class="ptitle">카페에 들어섰어요.<br>손이 먼저 가는 메뉴는?</p>
+      <div class="opts">
+        <div class="opt"><i></i>진한 아메리카노</div>
+        <div class="opt"><i></i>달콤한 라테</div>
+        <div class="opt"><i></i>곡물 라테</div>
+        <div class="opt"><i></i>상큼한 에이드</div>
+        <div class="opt on"><i></i>따뜻한 허브티</div>
+        <div class="opt"><i></i>그날그날 달라요</div>
+      </div>
+      <div class="prog"><span class="plabel">질문 1 / 5</span><div class="bar"><b></b></div></div>
+    </div>
+    <!-- 결과 화면 -->
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="res">
+        <span class="plabel">오늘 나의 한 잔</span>
+        <p class="name">로즈 가든</p>
+        <p class="sub">장미 넝쿨 아래 벤치</p>
+        <div class="blk">
+          <span class="plabel">나의 스푼으로</span>
+          <p>캐모마일 <span class="d">●●</span> 2스푼<br>장미 <span class="d">●</span> 1스푼<br>레몬밤 <span class="d">●</span> 1스푼</p>
+        </div>
+        <div class="blk">
+          <span class="plabel">이렇게 우려요</span>
+          <p>물 300ml, 90~95°C<br>4~5분</p>
+        </div>
+        <div class="kit">필요한 키트 <b>VER.1 허브 키트</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 레이더 차트 -->
+  <div class="radarwrap" data-tbd="레이더 값 임의 · 로즈가든 기준 예시">
+    <svg class="radar" viewBox="0 0 240 240" role="img" aria-label="맛 프로필 레이더 차트: 향, 바디, 단맛, 고소함, 산뜻함">
+      <polygon class="grid" points="120,30 205.6,92.2 172.9,192.8 67.1,192.8 34.4,92.2"/>
+      <polygon class="grid" points="120,60 177.1,101.5 155.3,168.5 84.7,168.5 62.9,101.5"/>
+      <polygon class="grid" points="120,90 148.5,110.7 137.6,144.3 102.4,144.3 91.5,110.7"/>
+      <line class="axis" x1="120" y1="120" x2="120" y2="30"/>
+      <line class="axis" x1="120" y1="120" x2="205.6" y2="92.2"/>
+      <line class="axis" x1="120" y1="120" x2="172.9" y2="192.8"/>
+      <line class="axis" x1="120" y1="120" x2="67.1" y2="192.8"/>
+      <line class="axis" x1="120" y1="120" x2="34.4" y2="92.2"/>
+      <polygon class="val" points="120,30 154.2,108.9 151.7,163.7 109.4,134.6 51.5,97.8"/>
+      <circle class="pt" cx="120" cy="30" r="2.5"/><circle class="pt" cx="154.2" cy="108.9" r="2.5"/><circle class="pt" cx="151.7" cy="163.7" r="2.5"/><circle class="pt" cx="109.4" cy="134.6" r="2.5"/><circle class="pt" cx="51.5" cy="97.8" r="2.5"/>
+      <text x="120" y="16" text-anchor="middle">향</text>
+      <text x="224" y="90" text-anchor="middle">바디</text>
+      <text x="186" y="214" text-anchor="middle">단맛</text>
+      <text x="54" y="214" text-anchor="middle">고소함</text>
+      <text x="16" y="90" text-anchor="middle">산뜻함</text>
+    </svg>
+    <div class="legend">
+      <span class="label">Taste profile · 로즈 가든</span>
+      <div class="row"><span>향</span><i><b style="width:100%"></b></i><em>5</em></div>
+      <div class="row"><span>바디</span><i><b style="width:40%"></b></i><em>2</em></div>
+      <div class="row"><span>단맛</span><i><b style="width:60%"></b></i><em>3</em></div>
+      <div class="row"><span>고소함</span><i><b style="width:20%"></b></i><em>1</em></div>
+      <div class="row"><span>산뜻함</span><i><b style="width:80%"></b></i><em>4</em></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="qr" data-tbd="취향찾기 QR"><span class="type">(취향찾기 링크)</span></div>
+    <div>
+      <span class="btn">나의 취향찾기 시작하기 →</span>
+      <p class="hint">30초 만에 나의 취향 찾기</p>
+    </div>
+  </div>
+  <p class="last">결과로 나온 레시피는 키트 안 재료로<br>바로 만들어 볼 수 있어요.</p>
+</section>
+
+<!-- 섹션 9 · 기록 -->
+<section id="s09" class="sec">
+  <span class="vert">Blending notes</span>
+  <span class="label">Notes</span>
+  <h2 class="h1">맛보고 끝내지 않습니다.</h2>
+  <p class="p g mt24">좋았던 향,<br>마음에 들었던 조합,<br>다시 만들고 싶은 비율을 노트에 남깁니다.</p>
+  <div class="shot" data-gif="07_기록과책.gif" data-note="브리프 대체안 book-cover.jpg는 박스 전개도 이미지라 accordion.jpg로 교체">
+    <img src="assets/photo/accordion.jpg" alt="">
+    <span class="gif-note">GIF · 07_기록과책.gif</span>
+  </div>
+  <p class="close">차를 기록하는 것이 아니라<br>나의 취향을 기록합니다.</p>
+</section>
+
+<!-- 섹션 10 · 만든 사람 -->
+<section id="s10" class="sec paper2">
+  <span class="vert">The makers</span>
+  <span class="label">Makers</span>
+  <h2 class="h1">「취향의 권리」는<br>차 블렌딩의 원칙과 경험을 바탕으로 설계했습니다.</h2>
+
+  <div class="maker">
+    <div class="ph" data-shot="명인 인물 사진"><span>실촬영 · 명인 인물 사진<br>(상반신 · 자연광)</span></div>
+    <div class="card flat">
+      <span class="type">TEA BLENDER</span>
+      <h3 class="name">대한명인회 차 블렌딩명인 이소연</h3>
+      <p class="bio">20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더</p>
+      <p class="books">저서 『11시와 4시 나는 차를 마신다』, 『Life in My Teacup』</p>
+    </div>
+  </div>
+  <div class="maker2">
+    <div class="shot"><img src="assets/photo/book-standing.jpg" alt=""></div>
+    <div class="card flat">
+      <span class="type">ROASTER</span>
+      <h3 class="name">엘카페 로스터 양진호</h3>
+    </div>
+  </div>
+
+  <p class="quote">전문가에게는 원칙을,<br>소비자에게는 취향의 권리를.</p>
+</section>
+
+<!-- 섹션 11 · 체험단 후기 -->
+<section id="s11" class="sec">
+  <span class="vert">Reviews</span>
+  <span class="label">Reviews</span>
+  <h2 class="h1">먼저 경험한 사람들</h2>
+  <p class="small mt16">아래 후기는 제품을 제공받은 체험단이 작성했습니다.</p>
+
+  <div class="reviews" data-tbd="후기 문장·연령대·직업 확정 전">
+    <div class="review">
+      <div class="ph" data-shot="G"><span>새로 촬영 G · 후기자 노트 사진</span></div>
+      <div class="body">
+        <span class="stars">★★★★★</span>
+        <p class="txt">“[실제 후기 문장]”</p>
+        <p class="who">[연령대 · 직업]</p>
+        <div class="tags"><span class="tag herb">VER.1 HERB</span></div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="ph" data-shot="G"><span>새로 촬영 G · 후기자 노트 사진</span></div>
+      <div class="body">
+        <span class="stars">★★★★★</span>
+        <p class="txt">“[실제 후기 문장]”</p>
+        <p class="who">[연령대 · 직업]</p>
+        <div class="tags"><span class="tag grain">VER.2 GRAIN</span></div>
+      </div>
+    </div>
+    <div class="review">
+      <div class="ph" data-shot="G"><span>새로 촬영 G · 후기자 노트 사진</span></div>
+      <div class="body">
+        <span class="stars">★★★★★</span>
+        <p class="txt">“[실제 후기 문장]”</p>
+        <p class="who">[연령대 · 직업]</p>
+        <div class="tags"><span class="tag ink">SET</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 섹션 12 · 선물 -->
+<section id="s12">
+  <div class="shot" data-gif="13_미소.gif">
+    <img src="assets/photo/hand-bowl.jpg" alt="">
+    <span class="gif-note">GIF · 13_미소.gif</span>
+  </div>
+  <div class="sec tight">
+    <span class="vert">A gift of experience</span>
+    <p class="p center">혼자 즐기는 시간에도,<br>함께 차를 만들어보는 시간에도,<br>좋아하는 사람에게 건네는 선물에도.</p>
+  </div>
+  <div class="bandtxt band">
+    <h2 class="h1">물건이 아니라<br>하나의 경험을 선물합니다.</h2>
+  </div>
+  <div class="pack" style="padding-top:12px">
+    <div class="ph" data-shot="패키지 연출"><span>새로 촬영 · 패키지 연출<br>엽서 · 종이가방 · 티태그</span></div>
+    <div class="shot"><img src="assets/photo/pouch.jpg" alt=""></div>
+    <div class="shot"><img src="assets/photo/bookmark.jpg" alt=""></div>
+  </div>
+</section>
+
+<!-- 섹션 13 · 리워드 -->
+<section id="s13" class="sec paper2">
+  <span class="vert">Rewards</span>
+  <span class="label">Rewards</span>
+  <h2 class="h1">와디즈에서 처음 만나는 「취향의 권리」</h2>
+  <p class="p g mt16">지금 시작하면, 가장 좋은 조건으로.</p>
+
+  <div class="shots">
+    <div class="shot"><img src="assets/photo/box-front.jpg" alt=""></div>
+    <div class="ph" data-shot="스틸 31 인퓨저"><span>스틸 31 · 인퓨저</span></div>
+    <div class="ph" data-shot="D"><span>새로 촬영 D · 단팥차 샘플 한 컷</span></div>
+  </div>
+
+  <div class="priceline">
+    <span>티 블렌딩 키트 1개 · VER.1 HERB 또는 VER.2 GRAIN</span>
+    <span>정가 <span class="eng">59,000</span>원</span>
+  </div>
+
+  <div class="rewards">
+    <!-- REWARD 1 -->
+    <div class="reward hot">
+      <div class="head">
+        <div>
+          <span class="rlabel">REWARD 1</span>
+          <h3 class="rname">울트라 얼리버드</h3>
+          <div class="lim"><span class="badge">선착순 100명</span></div>
+        </div>
+        <div class="pct"><b>15<small>%</small></b><span>OFF</span></div>
+      </div>
+      <div class="price"><span class="now">50,150<small>원</small></span><span class="was">59,000<small>원</small></span></div>
+      <ul>
+        <li>원료 3팩 랜덤 추가 증정</li>
+        <li>스테인리스 인퓨저 증정</li>
+        <li>2개 구매 시 단팥차 샘플 증정</li>
+        <li>무료배송</li>
+      </ul>
+    </div>
+    <!-- REWARD 2 -->
+    <div class="reward" data-tbd="수량">
+      <div class="head">
+        <div>
+          <span class="rlabel">REWARD 2</span>
+          <h3 class="rname">슈퍼 얼리버드</h3>
+          <div class="lim"><span class="badge outline">[수량]</span></div>
+        </div>
+        <div class="pct"><b>7<small>%</small></b><span>OFF</span></div>
+      </div>
+      <div class="price"><span class="now">54,870<small>원</small></span><span class="was">59,000<small>원</small></span></div>
+      <ul>
+        <li>스테인리스 인퓨저 증정</li>
+        <li>2개 구매 시 단팥차 샘플 증정</li>
+        <li>무료배송</li>
+      </ul>
+    </div>
+    <!-- REWARD 3 -->
+    <div class="reward" data-tbd="수량">
+      <div class="head">
+        <div>
+          <span class="rlabel">REWARD 3</span>
+          <h3 class="rname">얼리버드 · 정가</h3>
+          <div class="lim"><span class="badge outline">[수량]</span></div>
+        </div>
+        <div class="pct ink"><b>정가</b></div>
+      </div>
+      <div class="price"><span class="now">59,000<small>원</small></span></div>
+      <ul>
+        <li>스테인리스 인퓨저 증정</li>
+        <li>2개 구매 시 단팥차 샘플 증정</li>
+        <li>2개 구매 시 무료배송</li>
+      </ul>
+    </div>
+    <!-- REWARD 4 · SET -->
+    <div class="reward set" data-tbd="세트가·정가·수량 확정 전">
+      <div class="head">
+        <div>
+          <span class="rlabel">REWARD 4</span>
+          <h3 class="rname">TWO KIT SET</h3>
+          <div class="lim"><span class="badge outline">[수량]</span></div>
+        </div>
+        <div class="pct set"><b>SET</b><span>V1 + V2</span></div>
+      </div>
+      <div class="price"><span class="now" style="font-size:26px">[세트가 · 확정 전]</span><span class="was">정가 [&nbsp;&nbsp;&nbsp;]</span></div>
+      <p class="comp">VER.1 + VER.2 + 블렌딩 노트 2권<br>+ 교차 레시피 가이드</p>
+    </div>
+  </div>
+
+  <div class="notice">
+    모든 리워드 공통 구성: 티 블렌딩 키트 1개 · 실물 블렌딩 노트 1권<br>
+    HERB와 GRAIN을 함께 담으면 두 가지 취향을 모두 경험하고, 단팥차 샘플도 함께 받습니다.
+  </div>
+</section>
+
+<!-- 섹션 14 · 레시피 이벤트 -->
+<section id="s14" class="sec">
+  <span class="vert">Recipe event</span>
+  <span class="lbl">취향의 권리 | 나만의 블렌딩 레시피 이벤트</span>
+  <h2 class="h1">당신이 발견한 비율을<br>들려주세요.</h2>
+  <p class="p g mt24">레시피를 공유해 주신 분 중 추첨으로 10명에게<br>취향의 권리 키트를 만드는 티 브랜드,<br>티아포테카의 차 4종(10만 원 상당)을 선물합니다.</p>
+
+  <div class="prize">
+    <div class="ph" data-shot="티아포테카 차 4종"><span>경품 사진 · 티아포테카 차 4종 한 컷<br>단팥차(DANPATT) · 골든 모과 · [제품명] · [제품명]</span></div>
+  </div>
+
+  <div class="how">
+    <div class="card">
+      <span class="num">01</span>
+      <h3 class="h3">나만의 차 만들기</h3>
+      <p class="small">키트로 나만의 블렌딩 레시피를 완성해요.</p>
+    </div>
+    <div class="card">
+      <span class="num">02</span>
+      <h3 class="h3">와디즈 후기 남기기</h3>
+      <p class="small">블렌딩 노트 사진과 레시피로 후기를 써 주세요.</p>
+    </div>
+    <div class="card">
+      <span class="num">03</span>
+      <h3 class="h3">인스타그램에 공유하기</h3>
+      <p class="small"><b>@right.totaste</b> 팔로우 후 같은 사진을 올리고 태그해 주세요.<br>#취향의권리 #나만의블렌딩 #이벤트참여<br>댓글에 와디즈 서포터 닉네임을 남겨 주세요.</p>
+    </div>
+  </div>
+
+  <div class="fine" data-tbd="참여 기간·발표일">
+    · 참여 기간: [2026년 ○월 ○일]까지 · 당첨자 발표: [○월 ○일], 공식 인스타그램과 개별 DM<br>
+    · 참여 대상: 취향의 권리 키트 구매자 (와디즈 서포터 닉네임으로 확인) · 1인 1회 응모<br>
+    · 공개 계정만 참여할 수 있어요<br>
+    · 동의해 주신 레시피는 취향의 권리·티아포테카 인스타그램에 소개될 수 있어요
+  </div>
+
+  <p class="close">당신의 한 잔이<br>또 다른 누군가의 취향에 영감이 됩니다.</p>
+</section>
+
+<!-- 섹션 15 · FAQ -->
+<section id="s15" class="sec paper2">
+  <span class="vert">FAQ</span>
+  <span class="label">FAQ</span>
+  <h2 class="h1">자주 묻는 질문</h2>
+  <div class="faq">
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">블렌딩 경험이 전혀 없는데 괜찮을까요?</p>
+        <p class="at">네. 처음에는 전문가 추천 레시피를 따라 만들어보세요. 익숙해지면 재료 하나를 더하거나 덜어보고, 비율을 조금씩 바꾸면서 나만의 블렌딩을 만들 수 있습니다.</p>
+      </div>
+    </div>
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">카페인이 있나요?</p>
+        <p class="at">허브와 곡물로만 구성했습니다. 카페인 표시는 확인 후 안내드립니다. 저녁이나 늦은 밤에도 편하게 즐길 수 있어요.</p>
+      </div>
+    </div>
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">배송은 언제 되나요?</p>
+        <p class="at">펀딩 종료 후 순차 발송됩니다.</p>
+      </div>
+    </div>
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">다 쓴 뒤 재구매는 어떻게 하나요?</p>
+        <p class="at">취향의권리.com에서 마음에 든 원료만 골라 낱개로 구매할 수 있어요.</p>
+      </div>
+    </div>
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">교환·환불이 가능한가요?</p>
+        <p class="at">펀딩 기간 중에는 언제든 취소할 수 있습니다. 식품 특성상 개봉 후 단순 변심 반품은 어렵고, 파손이나 불량은 수령 후 7일 이내 사진과 함께 문의 주시면 교환해 드립니다.</p>
+      </div>
+    </div>
+    <div class="qa">
+      <span class="q">Q</span>
+      <div>
+        <p class="qt">보관은 어떻게 하나요?</p>
+        <p class="at">빛과 습기를 피해 보관하고, 향이 가장 좋은 한 달 안에 즐겨 주세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 제품 상세정보 표 -->
+  <div class="spec" data-tbd="전 항목 확정 후 표기">
+    <span class="label">Product information</span>
+    <h3 class="h3">제품 상세정보</h3>
+    <table>
+      <tr><th>식품의 유형</th><td>[확정 후 표기]</td></tr>
+      <tr><th>내용량</th><td>[확정 후 표기]</td></tr>
+      <tr><th>원재료명</th><td>[확정 후 표기]</td></tr>
+      <tr><th>제조원·판매원</th><td>[확정 후 표기]</td></tr>
+      <tr><th>보관방법</th><td>[확정 후 표기]</td></tr>
+      <tr><th>소비기한</th><td>[확정 후 표기]</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 섹션 16 · 마무리 -->
+<section id="s16">
+  <div class="shot" data-gif="12_창가여유.gif">
+    <img src="assets/photo/sunset-table.jpg" alt="">
+    <span class="gif-note">GIF · 12_창가여유.gif</span>
+  </div>
+  <div class="bandtxt band">
+    <h2 class="h1">당신은 어떤 맛을<br>좋아하는 사람인가요?</h2>
+    <p class="sub">좋아하는 것이 더 좋은 일상이 되는 삶.</p>
+    <div class="qrs">
+      <div class="one">
+        <div class="qr" data-tbd="유튜브 QR"><span class="type">(YouTube QR)</span></div>
+        <span class="type">YOUTUBE</span>
+      </div>
+      <div class="one">
+        <div class="qr"><img src="assets/qr-site.svg" alt="취향의권리.com QR"></div>
+        <span class="type">OFFICIAL SITE</span>
+      </div>
+    </div>
+  </div>
+  <div class="ending" data-gif="14_엔딩로고.gif">
+    <img src="assets/logo.png" alt="취향의 권리">
+    <span class="gif-note" style="position:absolute;right:12px;bottom:10px;font-family:var(--f-type);font-size:14px;color:var(--gray)">GIF · 14_엔딩로고.gif</span>
+  </div>
+</section>
+
+</div>
+<footer class="meta">초안 B · 2026-10-20 · 이미지는 placeholder</footer>
+</body>
+</html>
