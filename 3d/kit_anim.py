@@ -76,19 +76,23 @@ def clip_lid_open(frames):
     root, hinge = K.build_box(0, with_contents=True)
     dust = [bpy.data.objects[f'dust_pivot_{s:+d}'] for s in (1, -1)]
     ears = [bpy.data.objects[f'ear_pivot_{s:+d}'] for s in (1, -1)]
+    flap_piv = bpy.data.objects['flap_pivot']
     cam = K.camera((0.44, -0.60, 0.40), (0.0, 0.03, 0.06), 50)
     for f in frames(N):
         t = ease((f - 1 - HOLD0) / OPEN)
-        # 날개·귀는 뚜껑이 어느 정도 들린 뒤 벌어진다
-        tw = ease((f - 1 - HOLD0 - OPEN * 0.25) / (OPEN * 0.75))
+        # 앞 턱이 먼저 빠져나와 펴지고, 이어서 윗면 틈새의 귀, 측면 날개 순으로 벌어진다(실물 열린 상태 기본값까지)
+        tf = ease((f - 1 - HOLD0 - OPEN * 0.10) / (OPEN * 0.6))
+        te = ease((f - 1 - HOLD0 - OPEN * 0.25) / (OPEN * 0.6))
+        td = ease((f - 1 - HOLD0 - OPEN * 0.35) / (OPEN * 0.65))
         hinge.rotation_euler = (math.radians(-112.0 * t), 0, 0)
+        flap_piv.rotation_euler = (math.radians(-(90.0 - lerp(90.0, 20.0, tf))), 0, 0)
         for s, p in zip((1, -1), dust):
-            p.rotation_euler = (0, math.radians(-s * 30.0 * tw), 0)
+            p.rotation_euler = (0, math.radians(-s * 40.0 * td), 0)
         for s, p in zip((1, -1), ears):
-            p.rotation_euler = (0, 0, math.radians(-s * 25.0 * tw))
+            p.rotation_euler = (0, 0, math.radians(-s * 72.0 * te))
         # 카메라는 아주 느리게 다가간다
         k = (f - 1) / (N - 1)
-        aim(cam, (lerp(0.52, 0.47, k), lerp(-0.74, -0.70, k), lerp(0.46, 0.53, k)), (0.0, 0.05, lerp(0.07, 0.115, ease(k * 1.4))))
+        aim(cam, (lerp(0.60, 0.60, k), lerp(-0.86, -0.94, k), lerp(0.52, 0.76, k)), (0.0, lerp(0.05, 0.08, k), lerp(0.07, 0.17, ease(k * 1.4))))
         render_frame('lid_open', f)
 
 

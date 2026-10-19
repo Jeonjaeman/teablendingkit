@@ -173,12 +173,16 @@ def empty(name, loc=(0, 0, 0)):
 
 
 # ---------- 키트 ----------
-def build_box(lid_angle_deg=0.0, origin=(0, 0, 0), with_contents=True, band='taste', flap=90.0, dust=None, ear=None):
-    """flap: 앞 턱 플랩 접힘(90=뚜껑과 직각, 0=평평하게 펼침). dust/ear: 측면 날개·귀 벌어짐(0=접힘, 90=평평)."""
+def build_box(lid_angle_deg=0.0, origin=(0, 0, 0), with_contents=True, band='taste', flap=None, dust=None, ear=None):
+    """flap: 앞 턱 플랩 접힘(90=뚜껑과 직각, 0=평평하게 펼침). dust/ear: 측면 날개·귀 벌어짐(0=접힘, 90=평평).
+    열린 상태 기본값은 실물 사진(10/19, 뚜껑 열린 정면) 기준: 앞 턱은 반쯤 펴지고, 귀와 측면 날개는 각각 바깥으로 벌어진다."""
+    is_open = lid_angle_deg >= 5
+    if flap is None:
+        flap = 20.0 if is_open else 90.0
     if dust is None:
-        dust = 0.0 if lid_angle_deg < 5 else 30.0
+        dust = 40.0 if is_open else 0.0
     if ear is None:
-        ear = 0.0 if lid_angle_deg < 5 else 25.0
+        ear = 72.0 if is_open else 0.0
     plaster_in = img_mat('plaster_in', tex('plaster_patch'), rough=0.85, bump=0.25)
     white_in = img_mat('board_white', None, rgb=(0.93, 0.93, 0.91), rough=0.9)
     root = empty('kit', origin)
@@ -218,23 +222,26 @@ def build_box(lid_angle_deg=0.0, origin=(0, 0, 0), with_contents=True, band='tas
     bpy.context.view_layer.objects.active = div
     bpy.ops.object.modifier_apply(modifier='hole')
     bpy.data.objects.remove(cut)
-    # 뚜껑 날개(측면 먼지 날개: 사다리꼴). 뚜껑 양옆 모서리 힌지에서 바깥으로 벌어짐
+    # 측면에 끼우는 날개: 뚜껑 좌우 변 전체를 따라 붙고, 닫으면 측벽 안쪽으로 들어간다.
+    # 앞쪽은 귀와 칼선 틈(6mm)으로 떨어지고 모서리가 비스듬히 잘림, 힌지 쪽은 살짝만 비낌.
     plaster_out = img_mat('lid_plaster_out', tex('plaster_patch'), rough=0.85, bump=0.2)
-    fd, top_in, bot_in = 68.0, 4.0, 36.0
+    fd = 68.0
+    front_in, front_free, rear_in, rear_free = 6.0, 24.0, 2.0, 12.0
     for sgn in (1, -1):
         xw = sgn * (hx - T - 0.6)
         piv = empty(f'dust_pivot_{sgn:+d}', (xw, 0, 0)); piv.parent = hinge
-        tr = [(-ly + top_in, 0), (-top_in, 0), (-bot_in, -fd), (-ly + bot_in, -fd)]
-        pts2 = rounded(tr, [0, 0, 10, 10])
+        tr = [(-ly + front_in, 0), (-rear_in, 0), (-rear_free, -fd), (-ly + front_free, -fd)]
+        pts2 = rounded(tr, [0, 0, 5, 8])
         ngon(f'lid_dustflap_{sgn:+d}', [(0, y_, z_) for (y_, z_) in pts2], plaster_out, white_in, parent=piv, out=(sgn, 0, 0))
         piv.rotation_euler = (0, math.radians(-sgn * dust), 0)
-    # 앞 턱 플랩 양끝의 둥근 귀: 플랩 끝 세로 힌지에서 안쪽(+Y)으로 접히되 바깥으로 벌어짐
-    ear_len, ear_h = 66.0, BZ - 8
+    # 윗면 틈새에 끼우는 귀: 앞 턱 플랩 양끝 세로 접선에 붙어, 닫으면 측벽 위 틈새로 들어간다.
+    # 플랩 끝(자유단) 쪽 모서리는 크게 둥글고, 뚜껑 접선 쪽 모서리는 작게 둥글다(실물 사진).
+    ear_len, ear_h = 48.0, BZ - 8
     for sgn in (1, -1):
         xe = sgn * (hx - 2)
         piv = empty(f'ear_pivot_{sgn:+d}', (xe, 0, 0)); piv.parent = flap_piv
         ear_pts = [(0, 0), (ear_len, 0), (ear_len, -ear_h), (0, -ear_h)]
-        pts2 = rounded(ear_pts, [0, 30, 30, 0], seg=10)
+        pts2 = rounded(ear_pts, [0, 8, 36, 0], seg=12)
         ngon(f'lid_ear_{sgn:+d}', [(0, y_, z_) for (y_, z_) in pts2], lid_front, white_in, parent=piv, out=(sgn, 0, 0))
         piv.rotation_euler = (0, 0, math.radians(-sgn * ear))
     # 뒤쪽 인서트: 등판 + 'The Right To Taste' 선반
@@ -332,7 +339,7 @@ def build_accordion(origin=(0, 0, 0), fold_deg=38.0, n=12):
 
 
 # ---------- 무대 ----------
-def stage(size=2.4):
+def stage(size=5.0):
     plaster = img_mat('backdrop', os.path.join(ROOT, 'wadiz', 'assets', 'photo', 'plaster-eu-1.jpg'), rough=0.95, bump=0.15)
     # 바닥 + 뒷벽 (곡면 없는 L자, 넓게)
     bpy.ops.mesh.primitive_plane_add(size=size, location=(0, 0.3, 0))
@@ -412,7 +419,8 @@ def save(name):
 
 
 # ---------- 샷 ----------
-def _shot(name, build, cam_loc, cam_target, lens=50, res=(1600, 1200), transparent=False, backdrop=True, shift_y=0.0):
+def _shot(name, build, cam_loc, cam_target, lens=50, res=(1600, 1200), transparent=False, backdrop=True, shift=(0.0, 0.0), sensor_w=None):
+    """shift·sensor_w: 같은 카메라·같은 픽셀 배율로 캔버스만 넓힐 때(누끼 여백). sensor_w = 36 × 새 폭 / 원래 폭."""
     reset(); _mats.clear()
     if backdrop:
         stage()
@@ -420,8 +428,10 @@ def _shot(name, build, cam_loc, cam_target, lens=50, res=(1600, 1200), transpare
         stage(); [bpy.data.objects.remove(bpy.data.objects[n]) for n in ('floor_backdrop', 'wall_backdrop')]
     build()
     cam = camera(cam_loc, cam_target, lens=lens)
-    cam.data.shift_y = shift_y
-    cam.data.sensor_fit = 'HORIZONTAL'      # 세로로 긴 해상도에서도 가로 화각(=픽셀 배율) 유지
+    cam.data.shift_x, cam.data.shift_y = shift
+    if sensor_w:
+        cam.data.sensor_fit = 'HORIZONTAL'      # 가로 기준 고정 → 해상도를 키워도 픽셀 배율 유지
+        cam.data.sensor_width = sensor_w
     render_setup(*res)
     bpy.context.scene.render.film_transparent = transparent
     if transparent:
@@ -456,16 +466,17 @@ SHOTS = {
     'closed_top':    lambda: _shot('closed_top', _box(0, False), (0.0, -0.06, 0.95), (0, 0, 0.0), 50, (1400, 1400)),
     'closed_end':    lambda: _shot('closed_end', _box(0, False), (-0.62, -0.08, 0.26), (0, 0, 0.035), 55),
     'open':          lambda: _shot('open', _box(172, flap=8, dust=82, ear=80), (0.0, -0.05, 1.22), (0, 0.15, 0.03), 50, (1200, 1600)),
-    'open_front':    lambda: _shot('open_front', _box(108), (0.02, -0.50, 0.58), (0, 0.02, 0.02), 50),
-    'open_34':       lambda: _shot('open_34', _box(112), (0.40, -0.48, 0.46), (0, 0.02, 0.03), 50),
-    'open_top':      lambda: _shot('open_top', _box(150), (0.0, -0.10, 0.92), (0, 0.0, 0.0), 50, (1400, 1400)),
-    'open_half':     lambda: _shot('open_half', _box(48), (-0.36, -0.55, 0.30), (0, 0, 0.05), 55),
+    'open_front':    lambda: _shot('open_front', _box(108), (0.02, -0.76, 0.80), (0, 0.08, 0.13), 50),
+    'open_34':       lambda: _shot('open_34', _box(112), (0.56, -0.70, 0.68), (0, 0.06, 0.13), 50),
+    'open_top':      lambda: _shot('open_top', _box(150), (0.0, -0.06, 1.12), (0, 0.07, 0.0), 50, (1400, 1400)),
+    'open_half':     lambda: _shot('open_half', _box(48), (-0.42, -0.64, 0.38), (0, 0.02, 0.07), 55),
     'accordion':     lambda: _shot('accordion', _acc(36), (0.0, -2.05, 0.55), (0, 0.05, 0.08), 50, (1800, 1000)),
     'accordion_detail': lambda: _shot('accordion_detail', _acc_detail, (0.0, -0.62, 0.16), (0, 0.06, 0.09), 50, (1600, 1100)),
     'books':         lambda: _shot('books', _book, (0.0, -0.32, 0.55), (0, 0.0, 0.0), 50),
+    'ref_front':     lambda: _shot('ref_front', _box(104), (0.0, -0.36, 0.78), (0, 0.06, 0.06), 50, (1200, 1600), transparent=True, backdrop=False),
     'closed_cut':    lambda: _shot('closed_cut', _box(0, False), (-0.42, -0.52, 0.42), (0, 0, 0.03), 55, transparent=True, backdrop=False),
-    # open_34와 같은 카메라, 위로 500px 더 넓혀 뚜껑 끝까지 담는다(아래·좌우 픽셀 위치는 open_34와 동일)
-    'open_cut':      lambda: _shot('open_cut', _box(112), (0.40, -0.48, 0.46), (0, 0.02, 0.03), 50, (1600, 1700), transparent=True, backdrop=False, shift_y=250 / 1600),
+    # 원래 open_34 카메라(1600×1200) 그대로, 위 600px·오른쪽 500px만 넓혀 뚜껑·귀까지 담는다(원 픽셀 + (0, 600))
+    'open_cut':      lambda: _shot('open_cut', _box(112), (0.40, -0.48, 0.46), (0, 0.02, 0.03), 50, (2100, 1800), transparent=True, backdrop=False, shift=(250 / 2100, 300 / 2100), sensor_w=36 * 2100 / 1600),
 }
 
 if __name__ == '__main__':

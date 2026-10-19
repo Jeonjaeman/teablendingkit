@@ -42,3 +42,6 @@ docs/촬영/
 # 의뢰자 카톡 메시지·사진 (data/ 와 같은 이유로 추적 제외)
 docs/KakaoTalk_*.png
 docs/\[Tea\ Aphotheca\]*.txt
+
+# 파이썬 캐시
+__pycache__/
