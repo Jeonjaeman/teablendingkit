@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>취향의 권리 — the right to taste</title>
+<meta name="description" content="취향은 정해지는 것이 아니라 완성되어 갑니다. 당신의 취향이 머물 자리를 천천히 다듬고 있습니다.">
+<meta name="theme-color" content="#F5F1E9">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="취향의 권리">
+<meta property="og:title" content="취향의 권리 — the right to taste">
+<meta property="og:description" content="취향은 정해지는 것이 아니라 완성되어 갑니다.">
+<meta property="og:image" content="https://xn--zf0bz3u7tk8lg9mk.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2B2622;
+    --gray: #6B655E;
+    --line: #A39C93;
+    --body: #F5F1E9;
+    --font-kserif: "Noto Serif KR", "Nanum Myeongjo", serif;
+    --font-type: "Courier Prime", "Courier New", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    min-height: 100svh;
+    background: var(--body) url("assets/plaster.webp") center / cover no-repeat fixed;
+    color: var(--ink);
+    font-family: var(--font-kserif);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    display: flex;
+    flex-direction: column;
+  }
+  /* 창으로 비스듬히 드는 오후의 빛 — 미장 벽 위 */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 18% 8%, rgba(255, 246, 226, .55), transparent 60%),
+      radial-gradient(90% 70% at 100% 100%, rgba(120, 100, 78, .10), transparent 70%);
+  }
+  main {
+    position: relative;
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 72px 16px 48px;
+    text-align: center;
+  }
+  .logo { width: clamp(132px, 15vw, 168px); height: auto; display: block; }
+  .rule { width: 1px; height: 56px; background: var(--line); margin: 44px 0 40px; opacity: .7; }
+  h1 {
+    font-weight: 300;
+    font-size: clamp(21px, 2.3vw, 27px);
+    line-height: 1.75;
+    letter-spacing: -0.01em;
+  }
+  .note {
+    margin-top: 28px;
+    font-size: clamp(14px, 1.2vw, 15px);
+    line-height: 2;
+    color: var(--gray);
+  }
+  .soon {
+    margin-top: 44px;
+    font-family: var(--font-type);
+    font-size: 12px;
+    letter-spacing: .32em;
+    text-transform: lowercase;
+    color: var(--gray);
+  }
+  footer {
+    position: relative;
+    padding: 0 16px 32px;
+    text-align: center;
+    font-family: var(--font-type);
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--gray);
+  }
+  footer a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .3s; }
+  footer a:hover, footer a:focus-visible { border-color: var(--line); }
+
+  .fade { opacity: 0; transform: translateY(6px); animation: rise 1.6s cubic-bezier(.2,.6,.2,1) forwards; }
+  .d1 { animation-delay: .2s; } .d2 { animation-delay: .9s; } .d3 { animation-delay: 1.5s; } .d4 { animation-delay: 2.1s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .fade { animation: none; opacity: 1; transform: none; } }
+  @media (max-width: 640px) {
+    body { background-attachment: scroll; }
+    .rule { height: 40px; margin: 36px 0 32px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <img class="logo fade d1" src="assets/logo.png" width="360" height="358" alt="취향의 권리 — the right to taste">
+  <span class="rule fade d2" aria-hidden="true"></span>
+  <h1 class="fade d2">취향은 정해지는 것이 아니라<br>완성되어 갑니다.</h1>
+  <p class="note fade d3">아직 벽이 마르는 중입니다.<br>당신의 취향이 머물 자리를, 천천히 다듬고 있습니다.</p>
+  <p class="soon fade d4">coming soon</p>
+</main>
+<footer class="fade d4">
+  <a href="mailto:teablendingkit@gmail.com">teablendingkit@gmail.com</a>
+</footer>
+</body>
+</html>
