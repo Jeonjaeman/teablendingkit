@@ -38,6 +38,7 @@ figure{margin:0}
 .vid{position:relative;width:100%;aspect-ratio:1720/968;overflow:hidden;background:var(--line)}
 .vid video{width:100%;height:100%;object-fit:cover}
 .vid img{display:none;width:100%;height:100%;object-fit:cover}
+.clip{overflow:hidden}
 .gap-s{height:28px}.gap-m{height:44px}.gap-l{height:64px}
 
 /* ---------- 타이포 ---------- */
@@ -64,7 +65,7 @@ figure{margin:0}
 /* 원형 번호 배지 목록 */
 .nlist{display:inline-block;text-align:left;margin:0 auto}
 .nlist li{display:grid;grid-template-columns:30px auto auto 1fr;align-items:baseline;column-gap:12px;padding:9px 0;font-size:17px;line-height:1.7}
-.nlist .b{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--badge);color:#fff;font-family:var(--f-eng);font-weight:500;font-size:17px;line-height:1;align-self:center;transform:translateY(2px)}
+.nlist .b{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--badge);color:#fff;font-family:var(--f-eng);font-weight:500;font-size:17px;line-height:1;align-self:center;position:relative;top:2px}
 .nlist .k{font-family:var(--f-kserif);font-weight:400;font-size:18px;color:var(--text)}
 .nlist .dash{color:var(--text-2)}
 .nlist .d{color:var(--text-2);font-size:16px}
@@ -101,6 +102,7 @@ figure{margin:0}
 .pinfig{position:relative;overflow:hidden}
 .pinfig img{width:100%;aspect-ratio:4/3;object-fit:cover}
 .pin{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--badge);color:#fff;font-family:var(--f-eng);font-weight:500;font-size:16px;line-height:26px;text-align:center;box-shadow:0 0 0 3px rgba(255,255,255,.85),0 2px 6px rgba(74,63,58,.25)}
+.pin.mo-ring::after{border-color:var(--badge)}
 .duo figcaption{margin-top:12px;font-family:var(--f-kserif);font-weight:300;font-size:15px;line-height:1.6;color:var(--text)}
 .cut{filter:drop-shadow(0 16px 14px rgba(74,63,58,.16)) drop-shadow(0 2px 3px rgba(74,63,58,.12))}
 
@@ -177,6 +179,7 @@ figure{margin:0}
 }
 @media print{.vid video{display:none}.vid img{display:block}}
 </style>
+<link rel="stylesheet" href="assets/motion.css">
 </head>
 <body>
 
@@ -184,19 +187,19 @@ figure{margin:0}
      h01 무드 + 타이틀
      ============================================================ -->
 <section id="h01" class="flush">
-  <img class="photo" src="assets/stills/still_28.jpg" alt="창가 테이블에 앉아 차를 준비하는 여성, 창밖으로 초록 나무가 보인다">
+  <div class="clip"><img class="mo-breathe photo" src="assets/stills/still_28.jpg" alt="창가 테이블에 앉아 차를 준비하는 여성, 창밖으로 초록 나무가 보인다"></div>
   <div class="gap-l"></div>
   <p class="eng">The Right to Taste</p>
-  <h1 class="h lg" style="margin-top:10px">취향의 권리<br>티 블렌딩 키트 · HERB 6종 + GRAIN 6종</h1>
+  <h1 class="h lg" style="margin-top:10px" data-mo="words" data-mo-fx="rise">취향의 권리<br>티 블렌딩 키트 · HERB 6종 + GRAIN 6종</h1>
   <div class="tick"></div>
   <div class="gap-m"></div>
   <div class="wrap">
     <!-- 3D 패키지: 닫힌 메일러 박스 360° 턴테이블 (이음새 없는 반복) -->
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/rotate.jpg" aria-label="아이보리 미장 인쇄의 취향의 권리 키트 상자가 천천히 한 바퀴 도는 모습">
-        <source src="assets/3d/anim/rotate.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/rotate_loop.jpg" aria-label="아이보리 미장 인쇄의 취향의 권리 키트 상자가 천천히 한 바퀴 도는 모습">
+        <source src="assets/loop/rotate_loop.mp4" type="video/mp4">
       </video>
-      <img src="assets/3d/anim/rotate.jpg" alt="아이보리 미장 인쇄의 취향의 권리 키트 상자">
+      <img src="assets/loop/rotate_loop.jpg" alt="아이보리 미장 인쇄의 취향의 권리 키트 상자">
     </figure>
   </div>
   <div class="gap-m"></div>
@@ -208,37 +211,37 @@ figure{margin:0}
      h02 이럴 때 블렌딩 하세요
      ============================================================ -->
 <section id="h02" class="flush">
-  <img class="photo" src="assets/stills/still_25.jpg" alt="창가에서 유리잔에 담긴 차를 마시는 여성">
+  <div class="clip"><img class="mo-breathe photo" src="assets/stills/still_25.jpg" alt="창가에서 유리잔에 담긴 차를 마시는 여성"></div>
   <div class="gap-l"></div>
   <h2 class="h">이럴 때 블렌딩 하세요.</h2>
   <div class="gap-m"></div>
   <ol class="nlist plain">
-    <li><span class="b">1</span><span class="d">티백을 뜯을 때마다 매번 같은 맛이라 지겨웠던 적,</span></li>
-    <li><span class="b">2</span><span class="d">블렌딩 카페는 좋았지만 매번 시간 내서 찾아가긴 어려웠던 적,</span></li>
-    <li><span class="b">3</span><span class="d">선물로 차를 고르다가 결국 무난한 걸로 타협했던 적.</span></li>
+    <li><span class="b mo-pop">1</span><span class="d">티백을 뜯을 때마다 매번 같은 맛이라 지겨웠던 적,</span></li>
+    <li><span class="b mo-pop mo-d6">2</span><span class="d">블렌딩 카페는 좋았지만 매번 시간 내서 찾아가긴 어려웠던 적,</span></li>
+    <li><span class="b mo-pop mo-d4">3</span><span class="d">선물로 차를 고르다가 결국 무난한 걸로 타협했던 적.</span></li>
   </ol>
   <div class="gap-m"></div>
   <p class="p dark">그런데 문득 궁금해졌습니다.</p>
-  <p class="h sm" style="margin-top:10px"><span class="hl hl-pink">나는 어떤 차를 좋아하는 사람일까?</span></p>
+  <p class="h sm" style="margin-top:10px" data-mo="words" data-mo-fx="glow"><span class="hl hl-pink">나는 어떤 차를 좋아하는 사람일까?</span></p>
 </section>
 
 <!-- ============================================================
      h03 원료 12종과 도구까지 모두 한번에
      ============================================================ -->
 <section id="h03">
-  <h2 class="h"><span class="hl hl-pink">원료 12종</span>과<br>도구·가이드까지 모두 한번에</h2>
+  <h2 class="h" data-mo="lines" data-mo-fx="rise"><span class="hl hl-pink">원료 12종</span>과<br>도구·가이드까지 모두 한번에</h2>
   <div class="tick short"></div>
   <div class="gap-m"></div>
   <div class="wrap">
-    <img class="photo" src="assets/real/group_12jars.png" alt="코르크 뚜껑 유리병 12개에 담긴 허브 6종과 곡물 6종, 두 줄로 놓인 모습">
+    <div class="clip"><img class="mo-breathe photo" src="assets/real/group_12jars.png" alt="코르크 뚜껑 유리병 12개에 담긴 허브 6종과 곡물 6종, 두 줄로 놓인 모습"></div>
   </div>
   <div class="gap-m"></div>
   <ol class="nlist">
-    <li><span class="b">1</span><span class="k"><span class="hl hl-green">HERB 6종</span></span><span class="dash">–</span><span class="d">레몬밤, 히비스커스, 페퍼민트, 유자, 장미, 캐모마일</span></li>
-    <li><span class="b">2</span><span class="k"><span class="hl hl-yellow">GRAIN 6종</span></span><span class="dash">–</span><span class="d">둥굴레, 찰수수, 단팥, 현미, 민들레 뿌리, 보리</span></li>
-    <li><span class="b">3</span><span class="k"><span class="hl hl-pink">도구</span></span><span class="dash">–</span><span class="d">공티백, 계량용 티스푼, 스쿱</span></li>
-    <li><span class="b">4</span><span class="k"><span class="hl hl-lav">카드</span></span><span class="dash">–</span><span class="d">원료 태그, 라틴 학명 병기 원료 카드, 스티커</span></li>
-    <li><span class="b">5</span><span class="k"><span class="hl hl-sage">가이드</span></span><span class="dash">–</span><span class="d">블렌딩 가이드(전문가 레시피 21), 티 블렌딩 에세이 노트</span></li>
+    <li><span class="b mo-pop">1</span><span class="k"><span class="hl hl-green">HERB 6종</span></span><span class="dash">–</span><span class="d">레몬밤, 히비스커스, 페퍼민트, 유자, 장미, 캐모마일</span></li>
+    <li><span class="b mo-pop mo-d7">2</span><span class="k"><span class="hl hl-yellow">GRAIN 6종</span></span><span class="dash">–</span><span class="d">둥굴레, 찰수수, 단팥, 현미, 민들레 뿌리, 보리</span></li>
+    <li><span class="b mo-pop mo-d6">3</span><span class="k"><span class="hl hl-pink">도구</span></span><span class="dash">–</span><span class="d">공티백, 계량용 티스푼, 스쿱</span></li>
+    <li><span class="b mo-pop mo-d5">4</span><span class="k"><span class="hl hl-lav">카드</span></span><span class="dash">–</span><span class="d">원료 태그, 라틴 학명 병기 원료 카드, 스티커</span></li>
+    <li><span class="b mo-pop mo-d4">5</span><span class="k"><span class="hl hl-sage">가이드</span></span><span class="dash">–</span><span class="d">블렌딩 가이드(전문가 레시피 21), 티 블렌딩 에세이 노트</span></li>
   </ol>
 
   <!-- 3D 패키지: 상자 열기 + 정지 컷 핀 + 번호 레전드 -->
@@ -249,27 +252,27 @@ figure{margin:0}
   <div class="gap-m"></div>
   <div class="wrap">
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/lid_open.jpg" aria-label="키트 상자의 뚜껑이 뒤로 열리며 아코디언북과 블렌딩 노트가 드러나는 장면">
-        <source src="assets/3d/anim/lid_open.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/lid_loop.jpg" aria-label="키트 상자의 뚜껑이 뒤로 열렸다 닫히며 아코디언북과 블렌딩 노트가 드러나는 장면">
+        <source src="assets/loop/lid_loop.mp4" type="video/mp4">
       </video>
-      <img src="assets/3d/anim/lid_open.jpg" alt="뚜껑이 열린 키트 상자 속 아코디언북과 블렌딩 노트">
+      <img src="assets/loop/lid_loop.jpg" alt="취향의 권리 키트 상자">
     </figure>
     <div class="gap-s"></div>
     <div class="duo">
       <figure>
         <div class="pinfig">
           <img src="assets/3d/open_front.jpg" alt="뚜껑을 연 키트 상자 정면, 왼칸에 띠지를 두른 아코디언북, 오른칸에 블렌딩 노트">
-          <span class="pin" style="left:37.1%;top:86.1%" aria-hidden="true">1</span>
-          <span class="pin" style="left:35.6%;top:70.6%" aria-hidden="true">2</span>
-          <span class="pin" style="left:66.2%;top:66.2%" aria-hidden="true">3</span>
+          <span class="pin mo-ring" style="left:37.1%;top:86.1%" aria-hidden="true">1</span>
+          <span class="pin mo-ring mo-d3" style="left:35.6%;top:70.6%" aria-hidden="true">2</span>
+          <span class="pin mo-ring mo-d2" style="left:66.2%;top:66.2%" aria-hidden="true">3</span>
         </div>
         <figcaption>상자 속 두 칸</figcaption>
       </figure>
       <figure>
         <div class="pinfig">
           <img src="assets/3d/accordion_detail.jpg" alt="펼친 아코디언북 근접, 원료 파우치 면과 아치형 엽서 창 면이 번갈아 이어진다">
-          <span class="pin" style="left:61%;top:53%" aria-hidden="true">4</span>
-          <span class="pin" style="left:82%;top:53%" aria-hidden="true">5</span>
+          <span class="pin mo-ring" style="left:61%;top:53%" aria-hidden="true">4</span>
+          <span class="pin mo-ring mo-d2" style="left:82%;top:53%" aria-hidden="true">5</span>
         </div>
         <figcaption>펼친 아코디언북</figcaption>
       </figure>
@@ -286,10 +289,10 @@ figure{margin:0}
   <div class="gap-l"></div>
   <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c08_canister.jpg" aria-label="원료가 담긴 캐니스터 클로즈업">
-        <source src="assets/video/clips/c08_canister.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c08_canister.jpg" aria-label="원료가 담긴 캐니스터 클로즈업">
+        <source src="assets/loop/c08_canister.mp4" type="video/mp4">
       </video>
-      <img src="assets/video/clips/c08_canister.jpg" alt="원료가 담긴 캐니스터 클로즈업">
+      <img src="assets/loop/c08_canister.jpg" alt="원료가 담긴 캐니스터 클로즈업">
     </figure>
     <figure><img class="photo" style="aspect-ratio:1720/968;object-fit:cover" src="assets/stills/still_08.jpg" alt="원료를 공티백에 담는 손"></figure>
   </div>
@@ -299,26 +302,26 @@ figure{margin:0}
      h04 내 맘대로 만드는 블렌딩
      ============================================================ -->
 <section id="h04">
-  <h2 class="h">내 맘대로 만드는 <span class="hl hl-pink">티 블렌딩 키트</span></h2>
+  <h2 class="h" data-mo="words" data-mo-fx="slide">내 맘대로 만드는 <span class="hl hl-pink">티 블렌딩 키트</span></h2>
   <div class="tick short"></div>
   <div class="gap-m"></div>
   <figure class="vid">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c05_jars_spoon.jpg" aria-label="유리병 다섯 개에서 스푼으로 원료를 덜어 담는 장면">
-      <source src="assets/video/clips/c05_jars_spoon.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c05_jars_spoon.jpg" aria-label="유리병 다섯 개에서 스푼으로 원료를 덜어 담는 장면">
+      <source src="assets/loop/c05_jars_spoon.mp4" type="video/mp4">
     </video>
-    <img src="assets/video/clips/c05_jars_spoon.jpg" alt="유리병 다섯 개에서 스푼으로 원료를 덜어 담는 장면">
+    <img src="assets/loop/c05_jars_spoon.jpg" alt="유리병 다섯 개에서 스푼으로 원료를 덜어 담는 장면">
   </figure>
   <div class="gap-l"></div>
   <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;column-gap:28px">
     <div>
-      <img class="photo" src="assets/real/group_herb6.png" alt="허브 6종이 담긴 유리병 여섯 개가 한 줄로 놓인 모습">
+      <div class="clip"><img class="mo-breathe photo" src="assets/real/group_herb6.png" alt="허브 6종이 담긴 유리병 여섯 개가 한 줄로 놓인 모습"></div>
       <p class="eng" style="margin-top:20px">Ver.1 · Herb</p>
       <p class="sub" style="margin-top:6px"><span class="hl hl-green">VER.1 HERB</span></p>
       <p class="p" style="margin-top:10px">레몬밤 · 히비스커스 · 페퍼민트<br>유자 · 장미 · 캐모마일</p>
       <p class="cap">향과 색, 감각으로 즐기는<br>화사한 허브 블렌딩</p>
     </div>
     <div>
-      <img class="photo" src="assets/real/group_grain6.png" alt="곡물과 뿌리 원료 6종이 담긴 유리병 여섯 개가 한 줄로 놓인 모습">
+      <div class="clip"><img class="mo-breathe mo-d4 photo" src="assets/real/group_grain6.png" alt="곡물과 뿌리 원료 6종이 담긴 유리병 여섯 개가 한 줄로 놓인 모습"></div>
       <p class="eng" style="margin-top:20px">Ver.2 · Grain</p>
       <p class="sub" style="margin-top:6px"><span class="hl hl-yellow">VER.2 GRAIN</span></p>
       <p class="p" style="margin-top:10px">둥굴레 · 찰수수 · 단팥<br>현미 · 민들레 뿌리 · 보리</p>
@@ -333,16 +336,16 @@ figure{margin:0}
      h05 원료 하나하나 (3종 1조 × 4)
      ============================================================ -->
 <section id="h05">
-  <h2 class="h">원료 하나하나, 있는 그대로</h2>
+  <h2 class="h" data-mo="words" data-mo-fx="mark" style="--mo-mark:rgba(156,127,122,.32)">원료 하나하나, 있는 그대로</h2>
   <p class="p" style="margin-top:12px">허브 6종과 곡물 6종. 라틴 학명을 함께 적은 원료 카드가 동봉됩니다.</p>
   <div class="tick short"></div>
   <div class="gap-m"></div>
   <!-- 3D 패키지: 아코디언북이 한 번에 펼쳐지는 컷 -->
   <figure class="vid">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/acc_unfold.jpg" aria-label="접혀 있던 아코디언북이 병풍처럼 한 번에 펼쳐지는 장면">
-      <source src="assets/3d/anim/acc_unfold.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/acc_unfold_loop.jpg" aria-label="접혀 있던 아코디언북이 병풍처럼 펼쳐졌다 다시 접히는 장면">
+      <source src="assets/loop/acc_unfold_loop.mp4" type="video/mp4">
     </video>
-    <img src="assets/3d/anim/acc_unfold.jpg" alt="접힌 아코디언북">
+    <img src="assets/loop/acc_unfold_loop.jpg" alt="접힌 아코디언북">
   </figure>
   <p class="cap">책을 펼치면 원료 파우치와 엽서 창이 한 장씩 번갈아 이어집니다.</p>
   <div class="gap-l"></div>
@@ -351,19 +354,19 @@ figure{margin:0}
   <div class="gap-s"></div>
   <div class="trio">
     <div>
-      <img src="assets/real/ing_lemon_balm.png" alt="코르크 뚜껑 유리병에 담긴 레몬밤과 앞에 쏟아 둔 마른 잎">
+      <div class="clip"><img class="mo-breathe" src="assets/real/ing_lemon_balm.png" alt="코르크 뚜껑 유리병에 담긴 레몬밤과 앞에 쏟아 둔 마른 잎"></div>
       <p class="desc">레몬과 풋잎을 떠올리게 하는 산뜻함.<br>첫 향을 밝게 엽니다.</p>
       <span class="name hl hl-green">레몬밤</span>
       <span class="latin">Melissa officinalis</span>
     </div>
     <div>
-      <img src="assets/real/ing_hibiscus.png" alt="코르크 뚜껑 유리병에 담긴 히비스커스와 앞에 쏟아 둔 붉은 꽃받침">
+      <div class="clip"><img class="mo-breathe mo-d2" src="assets/real/ing_hibiscus.png" alt="코르크 뚜껑 유리병에 담긴 히비스커스와 앞에 쏟아 둔 붉은 꽃받침"></div>
       <p class="desc">붉은 과일을 연상시키는 선명한 산미.<br>수색을 바꿉니다.</p>
       <span class="name hl hl-pink">히비스커스</span>
       <span class="latin">Hibiscus sabdariffa</span>
     </div>
     <div>
-      <img src="assets/real/ing_peppermint.png" alt="코르크 뚜껑 유리병에 담긴 페퍼민트와 앞에 쏟아 둔 잘게 썬 잎">
+      <div class="clip"><img class="mo-breathe mo-d4" src="assets/real/ing_peppermint.png" alt="코르크 뚜껑 유리병에 담긴 페퍼민트와 앞에 쏟아 둔 잘게 썬 잎"></div>
       <p class="desc">차갑고 깨끗한 상쾌함.<br>소량부터 시작해 보세요.</p>
       <span class="name hl hl-sage">페퍼민트</span>
       <span class="latin">Mentha × piperita</span>
@@ -378,19 +381,19 @@ figure{margin:0}
   <div class="gap-s"></div>
   <div class="trio">
     <div>
-      <img src="assets/real/ing_yuza.png" alt="코르크 뚜껑 유리병에 담긴 말린 유자 껍질과 앞에 쏟아 둔 조각">
+      <div class="clip"><img class="mo-breathe" src="assets/real/ing_yuza.png" alt="코르크 뚜껑 유리병에 담긴 말린 유자 껍질과 앞에 쏟아 둔 조각"></div>
       <p class="desc">밝은 감귤 껍질 향과<br>은은한 쌉싸름함.</p>
       <span class="name hl hl-yellow">유자</span>
       <span class="latin">Citrus junos</span>
     </div>
     <div>
-      <img src="assets/real/ing_rose.png" alt="코르크 뚜껑 유리병에 담긴 장미 꽃봉오리와 앞에 쏟아 둔 꽃잎">
+      <div class="clip"><img class="mo-breathe mo-d2" src="assets/real/ing_rose.png" alt="코르크 뚜껑 유리병에 담긴 장미 꽃봉오리와 앞에 쏟아 둔 꽃잎"></div>
       <p class="desc">우아하고 풍성한 꽃향.<br>길게 남는 아로마.</p>
       <span class="name hl hl-pink">장미</span>
       <span class="latin">Rosa damascena</span>
     </div>
     <div>
-      <img src="assets/real/ing_chamomile.png" alt="코르크 뚜껑 유리병에 담긴 캐모마일과 앞에 쏟아 둔 작은 꽃송이">
+      <div class="clip"><img class="mo-breathe mo-d4" src="assets/real/ing_chamomile.png" alt="코르크 뚜껑 유리병에 담긴 캐모마일과 앞에 쏟아 둔 작은 꽃송이"></div>
       <p class="desc">사과와 꿀을 연상시키는<br>부드러운 향.</p>
       <span class="name hl hl-yellow">캐모마일</span>
       <span class="latin">Matricaria chamomilla</span>
@@ -402,19 +405,19 @@ figure{margin:0}
   <div class="gap-s"></div>
   <div class="trio">
     <div>
-      <img src="assets/real/ing_solomons_seal.png" alt="코르크 뚜껑 유리병에 담긴 볶은 둥굴레와 앞에 쏟아 둔 조각">
+      <div class="clip"><img class="mo-breathe" src="assets/real/ing_solomons_seal.png" alt="코르크 뚜껑 유리병에 담긴 볶은 둥굴레와 앞에 쏟아 둔 조각"></div>
       <p class="desc">부드러운 볶은 뿌리와 은은한 단맛.<br>바디감을 둥글게.</p>
       <span class="name hl hl-peach">둥굴레</span>
       <span class="latin">Polygonatum odoratum</span>
     </div>
     <div>
-      <img src="assets/real/ing_sorghum.png" alt="코르크 뚜껑 유리병에 담긴 볶은 찰수수와 앞에 쏟아 둔 낟알">
+      <div class="clip"><img class="mo-breathe mo-d2" src="assets/real/ing_sorghum.png" alt="코르크 뚜껑 유리병에 담긴 볶은 찰수수와 앞에 쏟아 둔 낟알"></div>
       <p class="desc">담백하고 순한 곡물의 구수함.<br>뿌리 원료를 받쳐 줍니다.</p>
       <span class="name hl hl-yellow">찰수수</span>
       <span class="latin">Sorghum bicolor</span>
     </div>
     <div>
-      <img src="assets/real/ing_red_bean.png" alt="코르크 뚜껑 유리병에 담긴 볶은 팥과 앞에 쏟아 둔 낟알">
+      <div class="clip"><img class="mo-breathe mo-d4" src="assets/real/ing_red_bean.png" alt="코르크 뚜껑 유리병에 담긴 볶은 팥과 앞에 쏟아 둔 낟알"></div>
       <p class="desc">볶은 팥의 고소하고<br>부드러운 여운.</p>
       <span class="name hl hl-pink">단팥</span>
       <span class="latin">Vigna angularis</span>
@@ -429,19 +432,19 @@ figure{margin:0}
   <div class="gap-s"></div>
   <div class="trio">
     <div>
-      <img src="assets/real/ing_brown_rice.png" alt="코르크 뚜껑 유리병에 담긴 볶은 현미와 앞에 쏟아 둔 낟알">
+      <div class="clip"><img class="mo-breathe" src="assets/real/ing_brown_rice.png" alt="코르크 뚜껑 유리병에 담긴 볶은 현미와 앞에 쏟아 둔 낟알"></div>
       <p class="desc">볶은 쌀의 담백하고 고소한 향.<br>바디를 받쳐 줍니다.</p>
       <span class="name hl hl-peach">현미</span>
       <span class="latin">Oryza sativa</span>
     </div>
     <div>
-      <img src="assets/real/ing_dandelion_root.png" alt="코르크 뚜껑 유리병에 담긴 볶은 민들레 뿌리와 앞에 쏟아 둔 조각">
+      <div class="clip"><img class="mo-breathe mo-d2" src="assets/real/ing_dandelion_root.png" alt="코르크 뚜껑 유리병에 담긴 볶은 민들레 뿌리와 앞에 쏟아 둔 조각"></div>
       <p class="desc">흙·나무·카카오를 연상시키는<br>깊은 볶음 향. 중심 원료.</p>
       <span class="name hl hl-lav">민들레 뿌리</span>
       <span class="latin">Taraxacum officinale</span>
     </div>
     <div>
-      <img src="assets/real/ing_barley.png" alt="코르크 뚜껑 유리병에 담긴 볶은 보리와 앞에 쏟아 둔 낟알">
+      <div class="clip"><img class="mo-breathe mo-d4" src="assets/real/ing_barley.png" alt="코르크 뚜껑 유리병에 담긴 볶은 보리와 앞에 쏟아 둔 낟알"></div>
       <p class="desc">익숙하고 선명한<br>볶은 곡물 향.</p>
       <span class="name hl hl-yellow">보리</span>
       <span class="latin">Hordeum vulgare</span>
@@ -465,42 +468,42 @@ figure{margin:0}
     <p class="t"><em>01.</em> 원하는 원료를 고른 뒤, 전용 스푼으로 비율을 재어<br>공티백에 담아 주세요.</p>
     <!-- 3D 패키지: 아코디언북을 한 장씩 젖히며 원료를 고르는 컷 -->
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/acc_flip.jpg" aria-label="아코디언북을 한 장씩 젖히자 원료 파우치 면과 엽서 창 면이 번갈아 나오는 장면">
-        <source src="assets/3d/anim/acc_flip.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/acc_flip_loop.jpg" aria-label="아코디언북을 한 장씩 젖히자 원료 파우치 면과 엽서 창 면이 번갈아 나오는 장면">
+        <source src="assets/loop/acc_flip_loop.mp4" type="video/mp4">
       </video>
-      <img src="assets/3d/anim/acc_flip.jpg" alt="아코디언북의 원료 파우치 면과 엽서 창 면">
+      <img src="assets/loop/acc_flip_loop.jpg" alt="아코디언북의 원료 파우치 면과 엽서 창 면">
     </figure>
   </div>
   <div class="step">
     <p class="t"><em>02.</em> 레시피의 온도로 물을 부어 주세요.</p>
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c09_pour_water.jpg" aria-label="유리 티팟에 물을 붓는 장면">
-        <source src="assets/video/clips/c09_pour_water.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c09_pour_water.jpg" aria-label="유리 티팟에 물을 붓는 장면">
+        <source src="assets/loop/c09_pour_water.mp4" type="video/mp4">
       </video>
-      <img src="assets/video/clips/c09_pour_water.jpg" alt="유리 티팟에 물을 붓는 장면">
+      <img src="assets/loop/c09_pour_water.jpg" alt="유리 티팟에 물을 붓는 장면">
     </figure>
   </div>
   <div class="step">
     <p class="t"><em>03.</em> 3~5분 기다려 주세요.</p>
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c11_brew_closeup.jpg" aria-label="유리 티팟 안에서 차가 우러나는 클로즈업">
-        <source src="assets/video/clips/c11_brew_closeup.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c11_brew_closeup.jpg" aria-label="유리 티팟 안에서 차가 우러나는 클로즈업">
+        <source src="assets/loop/c11_brew_closeup.mp4" type="video/mp4">
       </video>
-      <img src="assets/video/clips/c11_brew_closeup.jpg" alt="유리 티팟 안에서 차가 우러나는 클로즈업">
+      <img src="assets/loop/c11_brew_closeup.jpg" alt="유리 티팟 안에서 차가 우러나는 클로즈업">
     </figure>
   </div>
   <div class="step">
     <p class="t"><em>04.</em> 색이 바뀌는 순간을 지켜보세요.</p>
-    <img class="photo" style="aspect-ratio:16/9;object-fit:cover" src="assets/stills/still_20.jpg" alt="황금빛으로 우러난 차가 유리 티팟 아래쪽에 고이는 클로즈업">
+    <div class="clip"><img class="mo-breathe photo" style="aspect-ratio:16/9;object-fit:cover" src="assets/stills/still_20.jpg" alt="황금빛으로 우러난 차가 유리 티팟 아래쪽에 고이는 클로즈업"></div>
   </div>
   <div class="step">
     <p class="t"><em>05.</em> 좋았던 비율을 노트에 남기고,<br>나만의 티를 즐겨 주세요.</p>
     <!-- 3D 패키지: 블렌딩 노트 표지가 열리고 세 장이 넘어가는 컷 -->
     <figure class="vid">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/note_flip.jpg" aria-label="블렌딩 노트의 표지가 열리고 속지가 한 장씩 넘어가는 장면">
-        <source src="assets/3d/anim/note_flip.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/note_flip_loop.jpg" aria-label="블렌딩 노트의 표지가 열리고 속지가 한 장씩 넘어가는 장면">
+        <source src="assets/loop/note_flip_loop.mp4" type="video/mp4">
       </video>
-      <img src="assets/3d/anim/note_flip.jpg" alt="블렌딩 노트 표지">
+      <img src="assets/loop/note_flip_loop.jpg" alt="블렌딩 노트 표지">
     </figure>
   </div>
 </section>
@@ -546,16 +549,16 @@ figure{margin:0}
   <p class="p" style="margin-top:12px">원료는 향을 확인해 고르고, 한 번 분량에 맞춰 계량한 뒤 소분해 포장합니다.</p>
   <div class="gap-m"></div>
   <div class="bw">
-    <figure><img src="assets/stills/still_09.jpg" alt="손바닥 위 원료를 살피는 모습, 흑백"><figcaption>선별</figcaption></figure>
-    <figure><img src="assets/stills/still_11.jpg" alt="유리병 다섯 개 앞에서 스푼으로 원료를 계량하는 모습, 흑백"><figcaption>계량</figcaption></figure>
-    <figure><img src="assets/stills/still_13.jpg" alt="원료를 캐니스터에 옮겨 담는 손, 흑백"><figcaption>소분</figcaption></figure>
+    <figure><div class="clip"><img class="mo-breathe" src="assets/stills/still_09.jpg" alt="손바닥 위 원료를 살피는 모습, 흑백"></div><figcaption>선별</figcaption></figure>
+    <figure><div class="clip"><img class="mo-breathe mo-d2" src="assets/stills/still_11.jpg" alt="유리병 다섯 개 앞에서 스푼으로 원료를 계량하는 모습, 흑백"></div><figcaption>계량</figcaption></figure>
+    <figure><div class="clip"><img class="mo-breathe mo-d4" src="assets/stills/still_13.jpg" alt="원료를 캐니스터에 옮겨 담는 손, 흑백"></div><figcaption>소분</figcaption></figure>
     <!-- 3D 패키지: 뚜껑 닫힘 — 흑백 공정 사이에서 패키지만 컬러로 둔다 -->
     <figure>
       <div class="vid">
-        <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/lid_close.jpg" aria-label="아코디언북과 노트를 담은 키트 상자의 뚜껑이 닫히는 장면">
-          <source src="assets/3d/anim/lid_close.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/lid_loop.jpg" aria-label="아코디언북과 노트를 담은 키트 상자의 뚜껑이 열렸다 닫히는 장면">
+          <source src="assets/loop/lid_loop.mp4" type="video/mp4">
         </video>
-        <img src="assets/3d/anim/lid_close.jpg" alt="뚜껑이 열린 키트 상자">
+        <img src="assets/loop/lid_loop.jpg" alt="취향의 권리 키트 상자">
       </div>
       <figcaption>포장</figcaption>
     </figure>
@@ -570,20 +573,20 @@ figure{margin:0}
   <div class="gap-m"></div>
   <div class="people">
     <div>
-      <div class="em" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d="M6 5.5 C 30 4, 52 6.5, 94 5 C 95.5 30, 94 62, 94.5 94.5 C 62 96, 34 93.5, 5.5 94.5 C 4.5 64, 6.5 33, 6 5.5 Z" fill="currentColor"/><path d="M19 8 Q 40 34 52 37 Q 62 30 84 5.5 Q 66 38 68 44 Q 78 46 92 50 Q 76 52 68 56 Q 66 62 84 94 Q 62 70 52 63 Q 40 70 19 92 Q 34 62 32 56 Q 24 52 8 50 Q 24 46 32 44 Q 34 38 19 8 Z" fill="#fff"/></svg></div>
+      <div class="em mo-rock" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d="M6 5.5 C 30 4, 52 6.5, 94 5 C 95.5 30, 94 62, 94.5 94.5 C 62 96, 34 93.5, 5.5 94.5 C 4.5 64, 6.5 33, 6 5.5 Z" fill="currentColor"/><path d="M19 8 Q 40 34 52 37 Q 62 30 84 5.5 Q 66 38 68 44 Q 78 46 92 50 Q 76 52 68 56 Q 66 62 84 94 Q 62 70 52 63 Q 40 70 19 92 Q 34 62 32 56 Q 24 52 8 50 Q 24 46 32 44 Q 34 38 19 8 Z" fill="#fff"/></svg></div>
       <p class="nm">이소연</p>
       <p class="role">대한명인회 차 블렌딩명인 · Tea Blender</p>
       <p class="bio">20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더.<br>저서 <span style="white-space:nowrap">『11시와 4시 나는 차를 마신다』</span> <span style="white-space:nowrap">『Life in My Teacup』</span></p>
     </div>
     <div>
-      <div class="em" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d="M6 5.5 C 30 4, 52 6.5, 94 5 C 95.5 30, 94 62, 94.5 94.5 C 62 96, 34 93.5, 5.5 94.5 C 4.5 64, 6.5 33, 6 5.5 Z" fill="currentColor"/><path d="M19 8 Q 40 34 52 37 Q 62 30 84 5.5 Q 66 38 68 44 Q 78 46 92 50 Q 76 52 68 56 Q 66 62 84 94 Q 62 70 52 63 Q 40 70 19 92 Q 34 62 32 56 Q 24 52 8 50 Q 24 46 32 44 Q 34 38 19 8 Z" fill="#fff"/></svg></div>
+      <div class="em mo-rock mo-d4" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d="M6 5.5 C 30 4, 52 6.5, 94 5 C 95.5 30, 94 62, 94.5 94.5 C 62 96, 34 93.5, 5.5 94.5 C 4.5 64, 6.5 33, 6 5.5 Z" fill="currentColor"/><path d="M19 8 Q 40 34 52 37 Q 62 30 84 5.5 Q 66 38 68 44 Q 78 46 92 50 Q 76 52 68 56 Q 66 62 84 94 Q 62 70 52 63 Q 40 70 19 92 Q 34 62 32 56 Q 24 52 8 50 Q 24 46 32 44 Q 34 38 19 8 Z" fill="#fff"/></svg></div>
       <p class="nm">양진호</p>
       <p class="role">엘카페커피로스터스 대표 · Roaster</p>
       <p class="bio">2010년 엘카페 창업, 16년째 로스팅을 이끌어 온 로스터<br>블루리본서베이 15년 연속 선정 로스터리 대표<br>Sprudge·Time Out Seoul이 주목한 서울 스페셜티 로스터</p>
     </div>
   </div>
   <div class="gap-l"></div>
-  <p class="sub">“전문가에게는 원칙을,<br>소비자에게는 <span class="hl hl-pink">취향의 권리</span>를.”</p>
+  <p class="sub" data-mo="lines" data-mo-fx="slide">“전문가에게는 원칙을,<br>소비자에게는 <span class="hl hl-pink">취향의 권리</span>를.”</p>
 </section>
 
 <!-- ============================================================
@@ -594,10 +597,10 @@ figure{margin:0}
   <h2 class="h" style="margin-top:8px">5개 질문으로 찾는 <span class="hl hl-lav">나의 첫 블렌딩</span></h2>
   <p class="p" style="margin-top:14px;padding:0 120px">「나의 취향찾기」에 답하면 전문가 레시피 21가지 중<br>지금 나에게 맞는 한 잔과, 그 레시피에 필요한 키트를 알려 드려요.</p>
   <div class="gap-m"></div>
-  <div style="width:150px;height:150px;margin:0 auto;border:1px solid var(--line);padding:9px;background:#fff">
+  <div class="mo-float-sm" style="width:150px;height:150px;margin:0 auto;border:1px solid var(--line);padding:9px;background:#fff">
     <img src="assets/qr-site.svg" alt="취향의 권리 공식 사이트 QR 코드" style="width:100%;height:100%">
   </div>
-  <a class="btn" href="https://취향의권리.com">나의 취향찾기 시작하기 →</a>
+  <a class="btn" href="https://취향의권리.com">나의 취향찾기 시작하기 <span class="mo-nudge" style="display:inline-block" aria-hidden="true">→</span></a>
   <p class="note" style="margin-top:14px">결과로 나온 레시피는 키트 안 재료로 바로 만들어 볼 수 있어요.</p>
 </section>
 
@@ -613,7 +616,7 @@ figure{margin:0}
     <div class="group">
       <p class="lg">한정 수량<small>울트라 얼리버드 리워드 구성 · 선착순 100명</small></p>
       <div class="card">
-        <img class="th cut" src="assets/3d/closed_cut.png" alt="닫힌 취향의 권리 키트 상자">
+        <img class="th cut mo-float" src="assets/3d/closed_cut.png" alt="닫힌 취향의 권리 키트 상자">
         <div class="opt">
           <p class="o">[옵션 1]</p>
           <p class="i">티 블렌딩 키트 1<br><small>VER.1 HERB 또는 VER.2 GRAIN</small></p>
@@ -632,7 +635,7 @@ figure{margin:0}
     <div class="group">
       <p class="lg">슈퍼 얼리버드 리워드 구성<small>한정 수량</small></p>
       <div class="card">
-        <img class="th cut" src="assets/3d/open_cut.png" alt="뚜껑을 연 키트 상자 속 아코디언북과 블렌딩 노트">
+        <img class="th cut mo-float mo-d4" src="assets/3d/open_cut.png" alt="뚜껑을 연 키트 상자 속 아코디언북과 블렌딩 노트">
         <div class="opt">
           <p class="o">[옵션 2]</p>
           <p class="i">티 블렌딩 키트 1<br><small>VER.1 HERB 또는 VER.2 GRAIN</small></p>
@@ -712,16 +715,16 @@ figure{margin:0}
      ============================================================ -->
 <section id="h13">
   <p class="eng">Recipe Event</p>
-  <h2 class="h" style="margin-top:8px">당신이 발견한 비율을 들려주세요.</h2>
+  <h2 class="h" style="margin-top:8px" data-mo="words" data-mo-fx="glow">당신이 발견한 비율을 들려주세요.</h2>
   <p class="p" style="margin-top:14px;padding:0 100px">레시피를 공유해 주신 분 중 추첨으로 10명에게<br>취향의 권리 키트를 만드는 티 브랜드, 티아포테카의 차 4종(10만 원 상당)을 선물합니다.</p>
   <div class="gap-m"></div>
-  <div class="wrap"><img class="photo" src="assets/gen/prize_teas.png" alt="티아포테카 차 4종 틴과 앞에 쏟아 둔 볶은 팥, 유자 조각"></div>
+  <div class="wrap"><div class="clip"><img class="mo-breathe photo" src="assets/gen/prize_teas.png" alt="티아포테카 차 4종 틴과 앞에 쏟아 둔 볶은 팥, 유자 조각"></div></div>
   <p class="note" style="margin-top:14px">티아포테카 차 4종 — 단팥차 · 골든 모과 · 두 가지 시그니처</p>
   <div class="gap-m"></div>
   <ol class="nlist">
-    <li><span class="b">1</span><span class="k">나만의 차 만들기</span><span class="dash">–</span><span class="d">키트로 나만의 블렌딩 레시피를 완성해요.</span></li>
-    <li><span class="b">2</span><span class="k">와디즈 후기 남기기</span><span class="dash">–</span><span class="d">블렌딩 노트 사진과 레시피로 후기를 써 주세요.</span></li>
-    <li><span class="b">3</span><span class="k">인스타그램에 공유하기</span><span class="dash">–</span><span class="d">@right.totaste 팔로우 후 같은 사진을 올리고 태그해 주세요.<br>#취향의권리 #나만의블렌딩 #이벤트참여</span></li>
+    <li><span class="b mo-pop">1</span><span class="k">나만의 차 만들기</span><span class="dash">–</span><span class="d">키트로 나만의 블렌딩 레시피를 완성해요.</span></li>
+    <li><span class="b mo-pop mo-d6">2</span><span class="k">와디즈 후기 남기기</span><span class="dash">–</span><span class="d">블렌딩 노트 사진과 레시피로 후기를 써 주세요.</span></li>
+    <li><span class="b mo-pop mo-d4">3</span><span class="k">인스타그램에 공유하기</span><span class="dash">–</span><span class="d">@right.totaste 팔로우 후 같은 사진을 올리고 태그해 주세요.<br>#취향의권리 #나만의블렌딩 #이벤트참여</span></li>
   </ol>
   <p class="note" style="margin-top:22px">참여 기간: 펀딩 기간 중 · 당첨자 발표: 펀딩 종료 후 공식 인스타그램과 개별 DM<br>참여 대상: 취향의 권리 키트 구매자(와디즈 서포터 닉네임으로 확인) · 1인 1회 응모 · 공개 계정만 참여할 수 있어요<br>동의해 주신 레시피는 취향의 권리·티아포테카 인스타그램에 소개될 수 있어요.</p>
 </section>
@@ -743,13 +746,13 @@ figure{margin:0}
   </div>
   <div class="gap-l"></div>
   <figure class="vid">
-    <video muted playsinline preload="auto" data-once poster="assets/video/ending_logo.jpg" aria-label="흩어진 원료가 걷히며 로고가 드러나는 엔딩">
+    <video autoplay muted loop playsinline preload="auto" poster="assets/video/ending_logo.jpg" aria-label="흩어진 원료가 걷히며 로고가 드러나는 엔딩">
       <source src="assets/video/ending_logo.mp4" type="video/mp4">
     </video>
     <img src="assets/video/ending_logo.jpg" alt="흩어진 원료가 걷히며 로고가 드러나는 엔딩">
   </figure>
   <div class="gap-l"></div>
-  <p class="sub">당신은 어떤 맛을 좋아하는 사람인가요?</p>
+  <p class="sub" data-mo="chars" data-mo-fx="wave">당신은 어떤 맛을 좋아하는 사람인가요?</p>
   <p class="p" style="margin-top:8px">좋아하는 것이 더 좋은 일상이 되는 삶.</p>
   <div class="gap-m"></div>
   <img class="logo" src="assets/logo.png" alt="취향의 권리 · the right to taste 로고">
@@ -759,20 +762,6 @@ figure{margin:0}
   <div class="gap-l"></div>
 </section>
 
-<script>
-/* 엔딩: 화면에 들어오면 한 번 재생하고 마지막 장면(로고)에서 멈춘다 */
-(function(){
-  var vs=document.querySelectorAll('video[data-once]');
-  if(!('IntersectionObserver' in window)){vs.forEach(function(v){v.play().catch(function(){});});return;}
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      var v=e.target;
-      if(e.isIntersecting){ if(v.paused){ if(v.ended) v.currentTime=0; v.play().catch(function(){}); } }
-      else if(!v.paused || v.ended){ v.pause(); v.currentTime=0; }
-    });
-  },{threshold:0.5});
-  vs.forEach(function(v){io.observe(v);});
-})();
-</script>
+<script src="assets/motion-text.js"></script>
 </body>
 </html>

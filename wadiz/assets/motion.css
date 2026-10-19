@@ -1,0 +1,83 @@
+/* 취향의 권리 · 와디즈 상세 — GIF 변환용 루프 모션 (공용)
+   원칙
+   - 모든 모션은 4초 한 주기(--mo-t). 영상 루프도 2·4·8초라 단락을 4초(또는 8초) 캡처하면 이음새가 없다.
+   - transform · opacity 만 쓴다(블러·큰 그라데이션 금지 → GIF 색 깨짐·용량 방지). 진폭은 작게.
+   - 시작 지연은 음수(mo-d1~d7 = -0.5s 단위)라 어느 순간을 잘라도 같은 루프가 된다.
+   - 글자는 움직이지 않는다. 사진·누끼·일러스트·핀·아이콘·배지·차트만.
+   - 이미 transform 이 걸린 요소(핀 위치 잡기 등)에는 직접 쓰지 말고 mo-ring(가상요소)이나 안쪽 요소에 건다. */
+:root{--mo-t:4s;--mo-ease:cubic-bezier(.45,.05,.55,.95)}
+
+/* 떠오르기 — 누끼 상자, 카드, 제품 컷 */
+.mo-float{animation:mo-float var(--mo-t) var(--mo-ease) infinite}
+.mo-float-sm{animation:mo-float-sm var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes mo-float-sm{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* 숨쉬기 — 사진(부모가 overflow:hidden 일 때). 아주 느린 줌 인·아웃 */
+.mo-breathe{animation:mo-breathe var(--mo-t) var(--mo-ease) infinite;transform-origin:50% 50%}
+@keyframes mo-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+
+/* 흐르기 — 넓은 사진, 좌우로 살짝(부모 overflow:hidden 필수) */
+.mo-drift{animation:mo-drift var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-drift{0%,100%{transform:scale(1.06) translateX(-1.2%)}50%{transform:scale(1.06) translateX(1.2%)}}
+
+/* 흔들림 — 보태니컬 일러스트·잎·원료 그림(밑동 기준) */
+.mo-sway{animation:mo-sway var(--mo-t) var(--mo-ease) infinite;transform-origin:50% 100%}
+@keyframes mo-sway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+
+/* 까딱 — 원형 배지·엠블럼·도장 */
+.mo-rock{animation:mo-rock var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-rock{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+
+/* 톡 — 체크·번호 배지·아이콘. 주기 앞부분에서 한 번 커졌다 돌아온다 */
+.mo-pop{animation:mo-pop var(--mo-t) ease-in-out infinite}
+@keyframes mo-pop{0%,22%,100%{transform:scale(1)}10%{transform:scale(1.14)}}
+
+/* 깜빡 — 점·화살표·작은 장식 */
+.mo-blink{animation:mo-blink var(--mo-t) ease-in-out infinite}
+@keyframes mo-blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* 밀기 — 오른쪽 화살표 → */
+.mo-nudge{animation:mo-nudge calc(var(--mo-t) / 2) var(--mo-ease) infinite}
+@keyframes mo-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+
+/* 막대 — 그래프 막대(왼쪽 기준으로 늘었다 줄었다) */
+.mo-bar{animation:mo-bar var(--mo-t) var(--mo-ease) infinite;transform-origin:0 50%}
+@keyframes mo-bar{0%,100%{transform:scaleX(.82)}50%{transform:scaleX(1)}}
+
+/* 레이더·원형 차트 — 중심 기준 미세 확대 */
+.mo-grow{animation:mo-grow var(--mo-t) var(--mo-ease) infinite;transform-origin:50% 50%}
+@keyframes mo-grow{0%,100%{transform:scale(.94)}50%{transform:scale(1)}}
+
+/* 핀 파동 — 핀 자체 transform 은 그대로 두고 가상요소 고리만 퍼진다(2초 = 주기의 절반). 핀은 position 이 있어야 함 */
+.mo-ring::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid currentColor;
+  opacity:0;animation:mo-ring calc(var(--mo-t) / 2) ease-out infinite;pointer-events:none}
+@keyframes mo-ring{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+
+/* 시차 — 같은 주기 안에서 순서대로 */
+.mo-d1{animation-delay:-.5s}.mo-d2{animation-delay:-1s}.mo-d3{animation-delay:-1.5s}.mo-d4{animation-delay:-2s}
+.mo-d5{animation-delay:-2.5s}.mo-d6{animation-delay:-3s}.mo-d7{animation-delay:-3.5s}
+.mo-d1::after{animation-delay:-.5s}.mo-d2::after{animation-delay:-1s}.mo-d3::after{animation-delay:-1.5s}
+
+/* ─── 큰 타이틀 모션 그래픽 (assets/motion-text.js 가 글자·단어·줄로 쪼갠다) ───
+   주기 0초 = 전부 보이는 상태. 각 단위는 순서대로 사라졌다(54~60%) 다시 나타난다(60~78%).
+   시차 합은 0.8초(주기의 20%) 이내라 0초 시점엔 늘 문장이 온전하다. */
+.mo-tx .mo-w{display:inline-block;white-space:nowrap}
+.mo-tx .mo-u{display:inline-block}
+.mo-tx .mo-l{display:inline-block}
+.mo-tx-rise .mo-u{animation:mo-tx-rise var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-tx-rise{0%,48%{opacity:1;transform:none}54%{opacity:0;transform:translateY(-.18em)}60%{opacity:0;transform:translateY(.45em)}78%,100%{opacity:1;transform:none}}
+.mo-tx-slide .mo-u{animation:mo-tx-slide var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-tx-slide{0%,48%{opacity:1;transform:none}54%{opacity:0;transform:translateX(.5em)}60%{opacity:0;transform:translateX(-.7em)}78%,100%{opacity:1;transform:none}}
+.mo-tx-wave .mo-u{animation:mo-tx-wave var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-tx-wave{0%,36%,100%{transform:none}14%{transform:translateY(-.26em)}}
+.mo-tx-glow .mo-u{animation:mo-tx-glow var(--mo-t) ease-in-out infinite}
+@keyframes mo-tx-glow{0%,40%,100%{opacity:1}55%{opacity:.28}70%{opacity:1}}
+/* 형광펜 밑줄: --mo-mark 로 색 지정(기본 골드 35%) */
+.mo-tx-mark .mo-u{background:linear-gradient(var(--mo-mark,rgba(201,169,97,.38)),var(--mo-mark,rgba(201,169,97,.38))) 0 92%/100% .36em no-repeat;
+  animation:mo-tx-mark var(--mo-t) var(--mo-ease) infinite}
+@keyframes mo-tx-mark{0%,50%{background-size:100% .36em}55%,60%{background-size:0% .36em}82%,100%{background-size:100% .36em}}
+
+@media (prefers-reduced-motion:reduce){
+  [class*="mo-"],[class*="mo-"]::after,.mo-tx .mo-u{animation:none!important}
+}

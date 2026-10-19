@@ -110,6 +110,9 @@ section.alt .media::after{background:linear-gradient(0deg,var(--bg-2) 0%,rgba(32
 .cup::before{content:"";position:absolute;inset:0;background:rgba(21,19,15,.18);box-shadow:inset 0 0 0 1px rgba(201,169,97,.35)}
 .cup.l{background-position:0 50%}
 .cup.r{background-position:100% 50%}
+.cup .ph{position:absolute;inset:0;background:inherit}
+.cup::before{z-index:1}
+.cup .lbl{z-index:2}
 .cup .lbl{position:absolute;left:0;right:0;bottom:0;padding:70px 20px 18px;background:linear-gradient(0deg,rgba(21,19,15,.94) 0%,rgba(21,19,15,.8) 45%,rgba(21,19,15,0) 100%);color:var(--text);font-size:16px}
 .cup .lbl .eng{font-size:22px;font-style:italic;color:var(--gold);display:block;line-height:1.1;margin-bottom:4px}
 
@@ -326,10 +329,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 .foot .logo-light{width:76px;margin:0 auto}
 .foot p{margin-top:22px;font-family:var(--f-type);font-size:12px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
 
-@media (prefers-reduced-motion:reduce){
-  .hero video,.outro video,.ending video{animation:none}
-}
 </style>
+<link rel="stylesheet" href="assets/motion.css">
 </head>
 <body>
 <div class="page">
@@ -338,14 +339,14 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 <section id="s01">
   <div class="hero">
     <!-- 히어로는 c03 영상 + 55% 오버레이. hero_dark.png는 s13 리워드 상단에 사용 -->
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c03_window_read.jpg">
-      <source src="assets/video/clips/c03_window_read.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c03_window_read.jpg">
+      <source src="assets/loop/c03_window_read.mp4" type="video/mp4">
     </video>
     <div class="veil"></div>
     <div class="copy">
       <span class="tag">Tea Blending Kit</span>
       <div class="eyebrow">Same leaves, different cup.</div>
-      <h1>같은 재료,<br>비율만 바꿨을 뿐인데.</h1>
+      <h1 data-mo="words" data-mo-fx="rise">같은 재료,<br>비율만 바꿨을 뿐인데.</h1>
       <p class="sub">오늘의 한 잔은 내가 정합니다.</p>
       <img class="logo-light" src="assets/logo.png" alt="취향의 권리 — the right to taste">
     </div>
@@ -360,8 +361,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <!-- s01-2 비교 두 잔 -->
   <div class="compare">
     <div class="media full h480 soft">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c09_pour_water.jpg">
-        <source src="assets/video/clips/c09_pour_water.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c09_pour_water.jpg">
+        <source src="assets/loop/c09_pour_water.mp4" type="video/mp4">
       </video>
     </div>
     <div class="center mt72">
@@ -369,8 +370,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <h2>왼쪽은 캐모마일 두 스푼,<br>오른쪽은 장미 한 스푼 더.</h2>
     </div>
     <div class="cups">
-      <div class="cup l"><div class="lbl"><span class="eng">Chamomile ×2</span>캐모마일 두 스푼 · 연한 노란빛</div></div>
-      <div class="cup r"><div class="lbl"><span class="eng">Rose +1</span>장미 한 스푼 더 · 붉은빛</div></div>
+      <div class="cup l"><i class="ph mo-breathe"></i><div class="lbl"><span class="eng">Chamomile ×2</span>캐모마일 두 스푼 · 연한 노란빛</div></div>
+      <div class="cup r"><i class="ph mo-breathe mo-d4"></i><div class="lbl"><span class="eng">Rose +1</span>장미 한 스푼 더 · 붉은빛</div></div>
     </div>
     <p class="cap center">같은 재료로 우린 두 잔. 같은 잔, 같은 빛.</p>
   </div>
@@ -386,11 +387,11 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </ol>
   <p class="lead center mt56">그런데 문득 궁금해졌습니다.</p>
   <div class="question">
-    <img src="assets/stills/still_16.jpg" alt="">
+    <img class="mo-breathe" src="assets/stills/still_16.jpg" alt="">
     <div class="veil"></div>
     <div class="copy">
       <div class="eyebrow">What kind of tea person am I?</div>
-      <p class="big">나는 어떤 차를<br>좋아하는 사람일까?</p>
+      <p class="big" data-mo="chars" data-mo-fx="wave">나는 어떤 차를<br>좋아하는 사람일까?</p>
     </div>
   </div>
 </section>
@@ -405,8 +406,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="media full h480 mt56">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c02_books.jpg">
-      <source src="assets/video/clips/c02_books.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c02_books.jpg">
+      <source src="assets/loop/c02_books.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -427,16 +428,16 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
   <!-- 패키지 3D 렌더 (3d/kit_scene.py, 디자이너 최종 원고 텍스처) · 영상 3d/kit_anim.py -->
   <div class="media soft r169 film">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/rotate.jpg" aria-label="천천히 돌아가는 닫힌 패키지 상자">
-      <source src="assets/3d/anim/rotate.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/rotate_loop.jpg" aria-label="천천히 돌아가는 닫힌 패키지 상자">
+      <source src="assets/loop/rotate_loop.mp4" type="video/mp4">
     </video>
   </div>
-  <div class="pkg">
+  <div class="pkg mo-float-sm">
     <img src="assets/3d/open_cut.png" alt="열린 상자 — 왼칸 아코디언북, 오른칸 블렌딩 노트">
-    <span class="pin" style="left:20.3%;top:58.6%">A</span>
-    <span class="pin" style="left:32.9%;top:62.8%">B</span>
-    <span class="pin" style="left:57.3%;top:69.1%">C</span>
-    <span class="pin" style="left:37.4%;top:66.6%">D</span>
+    <span class="pin mo-ring mo-d1" style="left:20.3%;top:58.6%">A</span>
+    <span class="pin mo-ring mo-d2" style="left:32.9%;top:62.8%">B</span>
+    <span class="pin mo-ring mo-d3" style="left:57.3%;top:69.1%">C</span>
+    <span class="pin mo-ring mo-d1" style="left:37.4%;top:66.6%">D</span>
   </div>
   <div class="legend pkg-legend">
     <div><b>A</b>아코디언북 — 원료가 꽂혀 있는 책</div>
@@ -446,21 +447,21 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
   <div class="pkg-steps">
     <figure><div class="media flat"><img src="assets/3d/closed_top.jpg" alt="위에서 본 닫힌 상자"></div><figcaption><span class="tag">01</span>닫힌 상자</figcaption></figure>
-    <figure><div class="media flat"><video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/lid_open.jpg" aria-label="뚜껑이 열리는 상자"><source src="assets/3d/anim/lid_open.mp4" type="video/mp4"></video></div><figcaption><span class="tag">02</span>뚜껑을 열면</figcaption></figure>
+    <figure><div class="media flat"><video autoplay muted loop playsinline preload="metadata" poster="assets/loop/lid_loop.jpg" aria-label="뚜껑이 열리고 닫히는 상자"><source src="assets/loop/lid_loop.mp4" type="video/mp4"></video></div><figcaption><span class="tag">02</span>뚜껑을 열면</figcaption></figure>
     <figure><div class="media flat"><img src="assets/3d/open_top.jpg" alt="위에서 본 두 칸"></div><figcaption><span class="tag">03</span>책과 노트, 두 칸</figcaption></figure>
   </div>
 
   <div class="media soft r169 film" style="margin-top:72px">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/acc_unfold.jpg" aria-label="접혀 있던 아코디언북이 펼쳐지는 모습">
-      <source src="assets/3d/anim/acc_unfold.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/acc_unfold_loop.jpg" aria-label="아코디언북이 펼쳐졌다 다시 접히는 모습">
+      <source src="assets/loop/acc_unfold_loop.mp4" type="video/mp4">
     </video>
   </div>
   <p class="cap">접혀 있던 책을 세우면 열두 면이 한 줄로 펼쳐집니다.</p>
   <div class="kit-diagram" style="margin-top:40px">
     <img src="assets/3d/accordion_detail.jpg" alt="아코디언북을 펼친 모습 — 원료 파우치 면과 엽서 창 면이 번갈아">
-    <span class="pin" style="left:14%;top:52%">1</span>
-    <span class="pin" style="left:31%;top:50%">6</span>
-    <span class="pin" style="left:42%;top:40%">7</span>
+    <span class="pin mo-ring mo-d1" style="left:14%;top:52%">1</span>
+    <span class="pin mo-ring mo-d2" style="left:31%;top:50%">6</span>
+    <span class="pin mo-ring mo-d3" style="left:42%;top:40%">7</span>
   </div>
   <p class="cap">펼치면 원료 파우치 면과 엽서 창 면이 번갈아 이어집니다.</p>
   <div class="legend">
@@ -498,8 +499,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="media full h480 mt56">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c05_jars_spoon.jpg">
-      <source src="assets/video/clips/c05_jars_spoon.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c05_jars_spoon.jpg">
+      <source src="assets/loop/c05_jars_spoon.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -528,8 +529,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 
   <div class="panel set">
     <div class="media flat">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c01_teapot.jpg">
-        <source src="assets/video/clips/c01_teapot.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c01_teapot.jpg">
+        <source src="assets/loop/c01_teapot.mp4" type="video/mp4">
       </video>
     </div>
     <div class="in">
@@ -550,42 +551,42 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <div class="notes">
     <!-- VER.1 HERB -->
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/lemon-balm.png" alt=""></div>
+      <div class="bot mo-sway"><img src="assets/botanical-clean/lemon-balm.png" alt=""></div>
       <div class="en">Lemon Balm</div><div class="la">Melissa officinalis</div>
       <div class="ko">레몬밤</div>
       <p class="dsc">레몬과 풋잎을 떠올리게 하는 산뜻함. 첫 향을 밝게 엽니다.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v4"><i></i></div><span class="k">BODY</span><div class="bar v2"><i></i></div><span class="k">FINISH</span><div class="bar v3"><i></i></div></div>
     </div>
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/hibiscus.png" alt=""></div>
+      <div class="bot mo-sway mo-d2"><img src="assets/botanical-clean/hibiscus.png" alt=""></div>
       <div class="en">Hibiscus</div><div class="la">Hibiscus sabdariffa</div>
       <div class="ko">히비스커스</div>
       <p class="dsc">붉은 과일을 연상시키는 선명한 산미. 수색을 바꿉니다.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v3"><i></i></div><span class="k">BODY</span><div class="bar v3"><i></i></div><span class="k">FINISH</span><div class="bar v4"><i></i></div></div>
     </div>
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/peppermint.png" alt=""></div>
+      <div class="bot mo-sway mo-d4"><img src="assets/botanical-clean/peppermint.png" alt=""></div>
       <div class="en">Peppermint</div><div class="la">Mentha piperita</div>
       <div class="ko">페퍼민트</div>
       <p class="dsc">차갑고 깨끗한 상쾌함. 소량부터.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v5"><i></i></div><span class="k">BODY</span><div class="bar v2"><i></i></div><span class="k">FINISH</span><div class="bar v4"><i></i></div></div>
     </div>
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/yuza.png" alt=""></div>
+      <div class="bot mo-sway"><img src="assets/botanical-clean/yuza.png" alt=""></div>
       <div class="en">Yuza</div><div class="la">Citrus junos</div>
       <div class="ko">유자</div>
       <p class="dsc">밝은 감귤 껍질 향과 은은한 쌉싸름함.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v4"><i></i></div><span class="k">BODY</span><div class="bar v2"><i></i></div><span class="k">FINISH</span><div class="bar v3"><i></i></div></div>
     </div>
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/rose.png" alt=""></div>
+      <div class="bot mo-sway mo-d2"><img src="assets/botanical-clean/rose.png" alt=""></div>
       <div class="en">Rose</div><div class="la">Rosa damascena</div>
       <div class="ko">장미</div>
       <p class="dsc">우아하고 풍성한 꽃향. 긴 아로마.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v5"><i></i></div><span class="k">BODY</span><div class="bar v3"><i></i></div><span class="k">FINISH</span><div class="bar v5"><i></i></div></div>
     </div>
     <div class="panel ncard card-herb">
-      <div class="bot"><img src="assets/botanical-clean/chamomile.png" alt=""></div>
+      <div class="bot mo-sway mo-d4"><img src="assets/botanical-clean/chamomile.png" alt=""></div>
       <div class="en">Chamomile</div><div class="la">Matricaria chamomilla</div>
       <div class="ko">캐모마일</div>
       <p class="dsc">사과와 꿀을 연상시키는 부드러운 향.</p>
@@ -593,42 +594,42 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
     </div>
     <!-- VER.2 GRAIN -->
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/solomons-seal.png" alt=""></div>
+      <div class="bot mo-sway"><img src="assets/botanical-clean/solomons-seal.png" alt=""></div>
       <div class="en">Solomon's Seal</div><div class="la">Polygonatum odoratum</div>
       <div class="ko">둥굴레</div>
       <p class="dsc">부드러운 볶은 뿌리와 은은한 단맛. 바디감을 둥글게.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v2"><i></i></div><span class="k">BODY</span><div class="bar v4"><i></i></div><span class="k">FINISH</span><div class="bar v3"><i></i></div></div>
     </div>
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/sorghum.png" alt=""></div>
+      <div class="bot mo-sway mo-d2"><img src="assets/botanical-clean/sorghum.png" alt=""></div>
       <div class="en">Glutinous Sorghum</div><div class="la">Sorghum bicolor</div>
       <div class="ko">찰수수</div>
       <p class="dsc">담백하고 순한 곡물의 구수함. 뿌리 원료를 받쳐 줍니다.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v2"><i></i></div><span class="k">BODY</span><div class="bar v3"><i></i></div><span class="k">FINISH</span><div class="bar v3"><i></i></div></div>
     </div>
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/red-bean.png" alt=""></div>
+      <div class="bot mo-sway mo-d4"><img src="assets/botanical-clean/red-bean.png" alt=""></div>
       <div class="en">Red Bean</div><div class="la">Vigna angularis</div>
       <div class="ko">단팥</div>
       <p class="dsc">볶은 팥의 고소하고 부드러운 여운.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v3"><i></i></div><span class="k">BODY</span><div class="bar v4"><i></i></div><span class="k">FINISH</span><div class="bar v4"><i></i></div></div>
     </div>
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/brown-rice.png" alt=""></div>
+      <div class="bot mo-sway"><img src="assets/botanical-clean/brown-rice.png" alt=""></div>
       <div class="en">Brown Rice</div><div class="la">Oryza sativa</div>
       <div class="ko">현미</div>
       <p class="dsc">볶은 쌀의 담백하고 고소한 향. 바디를 받쳐 줍니다.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v2"><i></i></div><span class="k">BODY</span><div class="bar v3"><i></i></div><span class="k">FINISH</span><div class="bar v2"><i></i></div></div>
     </div>
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/dandelion-root.png" alt=""></div>
+      <div class="bot mo-sway mo-d2"><img src="assets/botanical-clean/dandelion-root.png" alt=""></div>
       <div class="en">Dandelion Root</div><div class="la">Taraxacum officinale</div>
       <div class="ko">민들레 뿌리</div>
       <p class="dsc">흙·나무·커피·카카오를 연상시키는 깊은 볶음 향. 중심 원료.</p>
       <div class="bars"><span class="k">AROMA</span><div class="bar v4"><i></i></div><span class="k">BODY</span><div class="bar v5"><i></i></div><span class="k">FINISH</span><div class="bar v5"><i></i></div></div>
     </div>
     <div class="panel ncard card-grain">
-      <div class="bot"><img src="assets/botanical-clean/barley.png" alt=""></div>
+      <div class="bot mo-sway mo-d4"><img src="assets/botanical-clean/barley.png" alt=""></div>
       <div class="en">Barley</div><div class="la">Hordeum vulgare</div>
       <div class="ko">보리</div>
       <p class="dsc">익숙하고 선명한 볶은 곡물 향.</p>
@@ -647,13 +648,13 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <div class="n">01</div>
       <div class="t">따라 해보고</div>
       <p class="s">전문가 레시피 그대로</p>
-      <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><path class="mo-nudge" d="M3 8h10M9 4l4 4-4 4"/></svg>
     </div>
     <div>
       <div class="n">02</div>
       <div class="t">바꿔보고</div>
       <p class="s">하나를 더하거나 덜어서</p>
-      <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1"><path class="mo-nudge" d="M3 8h10M9 4l4 4-4 4"/></svg>
     </div>
     <div>
       <div class="n">03</div>
@@ -664,19 +665,19 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 
   <div class="grid2 mt56" style="gap:14px">
     <div class="media h380 flat">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c06_smell.jpg">
-        <source src="assets/video/clips/c06_smell.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c06_smell.jpg">
+        <source src="assets/loop/c06_smell.mp4" type="video/mp4">
       </video>
     </div>
     <div class="media h380 flat">
-      <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c08_canister.jpg">
-        <source src="assets/video/clips/c08_canister.mp4" type="video/mp4">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c08_canister.jpg">
+        <source src="assets/loop/c08_canister.mp4" type="video/mp4">
       </video>
     </div>
   </div>
   <div class="media soft r169 film mt56">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/acc_flip.jpg" aria-label="아코디언북을 한 장씩 넘기는 모습 — 원료 파우치 면과 엽서 면">
-      <source src="assets/3d/anim/acc_flip.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/acc_flip_loop.jpg" aria-label="아코디언북을 한 장씩 넘기는 모습 — 원료 파우치 면과 엽서 면">
+      <source src="assets/loop/acc_flip_loop.mp4" type="video/mp4">
     </video>
   </div>
   <p class="cap">한 장을 넘기면 원료, 다음 장을 넘기면 그 원료의 엽서.</p>
@@ -698,14 +699,14 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <p class="lead">같은 재료도 비율이 달라지면<br>전혀 다른 한 잔이 됩니다.</p>
 
   <div class="media full h560 mt72">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c10_rest.jpg">
-      <source src="assets/video/clips/c10_rest.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c10_rest.jpg">
+      <source src="assets/loop/c10_rest.mp4" type="video/mp4">
     </video>
   </div>
 
   <div class="center mt72">
     <div class="eyebrow">There is no right answer.</div>
-    <p class="big">정답은 없습니다.</p>
+    <p class="big" data-mo="words" data-mo-fx="glow" data-mo-step="0.25">정답은 없습니다.</p>
     <p class="lead" style="margin-top:18px">취향은 그렇게 발견됩니다.</p>
   </div>
 </section>
@@ -717,8 +718,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <p class="lead">시음으로 고른 전문가 레시피 21가지가 함께 들어 있어요.<br>허브 10가지, 곡물 3가지, 허브와 곡물을 섞은 8가지.</p>
 
   <div class="media full h480 mt56">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c11_brew_closeup.jpg">
-      <source src="assets/video/clips/c11_brew_closeup.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c11_brew_closeup.jpg">
+      <source src="assets/loop/c11_brew_closeup.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -728,9 +729,9 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <div class="nm">로즈가든</div>
       <div class="en">Rose Garden</div>
       <div class="ratio">
-        <div><span>캐모마일 2</span><span class="dots"><i class="dot"></i><i class="dot"></i></span></div>
-        <div><span>장미 1</span><span class="dots"><i class="dot"></i></span></div>
-        <div><span>레몬밤 1</span><span class="dots"><i class="dot"></i></span></div>
+        <div><span>캐모마일 2</span><span class="dots mo-pop mo-d1"><i class="dot"></i><i class="dot"></i></span></div>
+        <div><span>장미 1</span><span class="dots mo-pop mo-d2"><i class="dot"></i></span></div>
+        <div><span>레몬밤 1</span><span class="dots mo-pop mo-d3"><i class="dot"></i></span></div>
       </div>
       <div class="brew">95~100°C · 150ml<br>3~5 MIN</div>
     </div>
@@ -739,9 +740,9 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <div class="nm">유자 로스트</div>
       <div class="en">Yuza Roast</div>
       <div class="ratio">
-        <div><span>유자 1</span><span class="dots"><i class="dot"></i></span></div>
-        <div><span>민들레 뿌리 2</span><span class="dots"><i class="dot"></i><i class="dot"></i></span></div>
-        <div><span>단팥 1</span><span class="dots"><i class="dot"></i></span></div>
+        <div><span>유자 1</span><span class="dots mo-pop mo-d1"><i class="dot"></i></span></div>
+        <div><span>민들레 뿌리 2</span><span class="dots mo-pop mo-d2"><i class="dot"></i><i class="dot"></i></span></div>
+        <div><span>단팥 1</span><span class="dots mo-pop mo-d3"><i class="dot"></i></span></div>
       </div>
       <p class="note">유자의 밝은 첫 향 뒤에 깊은 볶음 향과 부드러운 고소함이 이어지는 시트러스 로스트.</p>
       <div class="brew">100°C · 150ml<br>7~10 MIN</div>
@@ -751,10 +752,10 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <div class="nm">브라질리언 로스트</div>
       <div class="en">Brazilian Roast</div>
       <div class="ratio">
-        <div><span>민들레 뿌리 2</span><span class="dots"><i class="dot"></i><i class="dot"></i></span></div>
-        <div><span>단팥 2</span><span class="dots"><i class="dot"></i><i class="dot"></i></span></div>
-        <div><span>찰수수 1</span><span class="dots"><i class="dot"></i></span></div>
-        <div><span>둥굴레 ½</span><span class="dots"><i class="dot half"></i></span></div>
+        <div><span>민들레 뿌리 2</span><span class="dots mo-pop mo-d1"><i class="dot"></i><i class="dot"></i></span></div>
+        <div><span>단팥 2</span><span class="dots mo-pop mo-d2"><i class="dot"></i><i class="dot"></i></span></div>
+        <div><span>찰수수 1</span><span class="dots mo-pop mo-d3"><i class="dot"></i></span></div>
+        <div><span>둥굴레 ½</span><span class="dots mo-pop mo-d4"><i class="dot half"></i></span></div>
       </div>
       <p class="note">깊게 볶은 듯한 첫 향에 단팥과 찰수수의 부드러운 구수함이 이어집니다.</p>
       <div class="brew">100°C · 150ml<br>10 MIN +</div>
@@ -779,7 +780,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="phones">
-    <div class="phone">
+    <div class="phone mo-float-sm">
       <div class="notch"></div>
       <div class="scr">
         <span class="tag">Question 1 / 5</span>
@@ -795,7 +796,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
         <div class="prog"><i class="on"></i><i></i><i></i><i></i><i></i></div>
       </div>
     </div>
-    <div class="phone">
+    <div class="phone mo-float-sm mo-d4">
       <div class="notch"></div>
       <div class="scr res">
         <span class="tag">Today's cup</span>
@@ -822,7 +823,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       <h3 class="mt16">결과는 다섯 축으로<br>한눈에.</h3>
       <p class="body">향 · 바디 · 단맛 · 고소함 · 산뜻함.<br>지금의 나에게 맞는 한 잔이 어디에 놓이는지 보여 드려요.</p>
     </div>
-    <svg class="radar" viewBox="-50 0 400 290" role="img" aria-label="로즈 가든 취향 레이더: 향 5, 바디 2, 단맛 3, 고소함 1, 산뜻함 4">
+    <svg class="radar mo-grow" viewBox="-50 0 400 290" role="img" aria-label="로즈 가든 취향 레이더: 향 5, 바디 2, 단맛 3, 고소함 1, 산뜻함 4">
       <g fill="none" stroke="#3B342A" stroke-width="1">
         <polygon points="150,40 254.6,116 214.7,239 85.3,239 45.4,116"/>
         <polygon points="150,62 233.7,122.8 201.7,221.2 98.3,221.2 66.3,122.8"/>
@@ -859,19 +860,19 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <p class="lead">좋았던 향,<br>마음에 들었던 조합,<br>다시 만들고 싶은 비율을 노트에 남깁니다.</p>
 
   <div class="media full h560 mt56">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c07_write.jpg">
-      <source src="assets/video/clips/c07_write.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c07_write.jpg">
+      <source src="assets/loop/c07_write.mp4" type="video/mp4">
     </video>
   </div>
   <div class="media soft r169 film">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/3d/anim/note_flip.jpg" aria-label="블렌딩 노트를 펼쳐 넘기는 모습">
-      <source src="assets/3d/anim/note_flip.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/note_flip_loop.jpg" aria-label="블렌딩 노트를 펼쳐 넘기는 모습">
+      <source src="assets/loop/note_flip_loop.mp4" type="video/mp4">
     </video>
   </div>
   <p class="cap">블렌딩 노트 — 질문을 따라 읽고, 빈 줄에 나의 배합을 적습니다.</p>
 
   <div class="center mt56">
-    <p class="big" style="font-size:38px">차를 기록하는 것이 아니라<br><span class="gold">나의 취향</span>을 기록합니다.</p>
+    <p class="big" data-mo="lines" data-mo-fx="mark" style="font-size:38px;--mo-mark:rgba(201,169,97,.32)">차를 기록하는 것이 아니라<br><span class="gold">나의 취향</span>을 기록합니다.</p>
   </div>
 </section>
 
@@ -881,8 +882,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <h2>「취향의 권리」는<br>차 블렌딩의 원칙과 경험을<br>바탕으로 설계했습니다.</h2>
 
   <div class="books">
-    <div class="media flat"><img src="assets/stills/still_03.jpg" alt="저서 — The Right to Taste · Depth"></div>
-    <div class="media flat"><img src="assets/stills/still_04.jpg" alt="저서 — The Right to Taste"></div>
+    <div class="media flat"><img class="mo-breathe" src="assets/stills/still_03.jpg" alt="저서 — The Right to Taste · Depth"></div>
+    <div class="media flat"><img class="mo-breathe mo-d4" src="assets/stills/still_04.jpg" alt="저서 — The Right to Taste"></div>
   </div>
 
   <div class="mt56">
@@ -908,7 +909,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="center mt72">
-    <p class="quote">전문가에게는 <span class="gold">원칙</span>을,<br>소비자에게는 <span class="gold">취향의 권리</span>를.</p>
+    <p class="quote" data-mo="lines" data-mo-fx="slide">전문가에게는 <span class="gold">원칙</span>을,<br>소비자에게는 <span class="gold">취향의 권리</span>를.</p>
   </div>
 </section>
 
@@ -922,7 +923,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <!-- 교체: 체험단 후기 확정 시 본문·노트 사진 교체. notes_three.png는 노트 한 권 구도라 3분할 대신 스틸 14·15·17 사용 -->
   <div class="grid3 mt56" style="gap:14px">
     <div class="panel rev">
-      <div class="media flat"><img src="assets/stills/still_14.jpg" alt=""></div>
+      <div class="media flat"><img class="mo-breathe" src="assets/stills/still_14.jpg" alt=""></div>
       <div class="in">
         <span class="tag">Ver.1 Herb</span>
         <div class="stars">★★★★★</div>
@@ -931,7 +932,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       </div>
     </div>
     <div class="panel rev">
-      <div class="media flat"><img src="assets/stills/still_15.jpg" alt=""></div>
+      <div class="media flat"><img class="mo-breathe mo-d2" src="assets/stills/still_15.jpg" alt=""></div>
       <div class="in">
         <span class="tag">Ver.2 Grain</span>
         <div class="stars">★★★★★</div>
@@ -940,7 +941,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
       </div>
     </div>
     <div class="panel rev">
-      <div class="media flat"><img src="assets/stills/still_17.jpg" alt=""></div>
+      <div class="media flat"><img class="mo-breathe mo-d4" src="assets/stills/still_17.jpg" alt=""></div>
       <div class="in">
         <span class="tag">Two Kit Set</span>
         <div class="stars">★★★★★</div>
@@ -954,18 +955,18 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 <!-- ================= s12 선물 ================= -->
 <section id="s12">
   <div class="media full h560" style="margin-top:-112px">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c13_smile.jpg">
-      <source src="assets/video/clips/c13_smile.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c13_smile.jpg">
+      <source src="assets/loop/c13_smile.mp4" type="video/mp4">
     </video>
   </div>
   <div class="center mt56">
     <div class="eyebrow">For you, for us, for someone.</div>
     <p class="lead" style="font-size:20px;margin-top:0">혼자 즐기는 시간에도,<br>함께 차를 만들어보는 시간에도,<br>좋아하는 사람에게 건네는 선물에도.</p>
-    <p class="big mt56">물건이 아니라<br><span class="gold">하나의 경험</span>을 선물합니다.</p>
+    <p class="big mt56" data-mo="words" data-mo-fx="rise">물건이 아니라<br><span class="gold">하나의 경험</span>을 선물합니다.</p>
   </div>
 
   <div class="gift">
-    <div class="media flat gift-box"><img src="assets/3d/closed_cut.png" alt="닫힌 패키지 상자"></div>
+    <div class="media flat gift-box"><img class="mo-float" src="assets/3d/closed_cut.png" alt="닫힌 패키지 상자"></div>
     <div class="media flat"><img src="assets/stills/still_25.jpg" alt=""></div>
     <div class="media flat"><img src="assets/photo/bookmark.jpg" alt="노을 풍경 책갈피"></div>
   </div>
@@ -980,8 +981,8 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="grid2 mt56" style="gap:14px">
-    <div class="media h300 flat"><img src="assets/gen/hero_dark.png" alt="" style="object-position:50% 68%"></div>
-    <div class="media h300 flat"><img src="assets/gen/red_bean_tea.png" alt="단팥차 샘플"></div>
+    <div class="media h300 flat"><img class="mo-breathe" src="assets/gen/hero_dark.png" alt="" style="object-position:50% 68%"></div>
+    <div class="media h300 flat"><img class="mo-breathe mo-d4" src="assets/gen/red_bean_tea.png" alt="단팥차 샘플"></div>
   </div>
   <div class="grid2" style="gap:14px"><p class="cap">밤의 약방에서 우리는 한 잔</p><p class="cap">2개 구매 시 함께 드리는 단팥차 샘플</p></div>
 
@@ -1073,7 +1074,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   <p class="lead">레시피를 공유해 주신 분 중 추첨으로 10명에게<br>취향의 권리 키트를 만드는 티 브랜드,<br>티아포테카의 차 4종(10만 원 상당)을 선물합니다.</p>
 
   <div class="grid2 mt56" style="grid-template-columns:3fr 2fr;gap:14px;align-items:stretch">
-    <div class="media flat" style="height:320px"><img src="assets/gen/prize_teas.png" alt="티아포테카 차 4종"></div>
+    <div class="media flat" style="height:320px"><img class="mo-breathe" src="assets/gen/prize_teas.png" alt="티아포테카 차 4종"></div>
     <div class="panel" style="padding:28px 26px;display:flex;flex-direction:column;justify-content:center">
       <span class="tag">Tea Apotheca · 4 teas</span>
       <h3 style="font-size:22px;margin-top:10px">티아포테카 차 4종</h3>
@@ -1111,7 +1112,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
   </div>
 
   <div class="center mt72">
-    <p class="big" style="font-size:36px">당신의 한 잔이<br>또 다른 누군가의 취향에 영감이 됩니다.</p>
+    <p class="big" data-mo="lines" data-mo-fx="glow" style="font-size:36px">당신의 한 잔이<br>또 다른 누군가의 취향에 영감이 됩니다.</p>
   </div>
 </section>
 
@@ -1145,14 +1146,14 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 <!-- ================= s16 마무리 ================= -->
 <section id="s16">
   <div class="outro">
-    <video autoplay muted loop playsinline preload="metadata" poster="assets/video/clips/c12_window_sit.jpg">
-      <source src="assets/video/clips/c12_window_sit.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="assets/loop/c12_window_sit.jpg">
+      <source src="assets/loop/c12_window_sit.mp4" type="video/mp4">
     </video>
     <div class="veil"></div>
   </div>
   <div class="closing">
     <div class="eyebrow">What do you like?</div>
-    <p class="big">당신은 어떤 맛을<br>좋아하는 사람인가요?</p>
+    <p class="big" data-mo="chars" data-mo-fx="wave">당신은 어떤 맛을<br>좋아하는 사람인가요?</p>
     <p class="lead">좋아하는 것이 더 좋은 일상이 되는 삶.</p>
 
     <div class="links">
@@ -1169,7 +1170,7 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
     </div>
   </div>
   <div class="ending">
-    <video muted playsinline preload="auto" data-once aria-label="흩어진 원료가 걷히며 로고가 드러나는 엔딩" poster="assets/video/ending_logo.jpg">
+    <video autoplay muted loop playsinline preload="auto" aria-label="흩어진 원료가 걷히며 로고가 드러나는 엔딩" poster="assets/video/ending_logo.jpg">
       <source src="assets/video/ending_logo.mp4" type="video/mp4">
     </video>
     <div class="veil"></div>
@@ -1181,20 +1182,6 @@ table.spec tr:first-child th,table.spec tr:first-child td{border-top:1px solid v
 </section>
 
 </div>
-<script>
-/* 엔딩: 화면에 들어오면 한 번 재생하고 마지막 장면(로고)에서 멈춘다 */
-(function(){
-  var vs=document.querySelectorAll('video[data-once]');
-  if(!('IntersectionObserver' in window)){vs.forEach(function(v){v.play().catch(function(){});});return;}
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      var v=e.target;
-      if(e.isIntersecting){ if(v.paused){ if(v.ended) v.currentTime=0; v.play().catch(function(){}); } }
-      else if(!v.paused || v.ended){ v.pause(); v.currentTime=0; }
-    });
-  },{threshold:0.5});
-  vs.forEach(function(v){io.observe(v);});
-})();
-</script>
+<script src="assets/motion-text.js"></script>
 </body>
 </html>
