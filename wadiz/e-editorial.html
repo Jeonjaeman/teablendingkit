@@ -282,9 +282,10 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .master p{margin-top:12px}
 .covers{position:relative;aspect-ratio:4/5;background:var(--bg-2);display:flex;align-items:center;justify-content:center;gap:16px;padding:0 22px}
 .covers img{width:46%;height:auto;box-shadow:0 14px 22px rgba(0,0,0,.18),0 2px 4px rgba(0,0,0,.08)}
-.maker .br{margin-top:16px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.maker .br img{width:76px;height:auto}
-.maker .br span{font:400 11px/1.55 var(--f-type);letter-spacing:.06em;color:var(--ink-2)}
+.covers.ribbon{flex-direction:column;gap:22px}
+.covers.ribbon img{width:56%;box-shadow:none}
+.covers .rb{font:400 12px/1.6 var(--f-type);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:center}
+.covers .rb b{display:block;font:700 72px/1 var(--f-sans);letter-spacing:-.04em;color:#123C86;margin:6px 0 4px}
 .hero-sig{font:400 14px/1.6 var(--f-type);letter-spacing:.06em;color:var(--accent)}
 
 /* 루프 모션 보조 : 사진 줌을 프레임 안에서 자른다 · 핀 파동은 액센트색 */
@@ -830,14 +831,15 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
         <p class="books p2">저서 <i>『11시와 4시, 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
       </div>
     </div>
-    <div class="full">
-      <div class="maker" style="border-bottom:2px solid var(--rule)">
-        <!-- v1.3: 블루리본서베이 리본 (나무위키 로고 SVG) -->
-        <div><div class="role">ROASTER</div><div class="br"><img class="mo-rock" src="assets/photo/blueribbon.svg" alt="블루리본서베이 리본" width="205" height="138"><span>Blue Ribbon Survey<br>15년 연속 선정</span></div></div>
-        <div>
-          <div class="nm"><small>엘카페커피로스터스 대표</small>양진호</div>
-          <p>2010년 엘카페 창업, 16년째 로스팅을 이끌어 온 로스터<br>블루리본서베이 15년 연속 선정 로스터리 대표<br>Sprudge·Time Out Seoul이 주목한 서울 스페셜티 로스터</p>
-        </div>
+    <!-- v1.4: 양진호 대표 — 이소연 명인 블록과 같은 구조 (왼쪽 4:5 패널 = 블루리본서베이 리본, 나무위키 로고 SVG) -->
+    <div class="master full" style="border-bottom:2px solid var(--rule);padding-bottom:20px">
+      <figure><div class="covers ribbon"><img class="mo-rock" src="assets/photo/blueribbon.svg" alt="블루리본서베이 리본" width="205" height="138"><span class="rb">Blue Ribbon Survey<b>15</b>years in a row</span></div><figcaption class="cap">블루리본서베이 15년 연속 선정</figcaption></figure>
+      <div>
+        <div class="role">ROASTER</div>
+        <div class="mt">엘카페커피로스터스 대표</div>
+        <div class="mn">양진호</div>
+        <p>2010년 엘카페 창업, 16년째 로스팅을 이끌어 온 로스터</p>
+        <p class="books p2">블루리본서베이 15년 연속 선정 로스터리 대표<br>Sprudge·Time Out Seoul이 주목한 서울 스페셜티 로스터</p>
       </div>
     </div>
     <div class="lead"></div>
