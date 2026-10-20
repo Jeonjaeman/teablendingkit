@@ -30,6 +30,8 @@
   .card a.open{display:inline-block;margin-top:18px;padding:12px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:13px;letter-spacing:.06em}
   .card a.open:hover{opacity:.6}
   .sw{display:flex;gap:6px;margin-top:12px}
+  .pick{display:inline-block;margin-left:10px;padding:3px 9px;background:#1F4D3A;color:#fff;font:500 11px/1.4 var(--f-kr);letter-spacing:.04em;font-style:normal;vertical-align:3px}
+  .card.picked{border:2px solid #1F4D3A}
   .sw i{width:18px;height:18px;border-radius:50%;border:1px solid rgba(0,0,0,.08);display:block}
   details{max-width:1240px;margin:28px auto 40px;padding:0 24px}
   summary{cursor:pointer;font-family:var(--f-type);font-size:12px;letter-spacing:.2em;color:var(--gray);padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -62,10 +64,10 @@
       <a class="open" href="d-night.html">시안 D 열기 →</a>
     </div>
   </article>
-  <article class="card">
+  <article class="card picked">
     <div class="frame"><iframe src="e-editorial.html" title="시안 E" loading="lazy"></iframe></div>
     <div class="body">
-      <div class="no">E</div>
+      <div class="no">E<span class="pick">확정 · v1 (10/20)</span></div>
       <h2>화이트 에디토리얼</h2>
       <div class="en">SWISS GRID MAGAZINE</div>
       <div class="sw"><i style="background:#FFFFFF"></i><i style="background:#111111"></i><i style="background:#1F4D3A"></i><i style="background:#E6EEE9"></i><i style="background:#F3F3F1"></i></div>

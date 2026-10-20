@@ -147,7 +147,9 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .ver .ing{font-size:16px;line-height:1.7;color:var(--ink-2)}
 .ver .for{font-size:15px;line-height:1.6;padding:10px 12px;background:var(--accent-soft);color:var(--accent)}
 .setcard{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);border-top:2px solid var(--rule);padding-top:16px}
-.ingtbl td.art img{width:44px;height:60px;object-fit:contain;margin-left:-2px}
+.ingtbl td.art .thumb{width:60px;height:60px}
+.ingtbl td.art img{width:60px;height:60px;object-fit:cover}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px;vertical-align:1px}
 .ingtbl .enm{font-weight:700;font-size:16px;line-height:1.3}
 .ingtbl .sci{font:italic 300 15px/1.3 var(--f-eng);color:var(--ink-2)}
 .ingtbl .krn{font-size:14px;line-height:1.5;color:var(--ink-2);margin-top:4px}
@@ -255,6 +257,31 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .foot{padding:28px 0 60px;font:400 12px/1.8 var(--f-type);letter-spacing:.06em;color:var(--ink-2);border-top:2px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end}
 .foot img{width:72px;height:auto}
 
+/* ───────── v1 (10/20 대표 수정) ───────── */
+.stat-wide{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;align-items:end;column-gap:28px}
+.stat-wide .l{font:700 24px/1.4 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin:0 0 10px}
+.why{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--accent-soft);border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);padding:16px 20px}
+.why .ty{font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase}
+.why p{font-size:17px;line-height:1.5}
+.why b{color:var(--accent)}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:var(--accent);margin-right:8px;flex:none}
+.ck svg{width:12px;height:12px}
+.rec td{font-size:15px;line-height:1.6;padding-right:14px}
+.rec td>span{display:flex;align-items:flex-start}
+.rec td>span .ck{margin-top:3px}
+.howto td.n{font:700 22px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent)}
+.howto th.st{font:700 18px/1.4 var(--f-sans)}
+.howto th.st small{display:block;font:400 11px/1.6 var(--f-type);letter-spacing:.1em;color:var(--ink-2);text-transform:uppercase}
+.radar2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);border-top:2px solid var(--rule);padding-top:20px}
+.radar2 figure{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.radar2 .rt{font:700 20px/1.3 var(--f-sans);letter-spacing:-.02em}
+.master{display:grid;grid-template-columns:330px 1fr;gap:28px;border-top:2px solid var(--rule);padding-top:20px;align-items:start}
+.master .role{font:400 12px/1.6 var(--f-type);letter-spacing:.1em;color:var(--accent)}
+.master .mt{font:700 24px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin-top:12px}
+.master .mn{font:700 64px/1.05 var(--f-sans);letter-spacing:-.05em;margin-top:2px}
+.master p{margin-top:12px}
+.hero-sig{font:400 14px/1.6 var(--f-type);letter-spacing:.06em;color:var(--accent)}
+
 /* 루프 모션 보조 : 사진 줌을 프레임 안에서 자른다 · 핀 파동은 액센트색 */
 .clip{overflow:hidden}
 .pinfig .pin.mo-ring::after{border-color:var(--accent)}
@@ -277,6 +304,12 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 
   <!-- ═══════════════ 01 히어로 ═══════════════ -->
   <section class="sec" id="s01" aria-labelledby="h01">
+    <!-- v1: 첫 화면 반복 영상 (TODO 실촬영: 두 잔에 물 붓는 장면으로 교체) -->
+    <figure class="bleed">
+      <video class="media r169" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c09_pour_water.jpg" aria-label="유리 티팟에 뜨거운 물을 붓는 장면">
+        <source src="assets/loop/c09_pour_water.mp4" type="video/mp4">
+      </video>
+    </figure>
     <div class="lead">
       <div class="num">01</div>
       <div class="tag">Tea Blending Kit</div>
@@ -285,14 +318,9 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="body">
       <h1 class="hero-h" id="h01" data-mo="words" data-mo-fx="rise">같은 재료,<br>비율만 바꿨을 뿐인데.</h1>
       <p class="sub">오늘의 한 잔은 내가 정합니다.</p>
+      <p class="hero-sig">대한명인이 설계한 레시피 21가지</p>
       <img class="hero-logo mo-float-sm" src="assets/logo.png" alt="취향의 권리 — the right to taste" width="96" height="95">
     </div>
-
-    <figure class="bleed">
-      <video class="media r169" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c03_window_read.jpg" aria-label="창가 테이블에서 책장을 넘기는 장면">
-        <source src="assets/loop/c03_window_read.mp4" type="video/mp4">
-      </video>
-    </figure>
 
     <div class="band full" role="note" aria-label="얼리버드 안내">
       <div><span class="ty">Ultra Early Bird</span>울트라 얼리버드 15% 할인</div>
@@ -302,8 +330,8 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 
     <!-- s01-2 비교 두 잔 -->
     <figure class="full">
-      <video class="media r169" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c09_pour_water.jpg" aria-label="유리 티팟에 물을 붓는 장면">
-        <source src="assets/loop/c09_pour_water.mp4" type="video/mp4">
+      <video class="media r169" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c04_pour_cup.jpg" aria-label="유리잔 옆에서 티백을 들어 올리는 장면">
+        <source src="assets/loop/c04_pour_cup.mp4" type="video/mp4">
       </video>
     </figure>
     <div class="lead"><div class="tag">01 — 2 · Two cups</div></div>
@@ -372,7 +400,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <ol class="pins">
         <li><span class="k mo-pop">A</span><p><b>메일러 상자</b><span>뚜껑이 뒤로 열리는 상자. 겉은 아이보리 미장, 안은 흰색.</span></p></li>
         <li><span class="k mo-pop mo-d7">B</span><p><b>아코디언북</b><span>병풍처럼 펼치면 원료 파우치와 엽서 창이 번갈아 나옵니다.</span></p></li>
-        <li><span class="k mo-pop mo-d6">C</span><p><b>띠지</b><span>HERB · GRAIN 구분</span></p></li>
+        <li><span class="k mo-pop mo-d6">C</span><p><b>띠지</b><span>Taste · Depth 구분</span></p></li>
         <li><span class="k mo-pop mo-d5">D</span><p><b>블렌딩 노트</b><span>비율과 그날의 감상을 적는 소프트커버 노트.</span></p></li>
         <li><span class="k mo-pop mo-d4">E</span><p><b>칸막이</b><span>책과 노트를 두 칸에 나눠 담습니다.</span></p></li>
       </ol>
@@ -411,15 +439,16 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="lead">
       <div class="num">04</div>
       <div class="tag">In numbers</div>
-      <div class="en">Twelve, twenty-seven,<br>two.</div>
+      <div class="en">Twenty-one, twelve,<br>zero, two.</div>
     </div>
     <div class="body">
       <h2 id="h04">키트 하나에 담긴 것.</h2>
       <div class="stats">
+        <div class="stat stat-wide"><div class="v">21</div><p class="l">대한명인이 설계한 레시피 21가지</p></div>
         <div class="stat"><div class="v">12</div><p class="l">두 버전을 합친 재료 가짓수</p></div>
-        <div class="stat"><div class="v txt">허브와<br>곡물로만</div><p class="l">저녁에도 편하게</p></div>
+        <div class="stat"><div class="v"><small style="margin:0 8px 0 0">카페인</small>0</div><p class="l">저녁에도 편하게</p></div>
         <div class="stat"><div class="v"><small>약</small>27<small>잔</small></div><p class="l">150ml 기준, 키트 하나로</p></div>
-        <div class="stat"><div class="v">2</div><p class="l">HERB와 GRAIN, 두 가지 시작점</p></div>
+        <div class="stat"><div class="v">2</div><p class="l">Taste와 Depth, 두 가지 시작점</p></div>
       </div>
     </div>
   </section>
@@ -428,7 +457,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
   <section class="sec" id="s05" aria-labelledby="h05">
     <div class="lead">
       <div class="num">05</div>
-      <div class="tag">Herb or Grain</div>
+      <div class="tag">Taste or Depth</div>
       <div class="en">Which side<br>is yours?</div>
     </div>
     <div class="body">
@@ -442,7 +471,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 
     <div class="full grid2">
       <article class="ver">
-        <div class="vt">VER.1 — HERB</div>
+        <div class="vt">VER.1 — Taste</div>
         <div class="vn">허브 블렌딩</div>
         <img class="media r32" src="assets/stills/still_18.jpg" alt="허브 원료가 담긴 유리병 클로즈업">
         <p class="ing">레몬밤 · 히비스커스 · 페퍼민트<br>유자 · 장미 · 캐모마일</p>
@@ -450,7 +479,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
         <p class="for">새로운 향을 탐색하는 시간을 좋아하는 분에게</p>
       </article>
       <article class="ver">
-        <div class="vt">VER.2 — GRAIN</div>
+        <div class="vt">VER.2 — Depth</div>
         <div class="vn">곡물 블렌딩</div>
         <!-- TODO: 곡물 6종 실촬영(왼쪽과 같은 구도·유리볼)으로 교체 -->
         <img class="media r32" src="assets/gen/grain_closeup_v2.png" alt="유리볼에 나란히 담긴 곡물과 뿌리 원료 클로즈업">
@@ -466,12 +495,27 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       </video>
       <div>
         <div class="vt" style="font:700 12px/1 var(--f-type);letter-spacing:.12em;color:var(--accent)">TWO KIT SET</div>
-        <h3 style="font-size:30px;margin-top:10px">둘 다 궁금하다면, SET</h3>
-        <p style="margin-top:14px">티 블렌딩 키트 2개 · 키트마다 HERB / GRAIN 선택</p>
+        <h3 style="font-size:30px;margin-top:10px">둘 다 궁금하다면, 2개 세트</h3>
+        <p style="margin-top:14px">티 블렌딩 키트 2개 · 키트마다 Taste / Depth 선택</p>
         <p class="p2" style="margin-top:6px">말보다 경험으로 마음을 전하고 싶은 분에게</p>
-        <p class="p2" style="margin-top:14px;font-size:15px">HERB와 GRAIN을 하나씩 고르면 허브와 곡물을 섞는 교차 블렌드까지 만들 수 있어요.</p>
+        <p class="p2" style="margin-top:14px;font-size:15px">Taste와 Depth를 하나씩 고르면 허브와 곡물을 섞는 교차 블렌드까지 만들 수 있어요.</p>
       </div>
     </div>
+
+
+    <!-- v1: 이런 분께 추천해요 (G·I안 체크리스트 → 표) -->
+    <div class="lead"><div class="tag">Recommended for</div></div>
+    <div class="body"><h3>이런 분께 추천해요</h3></div>
+    <table class="rec full">
+      <colgroup><col><col><col></colgroup>
+      <thead><tr><th>VER.1 Taste</th><th>VER.2 Depth</th><th>2개 세트</th></tr></thead>
+      <tbody>
+        <tr><td><span><span class="ck mo-pop" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>꽃과 허브 향을 좋아하는 사람</span></td><td><span><span class="ck mo-pop" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>커피의 진하고 깊은 분위기를 좋아하는 사람</span></td><td><span><span class="ck mo-pop" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>커피의 깊이와 과일 향을 함께 좋아하는 사람</span></td></tr>
+        <tr><td><span><span class="ck mo-pop mo-d7" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>산뜻한 과일차와 아이스티를 좋아하는 사람</span></td><td><span><span class="ck mo-pop mo-d7" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>일반적인 곡물차보다 입체적인 맛을 원하는 사람</span></td><td><span><span class="ck mo-pop mo-d7" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>향미 커피를 좋아하는 사람</span></td></tr>
+        <tr><td><span><span class="ck mo-pop mo-d6" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>향으로 기분을 전환하고 싶은 사람</span></td><td><span><span class="ck mo-pop mo-d6" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>볶은 향·우디함·카카오 같은 풍미를 좋아하는 사람</span></td><td><span><span class="ck mo-pop mo-d6" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>예상하지 못한 조합을 즐기는 사람</span></td></tr>
+        <tr><td><span><span class="ck mo-pop mo-d5" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>티 블렌딩을 처음 경험하는 사람</span></td><td><span><span class="ck mo-pop mo-d5" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>자신에게 맞는 쓴맛과 구수함을 직접 조절하고 싶은 사람</span></td><td><span><span class="ck mo-pop mo-d5" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>나만의 레시피를 적극적으로 만들고 싶은 사람 · 특별한 선물</span></td></tr>
+      </tbody>
+    </table>
 
     <!-- 원료 노트 12행 -->
     <div class="lead"><div class="tag">Ingredients · 12</div></div>
@@ -487,23 +531,23 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <figcaption class="cap">한 장 넘기면 원료 한 가지 — 파우치 면과 엽서 면이 번갈아 이어집니다</figcaption>
     </figure>
     <table class="ingtbl full">
-      <colgroup><col style="width:36px"><col style="width:60px"><col style="width:170px"><col><col style="width:160px"></colgroup>
+      <colgroup><col style="width:36px"><col style="width:76px"><col style="width:170px"><col><col style="width:160px"></colgroup>
       <thead><tr><th>No.</th><th>&nbsp;</th><th>Ingredient</th><th>Note</th><th style="white-space:nowrap;letter-spacing:.06em">Aroma · Body · Finish</th></tr></thead>
       <tbody>
-        <tr class="grp"><th colspan="5">VER.1 — HERB</th></tr>
-        <tr><td class="no">01</td><td class="art"><img class="mo-sway" src="assets/botanical-clean/lemon-balm.png" alt=""></td><td><div class="enm">Lemon Balm</div><div class="sci">Melissa officinalis</div><div class="krn">레몬밤</div></td><td>레몬과 풋잎을 떠올리게 하는 산뜻함. 첫 향을 밝게 엽니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
-        <tr><td class="no">02</td><td class="art"><img class="mo-sway mo-d1" src="assets/botanical-clean/hibiscus.png" alt=""></td><td><div class="enm">Hibiscus</div><div class="sci">Hibiscus sabdariffa</div><div class="krn">히비스커스</div></td><td>붉은 과일을 연상시키는 선명한 산미. 수색을 바꿉니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
-        <tr><td class="no">03</td><td class="art"><img class="mo-sway mo-d2" src="assets/botanical-clean/peppermint.png" alt=""></td><td><div class="enm">Peppermint</div><div class="sci">Mentha × piperita</div><div class="krn">페퍼민트</div></td><td>차갑고 깨끗한 상쾌함. 소량부터.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
-        <tr><td class="no">04</td><td class="art"><img class="mo-sway mo-d3" src="assets/botanical-clean/yuza.png" alt=""></td><td><div class="enm">Yuza</div><div class="sci">Citrus junos</div><div class="krn">유자</div></td><td>밝은 감귤 껍질 향과 은은한 쌉싸름함.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
-        <tr><td class="no">05</td><td class="art"><img class="mo-sway mo-d4" src="assets/botanical-clean/rose.png" alt=""></td><td><div class="enm">Rose</div><div class="sci">Rosa damascena</div><div class="krn">장미</div></td><td>우아하고 풍성한 꽃향. 긴 아로마.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
-        <tr><td class="no">06</td><td class="art"><img class="mo-sway mo-d5" src="assets/botanical-clean/chamomile.png" alt=""></td><td><div class="enm">Chamomile</div><div class="sci">Matricaria chamomilla</div><div class="krn">캐모마일</div></td><td>사과와 꿀을 연상시키는 부드러운 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
-        <tr class="grp"><th colspan="5">VER.2 — GRAIN</th></tr>
-        <tr><td class="no">07</td><td class="art"><img class="mo-sway mo-d6" src="assets/botanical-clean/solomons-seal.png" alt=""></td><td><div class="enm">Solomon's Seal</div><div class="sci">Polygonatum odoratum</div><div class="krn">둥굴레</div></td><td>부드러운 볶은 뿌리와 은은한 단맛. 바디감을 둥글게.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
-        <tr><td class="no">08</td><td class="art"><img class="mo-sway mo-d7" src="assets/botanical-clean/sorghum.png" alt=""></td><td><div class="enm">Glutinous Sorghum</div><div class="sci">Sorghum bicolor</div><div class="krn">찰수수</div></td><td>담백하고 순한 곡물의 구수함. 뿌리 원료를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
-        <tr><td class="no">09</td><td class="art"><img class="mo-sway" src="assets/botanical-clean/red-bean.png" alt=""></td><td><div class="enm">Red Bean</div><div class="sci">Vigna angularis</div><div class="krn">단팥</div></td><td>볶은 팥의 고소하고 부드러운 여운.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
-        <tr><td class="no">10</td><td class="art"><img class="mo-sway mo-d1" src="assets/botanical-clean/brown-rice.png" alt=""></td><td><div class="enm">Brown Rice</div><div class="sci">Oryza sativa</div><div class="krn">현미</div></td><td>볶은 쌀의 담백하고 고소한 향. 바디를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:40%"></b></i><em>2</em></div></div></td></tr>
-        <tr><td class="no">11</td><td class="art"><img class="mo-sway mo-d2" src="assets/botanical-clean/dandelion-root.png" alt=""></td><td><div class="enm">Dandelion Root</div><div class="sci">Taraxacum officinale</div><div class="krn">민들레 뿌리</div></td><td>흙·나무·커피·카카오를 연상시키는 깊은 볶음 향. 중심 원료.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
-        <tr><td class="no">12</td><td class="art"><img class="mo-sway mo-d3" src="assets/botanical-clean/barley.png" alt=""></td><td><div class="enm">Barley</div><div class="sci">Hordeum vulgare</div><div class="krn">보리</div></td><td>익숙하고 선명한 볶은 곡물 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr class="grp"><th colspan="5">VER.1 — Taste</th></tr>
+        <tr><td class="no">01</td><td class="art"><div class="clip thumb"><img class="mo-breathe" src="assets/real/ing_lemon_balm.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#9BB36B" aria-hidden="true"></i>Lemon Balm</div><div class="sci">Melissa officinalis</div><div class="krn">레몬밤</div></td><td>레몬과 풋잎을 떠올리게 하는 산뜻함. 첫 향을 밝게 엽니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">02</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d1" src="assets/real/ing_hibiscus.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#A8324A" aria-hidden="true"></i>Hibiscus</div><div class="sci">Hibiscus sabdariffa</div><div class="krn">히비스커스</div></td><td>붉은 과일을 연상시키는 선명한 산미. 수색을 바꿉니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr><td class="no">03</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d2" src="assets/real/ing_peppermint.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#4E9A78" aria-hidden="true"></i>Peppermint</div><div class="sci">Mentha × piperita</div><div class="krn">페퍼민트</div></td><td>차갑고 깨끗한 상쾌함. 소량부터.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr><td class="no">04</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d3" src="assets/real/ing_yuza.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#E2B13A" aria-hidden="true"></i>Yuza</div><div class="sci">Citrus junos</div><div class="krn">유자</div></td><td>밝은 감귤 껍질 향과 은은한 쌉싸름함.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">05</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d4" src="assets/real/ing_rose.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#D98A9C" aria-hidden="true"></i>Rose</div><div class="sci">Rosa damascena</div><div class="krn">장미</div></td><td>우아하고 풍성한 꽃향. 긴 아로마.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
+        <tr><td class="no">06</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d5" src="assets/real/ing_chamomile.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#E6CB6A" aria-hidden="true"></i>Chamomile</div><div class="sci">Matricaria chamomilla</div><div class="krn">캐모마일</div></td><td>사과와 꿀을 연상시키는 부드러운 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr class="grp"><th colspan="5">VER.2 — Depth</th></tr>
+        <tr><td class="no">07</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d6" src="assets/real/ing_solomons_seal.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#B88B5A" aria-hidden="true"></i>Solomon's Seal</div><div class="sci">Polygonatum odoratum</div><div class="krn">둥굴레</div></td><td>부드러운 볶은 뿌리와 은은한 단맛. 바디감을 둥글게.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">08</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d7" src="assets/real/ing_sorghum.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#9A563C" aria-hidden="true"></i>Glutinous Sorghum</div><div class="sci">Sorghum bicolor</div><div class="krn">찰수수</div></td><td>담백하고 순한 곡물의 구수함. 뿌리 원료를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">09</td><td class="art"><div class="clip thumb"><img class="mo-breathe" src="assets/real/ing_red_bean.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#7B2D2F" aria-hidden="true"></i>Red Bean</div><div class="sci">Vigna angularis</div><div class="krn">단팥</div></td><td>볶은 팥의 고소하고 부드러운 여운.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr><td class="no">10</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d1" src="assets/real/ing_brown_rice.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#C9A673" aria-hidden="true"></i>Brown Rice</div><div class="sci">Oryza sativa</div><div class="krn">현미</div></td><td>볶은 쌀의 담백하고 고소한 향. 바디를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:40%"></b></i><em>2</em></div></div></td></tr>
+        <tr><td class="no">11</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d2" src="assets/real/ing_dandelion_root.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#5A3925" aria-hidden="true"></i>Dandelion Root</div><div class="sci">Taraxacum officinale</div><div class="krn">민들레 뿌리</div></td><td>흙·나무·커피·카카오를 연상시키는 깊은 볶음 향. 중심 원료.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
+        <tr><td class="no">12</td><td class="art"><div class="clip thumb"><img class="mo-breathe mo-d3" src="assets/real/ing_barley.png" alt=""></div></td><td><div class="enm"><i class="dot" style="--c:#C4A266" aria-hidden="true"></i>Barley</div><div class="sci">Hordeum vulgare</div><div class="krn">보리</div></td><td>익숙하고 선명한 볶은 곡물 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
       </tbody>
     </table>
   </section>
@@ -524,6 +568,20 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <div class="step"><div class="n">STEP 02</div><h4>바꿔보고</h4><p>하나를 더하거나 덜어서</p></div>
       <div class="step"><div class="n">STEP 03</div><h4>마지막엔 나의 맛으로</h4><p>노트에 남긴 비율이 레시피가 됩니다</p></div>
     </div>
+    <!-- v1: HOW TO 5단계 (G·H안) -->
+    <div class="lead"><div class="tag">How to · 5 steps</div></div>
+    <div class="body"><h3>고르기 → 담기 → 붓기 → 우리기 → 기록하기</h3></div>
+    <table class="howto full">
+      <colgroup><col style="width:72px"><col style="width:150px"><col></colgroup>
+      <thead><tr><th>No.</th><th>Step</th><th>How</th></tr></thead>
+      <tbody>
+        <tr><td class="n"><span class="mo-pop" style="display:inline-block">01</span></td><th class="st">고르기<small>Choose</small></th><td>아코디언북을 펼쳐 오늘의 기분에 맞는 원료를 고릅니다.</td></tr>
+        <tr><td class="n"><span class="mo-pop mo-d7" style="display:inline-block">02</span></td><th class="st">담기<small>Measure</small></th><td>레시피 비율대로 원료를 덜어 빈 티백에 담습니다.</td></tr>
+        <tr><td class="n"><span class="mo-pop mo-d6" style="display:inline-block">03</span></td><th class="st">붓기<small>Pour</small></th><td>레시피의 온도로 물을 천천히 붓습니다.</td></tr>
+        <tr><td class="n"><span class="mo-pop mo-d5" style="display:inline-block">04</span></td><th class="st">우리기<small>Steep</small></th><td>레시피의 시간만큼 우립니다. 색이 바뀌는 순간을 지켜보세요.</td></tr>
+        <tr><td class="n"><span class="mo-pop mo-d4" style="display:inline-block">05</span></td><th class="st">기록하기<small>Note</small></th><td>좋았던 비율과 다음에 바꿔 볼 것을 노트에 남깁니다.</td></tr>
+      </tbody>
+    </table>
     <div class="full grid2">
       <video class="media r43" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c06_smell.jpg" aria-label="유리병에 코를 대고 향을 맡는 장면">
         <source src="assets/loop/c06_smell.mp4" type="video/mp4">
@@ -615,6 +673,12 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
         </tr>
       </tbody>
     </table>
+
+    <!-- v1: 맛 그래프 (I안) — Taste·Depth 대표 레시피. 값은 I안 버전 프로필 기준(확정값 받으면 교체) -->
+    <div class="radar2 full">
+      <figure><span class="tag">VER.1 Taste · 대표 레시피</span><div class="rt">로즈가든</div><svg class="radar" viewBox="0 0 280 240" role="img" aria-label="로즈가든 맛 프로필: 향 5, 바디 2, 단맛 3, 고소함 1, 산뜻함 4"><g transform="translate(140 120)"><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.8)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.6)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.4)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.2)"/><line class="axis" x1="0" y1="0" x2="0" y2="-100"/><line class="axis" x1="0" y1="0" x2="95.1" y2="-30.9"/><line class="axis" x1="0" y1="0" x2="58.8" y2="80.9"/><line class="axis" x1="0" y1="0" x2="-58.8" y2="80.9"/><line class="axis" x1="0" y1="0" x2="-95.1" y2="-30.9"/></g><g class="mo-grow" style="transform-box:view-box;transform-origin:140px 120px"><g transform="translate(140 120)"><polygon class="area" points="0.0,-100.0 38.0,-12.4 35.3,48.5 -11.8,16.2 -76.1,-24.7"/><circle class="dot" cx="0.0" cy="-100.0" r="3"/><circle class="dot" cx="38.0" cy="-12.4" r="3"/><circle class="dot" cx="35.3" cy="48.5" r="3"/><circle class="dot" cx="-11.8" cy="16.2" r="3"/><circle class="dot" cx="-76.1" cy="-24.7" r="3"/></g></g><text x="140" y="12" text-anchor="middle">향</text><text x="242" y="93">바디</text><text x="204" y="216">단맛</text><text x="76" y="216" text-anchor="end">고소함</text><text x="38" y="93" text-anchor="end">산뜻함</text></svg><figcaption class="cap">향 5 · 바디 2 · 단맛 3 · 고소함 1 · 산뜻함 4</figcaption></figure>
+      <figure><span class="tag">VER.2 Depth · 대표 레시피</span><div class="rt">브라질리언 로스트</div><svg class="radar" viewBox="0 0 280 240" role="img" aria-label="브라질리언 로스트 맛 프로필: 향 3, 바디 5, 단맛 2, 고소함 5, 산뜻함 1"><g transform="translate(140 120)"><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.8)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.6)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.4)"/><polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(0.2)"/><line class="axis" x1="0" y1="0" x2="0" y2="-100"/><line class="axis" x1="0" y1="0" x2="95.1" y2="-30.9"/><line class="axis" x1="0" y1="0" x2="58.8" y2="80.9"/><line class="axis" x1="0" y1="0" x2="-58.8" y2="80.9"/><line class="axis" x1="0" y1="0" x2="-95.1" y2="-30.9"/></g><g class="mo-grow mo-d4" style="transform-box:view-box;transform-origin:140px 120px"><g transform="translate(140 120)"><polygon class="area" points="0.0,-60.0 95.1,-30.9 23.5,32.4 -58.8,80.9 -19.0,-6.2"/><circle class="dot" cx="0.0" cy="-60.0" r="3"/><circle class="dot" cx="95.1" cy="-30.9" r="3"/><circle class="dot" cx="23.5" cy="32.4" r="3"/><circle class="dot" cx="-58.8" cy="80.9" r="3"/><circle class="dot" cx="-19.0" cy="-6.2" r="3"/></g></g><text x="140" y="12" text-anchor="middle">향</text><text x="242" y="93">바디</text><text x="204" y="216">단맛</text><text x="76" y="216" text-anchor="end">고소함</text><text x="38" y="93" text-anchor="end">산뜻함</text></svg><figcaption class="cap">향 3 · 바디 5 · 단맛 2 · 고소함 5 · 산뜻함 1</figcaption></figure>
+    </div>
     <div class="lead"></div>
     <div class="body"><p class="sub">그리고 그다음 레시피는 <span class="mark">당신의 것</span>입니다.</p></div>
   </section>
@@ -653,16 +717,16 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       </div>
       <div class="phone" role="img" aria-label="결과 화면 예시">
         <div class="st"><span>오늘 나의 한 잔</span><span>결과</span></div>
-        <div><div class="res-t">로즈 가든</div><div class="res-s">장미 넝쿨 아래 벤치</div></div>
+        <div><div class="res-t">로즈가든</div><div class="res-s">장미 넝쿨 아래 벤치</div></div>
         <div class="kv"><div class="k">나의 스푼으로</div><div class="v">캐모마일 <span class="ratio-dots">●●</span> 2스푼<br>장미 <span class="ratio-dots">●</span> 1스푼<br>레몬밤 <span class="ratio-dots">●</span> 1스푼</div></div>
         <div class="kv"><div class="k">이렇게 우려요</div><div class="v">물 150ml, 95~100°C · 3~5분</div></div>
-        <div class="kv"><div class="k">필요한 키트</div><div class="v"><b>VER.1 HERB</b></div></div>
+        <div class="kv"><div class="k">필요한 키트</div><div class="v"><b>VER.1 Taste</b></div></div>
         <div class="cta">이 레시피로 시작하기</div>
       </div>
     </div>
 
     <div class="radar-wrap full">
-      <svg class="radar" viewBox="0 0 280 240" role="img" aria-label="로즈 가든 맛 프로필: 향 5, 바디 2, 단맛 3, 고소함 1, 산뜻함 4">
+      <svg class="radar" viewBox="0 0 280 240" role="img" aria-label="로즈가든 맛 프로필: 향 5, 바디 2, 단맛 3, 고소함 1, 산뜻함 4">
         <g transform="translate(140 120)">
           <polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9"/>
           <polygon class="ring" points="0,-100 95.1,-30.9 58.8,80.9 -58.8,80.9 -95.1,-30.9" transform="scale(.8)"/>
@@ -746,21 +810,23 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <div class="en">For you,<br>the right to taste.</div>
     </div>
     <div class="body">
-      <h2 id="h10">「취향의 권리」는<br>차 블렌딩의 원칙과 경험을<br>바탕으로 설계했습니다.</h2>
+      <p class="cap" style="margin:0">「취향의 권리」는 차 블렌딩의 원칙과 경험을 바탕으로 설계했습니다.</p>
+      <h2 class="xl" id="h10"><span class="acc">대한명인</span><br>차블렌딩명인 이소연</h2>
+      <p class="sub">원료의 성격을 읽고 비율로 균형을 잡아 왔습니다.<br>레시피 21가지는 모두 시음을 거쳐 골랐습니다.</p>
     </div>
-    <div class="full grid2">
-      <figure><div class="clip"><img class="media r43 mo-breathe" src="assets/stills/still_03.jpg" alt="The Right to Taste — Depth 표지의 책 두 권"></div><figcaption class="cap">The Right to Taste — Depth</figcaption></figure>
-      <figure><div class="clip"><img class="media r43 mo-breathe mo-d2" src="assets/stills/still_04.jpg" alt="아이보리 표지의 취향의 권리 책" style="object-position:70% 50%"></div><figcaption class="cap">The Right to Taste</figcaption></figure>
+    <!-- v1: 명인 강조. TODO 이소연 명인 인물 사진(실촬영)으로 교체 — 지금은 저서 사진 -->
+    <div class="master full">
+      <figure><div class="clip"><img class="media r45 mo-breathe" src="assets/stills/still_04.jpg" alt="이소연 명인의 책, 아이보리 표지의 취향의 권리" style="object-position:70% 50%"></div></figure>
+      <div>
+        <div class="role">TEA BLENDER</div>
+        <div class="mt">대한명인 차블렌딩명인</div>
+        <div class="mn">이소연</div>
+        <p>20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더</p>
+        <p class="books p2">저서 <i>『11시와 4시 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
+        <div class="clip" style="margin-top:20px"><img class="media r32 mo-breathe mo-d2" src="assets/stills/still_03.jpg" alt="The Right to Taste — Depth 표지의 책 두 권"></div>
+      </div>
     </div>
     <div class="full">
-      <div class="maker">
-        <div class="role">TEA BLENDER</div>
-        <div>
-          <div class="nm"><small>대한명인회 차 블렌딩명인</small>이소연</div>
-          <p>20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더</p>
-          <p class="books p2">저서 <i>『11시와 4시 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
-        </div>
-      </div>
       <div class="maker" style="border-bottom:2px solid var(--rule)">
         <div class="role">ROASTER</div>
         <div>
@@ -787,17 +853,17 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <!-- TODO: 체험단 20명 모집 후 실제 후기 문장·연령대·직업으로 교체. 가짜 후기 금지. -->
     <div class="full grid3">
       <article class="tcard">
-        <div class="lb"><span>체험단 01</span><b>VER.1 HERB</b></div>
+        <div class="lb"><span>체험단 01</span><b>VER.1 Taste</b></div>
         <div class="clip"><img class="media r11 mo-breathe" src="assets/stills/still_14.jpg" alt="노트에 블렌딩 비율을 적는 손"></div>
         <p>오픈 전 체험단 20명의 첫 잔 이야기를 이 자리에 싣습니다.</p>
       </article>
       <article class="tcard">
-        <div class="lb"><span>체험단 02</span><b>VER.2 GRAIN</b></div>
+        <div class="lb"><span>체험단 02</span><b>VER.2 Depth</b></div>
         <div class="clip"><img class="media r11 mo-breathe mo-d2" src="assets/stills/still_17.jpg" alt="티백 속 원료를 들여다보는 손"></div>
         <p>오픈 전 체험단 20명의 첫 잔 이야기를 이 자리에 싣습니다.</p>
       </article>
       <article class="tcard">
-        <div class="lb"><span>체험단 03</span><b>TWO KIT SET</b></div>
+        <div class="lb"><span>체험단 03</span><b>2개 세트</b></div>
         <div class="clip"><img class="media r11 mo-breathe mo-d4" src="assets/stills/still_15.jpg" alt="블렌딩 노트를 넘기는 손" style="object-position:40% 50%"></div>
         <p>오픈 전 체험단 20명의 첫 잔 이야기를 이 자리에 싣습니다.</p>
       </article>
@@ -842,12 +908,14 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     </div>
     <div class="full grid2">
       <!-- 3D 패키지: 닫힌 상자 턴테이블 (기존 box-front 평면 원고 대체) -->
-      <figure><video class="media r32" autoplay muted loop playsinline preload="metadata" poster="assets/loop/rotate_loop.jpg" aria-label="닫힌 티 블렌딩 키트 상자가 천천히 한 바퀴 도는 장면"><source src="assets/loop/rotate_loop.mp4" type="video/mp4"></video><figcaption class="cap">Tea Blending Kit · VER.1 HERB / VER.2 GRAIN</figcaption></figure>
+      <figure><video class="media r32" autoplay muted loop playsinline preload="metadata" poster="assets/loop/rotate_loop.jpg" aria-label="닫힌 티 블렌딩 키트 상자가 천천히 한 바퀴 도는 장면"><source src="assets/loop/rotate_loop.mp4" type="video/mp4"></video><figcaption class="cap">Tea Blending Kit · VER.1 Taste / VER.2 Depth</figcaption></figure>
       <!-- TODO: 단팥차 샘플·스테인리스 인퓨저 실촬영으로 교체 (현재 생성 이미지) -->
-      <figure><img class="media r32" src="assets/gen/red_bean_tea.png" alt="단팥차 한 잔"><figcaption class="cap">단팥차 샘플 · 2개 구매 시 증정</figcaption></figure>
+      <figure><img class="media r32" src="assets/gen/red_bean_tea.png" alt="단팥차 한 잔"><figcaption class="cap">단팥차 샘플 · 2개 세트 구매 시 증정</figcaption></figure>
     </div>
+    <!-- v1: 와디즈에서 먼저 만나는 이유 -->
+    <div class="why full"><span class="ty">Why Wadiz first</span><p><b>와디즈에서 먼저 만나는 이유</b> — 울트라 얼리버드 15% 혜택 · 「취향의 권리」 첫 공개</p></div>
     <div class="price-line full">
-      <p>티 블렌딩 키트 1개 · VER.1 HERB 또는 VER.2 GRAIN</p>
+      <p>티 블렌딩 키트 1개 · VER.1 Taste 또는 VER.2 Depth</p>
       <div class="pr"><small>정가</small>59,000원</div>
     </div>
     <table class="rw full">
@@ -856,33 +924,27 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <tbody>
         <tr>
           <th><span class="rid">REWARD 1</span><div class="rnm">울트라 얼리버드</div><span class="lim">선착순 100명</span></th>
-          <td>티 블렌딩 키트 1개<br><span class="p2">VER.1 HERB 또는 VER.2 GRAIN</span></td>
-          <td><div class="pv">50,150원<s>59,000원</s><span class="pct">15%</span></div></td>
-          <td><ul class="bene"><li>원료 3팩 랜덤 추가 증정</li><li>스테인리스 인퓨저 증정</li><li>2개 구매 시 단팥차 샘플 증정</li><li>무료배송</li></ul></td>
+          <td>티 블렌딩 키트 1개<br><span class="p2">VER.1 Taste 또는 VER.2 Depth</span></td>
+          <td><div class="pv">50,100원<s>59,000원</s><span class="pct">15%</span></div></td>
+          <td><ul class="bene"><li>원료 랜덤 3팩 추가 증정</li><li>스테인리스 인퓨저 증정</li><li>무료배송</li></ul></td>
         </tr>
         <tr>
-          <th><span class="rid">REWARD 2</span><div class="rnm">슈퍼 얼리버드</div><span class="lim">한정 수량</span></th>
-          <td>티 블렌딩 키트 1개<br><span class="p2">VER.1 HERB 또는 VER.2 GRAIN</span></td>
-          <td><div class="pv">54,870원<s>59,000원</s><span class="pct">7%</span></div></td>
-          <td><ul class="bene"><li>스테인리스 인퓨저 증정</li><li>2개 구매 시 단팥차 샘플 증정</li><li>무료배송</li></ul></td>
+          <th><span class="rid">REWARD 2</span><div class="rnm">슈퍼 얼리버드</div><span class="lim">100개</span></th>
+          <td>티 블렌딩 키트 1개<br><span class="p2">VER.1 Taste 또는 VER.2 Depth</span></td>
+          <td><div class="pv">54,800원<s>59,000원</s><span class="pct">7%</span></div></td>
+          <td><ul class="bene"><li>스테인리스 인퓨저 증정</li><li>무료배송</li></ul></td>
         </tr>
         <tr>
-          <th><span class="rid">REWARD 3</span><div class="rnm">얼리버드 · 정가</div><span class="lim">한정 수량</span></th>
-          <td>티 블렌딩 키트 1개<br><span class="p2">VER.1 HERB 또는 VER.2 GRAIN</span></td>
-          <td><div class="pv">59,000원</div></td>
-          <td><ul class="bene"><li>스테인리스 인퓨저 증정</li><li>2개 구매 시 단팥차 샘플 증정</li><li>무료배송</li></ul></td>
-        </tr>
-        <tr>
-          <th><span class="rid">REWARD 4</span><div class="rnm">TWO KIT SET</div><span class="lim">한정 수량</span></th>
-          <td>티 블렌딩 키트 2개<br><span class="p2">키트마다<br><span style="white-space:nowrap">HERB / GRAIN 선택</span><br>실물 블렌딩 노트 2권</span></td>
-          <td><div class="pv tbd">오픈 시 공개</div></td>
+          <th><span class="rid">REWARD 3</span><div class="rnm">2개 세트</div><span class="lim">50세트</span></th>
+          <td>티 블렌딩 키트 2개<br><span class="p2">키트마다<br><span style="white-space:nowrap">Taste / Depth 선택</span><br>실물 블렌딩 노트 2권</span></td>
+          <td><div class="pv">110,000원<s>118,000원</s><span class="pct">7%</span></div></td>
           <td><ul class="bene"><li>스테인리스 인퓨저 2개 증정</li><li>단팥차 샘플 증정</li><li>무료배송</li></ul></td>
         </tr>
       </tbody>
     </table>
     <div class="lead"></div>
     <div class="body">
-      <p class="notice">키트 구성: 원료 6종(원료별 소포장) · 빈 티백 · 실물 블렌딩 노트 · <span style="white-space:nowrap">전문가 레시피 21가지 안내</span><br>VER.1 HERB: 캐모마일 · 장미 · 레몬밤 · 히비스커스 · 유자 · 페퍼민트<br>VER.2 GRAIN: 둥굴레 · 찰수수 · 단팥 · 현미 · 민들레뿌리 · 보리<br>HERB와 GRAIN을 하나씩 고르면 허브와 곡물을 섞는 교차 블렌드까지 만들 수 있어요.<br><br>모든 리워드 무료배송<br>제주·도서산간은 '[추가 배송비] 제주·도서산간 지역(3,000원)'을 함께 선택해 주세요.<br>발송 일정은 펀딩 일정 확정 후 안내드립니다.</p>
+      <p class="notice">키트 구성: 원료 6종(원료별 소포장) · 빈 티백 · 실물 블렌딩 노트 · <span style="white-space:nowrap">전문가 레시피 21가지 안내</span><br>VER.1 Taste: 캐모마일 · 장미 · 레몬밤 · 히비스커스 · 유자 · 페퍼민트<br>VER.2 Depth: 둥굴레 · 찰수수 · 단팥 · 현미 · 민들레뿌리 · 보리<br>Taste와 Depth를 하나씩 고르면 허브와 곡물을 섞는 교차 블렌드까지 만들 수 있어요.<br><br>모든 리워드 무료배송<br>제주·도서산간은 '[추가 배송비] 제주·도서산간 지역(3,000원)'을 함께 선택해 주세요.<br>발송 일정은 펀딩 일정 확정 후 안내드립니다.</p>
     </div>
   </section>
 
@@ -900,7 +962,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     </div>
     <div class="full grid2" style="align-items:start">
       <!-- TODO: 티아포테카 차 4종 실촬영으로 교체 (현재 생성 이미지) -->
-      <figure><div class="clip"><img class="media r43 mo-breathe" src="assets/gen/prize_teas.png" alt="티아포테카 차 네 종의 틴 케이스"></div><figcaption class="cap">Tea Apotheca · 단팥차 · 골든 모과 · 두 가지 시그니처</figcaption></figure>
+      <figure><div class="clip"><img class="media r43 mo-breathe" src="assets/gen/prize_teas.png" alt="티아포테카 차 네 종의 틴 케이스"></div><figcaption class="cap">티아포테카 차 4종</figcaption></figure>
       <ol class="rows">
         <li><span class="n">01</span><div><h4>나만의 차 만들기</h4><p class="p2" style="font-size:15px">키트로 나만의 블렌딩 레시피를 완성해요.</p></div></li>
         <li><span class="n">02</span><div><h4>와디즈 후기 남기기</h4><p class="p2" style="font-size:15px">블렌딩 노트 사진과 레시피로 후기를 써 주세요.</p></div></li>
@@ -910,7 +972,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="lead"></div>
     <div class="body">
       <ul class="fine">
-        <li>참여 기간: 펀딩 기간 중 · 당첨자 발표: 펀딩 종료 후 공식 인스타그램과 개별 DM</li>
+        <li>참여 기간: 리워드 수령 후 2027년 1월 10일(일)까지 · 당첨자 발표: 참여 기간 종료 후 공식 인스타그램과 개별 DM</li>
         <li>참여 대상: 취향의 권리 키트 구매자 (와디즈 서포터 닉네임으로 확인) · 1인 1회 응모</li>
         <li>공개 계정만 참여할 수 있어요</li>
         <li>동의해 주신 레시피는 취향의 권리·티아포테카 인스타그램에 소개될 수 있어요</li>
@@ -932,7 +994,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
         <dt><span class="q">Q1</span><span>블렌딩 경험이 전혀 없는데 괜찮을까요?</span></dt>
         <dd><p>네. 처음에는 전문가 추천 레시피를 따라 만들어보세요. 익숙해지면 재료 하나를 더하거나 덜어보고, 비율을 조금씩 바꾸면서 나만의 블렌딩을 만들 수 있습니다.</p></dd>
         <dt><span class="q">Q2</span><span>카페인이 있나요?</span></dt>
-        <dd><p>허브와 곡물로만 구성했습니다. 카페인 표시는 확인 후 안내드립니다. 저녁이나 늦은 밤에도 편하게 즐길 수 있어요.</p></dd>
+        <dd><p>없습니다. 카페인이 없는 허브와 곡물로만 구성해 저녁이나 늦은 밤에도 편하게 즐길 수 있어요.</p></dd>
         <dt><span class="q">Q3</span><span>배송은 언제 되나요?</span></dt>
         <dd><p>발송 일정은 펀딩 일정 확정 후 안내드립니다. 모든 리워드는 무료배송이며, 제주·도서산간 지역은 추가 배송비(3,000원) 옵션을 함께 선택해 주세요.</p></dd>
         <dt><span class="q">Q4</span><span>다 쓴 뒤 재구매는 어떻게 하나요?</span></dt>
