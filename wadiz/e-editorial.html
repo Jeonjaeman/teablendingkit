@@ -214,7 +214,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .maker .nm small{font-size:16px;font-weight:500;color:var(--ink-2);margin-right:8px;letter-spacing:-.01em}
 .maker p{margin-top:6px}
 .books{font-size:16px;line-height:1.8}
-.books i{font-style:normal;font-weight:500}
+.books i{font-style:normal;font-weight:500;white-space:nowrap}
 
 /* ───────── s11 ───────── */
 .tcard{border-top:2px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:12px}
@@ -280,6 +280,8 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .master .mt{font:700 24px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin-top:12px}
 .master .mn{font:700 64px/1.05 var(--f-sans);letter-spacing:-.05em;margin-top:2px}
 .master p{margin-top:12px}
+.covers{position:relative;aspect-ratio:4/5;background:var(--bg-2);display:flex;align-items:center;justify-content:center;gap:16px;padding:0 22px}
+.covers img{width:46%;height:auto;box-shadow:0 14px 22px rgba(0,0,0,.18),0 2px 4px rgba(0,0,0,.08)}
 .hero-sig{font:400 14px/1.6 var(--f-type);letter-spacing:.06em;color:var(--accent)}
 
 /* 루프 모션 보조 : 사진 줌을 프레임 안에서 자른다 · 핀 파동은 액센트색 */
@@ -814,16 +816,15 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <h2 class="xl" id="h10"><span class="acc">대한명인</span><br>차블렌딩명인 이소연</h2>
       <p class="sub">원료의 성격을 읽고 비율로 균형을 잡아 왔습니다.<br>레시피 21가지는 모두 시음을 거쳐 골랐습니다.</p>
     </div>
-    <!-- v1: 명인 강조. TODO 이소연 명인 인물 사진(실촬영)으로 교체 — 지금은 저서 사진 -->
+    <!-- v1.2: 명인 강조 — 저서 표지 2권 (알라딘·예스24 표지). TODO 명인 인물 사진(실촬영) 받으면 함께 배치 -->
     <div class="master full">
-      <figure><div class="clip"><img class="media r45 mo-breathe" src="assets/stills/still_04.jpg" alt="이소연 명인의 책, 아이보리 표지의 취향의 권리" style="object-position:70% 50%"></div></figure>
+      <figure><div class="covers"><img class="mo-float-sm" src="assets/photo/book_11and4.jpg" alt="이소연 저서 『11시와 4시, 나는 차를 마신다』 표지" width="500" height="694"><img class="mo-float-sm mo-d4" src="assets/photo/book_teacup.jpg" alt="이소연 저서 『Life in My Teacup』 표지" width="807" height="1200"></div><figcaption class="cap">저서 · 라온북 2020 · OHK 2024</figcaption></figure>
       <div>
         <div class="role">TEA BLENDER</div>
         <div class="mt">대한명인 차블렌딩명인</div>
         <div class="mn">이소연</div>
         <p>20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더</p>
-        <p class="books p2">저서 <i>『11시와 4시 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
-        <div class="clip" style="margin-top:20px"><img class="media r32 mo-breathe mo-d2" src="assets/stills/still_03.jpg" alt="The Right to Taste — Depth 표지의 책 두 권"></div>
+        <p class="books p2">저서 <i>『11시와 4시, 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
       </div>
     </div>
     <div class="full">
