@@ -45,3 +45,8 @@ docs/\[Tea\ Aphotheca\]*.txt
 
 # 파이썬 캐시
 __pycache__/
+
+# 2차 수정 의뢰자 카톡 사진 원본 (docs/KakaoTalk_* 와 같은 이유로 추적 제외 — 페이지에는 가공본만)
+wadiz/2차수정/
+# 플랫레이 PNG 원본 렌더(재생성 가능, jpg 만 추적)
+3d/render/flatlay_*.png

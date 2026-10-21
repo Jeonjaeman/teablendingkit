@@ -139,6 +139,10 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .stat .v small{font-size:40px;letter-spacing:-.03em;margin-left:4px}
 .stat .v.txt{font-size:34px;letter-spacing:-.03em;line-height:1.3;padding:18px 0 14px;margin-left:0}
 .stat .l{font-size:16px;color:var(--ink-2);margin-top:10px}
+.stat .l small{display:block;font-size:14px;margin-top:4px}
+.stats-note{margin-top:40px;font-size:18px;line-height:1.7}
+.stats-foot{margin-top:10px;font-size:13px;color:var(--ink-2)}
+.tbd{display:inline-block;min-width:1.6em;text-align:center;color:var(--accent);border-bottom:1px dashed var(--accent);font-weight:700}
 
 /* ───────── s05 ───────── */
 .ver{border-top:2px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:14px}
@@ -280,12 +284,14 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
 .master .mt{font:700 24px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin-top:12px}
 .master .mn{font:700 64px/1.05 var(--f-sans);letter-spacing:-.05em;margin-top:2px}
 .master p{margin-top:12px}
-.covers{position:relative;aspect-ratio:4/5;background:var(--bg-2);display:flex;align-items:center;justify-content:center;gap:16px;padding:0 22px}
-.covers img{width:46%;height:auto;box-shadow:0 14px 22px rgba(0,0,0,.18),0 2px 4px rgba(0,0,0,.08)}
-.covers.ribbon{flex-direction:column;gap:22px}
-.covers.ribbon img{width:56%;box-shadow:none}
-.covers .rb{font:400 12px/1.6 var(--f-type);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:center}
-.covers .rb b{display:block;font:700 72px/1 var(--f-sans);letter-spacing:-.04em;color:#123C86;margin:6px 0 4px}
+.portrait{aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.book-row{display:flex;gap:14px;margin-top:18px;align-items:flex-end}
+.book-row img{height:132px;width:auto;box-shadow:0 10px 18px rgba(0,0,0,.16),0 2px 4px rgba(0,0,0,.08)}
+.ribbon-row{display:flex;gap:16px;align-items:center;margin-top:18px}
+.ribbon-row img{width:104px;height:auto}
+.ribbon-row .rb{font:400 11px/1.5 var(--f-type);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.ribbon-row .rb b{display:block;font:700 44px/1 var(--f-sans);letter-spacing:-.04em;color:#123C86;margin:2px 0}
 .hero-sig{font:400 14px/1.6 var(--f-type);letter-spacing:.06em;color:var(--accent)}
 
 /* 루프 모션 보조 : 사진 줌을 프레임 안에서 자른다 · 핀 파동은 액센트색 */
@@ -342,13 +348,13 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     </figure>
     <div class="lead"><div class="tag">01 — 2 · Two cups</div></div>
     <div class="body">
-      <h2>왼쪽은 캐모마일 두 스푼,<br>오른쪽은 장미 한 스푼 더.</h2>
+      <h2>왼쪽은 캐모마일 두 스푼,<br>오른쪽은 민들레 뿌리 두 스푼.</h2>
       <div class="cups">
-        <!-- TODO: 실촬영 두 잔(A-1·A-2)으로 교체. 지금은 생성 이미지 cups_two.png를 좌·우로 나눠 사용 -->
-        <figure class="l"><div class="clip"><img class="mo-breathe" src="assets/gen/cups_two.png" alt="캐모마일을 두 스푼 넣어 우린 연한 노란빛 찻잔"></div><figcaption class="cap">Left — Chamomile 2</figcaption></figure>
-        <figure class="r"><div class="clip"><img class="mo-breathe" src="assets/gen/cups_two.png" alt="장미를 한 스푼 더 넣어 우린 붉은빛 찻잔"></div><figcaption class="cap">Right — Rose +1</figcaption></figure>
+        <!-- TODO: 실촬영 두 잔(A-1·A-2)으로 교체. 지금은 생성 이미지 cups_two_v2.png(v1.5: 오른쪽 잔 브라운·꽃 제거)를 좌·우로 나눠 사용 -->
+        <figure class="l"><div class="clip"><img class="mo-breathe" src="assets/gen/cups_two_v2.png" alt="캐모마일 두 스푼으로 우린 연한 노란빛 찻잔"></div><figcaption class="cap">Left — Chamomile 2</figcaption></figure>
+        <figure class="r"><div class="clip"><img class="mo-breathe" src="assets/gen/cups_two_v2.png" alt="민들레 뿌리 두 스푼으로 우린 맑은 브라운빛 찻잔"></div><figcaption class="cap">Right — Dandelion root 2</figcaption></figure>
       </div>
-      <p class="cap">같은 재료로 우린 두 잔 · 같은 잔, 같은 빛</p>
+      <p class="sub" style="margin-top:24px">같은 원료, 다른 배합비.<br>비율만 바꿨을 뿐인데 전혀 다른 한 잔이 됩니다.</p>
     </div>
   </section>
 
@@ -418,6 +424,13 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <figcaption class="cap">Accordion book — 펼치면 원료 파우치와 엽서 창이 번갈아 이어집니다</figcaption>
     </figure>
 
+    <!-- v1.5: 키트 구성 — 블렌더 언박싱 12초 루프(실물 포장 순서: 노트 → 일러카드 → 스쿱 종이 → 병풍책 속 파우치·엽서 → 간지 아래 인퓨저·빈 티백). 마지막 프레임 = 연출 컷 배열 -->
+    <figure class="full"><video class="media r32" autoplay muted loop playsinline preload="metadata" poster="assets/loop/unbox_taste.jpg" aria-label="상자 뚜껑이 열리고 노트, 원료 카드, 사용방법 종이, 원료 파우치, 책갈피 엽서, 인퓨저가 차례로 나와 펼쳐진 뒤 뚜껑이 닫히는 장면"><source src="assets/loop/unbox_taste.mp4" type="video/mp4"></video><figcaption class="cap">Kit at a glance · VER.1 Taste — 상자 · 블렌딩 노트 · 원료 카드 · 사용방법 종이 · 원료 6종 · 빈 티백 · 책갈피 엽서 (인퓨저는 리워드 증정품)</figcaption></figure>
+    <div class="full grid2">
+      <figure><div class="clip"><img class="media r32 mo-breathe" src="assets/3d/flatlay/flatlay_taste.jpg" alt="VER.1 Taste 키트 구성 연출 컷 — 레몬밤·캐모마일·히비스커스·페퍼민트·유자·장미"></div><figcaption class="cap">VER.1 Taste</figcaption></figure>
+      <figure><div class="clip"><img class="media r32 mo-breathe mo-d4" src="assets/3d/flatlay/flatlay_depth.jpg" alt="VER.2 Depth 키트 구성 연출 컷 — 현미·민들레뿌리·찰수수·보리·단팥·둥굴레"></div><figcaption class="cap">VER.2 Depth</figcaption></figure>
+    </div>
+
     <div class="lead"><div class="tag">Components · 9</div></div>
     <div class="body">
       <ol class="parts">
@@ -436,7 +449,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="full grid3">
       <figure><div class="clip"><img class="media r11 mo-breathe" src="assets/photo/box-front.jpg" alt="키트 박스 정면"></div><figcaption class="cap">Box</figcaption></figure>
       <figure><div class="clip"><img class="media r11 mo-breathe mo-d2" src="assets/photo/accordion.jpg" alt="세워 둔 블렌딩 노트"></div><figcaption class="cap">Blending note</figcaption></figure>
-      <figure><div class="clip"><img class="media r11 mo-breathe mo-d4" src="assets/photo/book-3view.jpg" alt="원료 카드 시트"></div><figcaption class="cap">Ingredient cards</figcaption></figure>
+      <figure><div class="clip"><img class="media r11 mo-breathe mo-d4" src="assets/photo/cards_pair.jpg" alt="원료 카드 시트 2장 — 왼쪽 VER.1 Taste(레몬밤·캐모마일·히비스커스·페퍼민트·유자·장미), 오른쪽 VER.2 Depth(현미·민들레뿌리·찰수수·보리·단팥·둥굴레)"></div><figcaption class="cap">Ingredient cards · Taste / Depth</figcaption></figure>
     </div>
   </section>
 
@@ -445,17 +458,20 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="lead">
       <div class="num">04</div>
       <div class="tag">In numbers</div>
-      <div class="en">Twenty-one, twelve,<br>zero, two.</div>
+      <div class="en">Two kits,<br>four thousand cups.</div>
     </div>
     <div class="body">
-      <h2 id="h04">키트 하나에 담긴 것.</h2>
+      <h2 id="h04">숫자로 보는 취향의 권리.</h2>
       <div class="stats">
-        <div class="stat stat-wide"><div class="v">21</div><p class="l">대한명인이 설계한 레시피 21가지</p></div>
-        <div class="stat"><div class="v">12</div><p class="l">두 버전을 합친 재료 가짓수</p></div>
+        <div class="stat"><div class="v">2</div><p class="l">Taste와 Depth, 두 가지 버전<small>키트 하나에 원료 6가지</small></p></div>
+        <div class="stat"><div class="v">12</div><p class="l">두 버전을 합친 원료 가짓수</p></div>
+        <div class="stat"><div class="v">4,000<small>+</small></div><p class="l">12가지 원료로 만들 수 있는 블렌딩 조합</p></div>
+        <div class="stat"><div class="v">21</div><p class="l">시음으로 고른 레시피<small>Taste <span class="tbd">[ ]</span> · Depth 5 · 교차 블렌드 <span class="tbd">[ ]</span>*</small></p></div>
         <div class="stat"><div class="v"><small style="margin:0 8px 0 0">카페인</small>0</div><p class="l">저녁에도 편하게</p></div>
         <div class="stat"><div class="v"><small>약</small>27<small>잔</small></div><p class="l">150ml 기준, 키트 하나로</p></div>
-        <div class="stat"><div class="v">2</div><p class="l">Taste와 Depth, 두 가지 시작점</p></div>
       </div>
+      <p class="stats-note">12가지 원료로 만들 수 있는 조합은 4,000가지가 넘습니다.<br>그중 시음 테스트를 거쳐 특별히 맛있는 21가지를 골라<br>「나의 취향찾기」에 담았습니다.</p>
+      <p class="stats-foot">* 교차 블렌드는 Taste와 Depth를 함께 갖고 있을 때 만들 수 있어요.</p>
     </div>
   </section>
 
@@ -635,7 +651,8 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     </div>
     <div class="body">
       <h2 id="h08">처음엔,<br>전문가의 비율에서 시작하세요.</h2>
-      <p>시음으로 고른 전문가 레시피 21가지가 함께 들어 있어요.<br>허브 10가지, 곡물 3가지, 허브와 곡물을 섞은 8가지.</p>
+      <p class="sub">4,000가지가 넘는 조합 중에서, 직접 시음해 고른 21가지.</p>
+      <p>시음으로 고른 전문가 레시피 21가지가 함께 들어 있어요.<br>Taste <span class="tbd">[ ]</span>가지, Depth 5가지, 교차 블렌드 <span class="tbd">[ ]</span>가지.</p>
     </div>
     <figure class="full">
       <video class="media r169" autoplay muted loop playsinline preload="metadata" poster="assets/loop/c11_brew_closeup.jpg" aria-label="우러나는 차 클로즈업">
@@ -667,7 +684,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
           <td class="note">유자의 밝은 첫 향 뒤에 깊은 볶음 향과 부드러운 고소함이 이어지는 시트러스 로스트.</td>
         </tr>
         <tr>
-          <th><span class="rl">VER.2 · Roaster's Recipe</span><div class="rn">브라질리언 로스트</div></th>
+          <th><span class="rl">VER.2 · Roaster's Recipe · 양진호</span><div class="rn">브라질리언 로스트</div></th>
           <td><ul class="ratio">
             <li>민들레 뿌리<span class="ratio-dots">●●</span><em>2</em></li>
             <li>단팥<span class="ratio-dots">●●</span><em>2</em></li>
@@ -704,7 +721,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       </ul>
       <p class="sub">그래서 만들었습니다.</p>
       <h2 id="h08b">5개 질문으로 찾는<br>나의 첫 블렌딩</h2>
-      <p>「나의 취향찾기」에 답하면 전문가 레시피 21가지 중<br>지금 나에게 맞는 한 잔과, 그 레시피에 필요한 키트를 알려 드려요.</p>
+      <p>5개 질문에 답하면, 4,000가지 조합 중 테스트로 골라낸 21가지 레시피에서<br>지금 나에게 맞는 한 잔을 찾아 드려요.</p>
     </div>
 
     <div class="phones full" aria-label="나의 취향찾기 화면 예시">
@@ -820,26 +837,29 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <h2 class="xl" id="h10"><span class="acc">대한명인</span><br>차블렌딩명인 이소연</h2>
       <p class="sub">원료의 성격을 읽고 비율로 균형을 잡아 왔습니다.<br>레시피 21가지는 모두 시음을 거쳐 골랐습니다.</p>
     </div>
-    <!-- v1.2: 명인 강조 — 저서 표지 2권 (알라딘·예스24 표지). TODO 명인 인물 사진(실촬영) 받으면 함께 배치 -->
+    <!-- v1.5: 명인 인물 사진(대표 제공 흑백 포트레이트)을 왼쪽 4:5에, 저서 표지 2권은 오른쪽 이력 아래로 -->
     <div class="master full">
-      <figure><div class="covers"><img class="mo-float-sm" src="assets/photo/book_11and4.jpg" alt="이소연 저서 『11시와 4시, 나는 차를 마신다』 표지" width="500" height="694"><img class="mo-float-sm mo-d4" src="assets/photo/book_teacup.jpg" alt="이소연 저서 『Life in My Teacup』 표지" width="807" height="1200"></div><figcaption class="cap">저서 · 라온북 2020 · OHK 2024</figcaption></figure>
+      <figure><div class="portrait"><img class="mo-breathe" src="assets/photo/lee_soyeon.jpg" alt="차블렌딩명인 이소연 대표 흑백 인물 사진" width="1086" height="1358"></div><figcaption class="cap">대한명인 차블렌딩명인 이소연</figcaption></figure>
       <div>
         <div class="role">TEA BLENDER</div>
         <div class="mt">대한명인 차블렌딩명인</div>
         <div class="mn">이소연</div>
         <p>20년 가까이 차·식음료 상품개발과 수출을 해 온 블렌더</p>
         <p class="books p2">저서 <i>『11시와 4시, 나는 차를 마신다』</i>, <i>『Life in My Teacup』</i></p>
+        <div class="book-row"><img class="mo-float-sm" src="assets/photo/book_11and4.jpg" alt="이소연 저서 『11시와 4시, 나는 차를 마신다』 표지" width="500" height="694"><img class="mo-float-sm mo-d4" src="assets/photo/book_teacup.jpg" alt="이소연 저서 『Life in My Teacup』 표지" width="807" height="1200"></div>
+        <p class="cap">라온북 2020 · OHK 2024</p>
       </div>
     </div>
-    <!-- v1.4: 양진호 대표 — 이소연 명인 블록과 같은 구조 (왼쪽 4:5 패널 = 블루리본서베이 리본, 나무위키 로고 SVG) -->
+    <!-- v1.5: 양진호 대표 인물 사진(대표 제공 흑백 포트레이트)을 왼쪽 4:5에, 블루리본서베이 리본은 오른쪽 이력 아래로 — 이소연 블록과 같은 짜임 -->
     <div class="master full" style="border-bottom:2px solid var(--rule);padding-bottom:20px">
-      <figure><div class="covers ribbon"><img class="mo-rock" src="assets/photo/blueribbon.svg" alt="블루리본서베이 리본" width="205" height="138"><span class="rb">Blue Ribbon Survey<b>15</b>years in a row</span></div><figcaption class="cap">블루리본서베이 15년 연속 선정</figcaption></figure>
+      <figure><div class="portrait"><img class="mo-breathe mo-d4" src="assets/photo/yang_jinho.jpg" alt="엘카페커피로스터스 양진호 대표 흑백 인물 사진" width="1086" height="1358"></div><figcaption class="cap">엘카페커피로스터스 대표 양진호</figcaption></figure>
       <div>
         <div class="role">ROASTER</div>
         <div class="mt">엘카페커피로스터스 대표</div>
         <div class="mn">양진호</div>
         <p>2010년 엘카페 창업, 16년째 로스팅을 이끌어 온 로스터</p>
         <p class="books p2">블루리본서베이 15년 연속 선정 로스터리 대표<br>Sprudge·Time Out Seoul이 주목한 서울 스페셜티 로스터</p>
+        <div class="ribbon-row"><img class="mo-rock" src="assets/photo/blueribbon.svg" alt="블루리본서베이 리본" width="205" height="138"><span class="rb">Blue Ribbon Survey<b>15</b>years in a row</span></div>
       </div>
     </div>
     <div class="lead"></div>
@@ -897,7 +917,7 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="full grid3">
       <!-- 3D 패키지: 닫힌 상자 누끼 (package_gift.png 대체) -->
       <figure><div class="cutbox"><img class="mo-float-sm" src="assets/3d/closed_cut.png" alt="뚜껑을 닫은 아이보리 미장 상자" width="1182" height="802"></div><figcaption class="cap">Gift box</figcaption></figure>
-      <figure><img class="media r45" src="assets/photo/pouch.jpg" alt="크래프트 파우치"><figcaption class="cap">Pouch</figcaption></figure>
+      <figure><img class="media r45" src="assets/photo/pouch_v2.jpg" alt="The Right To Taste 라벨을 단 캐모마일 원료 파우치"><figcaption class="cap">Pouch</figcaption></figure>
       <figure><img class="media r45" src="assets/photo/bookmark.jpg" alt="노을 풍경이 담긴 책갈피 카드"><figcaption class="cap">Bookmark card</figcaption></figure>
     </div>
   </section>
@@ -916,13 +936,21 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
     <div class="full grid2">
       <!-- 3D 패키지: 닫힌 상자 턴테이블 (기존 box-front 평면 원고 대체) -->
       <figure><video class="media r32" autoplay muted loop playsinline preload="metadata" poster="assets/loop/rotate_loop.jpg" aria-label="닫힌 티 블렌딩 키트 상자가 천천히 한 바퀴 도는 장면"><source src="assets/loop/rotate_loop.mp4" type="video/mp4"></video><figcaption class="cap">Tea Blending Kit · VER.1 Taste / VER.2 Depth</figcaption></figure>
-      <!-- TODO: 단팥차 샘플·스테인리스 인퓨저 실촬영으로 교체 (현재 생성 이미지) -->
-      <figure><img class="media r32" src="assets/gen/red_bean_tea.png" alt="단팥차 한 잔"><figcaption class="cap">단팥차 샘플 · 2개 세트 구매 시 증정</figcaption></figure>
+      <!-- v1.5: 단팥차 샘플 티백 (대표 제공 누끼 → 미장 배경 합성) -->
+      <figure><div class="clip"><img class="media r32 mo-breathe mo-d3" src="assets/photo/danpatt_sample.jpg" alt="티아포테카 단팥차(Danpatt) 샘플 티백 — 국산 팥 99.9%, 나한과 0.1%"></div><figcaption class="cap">단팥차 샘플 · 2개 세트 구매 시 증정</figcaption></figure>
     </div>
+    <!-- v1.5: 원료 랜덤 3팩 (대표 제공 누끼 → 미장 배경) -->
+    <figure class="full"><div class="clip"><img class="media mo-breathe mo-d2" style="aspect-ratio:2/1" src="assets/photo/random3_packs.jpg" alt="라벨을 비워 둔 원료 파우치 세 개 — 원료 랜덤 3팩"></div><figcaption class="cap">원료 랜덤 3팩 · 울트라 얼리버드 추가 증정</figcaption></figure>
     <!-- v1.1: 스테인리스 인퓨저 (대표 제공 상품 사진 · TREE 304스텐 슬라이딩 티 인퓨저) -->
     <div class="full grid2">
       <figure><div class="clip"><img class="media r43 mo-breathe" src="assets/photo/infuser_1.jpg" alt="스테인리스 슬라이딩 티 인퓨저"></div><figcaption class="cap">스테인리스 인퓨저 · 울트라·슈퍼 1개, 2개 세트 2개 증정</figcaption></figure>
       <figure><div class="clip"><img class="media r43 mo-breathe mo-d4" src="assets/photo/infuser_2.jpg" alt="반으로 열린 인퓨저의 둥근 거름망"></div><figcaption class="cap">손잡이를 밀면 둥근 거름망이 열리는 슬라이딩 구조</figcaption></figure>
+    </div>
+    <!-- v1.5: 리워드별 구성 연출 컷(블렌더, 실물 구성 그대로) -->
+    <div class="full grid3">
+      <figure><div class="clip"><img class="media r32 mo-breathe" src="assets/3d/flatlay/flatlay_ultra.jpg" alt="울트라 얼리버드 구성 — 키트 1개, 스테인리스 인퓨저, 원료 랜덤 3팩"></div><figcaption class="cap">REWARD 1 · 울트라 얼리버드<br>키트 + 인퓨저 + 랜덤 3팩</figcaption></figure>
+      <figure><div class="clip"><img class="media r32 mo-breathe mo-d3" src="assets/3d/flatlay/flatlay_super.jpg" alt="슈퍼 얼리버드 구성 — 키트 1개, 스테인리스 인퓨저"></div><figcaption class="cap">REWARD 2 · 슈퍼 얼리버드<br>키트 + 인퓨저</figcaption></figure>
+      <figure><div class="clip"><img class="media r32 mo-breathe mo-d6" src="assets/3d/flatlay/flatlay_set.jpg" alt="2개 세트 구성 — Taste·Depth 키트 2개, 블렌딩 노트 2권, 인퓨저 2개, 단팥차 샘플"></div><figcaption class="cap">REWARD 3 · 2개 세트<br>키트 2 + 노트 2 + 인퓨저 2 + 단팥차</figcaption></figure>
     </div>
     <!-- v1: 와디즈에서 먼저 만나는 이유 -->
     <div class="why full"><span class="ty">Why Wadiz first</span><p><b>와디즈에서 먼저 만나는 이유</b> — 울트라 얼리버드 15% 혜택 · 「취향의 권리」 첫 공개</p></div>
@@ -973,8 +1001,8 @@ tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spa
       <p>레시피를 공유해 주신 분 중 추첨으로 10명에게<br>취향의 권리 키트를 만드는 티 브랜드,<br>티아포테카의 차 4종(10만 원 상당)을 선물합니다.</p>
     </div>
     <div class="full grid2" style="align-items:start">
-      <!-- TODO: 티아포테카 차 4종 실촬영으로 교체 (현재 생성 이미지) -->
-      <figure><div class="clip"><img class="media r43 mo-breathe" src="assets/gen/prize_teas.png" alt="티아포테카 차 네 종의 틴 케이스"></div><figcaption class="cap">티아포테카 차 4종</figcaption></figure>
+      <!-- v1.5: 티아포테카 차 4종 (대표 제공 제품 컷) -->
+      <figure><div class="clip"><img class="media r45 mo-breathe" src="assets/photo/prize_teas_real.jpg" alt="티아포테카 차 4종 — 골든 모과 #24, 단팥, 스피릿 오브 아마존, 프루트 딜라이트 파우치"></div><figcaption class="cap">티아포테카 차 4종 · Golden Mogwa #24 · Danpatt · Spirit of Amazon · Fruit Delight</figcaption></figure>
       <ol class="rows">
         <li><span class="n">01</span><div><h4>나만의 차 만들기</h4><p class="p2" style="font-size:15px">키트로 나만의 블렌딩 레시피를 완성해요.</p></div></li>
         <li><span class="n">02</span><div><h4>와디즈 후기 남기기</h4><p class="p2" style="font-size:15px">블렌딩 노트 사진과 레시피로 후기를 써 주세요.</p></div></li>
