@@ -50,3 +50,6 @@ __pycache__/
 wadiz/2차수정/
 # 플랫레이 PNG 원본 렌더(재생성 가능, jpg 만 추적)
 3d/render/flatlay_*.png
+
+# 3차 수정 의뢰자 카톡 원본(누끼·zip) — 2차수정과 같은 이유로 추적 제외
+wadiz/3차수정/

@@ -3,7 +3,8 @@
 실행:  python 3d/make_flatlay_tex.py
 입력:  wadiz/2차수정/ (대표가 준 실물 사진)
 출력:  3d/tex/flatlay/*.png
-- pouch_<key>.png  : 캐모마일 실물 파우치(펴서 반듯하게)를 템플릿으로, 라벨 글자와 내용물 색만 원료별로 바꿈(잎 결은 실물 그대로)
+- pouch_<key>.png  : 캐모마일 실물 파우치(펴서 반듯하게)를 템플릿으로, 라벨 글자와 창 속 내용물을 원료별로 바꿈
+                     (내용물 = 대표 실촬영 누끼 wadiz/assets/real/herb_<key>.png, 10/22)
 - pouch_teabag.png : 빈 티백 파우치 실물
 - postcard_use.png : 사용 안내 엽서 실물
 - card_taste.png   : 키트 실물 컷의 분홍 원료 카드
@@ -156,17 +157,41 @@ def put_grains(t, key):
     return out
 
 
+def put_real(t, key):
+    """(10/22) 대표 실촬영 원료 누끼(herb_<key>.png) 가운데를 유산지 창에 깐다 — 모든 원료 공통."""
+    im = rd(os.path.join(ROOT, 'wadiz', 'assets', 'real', f'herb_{key}.png'))
+    S = im.shape[0]
+    x0, y0, x1, y1 = WINDOW
+    w, h = x1 - x0, y1 - y0
+    cw = int(S * .56); ch = int(cw * h / w)
+    cx, cy = S // 2, S // 2
+    p = im[cy - ch // 2:cy + ch // 2, cx - cw // 2:cx + cw // 2]
+    a = p[..., 3:4].astype(np.float32) / 255
+    p = p[..., :3].astype(np.float32) * a + 200 * (1 - a)          # 혹시 빈틈은 유산지색
+    p = cv2.resize(p, (w, h), interpolation=cv2.INTER_AREA)
+    p = cv2.GaussianBlur(p, (0, 0), 1.2)
+    base = t[y0:y1, x0:x1, :3].astype(np.float32)
+    lum = cv2.cvtColor(base.astype(np.uint8), cv2.COLOR_BGR2GRAY).astype(np.float32)
+    lum = (lum / lum.mean())[..., None]
+    frost = (p * .74 + 226 * .26) * lum ** .5
+    m = np.zeros((h, w), np.float32); cv2.rectangle(m, (40, 30), (w - 40, h - 30), 1, -1)
+    m = cv2.GaussianBlur(m, (0, 0), 20)[..., None]
+    out = t.copy()
+    out[y0:y1, x0:x1, :3] = np.clip(base * (1 - m) + frost * m, 0, 255).astype(np.uint8)
+    return out
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     t = pouch_template()
     for n, (key, ko, en) in enumerate(TASTE):
-        p = t if key == 'chamomile' else put_contents(t, key, n)
+        p = put_real(t, key)
         wr(os.path.join(OUT, f'pouch_{key}.png'), put_label(p, ko, en))
     for key, ko, en in DEPTH:
-        wr(os.path.join(OUT, f'pouch_{key}.png'), put_label(put_grains(t, key), ko, en))
+        wr(os.path.join(OUT, f'pouch_{key}.png'), put_label(put_real(t, key), ko, en))
     # 원료 랜덤 3팩: 라벨을 비워 두고 내용물만 서로 다르게
     for i, key in enumerate(['rose', 'peppermint', 'yuza']):
-        wr(os.path.join(OUT, f'pouch_blank_{i + 1}.png'), put_label(put_contents(t, key, i + 2), '', ''))
+        wr(os.path.join(OUT, f'pouch_blank_{i + 1}.png'), put_label(put_real(t, key), '', ''))
     # Depth 원료 카드: 디자인 원본(곡물 시트)의 왼쪽 두 열 — Taste 카드(실물)와 같은 폭
     sh = rd(os.path.join(SRC, 'KakaoTalk_20261021_132155503.png'), cv2.IMREAD_COLOR)
     wr(os.path.join(OUT, 'card_depth.png'), cv2.resize(sh[100:1372, 101:701], (520, 1070), interpolation=cv2.INTER_AREA))
