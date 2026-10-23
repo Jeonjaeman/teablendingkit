@@ -324,7 +324,10 @@ async function init3D() {
   function pick(src, test) { const nodes = [];
     src.traverse(o => { if (test(o.name) && (o.isMesh || o.children.some(c => c.isMesh)) && !nodes.some(n => n.getObjectById(o.id))) nodes.push(o); });
     return nodes.map(n => { const g = new THREE.Group(); n.position.set(0, 0, 0); n.rotation.set(0, 0, 0); g.add(n); scene.add(g); g.visible = false; return g; }); }
-  const pouchesT = pick(pT, n => n.startsWith('pouch_')), pouchesD = pick(pD, n => n.startsWith('pouch_'));
+  // 파우치 순서는 GLB 노드 순서가 아니라 와디즈 연출 컷 순서로 고정: 1줄 빈 티백·레몬밤·캐모마일·히비스커스 / 2줄 페퍼민트·유자·장미
+  const ORDER_T = ['teabag', 'lemon_balm', 'chamomile', 'hibiscus', 'peppermint', 'yuza', 'rose'], ORDER_D = ['brown_rice', 'dandelion_root', 'sorghum', 'barley', 'red_bean', 'solomons_seal'];
+  const byOrder = (arr, order) => arr.sort((a, b) => order.indexOf(a.children[0].name.replace('pouch_', '')) - order.indexOf(b.children[0].name.replace('pouch_', '')));
+  const pouchesT = byOrder(pick(pT, n => n.startsWith('pouch_')), ORDER_T), pouchesD = byOrder(pick(pD, n => n.startsWith('pouch_')), ORDER_D);
   const sticker = pick(ex, n => n === 'card_taste')[0], scoop = pick(ex, n => n === 'scoop_paper')[0];   // 허브 스티커(원료 일러 6종 시트) · 종이 스쿱
   const marks = pick(ex, n => /^bm_card_\d$/.test(n));
   const ganji = pick(ex2, n => n === 'ganji')[0], danpatt = pick(ex2, n => n.startsWith('danpatt'))[0];   // 간지 · 단팥차 샘플 (와디즈 E안 구성)
@@ -474,19 +477,23 @@ async function init3D() {
       g.visible = s > .002; const to = g.userData.to; g.position.set(lerp(from.x, to[0], t), g.userData.y + arc(t) * .5 + f * .035, lerp(from.z, to[1], t)); g.rotation.y = deg(25 - i * 8) * (1 - t); g.rotation.x = deg(26) * f; g.scale.setScalar(Math.max(.001, s)); });
     place(pouchesT, S.pouch, i => i === 0 ? 1 : 1 - sw);
     pouchesD.forEach((g, i) => { const s = sw * ease(clamp01((S.pouch - .9) * 10)); const f = focus && focus.obj === g ? fo : 0; g.visible = s > .002; const to = g.userData.to; g.position.set(to[0], g.userData.y + f * .035, to[1]); g.rotation.x = deg(26) * f; g.scale.setScalar(Math.max(.001, s)); });
-    const mk = ease(S.marks), mf = isFo('marks'); marks.forEach((g, i) => { const s = ease(clamp01(mk * 2 - i * .15)); g.visible = s > .002; g.scale.setScalar(Math.max(.001, s)); g.rotation.y = g.userData.rot - deg(i - 2.5) * 9 * mf; g.position.y = .0006 + i * .0012 + mf * .004 * i; });
+    // 엽서 6장: 파우치처럼 아코디언북에서 한 장씩 빠져나와 부채꼴 자리로 (와디즈 언박싱 영상과 같게)
+    const mk = S.marks, mf = isFo('marks'); marks.forEach((g, i) => { const t = ease(clamp01(mk * 1.7 - i * .14)); g.visible = t > .002;
+      g.position.set(lerp(from.x, LAY.marks[0], t), .0006 + i * .0012 + arc(t) * .7 + mf * .004 * i, lerp(from.z + .02, LAY.marks[1], t));
+      g.rotation.y = lerp(book.rotation.y + deg(90), g.userData.rot, t) - deg(i - 2.5) * 9 * mf; g.scale.setScalar(Math.max(.001, lerp(.5, 1, t))); });
     // 간지 아래: 간지를 왼칸으로 밀어 두면(0~.3) → 안에 놓인 단팥차 샘플·인퓨저가 보이고(.3~.55 정지) → 단팥차 샘플(.55~.8) → 인퓨저(.7~1) 순으로 나온다
     const tg = seg(S.tools, 0, .3), td = seg(S.tools, .55, .8), tw = seg(S.tools, .7, 1);
     { const f = isFo('ganji'); ganji.position.set(lerp(note0.x, LAY.ganji[0], tg), lerp(note0.y - .0013, LAY.ganji[1], tg) + arc(tg) * .6 + f * .03, lerp(note0.z, LAY.ganji[2], tg)); ganji.rotation.y = deg(LAY.ganji[3]) * tg; ganji.rotation.x = deg(10) * f; }
     // 단팥차 샘플(74×84): 칸 왼쪽 앞(x 3~77, z 16~100) — 인퓨저 손잡이와 겹치지 않는 자리
     { const f = isFo('danpatt'); danpatt.position.set(lerp(.040, LAY.danpatt[0], td), lerp(.004, LAY.danpatt[1], td) + arc(td) * 1.3 + f * .035, lerp(.058, LAY.danpatt[2], td)); danpatt.rotation.y = deg(lerp(0, LAY.danpatt[3], td)); danpatt.rotation.x = deg(26) * f; }
-    // 인퓨저(길이 211·바스켓 Ø56): 칸(136×205)에는 대각선(25°)으로만 들어간다. 간지(y 52) 밑에 들어가도록 .88 배, 나오면 1 배 · 바닥에 손잡이가 닿게 8° 기울임
-    { infuser.visible = true; const f = isFo('infuser'), s = lerp(.88, 1, tw);
-      // 바닥에 놓이면 바스켓(r 28)과 손잡이 끝 구슬(r 8.5)이 같이 닿는 기울기 = asin((28−8.5)/182) ≈ 6.2°, 중심 높이 22.8mm (손잡이 끝이 바닥에 묻히지 않게)
-      infuser.position.set(lerp(note0.x, LAY.infuser[0], tw), lerp(.0272, .0228, tw) + arc(tw) * 1.6 + f * .05, lerp(0, LAY.infuser[1], tw));
-      infuser.rotation.x = -deg(6.2) * tw; infuser.scale.setScalar(s);
+    // 인퓨저(길이 211·바스켓 Ø56): 모델 자체가 손잡이가 아래로 처진 형태(그룹 중심 기준 손잡이 끝 바닥 −20.6mm, 바스켓 바닥 −18mm, 바스켓 꼭대기 +20.6mm)
+    //   → 추가 기울임 없이 중심 높이만 맞추면 손잡이 끝과 바스켓이 함께 바닥에 닿는다. 플랫레이 22.6mm.
+    //   칸(136×205)에는 대각선으로만 들어가므로 .82 배·32° 로 벽에서 15mm 이상 떨어뜨리고, 간지(y 52) 밑(꼭대기 43mm)에 둔다
+    { infuser.visible = true; const f = isFo('infuser'), s = lerp(.82, 1, tw);
+      infuser.position.set(lerp(note0.x, LAY.infuser[0], tw), lerp(.0238, .0249, tw) + arc(tw) * 1.6 + f * .05, lerp(.006, LAY.infuser[1], tw));   // 실측: 가장 낮은 점 = 중심 −23.4mm → 바닥 위 1.5mm
+      infuser.rotation.x = 0; infuser.scale.setScalar(s);
       if (f > 0) spin += dt * .5 * f; else { spin = ((spin + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; spin *= .92; }   // 연출 중 천천히 돌고, 돌아올 때 제자리로
-      infuser.rotation.y = deg(lerp(25, 4, tw)) + spin; }
+      infuser.rotation.y = deg(lerp(32, 4, tw)) + spin; }
     // 병풍 연출: 접힘각 a 88° → 30°. 힌지 i 회전 = (-1)^i·2a, 첫 힌지 = a. 길이에 맞춰 가운데 정렬
     const ai = isF('acc'), a = deg(lerp(88, 30, isFo('acc')));
     acc.visible = ai > .002;
