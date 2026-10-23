@@ -355,9 +355,9 @@ async function init3D() {
     const holes = new THREE.CanvasTexture(c); holes.wrapS = holes.wrapT = THREE.RepeatWrapping; holes.anisotropy = 8;
     infuser.children.forEach(m => { if (!m.name.startsWith('Sphere')) return; m.geometry.computeBoundingSphere(); if (m.geometry.boundingSphere.radius < .015) return;
       m.material = m.material.clone(); m.material.alphaMap = holes; m.material.alphaTest = .5; m.material.transparent = false; m.material.side = THREE.DoubleSide; m.material.roughness = Math.max(m.material.roughness, .3); }); }
-  book.userData.prop = 'acc'; note.userData.prop = 'note'; sticker.userData.prop = 'sticker'; scoop.userData.prop = 'scoop'; danpatt.userData.prop = 'danpatt'; ganji.userData.prop = 'ganji';
+  book.userData.prop = 'acc'; note.userData.prop = 'note'; sticker.userData.prop = 'sticker'; scoop.userData.prop = 'scoop'; danpatt.userData.prop = 'danpatt';
   ganji.visible = danpatt.visible = true;
-  const clickables = [book, note, sticker, scoop, infuser, danpatt, ganji, ...marks, ...pouchesT, ...pouchesD];
+  const clickables = [book, note, sticker, scoop, infuser, danpatt, ...marks, ...pouchesT, ...pouchesD];   // 간지는 클릭 연출 없음
   window.__kit = { THREE, kit, note, book, sticker, scoop, infuser, ganji, danpatt, ex2 };          // 콘솔 점검용
 
   /* ── 소품 클릭 연출: 스크롤 카메라 ↔ 소품 카메라를 F.t 로 섞고, F.open 으로 펼침 ── */
@@ -372,13 +372,12 @@ async function init3D() {
     marks: { e: 'Postcards', t: '엽서 여섯 장', d: '아코디언북 창마다 끼워 둔 풍경 엽서. 책갈피로도 씁니다.', cam: () => ({ target: centerOf(marks), dist: .50, elev: 66, orbit: 352 }) },
     sticker: { e: 'Herb stickers', t: '허브 스티커', d: '원료 6종 일러스트 스티커. 노트와 파우치에 붙여 오늘의 레시피를 표시합니다.', cam: g => ({ target: centerOf([g]), dist: .42, elev: 72, orbit: 360 }) },
     scoop: { e: 'Paper scoop', t: '종이 스쿱', d: '접어서 쓰는 종이 스쿱. 원료를 빈 티백에 옮겨 담을 때.', cam: g => ({ target: centerOf([g]), dist: .34, elev: 62, orbit: 360 }) },
-    danpatt: { e: 'Sample', t: '단팥차 샘플', d: '키트에 함께 넣어 드리는 Depth 맛보기 한 봉. 볶은 팥의 고소하고 부드러운 여운.', cam: g => ({ target: centerOf([g]), dist: .34, elev: 58, orbit: 360 }) },
-    ganji: { e: 'Sheet', t: '간지', d: '노트와 인퓨저 사이에 까는 미장 인쇄 판지. 들어내면 그 아래 인퓨저와 단팥차 샘플.', cam: g => ({ target: centerOf([g]), dist: .46, elev: 70, orbit: 360 }) } };
+    danpatt: { e: 'Sample', t: '단팥차 샘플', d: '키트에 함께 넣어 드리는 Depth 맛보기 한 봉. 볶은 팥의 고소하고 부드러운 여운.', cam: g => ({ target: centerOf([g]), dist: .34, elev: 58, orbit: 360 }) } };
   const centerOf = arr => { const b = new THREE.Box3(); arr.forEach(o => b.expandByObject(o)); return b.getCenter(new THREE.Vector3()).setY(0); };   // 피벗이 한쪽 끝인 소품은 실제 중심으로
   // 클릭 가능 표시 (플랫레이가 다 펼쳐진 뒤에만)
   const hotsEl = document.getElementById('hots');
   const HOTS = [{ o: book, arr: [book], t: FOCUS.acc.t }, { o: note, arr: [note], t: FOCUS.note.t }, { o: sticker, arr: [sticker], t: FOCUS.sticker.t }, { o: scoop, arr: [scoop], t: FOCUS.scoop.t },
-    { o: infuser, arr: [infuser], t: FOCUS.infuser.t }, { o: marks[0], arr: marks, t: FOCUS.marks.t }, { o: danpatt, arr: [danpatt], t: FOCUS.danpatt.t }, { o: ganji, arr: [ganji], t: FOCUS.ganji.t },
+    { o: infuser, arr: [infuser], t: FOCUS.infuser.t }, { o: marks[0], arr: marks, t: FOCUS.marks.t }, { o: danpatt, arr: [danpatt], t: FOCUS.danpatt.t },
     ...[...pouchesT, ...pouchesD].map((g, i) => ({ o: g, arr: [g], t: NAMES[g.userData.key][0], p: i === 0 || i === pouchesT.length ? 'p0' : 'p' }))];   // 모바일에선 파우치 줄에 태그 하나만
   HOTS.forEach(h => { const b = document.createElement('button'); b.className = 'hot ' + (h.p || ''); b.innerHTML = `<i>${h.t}</i>`; b.setAttribute('aria-label', h.t + ' 가까이 보기');
     b.insertAdjacentHTML('afterbegin', '<span class="ring"></span>');
@@ -483,8 +482,9 @@ async function init3D() {
     { const f = isFo('danpatt'); danpatt.position.set(lerp(.040, LAY.danpatt[0], td), lerp(.004, LAY.danpatt[1], td) + arc(td) * 1.3 + f * .035, lerp(.058, LAY.danpatt[2], td)); danpatt.rotation.y = deg(lerp(0, LAY.danpatt[3], td)); danpatt.rotation.x = deg(26) * f; }
     // 인퓨저(길이 211·바스켓 Ø56): 칸(136×205)에는 대각선(25°)으로만 들어간다. 간지(y 52) 밑에 들어가도록 .88 배, 나오면 1 배 · 바닥에 손잡이가 닿게 8° 기울임
     { infuser.visible = true; const f = isFo('infuser'), s = lerp(.88, 1, tw);
-      infuser.position.set(lerp(note0.x, LAY.infuser[0], tw), lerp(.0272, .0222, tw) + arc(tw) * 1.6 + f * .05, lerp(0, LAY.infuser[1], tw));
-      infuser.rotation.x = -deg(8) * tw; infuser.scale.setScalar(s);
+      // 바닥에 놓이면 바스켓(r 28)과 손잡이 끝 구슬(r 8.5)이 같이 닿는 기울기 = asin((28−8.5)/182) ≈ 6.2°, 중심 높이 22.8mm (손잡이 끝이 바닥에 묻히지 않게)
+      infuser.position.set(lerp(note0.x, LAY.infuser[0], tw), lerp(.0272, .0228, tw) + arc(tw) * 1.6 + f * .05, lerp(0, LAY.infuser[1], tw));
+      infuser.rotation.x = -deg(6.2) * tw; infuser.scale.setScalar(s);
       if (f > 0) spin += dt * .5 * f; else { spin = ((spin + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; spin *= .92; }   // 연출 중 천천히 돌고, 돌아올 때 제자리로
       infuser.rotation.y = deg(lerp(25, 4, tw)) + spin; }
     // 병풍 연출: 접힘각 a 88° → 30°. 힌지 i 회전 = (-1)^i·2a, 첫 힌지 = a. 길이에 맞춰 가운데 정렬
