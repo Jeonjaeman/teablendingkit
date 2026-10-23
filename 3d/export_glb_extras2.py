@@ -12,7 +12,9 @@ import kit_scene as K
 import flatlay_scene as F
 from export_glb_common import export, shrink_textures  # noqa: E402  (아래에서 만든 공용 모듈)
 
-OUT = os.path.join(K.ROOT, '3d', 'web')
+MOBILE = os.environ.get('MOBILE') == '1'
+OUT = os.path.join(K.ROOT, '3d', 'web', 'm') if MOBILE else os.path.join(K.ROOT, '3d', 'web')
+os.makedirs(OUT, exist_ok=True)
 
 
 def ganji(x, y, z):
@@ -26,5 +28,5 @@ def ganji(x, y, z):
 K.reset(); K._mats.clear()
 ganji(0, 0, 0)
 F.danpatt(220, 0, 0.3, 0)
-shrink_textures(768)
+shrink_textures(384 if MOBILE else 768)
 export(os.path.join(OUT, 'extras2.glb'))

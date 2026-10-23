@@ -32,7 +32,7 @@ body.fallback #fb{display:block}body.fallback #gl{display:none}
 
 /* 스크롤 무대: 섹션 9개 x 100vh, 글은 화면에 떠 있음 */
 #stage{position:relative;z-index:1;pointer-events:none}   /* 투명 섹션이 캔버스 클릭·드래그를 가로채지 않도록. 글 상자만 .on 일 때 받는다 */
-.sec{height:100vh;position:relative}
+.sec{height:100vh;height:100svh;position:relative}   /* 모바일 주소창이 늘고 줄어도 섹션 높이가 흔들리지 않게 svh */
 .sec .txt{position:fixed;top:50%;transform:translateY(-50%);max-width:400px;opacity:0;pointer-events:none;transition:opacity .55s,transform .55s;padding:26px 28px;border-radius:4px}
 .sec .txt::before{content:"";position:absolute;inset:-30px -40px;z-index:-1;border-radius:60px;
   background:radial-gradient(closest-side,rgba(244,240,232,.92),rgba(244,240,232,.7) 55%,rgba(244,240,232,0))}
@@ -63,6 +63,7 @@ h1{font-size:clamp(30px,4.2vw,54px)}h2{font-size:clamp(24px,3vw,38px)}
 .hot i{position:absolute;left:28px;top:50%;transform:translateY(-50%);white-space:nowrap;font:400 11.5px var(--sans);letter-spacing:.04em;color:var(--ink);background:rgba(244,240,232,.94);padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;font-style:normal;box-shadow:0 1px 5px rgba(0,0,0,.1)}
 .hot:hover i{opacity:1}
 .hot.off{display:none}
+.hot .ring{display:none}
 /* 소품 위에서의 커서: 손가락 대신 「보기」 원 */
 #cur{position:fixed;left:0;top:0;z-index:26;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;border:1px solid var(--ink);background:rgba(244,240,232,.55);backdrop-filter:blur(2px);display:grid;place-items:center;font:400 11px/1 var(--sans);letter-spacing:.08em;color:var(--ink);pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .2s,transform .25s}
 #cur.on{opacity:1;transform:scale(1)}
@@ -113,9 +114,21 @@ h1{font-size:clamp(30px,4.2vw,54px)}h2{font-size:clamp(24px,3vw,38px)}
 #load.off{opacity:0;pointer-events:none}
 
 @media (max-width:760px){
-  .sec .txt{top:auto;bottom:12vh;transform:none;left:6vw!important;right:6vw!important;max-width:none;padding:18px 20px}
+  .sec .txt{top:auto;bottom:9vh;transform:none;left:5vw!important;right:5vw!important;max-width:none;padding:16px 18px}
+  .sec .txt::before{inset:-14px -18px;border-radius:28px}
   .sec.c .txt,.sec.t .txt{transform:none;text-align:left;top:auto}
-  .dots,.hint{display:none}
+  h1{font-size:clamp(26px,7.4vw,34px)}h2{font-size:clamp(21px,6vw,28px)}.sub{font-size:14px;line-height:1.7}
+  .dots,.hint,#cur,#tip{display:none}
+  /* 터치: 「+」 태그를 손가락 크기(44px 히트 영역)로, 이름은 항상 숨김(탭하면 연출 패널에 뜸) */
+  .hot{width:44px;height:44px;margin:-22px 0 0 -22px;border:0;background:transparent;box-shadow:none}
+  .hot::before,.hot::after{background:var(--ink)}
+  .hot i{display:none}
+  .hot .ring{display:block;position:absolute;inset:8px;border-radius:50%;border:1px solid var(--ink);background:rgba(244,240,232,.92);box-shadow:0 1px 5px rgba(0,0,0,.14)}
+  .hot::before,.hot::after{z-index:1}
+  .hot.p{display:none}            /* 파우치는 겹쳐서 첫 파우치 태그 하나만 두고, 나머지는 직접 탭 */
+  .kakao{display:none}
+  #fpanel{bottom:16px;padding:16px 18px 14px}#fpanel .fp-t{font-size:22px}#fpanel .fp-d{font-size:13px}
+  #gl canvas{cursor:default}
   #makers .row,.cards{grid-template-columns:1fr}
   .mk{grid-template-columns:90px 1fr}.mk img{width:90px}
 }
@@ -255,23 +268,23 @@ let setVer = () => {};
 
 /* ───────── WebGL 가능 여부 → 아니면 렌더 영상을 스크롤로 넘김 ───────── */
 const canGL = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
-const FALLBACK = Q.has('video') || !canGL || innerWidth < 760;
-if (FALLBACK) {
+const MOBILE = Q.has('m') || innerWidth < 760 || matchMedia('(pointer:coarse)').matches;   // 모바일도 3D. 경량 GLB(3d/web/m) + 세로 구도 보정 + 터치
+const FALLBACK = Q.has('video') || !canGL;
+function startFallback() {                                   // WebGL 불가·저사양: 언박싱 렌더 영상을 스크롤로 넘김
   document.body.classList.add('fallback');
   const v = document.getElementById('fb');
   const sync = () => { const st = document.getElementById('stage'); const p = clamp01((scrollY) / (st.offsetHeight - innerHeight));
     if (v.duration) v.currentTime = Math.min(v.duration / 2 - .05, p * v.duration / 2); };   // 앞 6초 = 꺼내는 쪽
   v.addEventListener('loadedmetadata', sync); addEventListener('scroll', sync, { passive: true });
   document.getElementById('load').classList.add('off');
-} else {
-  await init3D();
 }
+if (FALLBACK) startFallback(); else await init3D();
 
 async function init3D() {
   /* ── 장면 ── */
   const el = document.getElementById('gl');
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, logarithmicDepthBuffer: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(LITE ? 1 : Math.min(devicePixelRatio, 1.75));
+  renderer.setPixelRatio(LITE ? 1 : Math.min(devicePixelRatio, MOBILE ? 1.5 : 1.75));
   renderer.setSize(innerWidth, innerHeight);
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
@@ -281,7 +294,7 @@ async function init3D() {
   const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, .1, 8);
   scene.add(new THREE.HemisphereLight('#fff4e6', '#d9d0c0', 1.0));
   const sun = new THREE.DirectionalLight('#ffe9cf', 2.5); sun.position.set(-1.2, 1.8, 1.0); sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 5; sun.shadow.bias = -0.00015; sun.shadow.normalBias = .02;
+  sun.shadow.mapSize.set(MOBILE ? 1024 : 2048, MOBILE ? 1024 : 2048); sun.shadow.radius = 5; sun.shadow.bias = -0.00015; sun.shadow.normalBias = .02;
   Object.assign(sun.shadow.camera, { left: -1.2, right: 1.2, top: 1.2, bottom: -1.2, near: .1, far: 6 }); scene.add(sun);
   const mgr = new THREE.LoadingManager();
   const bar = document.getElementById('loadBar'); mgr.onProgress = (u, l, t) => bar.style.width = (l / t * 100) + '%';
@@ -292,7 +305,7 @@ async function init3D() {
   /* ── 모델 (여섯 개를 모두 받은 뒤에야 첫 프레임을 그린다) ── */
   const L = new GLTFLoader(mgr);
   const load = p => new Promise((res, rej) => L.load(p, g => res(g.scene), undefined, rej));
-  const [kit, pT, pD, ex, acc, nt, ex2] = await Promise.all(['kit_closed', 'pouches_taste', 'pouches_depth', 'extras', 'accordion', 'note', 'extras2'].map(n => load(`../3d/web/${n}.glb`)));
+  const [kit, pT, pD, ex, acc, nt, ex2] = await Promise.all(['kit_closed', 'pouches_taste', 'pouches_depth', 'extras', 'accordion', 'note', 'extras2'].map(n => load(`../3d/web/${MOBILE ? 'm/' : ''}${n}.glb`)));
   for (const s of [kit, pT, pD, ex, acc, nt, ex2]) s.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; o.material.side = THREE.DoubleSide;
     if (o.material.map) o.material.map.anisotropy = 8; o.material.polygonOffset = true; o.material.polygonOffsetFactor = 1; o.material.polygonOffsetUnits = 1; } });
   scene.add(kit); scene.add(acc); scene.add(nt);
@@ -365,8 +378,9 @@ async function init3D() {
   const hotsEl = document.getElementById('hots');
   const HOTS = [{ o: book, arr: [book], t: FOCUS.acc.t }, { o: note, arr: [note], t: FOCUS.note.t }, { o: sticker, arr: [sticker], t: FOCUS.sticker.t }, { o: scoop, arr: [scoop], t: FOCUS.scoop.t },
     { o: infuser, arr: [infuser], t: FOCUS.infuser.t }, { o: marks[0], arr: marks, t: FOCUS.marks.t }, { o: danpatt, arr: [danpatt], t: FOCUS.danpatt.t }, { o: ganji, arr: [ganji], t: FOCUS.ganji.t },
-    ...[...pouchesT, ...pouchesD].map(g => ({ o: g, arr: [g], t: NAMES[g.userData.key][0] }))];
-  HOTS.forEach(h => { const b = document.createElement('button'); b.className = 'hot'; b.innerHTML = `<i>${h.t}</i>`; b.setAttribute('aria-label', h.t + ' 가까이 보기');
+    ...[...pouchesT, ...pouchesD].map((g, i) => ({ o: g, arr: [g], t: NAMES[g.userData.key][0], p: i === 0 || i === pouchesT.length ? 'p0' : 'p' }))];   // 모바일에선 파우치 줄에 태그 하나만
+  HOTS.forEach(h => { const b = document.createElement('button'); b.className = 'hot ' + (h.p || ''); b.innerHTML = `<i>${h.t}</i>`; b.setAttribute('aria-label', h.t + ' 가까이 보기');
+    b.insertAdjacentHTML('afterbegin', '<span class="ring"></span>');
     b.addEventListener('click', e => { e.stopPropagation(); if (!focus) enterFocus(h.o); }); hotsEl.appendChild(b); h.el = b; });
   const hb = new THREE.Box3(), hv = new THREE.Vector3();
   const fpanel = document.getElementById('fpanel');
@@ -426,6 +440,13 @@ async function init3D() {
     camT.set(S.tx, S.ty, S.tz); orbitPos(camP, camT, S.dist, S.elev, S.orbit + drag);
     const ft = ease(F.t), fo = ease(F.open);
     if (focus) { const c = focus.cam; orbitPos(fP, c.target, c.dist, c.elev, c.orbit); camP.lerp(fP, ft); camT.lerp(c.target, ft); }
+    // 세로 화면 구도 보정: 데스크톱(가로 1.33 기준) 폭이 다 보이도록 화각을 조금 넓히고(최대 48°) 나머지는 거리로. 피사체는 글 위(화면 위쪽 40%)에
+    const asp = cam.aspect, k = Math.max(1, 1.25 / asp);
+    if (k > 1) { const fov = Math.min(48, 32 * Math.sqrt(k)); const kd = k / (Math.tan(deg(fov / 2)) / Math.tan(deg(16)));
+      if (cam.fov !== fov) { cam.fov = fov; cam.updateProjectionMatrix(); }
+      camP.sub(camT).multiplyScalar(kd).add(camT);
+      cam.setViewOffset(innerWidth, innerHeight * 1.28, 0, innerHeight * .26, innerWidth, innerHeight); }
+    else if (cam.fov !== 32 || cam.view?.enabled) { cam.fov = 32; cam.clearViewOffset(); cam.updateProjectionMatrix(); }
     cam.position.copy(camP); cam.lookAt(camT);
     const isF = k => focus && focus.kind === k ? ft : 0, isFo = k => focus && focus.kind === k ? fo : 0;
     // 상자 (glTF Y-up: Blender X→X, Y→-Z, Z→Y)
@@ -495,9 +516,14 @@ async function init3D() {
     renderer.domElement.style.opacity = S.fade;
     renderer.render(scene, cam);
   }
-  renderer.setAnimationLoop(apply);
-  addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  // 저사양 안전망: 시작 후 1.5~4초 사이 평균 프레임이 22fps 미만이면(모바일) 영상 대체로 넘어간다 — 그 전에는 판단하지 않음(로딩 직후 끊김 제외)
+  let frames = 0, t0 = 0, judged = !MOBILE || LITE || Q.has('m');
+  const perfTick = () => { if (judged) return; if (document.visibilityState !== 'visible') { t0 = 0; frames = 0; return; } const now = performance.now(); if (!t0) { t0 = now; return; } frames++;
+    const el_ = now - t0; if (el_ > 4000) { judged = true; if (frames / (el_ / 1000) < 22) { renderer.setAnimationLoop(null); hotsEl.classList.remove('on'); fpanel.classList.remove('on'); startFallback(); } } };
+  renderer.setAnimationLoop(() => { apply(); perfTick(); });
+  addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); ScrollTrigger.refresh(); });
   apply(); document.getElementById('load').classList.add('off');
+  setTimeout(() => { t0 = 0; frames = 0; }, 1500);
 }
 </script>
 </body>

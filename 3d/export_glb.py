@@ -13,11 +13,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import kit_scene as K
 import flatlay_scene as F
 
-OUT = os.path.join(K.ROOT, '3d', 'web')
+MOBILE = os.environ.get('MOBILE') == '1'   # 모바일용: 3d/web/m/ 에 텍스처를 더 줄여서(512/320/384px) 내보낸다
+OUT = os.path.join(K.ROOT, '3d', 'web', 'm') if MOBILE else os.path.join(K.ROOT, '3d', 'web')
+TEX = (512, 320, 384) if MOBILE else (1024, 512, 768)   # (기본, 파우치 알파 PNG, 부속)
 os.makedirs(OUT, exist_ok=True)
 
 
-def shrink_textures(max_px=1024):
+def shrink_textures(max_px=None):
+    max_px = max_px or TEX[0]
     for im in bpy.data.images:
         if im.size[0] > max_px or im.size[1] > max_px:
             s = max_px / max(im.size)
@@ -91,14 +94,14 @@ export(os.path.join(OUT, 'kit_closed.glb'))
 K.reset(); K._mats.clear()
 for i, key in enumerate(['teabag', 'lemon_balm', 'chamomile', 'hibiscus', 'peppermint', 'yuza', 'rose']):
     F.pouch('pouch_' + key, F.flt('pouch_' + key), (i - 3) * 95.0, 0, 0)
-shrink_textures(512)
+shrink_textures(TEX[1])
 export(os.path.join(OUT, 'pouches_taste.glb'))
 
 # 3) Depth 파우치 6개
 K.reset(); K._mats.clear()
 for i, key in enumerate(['brown_rice', 'dandelion_root', 'sorghum', 'barley', 'red_bean', 'solomons_seal']):
     F.pouch('pouch_' + key, F.flt('pouch_' + key), (i - 2.5) * 95.0, 0, 0)
-shrink_textures(512)
+shrink_textures(TEX[1])
 export(os.path.join(OUT, 'pouches_depth.glb'))
 
 # 4) 부속: 일러카드·스쿱 종이·엽서 6장·인퓨저
@@ -107,15 +110,15 @@ F.flat_card('card_taste', F.flt('card_taste_full'), 0, 0, 116, 166, 0)
 F.flat_card('scoop_paper', F.flt('postcard_use'), 140, 0, 104, 146, 0, uv_rot=3)
 F.bookmarks(-120, 80)
 F.infuser((-200, 60), (-200, -120))
-shrink_textures(768)
+shrink_textures(TEX[2])
 export(os.path.join(OUT, 'extras.glb'))
 
 # 5) 힌지 아코디언북 · 노트
 K.reset(); K._mats.clear()
 build_accordion_hinged()
-shrink_textures(768)
+shrink_textures(TEX[2])
 export(os.path.join(OUT, 'accordion.glb'))
 K.reset(); K._mats.clear()
 build_note_hinged()
-shrink_textures(768)
+shrink_textures(TEX[2])
 export(os.path.join(OUT, 'note.glb'))
