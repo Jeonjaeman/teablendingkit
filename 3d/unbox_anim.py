@@ -1,6 +1,7 @@
 """키트 언박싱 — 실물 포장 순서대로 하나씩 꺼내 펼치는 애니메이션(블렌더 직접 연출).
 
 실행:  blender -b --python 3d/unbox_anim.py -- [taste|depth] [--preview]
+       PORTRAIT=1 blender -b --python 3d/unbox_anim.py -- taste   → 세로 9:16(1080x1920) 홈페이지 모바일 대체 영상용
 실물 포장(대표 확인 10/21):
   왼칸 = 띠지 두른 아코디언 북(첫 장 빈 티백 파우치 + 원료 6팩 + 엽서)
   오른칸 = 위에서부터 허브 스티커(일러카드) → 종이 스쿱 → 노트(책) → 간지 → 간지 아래 단팥차 샘플·인퓨저   (10/23 확정)
@@ -10,6 +11,7 @@
 책갈피 부채꼴·인퓨저 왼쪽 아래, 파우치 4+3 오른쪽 아래.
 앞 6초(144프레임)만 렌더하고 인코딩 때 거꾸로 이어 12초 끊김 없는 루프로 만든다.
 출력: 3d/anim/unbox_<ver>/####.png  →  python 3d/make_unbox_mp4.py <ver>
+      세로: 3d/anim/unbox_<ver>_v/####.png  →  python 3d/make_unbox_mp4.py <ver>_v  (wadiz/assets/loop/unbox_<ver>_v.mp4)
 """
 import bpy, math, os, sys
 from mathutils import Vector
@@ -22,6 +24,18 @@ MM = K.MM
 FPS, N = 24, 144
 RES = (960, 640)
 WIDTH = 0.78                       # 화면 폭(m) — flatlay_scene 정지 컷과 같음
+# 세로(PORTRAIT=1): 홈페이지 모바일 대체 영상. 폰에서 object-fit: cover 로 좌우가 10% 안팎 잘리므로 피사체를 화면 폭의
+# 중앙 78% 안에, 세로로는 위쪽 60% 안에 둔다(아래 40% = 글 상자 자리). 가로 플랫레이(0.59 x 0.48)를 정사각형에 가깝게 다시 짠다:
+# 상자·카드·노트 줄은 그대로, 파우치 7팩은 50mm 오른쪽으로, 책갈피 부채꼴은 상자 바로 아래(왼쪽 끝 = 상자 왼쪽 끝),
+# 인퓨저는 파우치 아래에 눕히고 그 오른쪽에 단팥차 샘플 → 0.53 x 0.53.
+PORTRAIT = os.environ.get('PORTRAIT') == '1'
+P_RES = (1080, 1920)
+P_WIDTH = 0.68                     # 화면 폭(m) → 높이 = 0.68 * 16 / 9 = 1.209
+P_CAM = (0.038, -0.317)            # 카메라 중심(m): 피사체(x -0.226~0.303, y -0.318~0.215)가 위쪽 6~50% 에 오도록
+POUCH_DX = 50 if PORTRAIT else 0                                      # 파우치 x 이동(mm)
+MARKS = (-68, -160) if PORTRAIT else F.P(222, 948)                    # 책갈피 부채꼴 축(오른쪽 아래 모서리)
+INFUSER = ((-85, -275), (50, -275)) if PORTRAIT else (F.P(285, 694), F.P(283, 905))   # (손잡이 끝, 공)
+DANPATT = (165, -275) if PORTRAIT else (330, -205)
 BOX = F.P(307, 470)                # 상자 중심(mm) — 정지 컷 자리
 CY = -K.LEDGE / 2 - 1              # 칸 중심 y(상자 기준)
 LEFT = (BOX[0] - K.BX / 4, BOX[1] + CY)
@@ -87,12 +101,13 @@ def build(ver):
     pouch_slots = [sl for sl in slots if sl[2] == 'teabag'] + [sl for sl in slots if sl[2] != 'teabag']
     for n, (u, v, key, z) in enumerate(pouch_slots):
         x, y = Q(u, v)
+        x += POUCH_DX
         fn = (lambda key=key, x=x, y=y, z=z: F.pouch('pouch_' + key, F.flt('pouch_' + key), x, y, z))
         plan.append(('p_' + key, fn, (bk[0], bk[1], bk[2] + n * 0.6), 25 if n % 2 else -25, -0.4, 44 + n * 4.5))
-    plan.append(('marks', lambda: F.bookmarks(*Q(222, 948)), (bk[0], bk[1], bk[2] - 4), 60, -0.5, 76))
+    plan.append(('marks', lambda: F.bookmarks(*MARKS), (bk[0], bk[1], bk[2] - 4), 60, -0.5, 76))
     # ▶ 오른칸 아래: 간지를 왼칸 위로 밀어 두면 그 아래 단팥차 샘플 · 인퓨저
-    plan.append(('danpatt', lambda: F.danpatt(330, -205, 0.3, 9), (R[0] + 15, R[1] - 25, 10), -10, 0.9, 97))
-    plan.append(('infuser', lambda: F.infuser(Q(285, 694), Q(283, 905)), (R[0], R[1] - 10, 4), 0, 0.7, 104))
+    plan.append(('danpatt', lambda: F.danpatt(DANPATT[0], DANPATT[1], 0.3, 9), (R[0] + 15, R[1] - 25, 10), -10, 0.9, 97))
+    plan.append(('infuser', lambda: F.infuser(*INFUSER), (R[0], R[1] - 10, 4), 0, 0.7, 104))
     items = [(group(n_, fn), s_, r, sc, t0) for (n_, fn, s_, r, sc, t0) in plan]
     g = group('ganji', lambda: ganji(0, 0, 0))
     return hinge, items, g
@@ -142,21 +157,33 @@ def main():
     preview = '--preview' in argv
     K.reset(); K._mats.clear()
     sun = F.floor_and_light()
-    F.occluders(sun, hw=WIDTH / 2, hh=WIDTH / 3)
+    if PORTRAIT:
+        w, h = P_WIDTH, P_WIDTH * 16 / 9
+        before = set(bpy.data.objects)
+        F.occluders(sun, hw=w / 2, hh=h / 2)
+        for o in bpy.data.objects:                 # 가림판(창틀 띠·잎 그림자)은 원점 기준이라 카메라 중심만큼 같이 옮긴다
+            if o not in before:
+                o.location.x += P_CAM[0]; o.location.y += P_CAM[1]
+    else:
+        F.occluders(sun, hw=WIDTH / 2, hh=WIDTH / 3)
     hinge, items, g = build(ver)
     animate(hinge, items, g)
-    cam = bpy.data.cameras.new('cam'); cam.type = 'ORTHO'; cam.ortho_scale = WIDTH
+    cam = bpy.data.cameras.new('cam'); cam.type = 'ORTHO'
+    cam.ortho_scale = P_WIDTH * 16 / 9 if PORTRAIT else WIDTH      # 세로는 긴 변(높이)이 ortho_scale
     co = bpy.data.objects.new('cam', cam); bpy.context.scene.collection.objects.link(co)
-    co.location = (0, 0, 1.5)
+    co.location = (P_CAM[0], P_CAM[1], 1.5) if PORTRAIT else (0, 0, 1.5)
     sc = bpy.context.scene
     sc.camera = co
-    K.render_setup(*((600, 400) if preview else RES), samples=16 if preview else 24)
+    if PORTRAIT:
+        K.render_setup(*((540, 960) if preview else P_RES), samples=16 if preview else 24)
+    else:
+        K.render_setup(*((600, 400) if preview else RES), samples=16 if preview else 24)
     sc.view_settings.view_transform = 'Standard'
     sc.view_settings.exposure = -0.45
     sc.render.fps = FPS
     sc.render.use_persistent_data = True
     sc.cycles.use_animated_seed = False
-    out = os.path.join(K.ROOT, '3d', 'anim', f'unbox_{ver}' + ('_preview' if preview else ''))
+    out = os.path.join(K.ROOT, '3d', 'anim', f'unbox_{ver}' + ('_v' if PORTRAIT else '') + ('_preview' if preview else ''))
     os.makedirs(out, exist_ok=True)
     for old in os.listdir(out):
         if old.endswith('.png'):
@@ -166,7 +193,7 @@ def main():
         sc.frame_set(f)
         sc.render.filepath = os.path.join(out, f'{f:04d}.png')
         bpy.ops.render.render(write_still=True)
-    print('RENDERED unbox', ver, len(list(frames)))
+    print('RENDERED unbox', ver, 'portrait' if PORTRAIT else 'landscape', len(list(frames)))
 
 
 main()

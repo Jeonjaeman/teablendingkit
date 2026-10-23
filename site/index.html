@@ -273,6 +273,7 @@ const FALLBACK = Q.has('video') || !canGL;
 function startFallback() {                                   // WebGL 불가·저사양: 언박싱 렌더 영상을 스크롤로 넘김
   document.body.classList.add('fallback');
   const v = document.getElementById('fb');
+  if (innerHeight > innerWidth) { v.poster = v.poster.replace('unbox_taste.jpg', 'unbox_taste_v.jpg'); v.querySelector('source').src = '../wadiz/assets/loop/unbox_taste_v.mp4'; v.load(); }   // 세로 화면 = 9:16 렌더
   const sync = () => { const st = document.getElementById('stage'); const p = clamp01((scrollY) / (st.offsetHeight - innerHeight));
     if (v.duration) v.currentTime = Math.min(v.duration / 2 - .05, p * v.duration / 2); };   // 앞 6초 = 꺼내는 쪽
   v.addEventListener('loadedmetadata', sync); addEventListener('scroll', sync, { passive: true });
