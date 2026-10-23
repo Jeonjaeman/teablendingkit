@@ -16,7 +16,7 @@ MM = 0.001
 BX, BY, BZ = 275.0, 205.0, 74.0      # 베이스 바닥 275(폭 X) x 205(깊이 Y), 벽 높이 74
 T = float(os.environ.get('BOARD_T', '1.6'))   # 판지 두께(mm). 웹 GLB 는 BOARD_T=2.6 으로 두께감을 준다
 WEB = os.environ.get('WEB_EXPORT') == '1'       # 웹용: 모서리 베벨 추가
-LID_Y = BY + 2 * T                    # 뚜껑 깊이
+LID_Y = BY + T                        # 뚜껑 깊이: 뒷벽 바깥면 ~ 앞벽에 붙은 앞 턱 바깥면 (틈 없이)
 BOOK = (132.0, 176.0, 60.0)           # 아코디언북 접힌 상태 (폭, 높이, 두께)
 NOTE = (126.0, 174.0, 11.0)
 LEDGE = 25.0                          # 뒤쪽 'The Right To Taste' 선반 깊이
@@ -67,15 +67,26 @@ def tex(name):
 
 
 # ---------- 기하 유틸 ----------
-def quad(name, corners, mat_front, mat_back=None, thick=T, parent=None, out=None):
+# 겉판 텍스처는 전개도에서 칼선째 잘라 낸 것이라 가장자리 1~2px 이 칼선(검정)이다 → 0.6% 안쪽부터 쓴다
+_E = 0.006
+UV_SHELL = [(_E, 1 - _E), (1 - _E, 1 - _E), (1 - _E, _E), (_E, _E)]
+
+
+def board_edge():
+    """판지 단면(뚜껑·앞 턱·벽 테두리): 인쇄면 평균색(sRGB 242,232,218)의 무지 재질."""
+    return img_mat('board_edge', None, rgb=(0.886, 0.81, 0.704), rough=0.85)
+
+
+def quad(name, corners, mat_front, mat_back=None, thick=T, parent=None, out=None, shell=False):
     """corners: 이미지 TL, TR, BR, BL 순서의 3D 점(mm).
-    out: 인쇄면이 보여야 할 방향(로컬). 면 법선을 이 방향으로 맞춘다(인쇄면 = 법선 쪽)."""
+    out: 인쇄면이 보여야 할 방향(로컬). 면 법선을 이 방향으로 맞춘다(인쇄면 = 법선 쪽).
+    shell: 상자 겉판(뚜껑·앞 턱) — 단면을 인쇄면 재질로 칠하고 베벨을 넣지 않아 맞닿는 판과 틈·홈이 생기지 않게 한다."""
     me = bpy.data.meshes.new(name)
     bm = bmesh.new()
     vs = [bm.verts.new(Vector(c) * MM) for c in corners]
     f = bm.faces.new(vs)
     uv = bm.loops.layers.uv.new('UVMap')
-    for loop, (u, v) in zip(f.loops, [(0, 1), (1, 1), (1, 0), (0, 0)]):
+    for loop, (u, v) in zip(f.loops, UV_SHELL if shell else [(0, 1), (1, 1), (1, 0), (0, 0)]):
         loop[uv].uv = (u, v)
     f.normal_update()
     if out is not None and f.normal.dot(Vector(out)) < 0:
@@ -86,14 +97,54 @@ def quad(name, corners, mat_front, mat_back=None, thick=T, parent=None, out=None
     bpy.context.scene.collection.objects.link(ob)
     me.materials.append(mat_front)
     me.materials.append(mat_back or mat_front)
+    if shell:
+        me.materials.append(board_edge())
     if thick:
         s = ob.modifiers.new('solid', 'SOLIDIFY')
         s.thickness = thick * MM
         s.offset = -1
         s.material_offset = 1
-        s.material_offset_rim = 1
-        if WEB and thick >= 1.0:
+        s.material_offset_rim = 2 if shell else 1
+        if WEB and thick >= 1.0 and not shell:
             _bevel(ob, min(0.45, thick * 0.3))
+    if parent:
+        ob.parent = parent
+    return ob
+
+
+def wall(name, corners, mat_front, mat_back, out, thick=T, parent=None):
+    """상자 벽: 양 끝을 45° 로 맞대는(마이터) 판. corners 는 quad 와 같이 바깥 인쇄면 TL, TR, BR, BL(mm).
+    네 벽이 모서리에서 빗면끼리 맞물려 바깥에 판 단면이 드러나지 않고, 이웃 벽 바깥면과 겹치는 면(깜빡임)도 없다."""
+    me = bpy.data.meshes.new(name)
+    bm = bmesh.new()
+    n_in = -Vector(out).normalized()
+    co = [Vector(c) for c in corners]
+    c0 = sum(co, Vector()) / 4
+    inner = []
+    for v in co:
+        d = v - c0
+        d.z = 0
+        d -= n_in * d.dot(n_in)
+        inner.append(v + n_in * thick - d.normalized() * thick)
+    o = [bm.verts.new(v * MM) for v in co]
+    i = [bm.verts.new(v * MM) for v in inner]
+    fo = bm.faces.new(o)
+    uv = bm.loops.layers.uv.new('UVMap')
+    for loop, (u, v) in zip(fo.loops, UV_SHELL):
+        loop[uv].uv = (u, v)
+    fo.material_index = 0
+    bm.faces.new([i[3], i[2], i[1], i[0]]).material_index = 1
+    for a in range(4):
+        b = (a + 1) % 4
+        bm.faces.new([o[b], o[a], i[a], i[b]]).material_index = 2     # 윗단·아랫단·빗면 = 판지 단면
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(me)
+    bm.free()
+    ob = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(ob)
+    me.materials.append(mat_front)
+    me.materials.append(mat_back)
+    me.materials.append(board_edge())
     if parent:
         ob.parent = parent
     return ob
@@ -200,29 +251,31 @@ def build_box(lid_angle_deg=0.0, origin=(0, 0, 0), with_contents=True, band='tas
     white_in = img_mat('board_white', None, rgb=(0.93, 0.93, 0.91), rough=0.9)
     root = empty('kit', origin)
     hx, hy = BX / 2, BY / 2
-    # 바닥(안쪽은 미장 인서트)
-    quad('floor', [(-hx, hy, T), (hx, hy, T), (hx, -hy, T), (-hx, -hy, T)], plaster_in, white_in, parent=root, out=(0, 0, 1))
+    # 바닥(안쪽은 미장 인서트) — 벽 안쪽에 들어가 벽 바깥면과 겹치지 않게
+    ix, iy = hx - T, hy - T
+    quad('floor', [(-ix, iy, T), (ix, iy, T), (ix, -iy, T), (-ix, -iy, T)], plaster_in, white_in, parent=root, out=(0, 0, 1))
     # 앞벽(-Y) "Taste / Depth": 이미지 위 = +X, 왼쪽 = 위
     m = img_mat('base_front', tex('base_front'), bump=0.2)
-    quad('wall_front', [(hx, -hy, BZ), (hx, -hy, 0), (-hx, -hy, 0), (-hx, -hy, BZ)], m, plaster_in, parent=root, out=(0, -1, 0))
+    wall('wall_front', [(hx, -hy, BZ), (hx, -hy, 0), (-hx, -hy, 0), (-hx, -hy, BZ)], m, plaster_in, parent=root, out=(0, -1, 0))
     # 뒷벽(+Y, 힌지)
     m = img_mat('base_back', tex('base_back'), bump=0.2)
-    quad('wall_back', [(hx, hy, 0), (hx, hy, BZ), (-hx, hy, BZ), (-hx, hy, 0)], m, plaster_in, parent=root, out=(0, 1, 0))
+    wall('wall_back', [(hx, hy, 0), (hx, hy, BZ), (-hx, hy, BZ), (-hx, hy, 0)], m, plaster_in, parent=root, out=(0, 1, 0))
     # 끝벽 +X (문단) / -X (www · With Thanks, 원고에서 거꾸로 배치)
     m = img_mat('base_end_a', tex('base_end_a'), bump=0.2)
-    quad('wall_endA', [(hx, -hy, BZ), (hx, hy, BZ), (hx, hy, 0), (hx, -hy, 0)], m, plaster_in, parent=root, out=(1, 0, 0))
+    wall('wall_endA', [(hx, -hy, BZ), (hx, hy, BZ), (hx, hy, 0), (hx, -hy, 0)], m, plaster_in, parent=root, out=(1, 0, 0))
     m = img_mat('base_end_b', tex('base_end_b'), bump=0.2)
-    quad('wall_endB', [(-hx, -hy, 0), (-hx, hy, 0), (-hx, hy, BZ), (-hx, -hy, BZ)], m, plaster_in, parent=root, out=(-1, 0, 0))
+    wall('wall_endB', [(-hx, -hy, 0), (-hx, hy, 0), (-hx, hy, BZ), (-hx, -hy, BZ)], m, plaster_in, parent=root, out=(-1, 0, 0))
     # 뚜껑: 뒷벽 위 모서리 힌지
     hinge = empty('lid_hinge', (0, hy, BZ))
     hinge.parent = root
     lid_top = img_mat('lid_top', tex('lid_top'), bump=0.2)
     ly = LID_Y
-    # 뚜껑 이미지: 왼쪽 = 힌지(+Y), 위 = +X
-    quad('lid_top', [(hx + T, 0, T), (hx + T, -ly, T), (-hx - T, -ly, T), (-hx - T, 0, T)], lid_top, white_in, parent=hinge, out=(0, 0, 1))
+    # 뚜껑 이미지: 왼쪽 = 힌지(+Y), 위 = +X. 폭은 상자 바깥선(±hx)과 같고, 앞쪽 끝은 앞 턱 바깥면과 같다 — 옆으로 튀어나온 턱이 없다
+    quad('lid_top', [(hx, 0, T), (hx, -ly, T), (-hx, -ly, T), (-hx, 0, T)], lid_top, white_in, parent=hinge, out=(0, 0, 1), shell=True)
     lid_front = img_mat('lid_front', tex('lid_front'), bump=0.2)
     flap_piv = empty('flap_pivot', (0, -ly, 0)); flap_piv.parent = hinge
-    quad('lid_flap', [(hx - 2, 0, 0), (hx - 2, 0, -BZ + 6), (-hx + 2, 0, -BZ + 6), (-hx + 2, 0, 0)], lid_front, white_in, parent=flap_piv, out=(0, -1, 0))
+    # 앞 턱: 상자 폭 그대로, 앞벽 바깥면에 붙어(두께 T) 바닥 0.6mm 위까지 덮는다
+    quad('lid_flap', [(hx, 0, 0), (hx, 0, -BZ + 0.6), (-hx, 0, -BZ + 0.6), (-hx, 0, 0)], lid_front, white_in, parent=flap_piv, out=(0, -1, 0), shell=True)
     flap_piv.rotation_euler = (math.radians(-(90.0 - flap)), 0, 0)
     hinge.rotation_euler = (math.radians(-lid_angle_deg), 0, 0)
     # 칸막이 (X=0, 엄지 구멍)
@@ -251,8 +304,8 @@ def build_box(lid_angle_deg=0.0, origin=(0, 0, 0), with_contents=True, band='tas
     # 플랩 끝(자유단) 쪽 모서리는 크게 둥글고, 뚜껑 접선 쪽 모서리는 작게 둥글다(실물 사진).
     ear_len, ear_h = 48.0, BZ - 8
     for sgn in (1, -1):
-        xe = sgn * (hx - 2)
-        piv = empty(f'ear_pivot_{sgn:+d}', (xe, 0, 0)); piv.parent = flap_piv
+        xe = sgn * (hx - T - 0.4)          # 닫히면 측벽 안쪽 면에 붙는다(벽 밖으로 비어져 나오지 않게)
+        piv = empty(f'ear_pivot_{sgn:+d}', (xe, T + 0.2, 0)); piv.parent = flap_piv     # 앞 턱 안쪽 면에서 시작(바깥면에 귀 단면이 비치지 않게)
         ear_pts = [(0, 0), (ear_len, 0), (ear_len, -ear_h), (0, -ear_h)]
         pts2 = rounded(ear_pts, [0, 8, 36, 0], seg=12)
         ngon(f'lid_ear_{sgn:+d}', [(0, y_, z_) for (y_, z_) in pts2], lid_front, white_in, parent=piv, out=(sgn, 0, 0))
