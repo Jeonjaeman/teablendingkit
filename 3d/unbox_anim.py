@@ -2,10 +2,10 @@
 
 실행:  blender -b --python 3d/unbox_anim.py -- [taste|depth] [--preview]
 실물 포장(대표 확인 10/21):
-  왼칸 = 띠지 두른 아코디언 북(첫 장 빈 티백 파우치 + 원료 6팩 + 엽서), 그 위에 허브 스티커(일러카드)·종이 스쿱
-  오른칸 = 노트(책) → 간지 → 간지 아래 단팥차 샘플·인퓨저                              (대표 최종 확인 10/22)
-순서: 뚜껑 열림 → 왼칸 허브 스티커 → 종이 스쿱 → 북에서 빈 티백 → 원료 6팩 → 엽서
-      → 오른칸 노트 → 간지를 왼칸 위로 밀어 둠 → 단팥차 샘플·인퓨저 → 간지 다시 넣음 → 뚜껑 닫힘
+  왼칸 = 띠지 두른 아코디언 북(첫 장 빈 티백 파우치 + 원료 6팩 + 엽서)
+  오른칸 = 위에서부터 허브 스티커(일러카드) → 종이 스쿱 → 노트(책) → 간지 → 간지 아래 단팥차 샘플·인퓨저   (10/23 확정)
+순서: 뚜껑 열림 → 오른칸 허브 스티커 → 종이 스쿱 → 노트 → 왼칸 북에서 빈 티백 → 원료 6팩 → 엽서
+      → 간지를 왼칸 위로 밀어 둠 → 단팥차 샘플·인퓨저 → 간지 다시 넣음 → 뚜껑 닫힘
 마지막 프레임 = flatlay_scene 정지 컷 배열(대표 레퍼런스 10/21): 닫힌 상자 왼쪽 위, 스쿱 종이·카드·노트 오른쪽 위,
 책갈피 부채꼴·인퓨저 왼쪽 아래, 파우치 4+3 오른쪽 아래.
 앞 6초(144프레임)만 렌더하고 인코딩 때 거꾸로 이어 12초 끊김 없는 루프로 만든다.
@@ -77,20 +77,19 @@ def build(ver):
     slots = list(zip((361.5, 497.5, 631.5, 769.5), [741.5] * 4, kit['row1'], (0.2, 0.25, 0.3, 0.35))) +         list(zip((421, 560, 699.5), [887] * 3, kit['row2'], (4.2, 4.3, 4.4)))
     L = LEFT
     top = K.BOOK[2] + K.T                                            # 병풍책 윗면 높이
-    # ▶ 왼칸(대표 최종 확인 10/22): 아코디언 북 위 허브 스티커(일러카드) → 종이 스쿱
+    # ▶ 오른칸 노트 위(10/23 확정): 허브 스티커(일러카드) → 종이 스쿱 → 노트(책)
     plan.append(('card', lambda: F.flat_card(kit['card'] + '_c', F.flt(kit['card']), F.CARD[0], F.CARD[1], 116, 166, 0.45, rot=F.CARD[2]),
-                 (L[0], L[1], top + 3), 0, 0.95, 26))
+                 (R[0], R[1], 57), 0, 0.95, 26))
     plan.append(('scoop', lambda: F.flat_card('scoop_paper', F.flt('postcard_use'), F.SCOOP[0], F.SCOOP[1], 104, 146, 0.0, uv_rot=3, rot=F.SCOOP[2]),
-                 (L[0], L[1], top + 1.5), 0, 0.95, 31))
+                 (R[0], R[1], 56), 0, 0.95, 31))
+    plan.append(('note', lambda: F.note(F.NOTE[0], F.NOTE[1], 115, 152, 11, F.NOTE[2]), (R[0], R[1], 44), 0, 1.0, 36))
     # ▶ 왼칸: 아코디언 북 — 첫 장의 빈 티백 파우치(대표 확인 10/22 16:53) → 원료 6팩 → 엽서
     pouch_slots = [sl for sl in slots if sl[2] == 'teabag'] + [sl for sl in slots if sl[2] != 'teabag']
     for n, (u, v, key, z) in enumerate(pouch_slots):
         x, y = Q(u, v)
         fn = (lambda key=key, x=x, y=y, z=z: F.pouch('pouch_' + key, F.flt('pouch_' + key), x, y, z))
-        plan.append(('p_' + key, fn, (bk[0], bk[1], bk[2] + n * 0.6), 25 if n % 2 else -25, -0.4, 38 + n * 4.5))
-    plan.append(('marks', lambda: F.bookmarks(*Q(222, 948)), (bk[0], bk[1], bk[2] - 4), 60, -0.5, 70))
-    # ▶ 오른칸: 노트(책)
-    plan.append(('note', lambda: F.note(F.NOTE[0], F.NOTE[1], 115, 152, 11, F.NOTE[2]), (R[0], R[1], 44), 0, 1.0, 76))
+        plan.append(('p_' + key, fn, (bk[0], bk[1], bk[2] + n * 0.6), 25 if n % 2 else -25, -0.4, 44 + n * 4.5))
+    plan.append(('marks', lambda: F.bookmarks(*Q(222, 948)), (bk[0], bk[1], bk[2] - 4), 60, -0.5, 76))
     # ▶ 오른칸 아래: 간지를 왼칸 위로 밀어 두면 그 아래 단팥차 샘플 · 인퓨저
     plan.append(('danpatt', lambda: F.danpatt(330, -205, 0.3, 9), (R[0] + 15, R[1] - 25, 10), -10, 0.9, 97))
     plan.append(('infuser', lambda: F.infuser(Q(285, 694), Q(283, 905)), (R[0], R[1] - 10, 4), 0, 0.7, 104))
@@ -162,7 +161,7 @@ def main():
     for old in os.listdir(out):
         if old.endswith('.png'):
             os.remove(os.path.join(out, old))
-    frames = [1, 28, 34, 44, 62, 72, 80, 92, 104, 145] if preview else range(1, N + 2)
+    frames = [1, 28, 34, 40, 56, 76, 88, 100, 110, 145] if preview else range(1, N + 2)
     for f in frames:
         sc.frame_set(f)
         sc.render.filepath = os.path.join(out, f'{f:04d}.png')
