@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>취향의 권리 — 이야기</title>
+<meta name="description" content="삶은, 끝나지 않는 블렌딩. 취향의 권리가 만들어진 이유와 생각.">
+<link rel="icon" href="../wadiz/assets/emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+/* 이야기 페이지: 스크롤 에세이. 한 화면에 한 문단, 사진은 옆에 조용히 */
+.ch{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:6vw;padding:14vh 8vw;position:relative}
+.ch:nth-child(even) .pic{order:2}
+.ch .pic{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg2)}
+.ch .pic img,.ch .pic video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.ch.on .pic img,.ch.on .pic video{transform:none}
+.ch .pic.wide{aspect-ratio:3/2}
+.ch .pic.cut{background:transparent}
+.ch .pic.cut img{object-fit:contain;transform:none}
+.ch .cap{position:absolute;left:0;bottom:-28px;font:400 11px/1.6 var(--sans);letter-spacing:.06em;color:var(--ink-mute)}
+.ch .body{max-width:520px}
+.ch .body > *{opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+.ch.on .body > *{opacity:1;transform:none}
+.ch.on .body > *:nth-child(2){transition-delay:.12s}.ch.on .body > *:nth-child(3){transition-delay:.24s}.ch.on .body > *:nth-child(4){transition-delay:.36s}
+.ch p{font:300 17px/1.95 var(--sans);color:var(--ink);margin:0 0 18px}
+.ch p.en{font:italic 300 16px/1.7 var(--serif-en);color:var(--ink-mute)}
+.ch blockquote{font:300 clamp(22px,2.4vw,30px)/1.6 var(--serif-kr);margin:0 0 20px;letter-spacing:-.01em}
+.ch blockquote b{font-weight:400;background:linear-gradient(transparent 62%,rgba(31,77,58,.16) 62%)}
+.cover{min-height:100vh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden}
+.cover video,.cover img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(244,240,232,.2),rgba(244,240,232,.95) 70%,var(--bg))}
+.cover .in{position:relative;z-index:1;padding:0 24px}
+.cover .em{width:54px;height:54px;margin:0 auto 26px;display:block}
+.cover h1{font:200 clamp(36px,5.4vw,72px)/1.25 var(--serif-kr);margin:0 0 14px;letter-spacing:-.02em}
+.cover .en{font:italic 300 clamp(16px,1.6vw,20px) var(--serif-en);color:var(--ink-mute)}
+.keys{min-height:auto;padding:12vh 8vw;display:block}
+.keys .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1180px;margin:0 auto}
+.keys .k{border-top:1px solid var(--ink);padding-top:22px;opacity:0;transform:translateY(14px);transition:opacity .9s,transform .9s}
+.keys.on .k{opacity:1;transform:none}.keys.on .k:nth-child(2){transition-delay:.15s}.keys.on .k:nth-child(3){transition-delay:.3s}
+.keys .k .no{font:italic 300 15px var(--serif-en);color:var(--ink-mute)}
+.keys .k h3{font:300 24px/1.4 var(--serif-kr);margin:10px 0 12px}
+.keys .k p{font:300 15px/1.85 var(--sans);color:var(--ink-mute);margin:0}
+.guide{min-height:100vh;display:grid;place-items:center;text-align:center;padding:14vh 8vw;position:relative;overflow:hidden}
+.guide .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28;filter:saturate(.8)}
+.guide .in{position:relative;z-index:1;max-width:620px}
+.guide .line{font:200 clamp(22px,2.6vw,34px)/1.7 var(--serif-kr);margin:0 0 10px;opacity:0;transform:translateY(12px);transition:opacity 1s,transform 1s}
+.guide.on .line{opacity:1;transform:none}
+.guide.on .line:nth-child(2){transition-delay:.4s}.guide.on .line:nth-child(3){transition-delay:.8s}.guide.on .line:nth-child(4){transition-delay:1.2s}
+.guide .en{font:italic 300 16px/1.7 var(--serif-en);color:var(--ink-mute);margin-top:22px;display:block}
+.makers{padding:14vh 8vw;display:block;min-height:auto}
+.makers .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1180px;margin:0 auto}
+.mk{display:grid;grid-template-columns:160px 1fr;gap:26px;align-items:start}
+.mk img{width:160px;aspect-ratio:4/5;object-fit:cover;display:block;filter:grayscale(1)}
+.mk .role{font:400 11px/1.6 var(--sans);letter-spacing:.14em;color:var(--acc)}
+.mk .nm{font:300 30px/1.2 var(--serif-kr);margin:8px 0 2px}
+.mk .tt{font:400 14px var(--sans);color:var(--ink-mute);margin-bottom:12px}
+.mk p{font:300 14.5px/1.85 var(--sans);margin:0}
+.qs{padding:12vh 8vw 16vh;display:block;min-height:auto;text-align:center}
+.qs h2{font:200 clamp(26px,3vw,40px)/1.5 var(--serif-kr);margin:0 0 28px}
+.qs ul{list-style:none;padding:0;margin:0 auto 44px;max-width:560px;font:300 17px/2.2 var(--sans);color:var(--ink-mute)}
+.qs .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@media (max-width:860px){
+  .ch{grid-template-columns:1fr;gap:28px;padding:10vh 6vw}
+  .ch:nth-child(even) .pic{order:0}
+  .ch .pic{aspect-ratio:4/3}
+  .keys .grid,.makers .grid{grid-template-columns:1fr}
+  .mk{grid-template-columns:120px 1fr}.mk img{width:120px}
+}
+</style>
+</head>
+<body class="story">
+
+<header class="top">
+  <a class="logo" href="index.html"><img src="../wadiz/assets/emblem.svg" alt=""><span>The Right to Taste</span></a>
+  <nav>
+    <a class="btn on" href="story.html">이야기</a>
+    <a class="btn" href="index.html#quiz">취향 찾기</a>
+    <a class="btn" href="index.html#kit">키트 보기</a>
+    <a class="btn acc" href="index.html#buy">구매</a>
+  </nav>
+</header>
+
+<main>
+  <!-- 표지 -->
+  <section class="cover">
+    <!-- 표지 영상: 찻잎·꽃잎이 날리는 8초 루프 (힉스필드 Seedance 2.5, 10/23) -->
+    <video autoplay muted loop playsinline poster="../wadiz/assets/loop/leaves_drift.jpg"><source src="../wadiz/assets/loop/leaves_drift.mp4" type="video/mp4"></video>
+    <div class="in">
+      <img class="em" src="../wadiz/assets/emblem.svg" alt="">
+      <h1>삶은,<br>끝나지 않는 블렌딩</h1>
+      <div class="en">Life is an endless blending.</div>
+    </div>
+  </section>
+
+  <!-- 1. 찻잎 하나 -->
+  <section class="ch">
+    <div class="pic"><img src="../wadiz/assets/real/herbs_taste.jpg" alt="허브 여섯 가지"><span class="cap">레몬밤 · 캐모마일 · 히비스커스 · 장미 · 유자 · 페퍼민트</span></div>
+    <div class="body">
+      <blockquote>찻잎 하나를 코에 가까이<br>대본 적이 있습니까.</blockquote>
+      <p>혼자서도 이미 향이 있습니다. 그런데 다른 잎과 섞이는 순간, 그 향은 더 깊어지고 다채로워집니다.</p>
+      <p class="en">Have you ever held a single tea leaf close to your nose? It already has a scent of its own. But the moment it meets another leaf, that scent grows deeper and richer.</p>
+    </div>
+  </section>
+
+  <!-- 2. 우리의 삶도 -->
+  <section class="ch">
+    <div class="pic"><img src="../wadiz/assets/photo/hands-herbs.jpg" alt="허브를 만지는 손"></div>
+    <div class="body">
+      <blockquote>우리의 삶도 그렇습니다.</blockquote>
+      <p>살아온 순간들, 살아가는 시간, 그리고 만나게 될 수많은 경험들은 끝없이 더해지고, 어우러지며 완성되어 갑니다.</p>
+      <p>좋은 재료는 혼자서도 충분하지만, 서로 만나면 서로를 더 좋게 만듭니다. 사람도 그렇습니다. 「취향의 권리」는 이 블렌딩으로서의 삶을 차 한 잔에 담습니다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 만든 이유 -->
+  <section class="ch">
+    <div class="pic"><img src="../wadiz/assets/photo/lee_soyeon.jpg" alt="이소연"><span class="cap">대한명인 차블렌딩명인 이소연</span></div>
+    <div class="body">
+      <blockquote>사실은 한 분 한 분을 직접 만나<br>차를 나누어 마시고 싶었습니다.</blockquote>
+      <p>하지만 그것은 현실적으로 쉽지 않은 일입니다. 그래서 이 티 블렌딩 키트가 그 역할을 대신해 주기를 바랐습니다.</p>
+      <p>허브를 관찰하고 블렌딩하는 경험을 통해 자신의 취향과 감각을 발견하고, 나를 조금 더 이해하는 시간을 선물하고 싶어 만들었습니다.</p>
+    </div>
+  </section>
+
+  <!-- 4. 정답이 없는 키트 -->
+  <section class="ch">
+    <div class="pic cut"><img src="../wadiz/assets/3d/closed_cut.png" alt="취향의 권리 키트 상자"></div>
+    <div class="body">
+      <blockquote>이 키트에는 <b>정답이 없습니다.</b></blockquote>
+      <p>어떤 허브가 가장 좋은지 알려드리지 않습니다. 오직 오늘의 나에게 무엇이 편안한지 발견해 가는 과정이 있을 뿐입니다.</p>
+      <p>전문가에게는 원칙이 있지만, 당신에게는 취향의 권리가 있습니다. 추천 비율은 취향을 발견하기 위한 첫 번째 기준일 뿐, 반 스푼의 차이가 곧 당신의 레시피가 됩니다.</p>
+      <p class="en">There is no right answer in this cup. Only the process of discovering what feels right for you today.</p>
+    </div>
+  </section>
+
+  <!-- 5. 핵심 메시지 3 -->
+  <section class="keys">
+    <div class="grid">
+      <div class="k"><div class="no">01 · Discover</div><h3>발견의 경험</h3><p>정답을 알려주지 않습니다. 오늘의 나에게 무엇이 편안하고 어디에 마음이 머무는지 스스로 발견합니다.</p></div>
+      <div class="k"><div class="no">02 · Care</div><h3>감각으로 돌봄</h3><p>향을 맡고 맛을 음미하는 시간이, 곧 나를 이해하고 돌보는 시간이 됩니다.</p></div>
+      <div class="k"><div class="no">03 · Choose</div><h3>나의 선택</h3><p>유행이나 타인의 시선이 아니라 내 감각이 이끄는 취향을 존중합니다. 그것이 ‘취향의 권리’입니다.</p></div>
+    </div>
+  </section>
+
+  <!-- 6. 감각 가이드 -->
+  <section class="guide">
+    <img class="bg" src="../wadiz/assets/loop/c06_smell.jpg" alt="">
+    <div class="in">
+      <p class="line">첫 모금 전에, 아주 잠깐만 멈추어 보자.</p>
+      <p class="line">천천히 숨을 들이마시고 길게 내쉰다.</p>
+      <p class="line">좋은 향인지 판단하기 전에, 그저 어떤 향인지 느껴본다.</p>
+      <p class="line">낯설어도 괜찮다. 마음에 들지 않아도 괜찮다.</p>
+      <span class="en">Before judging if it smells good, simply notice what it smells like.</span>
+    </div>
+  </section>
+
+  <!-- 7. 기록 -->
+  <section class="ch">
+    <div class="pic"><img src="../wadiz/assets/photo/book_11and4.jpg" alt="블렌딩 노트"><span class="cap">블렌딩 노트 — 비율과 그날의 감상을 적는 페이지</span></div>
+    <div class="body">
+      <blockquote>향은 지나가지만,<br>기록은 취향을 남깁니다.</blockquote>
+      <p>선택한 원료와 비율, 첫 향과 마지막 여운을 기록하면 한 번의 경험이 나만의 레시피가 됩니다.</p>
+      <p>차를 기록하는 것이 아니라, 나의 취향을 기록합니다.</p>
+    </div>
+  </section>
+
+  <!-- 8. 만든 사람 -->
+  <section class="makers">
+    <div class="grid">
+      <div class="mk"><img src="../wadiz/assets/photo/lee_soyeon.jpg" alt="이소연"><div>
+        <div class="role">TEA BLENDER</div><div class="nm">이소연</div><div class="tt">대한명인 차블렌딩명인</div>
+        <p>찻잎과 허브의 결을 읽어 여러 기업의 한 잔을 설계하고, 그 감각을 가르쳐 온 블렌더. 저서 『11시와 4시, 나는 차를 마신다』, 『Life in My Teacup』.</p></div></div>
+      <div class="mk"><img src="../wadiz/assets/photo/yang_jinho.jpg" alt="양진호"><div>
+        <div class="role">ROASTER</div><div class="nm">양진호</div><div class="tt">엘카페커피로스터스 대표</div>
+        <p>16년째 로스팅을 이어 오며, 많은 커피 전문가를 길러 낸 로스터. VER.2 Depth의 로스터 레시피를 설계했습니다.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 9. 오늘의 질문 -->
+  <section class="qs">
+    <h2>오늘의 질문</h2>
+    <ul>
+      <li>오늘 당신의 마음은 어디에 가장 오래 머물렀나요</li>
+      <li>어떤 향이 가장 오래 기억에 남았나요</li>
+      <li>오늘 당신은 어떤 차를 마시고 싶은가</li>
+      <li>누구와 함께 마시고 싶은가</li>
+    </ul>
+    <div class="cta"><a class="btn acc" href="index.html#quiz">1분 취향 찾기 →</a><a class="btn" href="index.html">상자 열어 보기</a></div>
+  </section>
+</main>
+
+<footer class="foot"><span>© 취향의 권리 · The Right to Taste</span><span>문의 · 카카오 채널</span></footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('on', e.isIntersecting)), { threshold: .25 });
+document.querySelectorAll('.ch, .keys, .guide').forEach(s => io.observe(s));
+</script>
+</body>
+</html>

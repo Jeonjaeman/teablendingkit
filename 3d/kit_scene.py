@@ -14,7 +14,8 @@ MM = 0.001
 
 # ---------- 치수 (mm) ----------
 BX, BY, BZ = 275.0, 205.0, 74.0      # 베이스 바닥 275(폭 X) x 205(깊이 Y), 벽 높이 74
-T = 1.6                               # 판지 두께
+T = float(os.environ.get('BOARD_T', '1.6'))   # 판지 두께(mm). 웹 GLB 는 BOARD_T=2.6 으로 두께감을 준다
+WEB = os.environ.get('WEB_EXPORT') == '1'       # 웹용: 모서리 베벨 추가
 LID_Y = BY + 2 * T                    # 뚜껑 깊이
 BOOK = (132.0, 176.0, 60.0)           # 아코디언북 접힌 상태 (폭, 높이, 두께)
 NOTE = (126.0, 174.0, 11.0)
@@ -91,6 +92,8 @@ def quad(name, corners, mat_front, mat_back=None, thick=T, parent=None, out=None
         s.offset = -1
         s.material_offset = 1
         s.material_offset_rim = 1
+        if WEB and thick >= 1.0:
+            _bevel(ob, min(0.45, thick * 0.3))
     if parent:
         ob.parent = parent
     return ob
@@ -148,9 +151,17 @@ def ngon(name, pts3d, mat_front, mat_back=None, thick=T, parent=None, out=None):
     if thick:
         sm = ob.modifiers.new('solid', 'SOLIDIFY'); sm.thickness = thick * MM; sm.offset = -1
         sm.material_offset = 1; sm.material_offset_rim = 1
+        if WEB and thick >= 1.0:
+            _bevel(ob, min(0.45, thick * 0.3))
     if parent:
         ob.parent = parent
     return ob
+
+
+def _bevel(ob, width_mm):
+    """모서리를 살짝 둥글려 빛을 받게 한다(웹 GLB 전용)."""
+    b = ob.modifiers.new('bevel', 'BEVEL')
+    b.width = width_mm * MM; b.segments = 2; b.limit_method = 'ANGLE'; b.angle_limit = math.radians(40)
 
 
 def box_obj(name, size, loc, mat, parent=None):
@@ -160,6 +171,8 @@ def box_obj(name, size, loc, mat, parent=None):
     ob.scale = Vector(size) * MM
     bpy.ops.object.transform_apply(scale=True)
     ob.data.materials.append(mat)
+    if WEB:
+        _bevel(ob, 0.4)
     if parent:
         ob.parent = parent
     return ob

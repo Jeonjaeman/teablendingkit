@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>취향의 권리 — The Right to Taste</title>
+<meta name="description" content="어떤 날에는 꽃처럼 향긋하게, 어떤 날에는 커피처럼 깊게. 스크롤하며 상자를 열고, 1분 취향 테스트로 나의 키트를 고르세요.">
+<link rel="icon" href="../wadiz/assets/emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="../shared/taste-test.css">
+<style>
+/* 3D 캔버스 · 대체 영상: 항상 화면에 고정 */
+#gl,#fb{position:fixed;inset:0;z-index:0}
+#gl canvas{display:block;width:100%;height:100%}
+#gl.hand canvas{cursor:pointer}
+#fb{display:none;object-fit:cover;width:100%;height:100%;filter:saturate(.95)}
+body.fallback #fb{display:block}body.fallback #gl{display:none}
+
+/* 진행 점 · 힌트 · 문의 */
+.dots{position:fixed;left:26px;bottom:26px;z-index:30;display:flex;flex-direction:column;gap:9px;transition:opacity .4s}
+.dots button{width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);background:transparent;padding:0;cursor:pointer;opacity:.4;transition:all .25s;position:relative}
+.dots button.on{background:var(--ink);opacity:1;transform:scale(1.35)}
+.dots button::after{content:attr(data-t);position:absolute;left:16px;top:-4px;font:400 11px var(--sans);color:var(--ink-mute);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none}
+.dots button:hover::after{opacity:1}
+.kakao{position:fixed;right:26px;bottom:26px;z-index:30;font-size:12px;color:var(--ink-mute);transition:opacity .3s}
+.kakao.hide{opacity:0;pointer-events:none}
+.hint{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);font-family:var(--serif-en);font-style:italic;font-size:14px;color:var(--ink-mute);z-index:20;transition:opacity .4s;display:flex;align-items:center;gap:8px}
+.hint i{display:block;width:1px;height:28px;background:var(--ink-mute);transform-origin:top;animation:hint 1.8s ease-in-out infinite}
+@keyframes hint{0%{transform:scaleY(0);opacity:0}40%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1) translateY(10px);opacity:0}}
+
+/* 스크롤 무대: 섹션 9개 x 100vh, 글은 화면에 떠 있음 */
+#stage{position:relative;z-index:1;pointer-events:none}   /* 투명 섹션이 캔버스 클릭·드래그를 가로채지 않도록. 글 상자만 .on 일 때 받는다 */
+.sec{height:100vh;position:relative}
+.sec .txt{position:fixed;top:50%;transform:translateY(-50%);max-width:400px;opacity:0;pointer-events:none;transition:opacity .55s,transform .55s;padding:26px 28px;border-radius:4px}
+.sec .txt::before{content:"";position:absolute;inset:-30px -40px;z-index:-1;border-radius:60px;
+  background:radial-gradient(closest-side,rgba(244,240,232,.92),rgba(244,240,232,.7) 55%,rgba(244,240,232,0))}
+.sec .txt.on{opacity:1}
+.sec .txt.on button,.sec .txt.on .toggle{pointer-events:auto}   /* 글 상자는 클릭을 가로채지 않고(뒤의 소품을 누를 수 있게) 버튼만 받는다 */
+body.focusing .sec .txt,body.focusing .dots,body.focusing .hint{opacity:0!important;pointer-events:none!important}
+.sec.l .txt{left:7vw}.sec.r .txt{right:7vw}
+.sec.c .txt{left:50%;transform:translate(-50%,-50%);text-align:center;max-width:640px}
+.sec.t .txt{top:16vh;transform:translate(-50%,0)}
+.eyebrow{font-family:var(--serif-en);font-style:italic;font-weight:300;font-size:15px;color:var(--ink-mute);letter-spacing:.05em}
+h1,h2{font-family:var(--serif-kr);font-weight:200;line-height:1.3;margin:14px 0 16px;letter-spacing:-.01em}
+h1{font-size:clamp(30px,4.2vw,54px)}h2{font-size:clamp(24px,3vw,38px)}
+.sub{font-size:15px;line-height:1.85;color:var(--ink-mute);margin:0}
+.ing{font-size:13px;line-height:2;color:var(--ink-mute);margin-top:12px;letter-spacing:.04em}
+.toggle{display:inline-flex;border:1px solid var(--ink);border-radius:999px;padding:3px;margin-top:22px}
+.toggle button{border:0;background:transparent;font:400 13px var(--sans);padding:9px 18px;border-radius:999px;cursor:pointer;color:var(--ink);transition:background .25s,color .25s}
+.toggle button.on{background:var(--ink);color:var(--bg)}
+/* 원료 툴팁 */
+#tip{position:fixed;z-index:25;pointer-events:none;opacity:0;transition:opacity .2s;background:rgba(27,26,23,.9);color:#fff;padding:9px 12px;border-radius:3px;font-size:12px;line-height:1.5;transform:translate(14px,-50%)}
+#tip b{display:block;font-weight:400;font-size:13px;margin-bottom:2px}
+/* 클릭 가능 표시: 소품 모서리의 작은 「+」 태그 (물건을 가리지 않음), 호버하면 이름 */
+#hots{position:fixed;inset:0;z-index:22;pointer-events:none;opacity:0;transition:opacity .5s}
+#hots.on{opacity:1}
+.hot{position:fixed;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;border:1px solid var(--ink);border-radius:50%;background:rgba(244,240,232,.92);padding:0;cursor:pointer;pointer-events:auto;box-shadow:0 1px 5px rgba(0,0,0,.14);transition:background .2s,transform .2s}
+.hot::before,.hot::after{content:"";position:absolute;left:50%;top:50%;background:var(--ink);transition:background .2s}
+.hot::before{width:9px;height:1px;margin:0 0 0 -4.5px}.hot::after{width:1px;height:9px;margin:-4.5px 0 0 0}
+.hot:hover{background:var(--ink);transform:scale(1.1)}.hot:hover::before,.hot:hover::after{background:var(--bg)}
+.hot i{position:absolute;left:28px;top:50%;transform:translateY(-50%);white-space:nowrap;font:400 11.5px var(--sans);letter-spacing:.04em;color:var(--ink);background:rgba(244,240,232,.94);padding:5px 10px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;font-style:normal;box-shadow:0 1px 5px rgba(0,0,0,.1)}
+.hot:hover i{opacity:1}
+.hot.off{display:none}
+/* 소품 위에서의 커서: 손가락 대신 「보기」 원 */
+#cur{position:fixed;left:0;top:0;z-index:26;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;border:1px solid var(--ink);background:rgba(244,240,232,.55);backdrop-filter:blur(2px);display:grid;place-items:center;font:400 11px/1 var(--sans);letter-spacing:.08em;color:var(--ink);pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .2s,transform .25s}
+#cur.on{opacity:1;transform:scale(1)}
+#gl.hand canvas{cursor:none}
+#tip{transform:translate(36px,-50%)}
+/* 소품 클릭 연출 패널 */
+#fpanel{position:fixed;left:50%;bottom:36px;transform:translate(-50%,24px);z-index:28;max-width:520px;width:calc(100% - 48px);text-align:center;opacity:0;pointer-events:none;transition:opacity .45s,transform .45s;padding:22px 26px 20px;border-radius:4px}
+#fpanel::before{content:"";position:absolute;inset:-26px -40px;z-index:-1;border-radius:60px;background:radial-gradient(closest-side,rgba(244,240,232,.95),rgba(244,240,232,.75) 55%,rgba(244,240,232,0))}
+#fpanel.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+#fpanel .fp-e{font-family:var(--serif-en);font-style:italic;font-size:14px;color:var(--ink-mute)}
+#fpanel .fp-t{font-family:var(--serif-kr);font-weight:300;font-size:26px;margin:6px 0 8px}
+#fpanel .fp-d{font-size:14px;line-height:1.8;color:var(--ink-mute);margin:0 0 14px}
+#fpanel .fp-nav{display:flex;gap:8px;justify-content:center;align-items:center}
+
+/* 만든 사람 · 구매 · 푸터 (2D) */
+#makers{position:relative;z-index:5;background:var(--bg);padding:12vh 8vw 6vh;border-top:1px solid var(--line)}
+#makers .row{display:grid;grid-template-columns:repeat(2,1fr);gap:40px;max-width:1180px}
+.mk{display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center}
+.mk img{width:120px;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1);display:block}
+.mk .role{font:400 11px/1.6 var(--sans);letter-spacing:.14em;color:var(--acc)}
+.mk .nm{font:300 26px/1.2 var(--serif-kr);margin:6px 0 2px}
+.mk p{font:300 13.5px/1.8 var(--sans);color:var(--ink-mute);margin:6px 0 0}
+#makers .more{margin-top:40px;font-size:14px}
+#makers .more a{border-bottom:1px solid var(--ink);padding-bottom:2px}
+#buy{position:relative;z-index:5;background:var(--bg);padding:10vh 8vw 10vh;scroll-margin-top:60px}
+#buy .head{max-width:620px;margin-bottom:44px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1180px}
+.card{border:1px solid var(--line);padding:28px 26px 26px;background:#fff;display:flex;flex-direction:column;gap:12px;transition:transform .35s,border-color .35s,box-shadow .35s;cursor:pointer;position:relative}
+.card.sel{border-color:var(--acc);transform:translateY(-8px);box-shadow:0 22px 40px -24px rgba(0,0,0,.35)}
+.card .no{font-family:var(--serif-en);font-style:italic;color:var(--ink-mute);font-size:15px}
+.card h3{font-family:var(--serif-kr);font-weight:400;font-size:24px;margin:0}
+.card .pk{font-size:13px;color:var(--ink-mute);line-height:1.8;flex:1}
+.card .pr{font-size:22px;font-weight:400;margin-top:6px}
+.card .pr small{font-size:12px;color:var(--ink-mute);margin-left:8px;text-decoration:line-through}
+.card .btn{align-self:flex-start;margin-top:8px}
+.card .badge{position:absolute;top:18px;right:18px;font-size:11px;letter-spacing:.08em;color:#fff;background:var(--acc);padding:4px 8px;border-radius:3px;opacity:0;transition:opacity .3s}
+.card.sel .badge{opacity:1}
+.notice{margin-top:22px;font-size:12px;color:var(--ink-mute);line-height:1.8}
+
+/* 취향 테스트 오버레이 */
+#quiz{position:fixed;inset:0;z-index:40;background:rgba(244,240,232,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:auto;padding:12vh 24px 60px;opacity:0;pointer-events:none;transition:opacity .35s}
+#quiz.open{opacity:1;pointer-events:auto}
+#quiz .close{position:fixed;top:16px;right:28px;z-index:41}
+/* 로딩 */
+#load{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:var(--serif-en);font-style:italic;color:var(--ink-mute);transition:opacity .7s}
+#load .bar{width:120px;height:1px;background:var(--line);position:relative;overflow:hidden}
+#load .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ink);transition:width .2s}
+#load.off{opacity:0;pointer-events:none}
+
+@media (max-width:760px){
+  .sec .txt{top:auto;bottom:12vh;transform:none;left:6vw!important;right:6vw!important;max-width:none;padding:18px 20px}
+  .sec.c .txt,.sec.t .txt{transform:none;text-align:left;top:auto}
+  .dots,.hint{display:none}
+  #makers .row,.cards{grid-template-columns:1fr}
+  .mk{grid-template-columns:90px 1fr}.mk img{width:90px}
+}
+</style>
+</head>
+<body>
+
+<div id="load"><span>상자를 꺼내는 중…</span><div class="bar"><i id="loadBar"></i></div></div>
+<div id="gl"></div>
+<video id="fb" muted playsinline preload="auto" poster="../wadiz/assets/loop/unbox_taste.jpg"><source src="../wadiz/assets/loop/unbox_taste.mp4" type="video/mp4"></video>
+
+<header class="top">
+  <a class="logo" href="#top"><img src="../wadiz/assets/emblem.svg" alt=""><span>The Right to Taste</span></a>
+  <nav>
+    <a class="btn ghost" href="story.html">이야기</a>
+    <button class="btn" data-go="quiz">취향 찾기</button>
+    <button class="btn" data-go="6">키트 보기</button>
+    <button class="btn acc" data-go="buy">구매</button>
+  </nav>
+</header>
+<div class="dots" id="dots"></div>
+<a class="kakao" id="kakao" href="#" title="카카오 채널 (연결 예정)">문의 · 카카오 채널</a>
+<div class="hint" id="hint"><i></i>scroll</div>
+<div id="tip"></div>
+<div id="hots"></div><div id="cur">보기</div>
+<div id="fpanel"><div class="fp-e" id="fpE"></div><div class="fp-t" id="fpT"></div><p class="fp-d" id="fpD"></p>
+  <div class="fp-nav"><button class="btn" data-go="unfocus">돌아가기 ✕</button></div></div>
+
+<main id="stage">
+  <section class="sec c t" data-i="0" data-t="시작"><div class="txt">
+    <div class="eyebrow">The Right to Taste</div>
+    <h1>어떤 날에는 꽃처럼 향긋하게,<br>어떤 날에는 커피처럼 깊게.</h1>
+    <p class="sub">오늘의 나에게 맞는 한 잔을 직접 만들어 보세요.</p></div></section>
+  <section class="sec l" data-i="1" data-t="돌려보기"><div class="txt">
+    <div class="eyebrow">01 · Turn it around</div>
+    <h2>오늘의 한 잔은<br>내가 정합니다.</h2>
+    <p class="sub">스크롤을 멈추면 상자를 잡고 직접 돌려 볼 수 있어요.</p></div></section>
+  <section class="sec r" data-i="2" data-t="열기"><div class="txt">
+    <div class="eyebrow">02 · Open</div>
+    <h2>뚜껑을 열면,<br>두 칸이 기다립니다.</h2>
+    <p class="sub">왼쪽 칸에는 띠지를 두른 아코디언북, 오른쪽 칸에는 블렌딩 노트.</p></div></section>
+  <section class="sec l" data-i="3" data-t="오른쪽 칸"><div class="txt">
+    <div class="eyebrow">03 · Right side</div>
+    <h2>허브 스티커와 종이 스쿱,<br>그 아래 블렌딩 노트.</h2>
+    <p class="sub">노트 위에 놓인 스티커와 스쿱을 들어내면, 비율과 그날의 감상을 적는 소프트커버 노트가 나옵니다.</p></div></section>
+  <section class="sec r" data-i="4" data-t="왼쪽 칸"><div class="txt">
+    <div class="eyebrow">04 · Left side</div>
+    <h2>아코디언북 속에<br>빈 티백과 원료 여섯 가지.</h2>
+    <p class="sub">병풍처럼 펼치면 빈 티백, 원료 파우치 6개, 엽서 창이 번갈아 나옵니다.</p>
+    <p class="ing">레몬밤 · 히비스커스 · 페퍼민트<br>유자 · 장미 · 캐모마일</p></div></section>
+  <section class="sec l" data-i="5" data-t="간지 아래"><div class="txt">
+    <div class="eyebrow">05 · Under the sheet</div>
+    <h2>노트 아래 간지를 들면,<br>단팥차 샘플과 인퓨저.</h2>
+    <p class="sub">오른쪽 칸 맨 아래, 간지 밑에 스테인리스 인퓨저와 단팥차 샘플 한 봉이 담겨 있어요.</p></div></section>
+  <section class="sec c t" data-i="6" data-t="한눈에"><div class="txt">
+    <div class="eyebrow">06 · Kit at a glance</div>
+    <h2>같은 원료, 다른 배합비.</h2>
+    <p class="sub">소품을 클릭하면 가까이 볼 수 있어요. 아코디언북은 병풍처럼 펼쳐지고, 노트는 한 장씩 넘어갑니다.</p></div></section>
+  <section class="sec r" data-i="7" data-t="Taste · Depth"><div class="txt">
+    <div class="eyebrow">07 · Taste or Depth</div>
+    <h2>나는 향을 좋아할까,<br>깊이를 좋아할까?</h2>
+    <div class="toggle" id="verToggle"><button class="on" data-ver="taste">VER.1 Taste</button><button data-ver="depth">VER.2 Depth</button></div>
+    <p class="sub" style="margin-top:18px">1분 만에 오늘의 블렌딩 취향을 확인해 보세요.</p>
+    <button class="btn acc" data-go="quiz" style="margin-top:14px">1분 취향 찾기 →</button></div></section>
+  <section class="sec c" data-i="8" data-t="고르기"><div class="txt">
+    <div class="eyebrow">08 · Choose</div>
+    <h2>지금 시작하면,<br>가장 좋은 조건으로.</h2>
+    <p class="sub">아래에서 키트를 고르세요.</p></div></section>
+</main>
+
+<section id="makers">
+  <div class="row">
+    <div class="mk"><img src="../wadiz/assets/photo/lee_soyeon.jpg" alt="이소연"><div><div class="role">TEA BLENDER</div><div class="nm">이소연</div><p>대한명인 차블렌딩명인. 찻잎과 허브의 결을 읽어 여러 기업의 한 잔을 설계하고, 그 감각을 가르쳐 온 블렌더.</p></div></div>
+    <div class="mk"><img src="../wadiz/assets/photo/yang_jinho.jpg" alt="양진호"><div><div class="role">ROASTER</div><div class="nm">양진호</div><p>엘카페커피로스터스 대표. 16년째 로스팅을 이어 오며, 많은 커피 전문가를 길러 낸 로스터.</p></div></div>
+  </div>
+  <p class="more"><a href="story.html">취향의 권리 이야기 읽기 →</a></p>
+</section>
+
+<section id="buy">
+  <div class="head"><div class="eyebrow">Rewards</div><h2>티 블렌딩 키트</h2>
+    <p class="sub">와디즈 펀딩 중에는 와디즈에서, 종료 후에는 이곳에서 바로 구매할 수 있습니다.</p></div>
+  <div class="cards" id="cards">
+    <article class="card" data-kit="ver1"><span class="badge">추천</span><div class="no">VER.1</div><h3>Taste</h3>
+      <p class="pk">레몬밤 · 히비스커스 · 페퍼민트 · 유자 · 장미 · 캐모마일<br>원료 6종 · 빈 티백 · 블렌딩 노트 · 레시피 21가지</p>
+      <div class="pr">59,000원</div><a class="btn acc" href="#">오늘의 향 만들기</a></article>
+    <article class="card" data-kit="ver2"><span class="badge">추천</span><div class="no">VER.2</div><h3>Depth</h3>
+      <p class="pk">현미 · 민들레뿌리 · 찰수수 · 보리 · 단팥 · 둥굴레<br>원료 6종 · 빈 티백 · 블렌딩 노트 · 레시피 21가지</p>
+      <div class="pr">59,000원</div><a class="btn acc" href="#">나만의 로스트 만들기</a></article>
+    <article class="card" data-kit="set"><span class="badge">추천</span><div class="no">2개 세트</div><h3>Taste + Depth</h3>
+      <p class="pk">키트 2개 · 노트 2권 · 인퓨저 2개 · 단팥차 샘플<br>Taste와 Depth를 함께 갖고 있을 때 교차 블렌드까지</p>
+      <div class="pr">110,000원<small>118,000원</small></div><a class="btn acc" href="#">12가지 원료로 향과 깊이 설계하기</a></article>
+  </div>
+  <p class="notice">가격·구성은 와디즈 리워드 기준이며 확정 전입니다. 추천 비율은 취향을 발견하기 위한 첫 번째 기준일 뿐, 정답이 아닙니다.</p>
+</section>
+<footer class="foot" id="foot"><span>© 취향의 권리 · The Right to Taste</span><a href="story.html">이야기</a><span>문의 · 카카오 채널</span></footer>
+
+<div id="quiz"><button class="btn close" data-go="quizclose">닫기 ✕</button><div id="quizMount"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="../shared/taste-test.js"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+gsap.registerPlugin(ScrollTrigger);
+
+const Q = new URLSearchParams(location.search);
+const LITE = Q.has('lite');
+const deg = d => d * Math.PI / 180, lerp = (a, b, t) => a + (b - a) * t, ease = t => t * t * (3 - 2 * t), clamp01 = v => Math.max(0, Math.min(1, v));
+const seg = (p, a, b) => ease(clamp01((p - a) / (b - a)));           // p 를 [a,b] 구간에서 0~1 로
+
+/* ───────── 섹션별 글 · 진행 점 · 고정 버튼 (3D 와 무관하게 먼저) ───────── */
+const secs = [...document.querySelectorAll('.sec')], dots = document.getElementById('dots');
+secs.forEach((s, i) => { const d = document.createElement('button'); d.dataset.t = s.dataset.t; d.onclick = () => go(i); dots.appendChild(d);
+  ScrollTrigger.create({ trigger: s, start: 'top 55%', end: 'bottom 55%',
+    onToggle: self => { s.querySelector('.txt').classList.toggle('on', self.isActive); if (self.isActive) [...dots.children].forEach((x, k) => x.classList.toggle('on', k === i)); } }); });
+ScrollTrigger.create({ trigger: '#makers', start: 'top 60%', onToggle: () => [...dots.children].forEach(x => x.classList.remove('on')) });
+ScrollTrigger.create({ trigger: '#foot', start: 'top bottom', onToggle: self => document.getElementById('kakao').classList.toggle('hide', self.isActive) });
+addEventListener('scroll', () => document.getElementById('hint').style.opacity = scrollY < 80 ? 1 : 0, { passive: true });
+function go(i) { const y = typeof i === 'number' ? secs[i].offsetTop + innerHeight * .25 : document.getElementById(i).offsetTop - 40; window.scrollTo({ top: y, behavior: 'smooth' }); }
+const quiz = document.getElementById('quiz');
+const openQuiz = o => { quiz.classList.toggle('open', o); document.body.style.overflow = o ? 'hidden' : ''; };
+let unfocus = () => {};
+document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; const g = b.dataset.go;
+  if (g === 'quiz') openQuiz(true); else if (g === 'quizclose') openQuiz(false); else if (g === 'unfocus') unfocus(); else { unfocus(); go(isNaN(+g) ? g : +g); } });
+if (location.hash === '#quiz') setTimeout(() => openQuiz(true), 600);
+if (location.hash === '#kit') setTimeout(() => go(6), 300);
+const cards = document.getElementById('cards');
+function select(kit) { [...cards.children].forEach(c => c.classList.toggle('sel', c.dataset.kit === kit)); setVer(kit === 'ver2' ? 1 : 0); }
+cards.addEventListener('click', e => { const c = e.target.closest('.card'); if (c) select(c.dataset.kit); });
+// 취향 테스트: 결과 키트 이름을 10/20 확정 표기로
+{ const R = TasteTest.RESULTS; R.A.kitName = R.B.kitName = 'VER.1 Taste'; R.C.kitName = 'VER.2 Depth'; R.D.kitName = '2개 세트 · Taste + Depth'; }
+TasteTest.mount(document.getElementById('quizMount'), { onKit(kit) { openQuiz(false); select(kit); go('buy'); }, onRetry() {} });
+let setVer = () => {};
+
+/* ───────── WebGL 가능 여부 → 아니면 렌더 영상을 스크롤로 넘김 ───────── */
+const canGL = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+const FALLBACK = Q.has('video') || !canGL || innerWidth < 760;
+if (FALLBACK) {
+  document.body.classList.add('fallback');
+  const v = document.getElementById('fb');
+  const sync = () => { const st = document.getElementById('stage'); const p = clamp01((scrollY) / (st.offsetHeight - innerHeight));
+    if (v.duration) v.currentTime = Math.min(v.duration / 2 - .05, p * v.duration / 2); };   // 앞 6초 = 꺼내는 쪽
+  v.addEventListener('loadedmetadata', sync); addEventListener('scroll', sync, { passive: true });
+  document.getElementById('load').classList.add('off');
+} else {
+  await init3D();
+}
+
+async function init3D() {
+  /* ── 장면 ── */
+  const el = document.getElementById('gl');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, logarithmicDepthBuffer: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(LITE ? 1 : Math.min(devicePixelRatio, 1.75));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+  el.appendChild(renderer.domElement);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color('#F4F0E8');
+  if (!LITE) { const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(new RoomEnvironment(), .04).texture; scene.environmentIntensity = .5; }
+  const cam = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, .1, 8);
+  scene.add(new THREE.HemisphereLight('#fff4e6', '#d9d0c0', 1.0));
+  const sun = new THREE.DirectionalLight('#ffe9cf', 2.5); sun.position.set(-1.2, 1.8, 1.0); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048); sun.shadow.radius = 5; sun.shadow.bias = -0.00015; sun.shadow.normalBias = .02;
+  Object.assign(sun.shadow.camera, { left: -1.2, right: 1.2, top: 1.2, bottom: -1.2, near: .1, far: 6 }); scene.add(sun);
+  const mgr = new THREE.LoadingManager();
+  const bar = document.getElementById('loadBar'); mgr.onProgress = (u, l, t) => bar.style.width = (l / t * 100) + '%';
+  const tex = new THREE.TextureLoader(mgr).load('../wadiz/assets/photo/plaster-eu-1.jpg', t => { t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 3); t.anisotropy = 8; });
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.MeshStandardMaterial({ map: tex, roughness: .95, color: '#f3ead9' }));
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+  /* ── 모델 (여섯 개를 모두 받은 뒤에야 첫 프레임을 그린다) ── */
+  const L = new GLTFLoader(mgr);
+  const load = p => new Promise((res, rej) => L.load(p, g => res(g.scene), undefined, rej));
+  const [kit, pT, pD, ex, acc, nt, ex2] = await Promise.all(['kit_closed', 'pouches_taste', 'pouches_depth', 'extras', 'accordion', 'note', 'extras2'].map(n => load(`../3d/web/${n}.glb`)));
+  for (const s of [kit, pT, pD, ex, acc, nt, ex2]) s.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; o.material.side = THREE.DoubleSide;
+    if (o.material.map) o.material.map.anisotropy = 8; o.material.polygonOffset = true; o.material.polygonOffsetFactor = 1; o.material.polygonOffsetUnits = 1; } });
+  scene.add(kit); scene.add(acc); scene.add(nt);
+  const P = n => kit.getObjectByName(n);
+  const hinge = P('lid_hinge'), flap = P('flap_pivot'), dustP = P('dust_pivot_+1'), dustM = P('dust_pivot_-1'), earP = P('ear_pivot_+1'), earM = P('ear_pivot_-1');
+  const book = P('book'), note = P('note'); const book0 = book.position.clone(), note0 = note.position.clone();
+  P('note_riser').visible = false;          // Blender 렌더용 받침 블록 — 웹에서는 그 자리에 실제 간지·인퓨저·단팥차 샘플을 넣는다
+  // 칸 안쪽(실측): 폭 136 × 깊이 205 × 높이 71mm, 바닥 윗면 y=2.6mm, 칸막이 높이 70.6mm. 노트(126×174×11)는 y 53.3~64.4 에 앞쪽(+z)으로 치우쳐 있음
+  const accH = Array.from({ length: 12 }, (_, i) => acc.getObjectByName(`acc_h${String(i).padStart(2, '0')}`));
+  const covF = acc.getObjectByName('acc_cov_f'), covB = acc.getObjectByName('acc_cov_b');
+  const ntCov = nt.getObjectByName('note_cov_h'), ntPg = [0, 1, 2, 3].map(k => nt.getObjectByName(`note_pg_h${k}`));
+  acc.visible = nt.visible = false;
+
+  // 낱개 오브젝트를 그룹으로 떼어 자유롭게 놓는다. 앞뒤 재질이 다른 판은 'name' 노드 아래 'name_1·_2' 메시.
+  function pick(src, test) { const nodes = [];
+    src.traverse(o => { if (test(o.name) && (o.isMesh || o.children.some(c => c.isMesh)) && !nodes.some(n => n.getObjectById(o.id))) nodes.push(o); });
+    return nodes.map(n => { const g = new THREE.Group(); n.position.set(0, 0, 0); n.rotation.set(0, 0, 0); g.add(n); scene.add(g); g.visible = false; return g; }); }
+  const pouchesT = pick(pT, n => n.startsWith('pouch_')), pouchesD = pick(pD, n => n.startsWith('pouch_'));
+  const sticker = pick(ex, n => n === 'card_taste')[0], scoop = pick(ex, n => n === 'scoop_paper')[0];   // 허브 스티커(원료 일러 6종 시트) · 종이 스쿱
+  const marks = pick(ex, n => /^bm_card_\d$/.test(n));
+  const ganji = pick(ex2, n => n === 'ganji')[0], danpatt = pick(ex2, n => n.startsWith('danpatt'))[0];   // 간지 · 단팥차 샘플 (와디즈 E안 구성)
+  const infuser = (() => { const g = new THREE.Group(); const parts = []; ex.traverse(o => { if (o.isMesh && /^(Cone|Cylinder|Sphere|Torus)/.test(o.name)) parts.push(o); });
+    parts.forEach(o => g.attach(o)); g.visible = false; scene.add(g); return g; })();
+  { const c = new THREE.Box3().setFromObject(infuser).getCenter(new THREE.Vector3()); infuser.children.forEach(m => m.position.sub(c)); }
+
+  /* ── 플랫레이 배치 (m · 상자 중심 기준) — 와디즈 연출 컷과 같은 배열: 상자 오른쪽에 스티커 시트 → 노트가 나란히(겹치지 않음), 아래 파우치 두 줄, 왼쪽 엽서·인퓨저 ── */
+  const BX = .275;
+  const LAY = { note: [BX / 2 + .235, 0, -.02, -2.5], sticker: [BX / 2 + .065, .0028, -.03, -0.8], scoop: [BX / 2 + .125, .0012, .11, 12],
+    pouchT: [[-.10, .20], [-.015, .20], [.07, .20], [.155, .20], [-.06, .31], [.025, .31], [.11, .31]],
+    pouchD: [[-.015, .20], [.07, .20], [.155, .20], [-.06, .31], [.025, .31], [.11, .31]],
+    marks: [-.36, .30], infuser: [-.165, .27],           // 엽서 부채꼴은 맨 왼쪽, 인퓨저는 그 오른쪽에 세로로(바스켓이 앞쪽) — 겹치지 않게
+    danpatt: [.41, .004, .23, 9], ganji: [-BX / 4, .004, 0, 0] };    // 단팥차 샘플은 오른쪽 아래(와디즈 연출 컷), 간지(128×172)는 비워진 왼칸(136×205) 바닥에 — 돌리면 벽에 걸리므로 0°
+  const NAMES = { teabag: ['빈 티백', '마음이 가는 만큼 담아 우려 보세요'], lemon_balm: ['레몬밤 · Lemon Balm', '청향 · 은은한 단맛 · 시트러스'], chamomile: ['캐모마일 · Chamomile', '사과 · 꽃 · 꿀 · 건초'],
+    hibiscus: ['히비스커스 · Hibiscus', '산미 · 꽃 · 루비 레드'], peppermint: ['페퍼민트 · Peppermint', '멘톨 · 맑음 · 은은한 단맛'], yuza: ['유자 · Yuja', '느린 시트러스 · 단맛과 산미'], rose: ['장미 · Rose', '은은한 꽃향 · 긴 여운'],
+    brown_rice: ['현미 · Brown Rice', '볶은 쌀의 담백하고 고소한 향'], dandelion_root: ['민들레 뿌리 · Dandelion Root', '흙·나무·커피·카카오를 연상시키는 깊은 볶음 향'], sorghum: ['찰수수 · Glutinous Sorghum', '담백하고 순한 곡물의 구수함'],
+    barley: ['보리 · Barley', '익숙하고 선명한 볶은 곡물 향'], red_bean: ['단팥 · Red Bean', '볶은 팥의 고소하고 부드러운 여운'], solomons_seal: ['둥굴레 · Solomon\'s Seal', '부드러운 볶은 뿌리와 은은한 단맛'] };
+  pouchesT.forEach((g, i) => { g.userData.to = LAY.pouchT[i]; g.userData.key = g.children[0].name.replace('pouch_', ''); g.userData.y = i < 4 ? .004 : .0065; g.userData.prop = 'pouch'; });
+  pouchesD.forEach((g, i) => { g.userData.to = LAY.pouchD[i]; g.userData.key = g.children[0].name.replace('pouch_', ''); g.userData.y = i < 3 ? .004 : .0065; g.userData.prop = 'pouch'; });
+  marks.forEach((g, i) => { g.position.set(LAY.marks[0], .0006 + i * .0012, LAY.marks[1]); g.userData.rot = -deg(68 - i * 13); g.userData.prop = 'marks'; });
+  infuser.position.set(LAY.infuser[0], .012, LAY.infuser[1]); infuser.userData.prop = 'infuser';   // 긴 축이 Z: 기본 4° = 세로, 바스켓이 앞(+Z)
+  // 바스켓에 송송 뚫린 구멍: 점무늬 알파맵을 컷아웃(alphaTest)으로 — 작은 구슬(손잡이 끝)은 제외
+  { const c = document.createElement('canvas'); c.width = 1024; c.height = 512; const x = c.getContext('2d');
+    // 바스켓 둘레 ≈165mm 가 U 한 바퀴. 간격 28px ≈ 4.5mm, 지름 20px ≈ 3.2mm — 실물보다 조금 크게 해야 화면에서 읽힌다
+    x.fillStyle = '#fff'; x.fillRect(0, 0, 1024, 512); x.fillStyle = '#000'; const s = 28;
+    for (let j = s / 2; j < 512; j += s) for (let i = ((j / s) | 0) % 2 ? s / 2 : 0; i < 1024; i += s) { x.beginPath(); x.arc(i, j, 10, 0, Math.PI * 2); x.fill(); }
+    const holes = new THREE.CanvasTexture(c); holes.wrapS = holes.wrapT = THREE.RepeatWrapping; holes.anisotropy = 8;
+    infuser.children.forEach(m => { if (!m.name.startsWith('Sphere')) return; m.geometry.computeBoundingSphere(); if (m.geometry.boundingSphere.radius < .015) return;
+      m.material = m.material.clone(); m.material.alphaMap = holes; m.material.alphaTest = .5; m.material.transparent = false; m.material.side = THREE.DoubleSide; m.material.roughness = Math.max(m.material.roughness, .3); }); }
+  book.userData.prop = 'acc'; note.userData.prop = 'note'; sticker.userData.prop = 'sticker'; scoop.userData.prop = 'scoop'; danpatt.userData.prop = 'danpatt'; ganji.userData.prop = 'ganji';
+  ganji.visible = danpatt.visible = true;
+  const clickables = [book, note, sticker, scoop, infuser, danpatt, ganji, ...marks, ...pouchesT, ...pouchesD];
+  window.__kit = { THREE, kit, note, book, sticker, scoop, infuser, ganji, danpatt, ex2 };          // 콘솔 점검용
+
+  /* ── 소품 클릭 연출: 스크롤 카메라 ↔ 소품 카메라를 F.t 로 섞고, F.open 으로 펼침 ── */
+  const ACC_STAGE = new THREE.Vector3(0, 0, .56), NOTE_STAGE = new THREE.Vector3(0, 0, .56);
+  nt.position.copy(NOTE_STAGE); nt.rotation.y = deg(-6);
+  const F = { t: 0, open: 0 }; let focus = null;                       // focus = {kind, obj, cam:{target,dist,elev,orbit}}
+  const FOCUS = {
+    acc: { e: 'Accordion book', t: '아코디언북', d: '병풍처럼 펼치면 빈 티백, 원료 파우치 6개, 엽서 창이 번갈아 이어집니다.', cam: () => ({ target: new THREE.Vector3(0, .09, ACC_STAGE.z), dist: 1.38, elev: 15, orbit: 360 }) },
+    note: { e: 'Blending note', t: '블렌딩 노트', d: '선택한 원료와 비율, 첫 향과 마지막 여운을 적는 소프트커버 노트. 한 번의 경험이 나만의 레시피가 됩니다.', cam: () => ({ target: new THREE.Vector3(.02, 0, NOTE_STAGE.z), dist: .62, elev: 58, orbit: 372 }) },
+    pouch: { e: 'Ingredient', t: g => NAMES[g.userData.key][0], d: g => NAMES[g.userData.key][1], cam: g => ({ target: g.position.clone().setY(.02), dist: .44, elev: 56, orbit: 360 }) },
+    infuser: { e: 'Infuser', t: '스테인리스 인퓨저', d: '노트 아래 간지를 들면 나옵니다. 단팥차 샘플과 함께 오른쪽 칸 맨 아래에.', cam: g => { const b = g.getObjectByName('Sphere').getWorldPosition(new THREE.Vector3()).setY(.02); return { target: centerOf([g]).lerp(b, .6), dist: .40, elev: 36, orbit: 336 }; } },
+    marks: { e: 'Postcards', t: '엽서 여섯 장', d: '아코디언북 창마다 끼워 둔 풍경 엽서. 책갈피로도 씁니다.', cam: () => ({ target: centerOf(marks), dist: .50, elev: 66, orbit: 352 }) },
+    sticker: { e: 'Herb stickers', t: '허브 스티커', d: '원료 6종 일러스트 스티커. 노트와 파우치에 붙여 오늘의 레시피를 표시합니다.', cam: g => ({ target: centerOf([g]), dist: .42, elev: 72, orbit: 360 }) },
+    scoop: { e: 'Paper scoop', t: '종이 스쿱', d: '접어서 쓰는 종이 스쿱. 원료를 빈 티백에 옮겨 담을 때.', cam: g => ({ target: centerOf([g]), dist: .34, elev: 62, orbit: 360 }) },
+    danpatt: { e: 'Sample', t: '단팥차 샘플', d: '키트에 함께 넣어 드리는 Depth 맛보기 한 봉. 볶은 팥의 고소하고 부드러운 여운.', cam: g => ({ target: centerOf([g]), dist: .34, elev: 58, orbit: 360 }) },
+    ganji: { e: 'Sheet', t: '간지', d: '노트와 인퓨저 사이에 까는 미장 인쇄 판지. 들어내면 그 아래 인퓨저와 단팥차 샘플.', cam: g => ({ target: centerOf([g]), dist: .46, elev: 70, orbit: 360 }) } };
+  const centerOf = arr => { const b = new THREE.Box3(); arr.forEach(o => b.expandByObject(o)); return b.getCenter(new THREE.Vector3()).setY(0); };   // 피벗이 한쪽 끝인 소품은 실제 중심으로
+  // 클릭 가능 표시 (플랫레이가 다 펼쳐진 뒤에만)
+  const hotsEl = document.getElementById('hots');
+  const HOTS = [{ o: book, arr: [book], t: FOCUS.acc.t }, { o: note, arr: [note], t: FOCUS.note.t }, { o: sticker, arr: [sticker], t: FOCUS.sticker.t }, { o: scoop, arr: [scoop], t: FOCUS.scoop.t },
+    { o: infuser, arr: [infuser], t: FOCUS.infuser.t }, { o: marks[0], arr: marks, t: FOCUS.marks.t }, { o: danpatt, arr: [danpatt], t: FOCUS.danpatt.t }, { o: ganji, arr: [ganji], t: FOCUS.ganji.t },
+    ...[...pouchesT, ...pouchesD].map(g => ({ o: g, arr: [g], t: NAMES[g.userData.key][0] }))];
+  HOTS.forEach(h => { const b = document.createElement('button'); b.className = 'hot'; b.innerHTML = `<i>${h.t}</i>`; b.setAttribute('aria-label', h.t + ' 가까이 보기');
+    b.addEventListener('click', e => { e.stopPropagation(); if (!focus) enterFocus(h.o); }); hotsEl.appendChild(b); h.el = b; });
+  const hb = new THREE.Box3(), hv = new THREE.Vector3();
+  const fpanel = document.getElementById('fpanel');
+  function enterFocus(obj) { if (focus) return; const kind = obj.userData.prop, D = FOCUS[kind];
+    focus = { kind, obj, cam: D.cam(obj) };
+    document.getElementById('fpE').textContent = D.e; document.getElementById('fpT').textContent = typeof D.t === 'function' ? D.t(obj) : D.t; document.getElementById('fpD').textContent = typeof D.d === 'function' ? D.d(obj) : D.d;
+    document.body.classList.add('focusing'); document.body.style.overflow = 'hidden'; fpanel.classList.add('on'); tip.style.opacity = 0;
+    gsap.killTweensOf(F); gsap.to(F, { t: 1, duration: 1.2, ease: 'power2.inOut' }); gsap.to(F, { open: 1, duration: 1.6, ease: 'power2.inOut', delay: .6 }); }
+  unfocus = () => { if (!focus) return; fpanel.classList.remove('on'); document.body.classList.remove('focusing');
+    gsap.killTweensOf(F); gsap.to(F, { open: 0, duration: .9, ease: 'power2.inOut' });
+    gsap.to(F, { t: 0, duration: 1.1, ease: 'power2.inOut', delay: .25, onComplete: () => { focus = null; document.body.style.overflow = ''; } }); };
+  addEventListener('keydown', e => { if (e.key === 'Escape') unfocus(); });
+
+  /* ── 스크롤 상태: S 하나를 GSAP 가 스크롤로 보간하고, 매 프레임 장면에 적용 ── */
+  const S = { orbit: -35, elev: 14, dist: .66, tx: 0, ty: .12, tz: 0,          // 첫 화면: 글이 위, 상자는 아래쪽에
+    lid: 0, flap: 0, dust: 0, ear: 0, right: 0, left: 0, pouch: 0, marks: 0, tools: 0, swap: 0, fade: 1 };
+  const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '#stage', start: 'top top', end: 'bottom bottom', scrub: .9 } });
+  tl.to(S, { orbit: 25, elev: 22, dist: .58, ty: .02, duration: 1 }, 0)
+    .to(S, { orbit: 385, duration: 1 }, 1)
+    .to(S, { orbit: 395, elev: 58, dist: .62, ty: .03, duration: 1 }, 2).to(S, { lid: 100, flap: 70, dust: 40, ear: 72, duration: .8 }, 2.1)
+    // 03 오른쪽 칸: 스티커 → 스쿱 → 노트 (와디즈 v1.10 포장 순서)
+    .to(S, { right: 1, orbit: 405, tx: .12, tz: .02, dist: 1.0, duration: 1 }, 3)
+    // 04 왼쪽 칸: 아코디언북 → 빈 티백·파우치 → 엽서
+    .to(S, { left: 1, tx: .05, tz: .10, dist: 1.3, elev: 62, duration: .5 }, 4).to(S, { pouch: 1, duration: .6 }, 4.3).to(S, { marks: 1, duration: .4 }, 4.7)
+    // 05 간지 아래: 카메라가 오른칸 안을 들여다보고 → 간지가 왼칸으로 → 안의 단팥차 샘플·인퓨저가 보인 뒤 차례로 나온다
+    .to(S, { tx: .07, ty: .02, tz: .0, dist: .62, elev: 64, orbit: 398, duration: .45 }, 5).to(S, { tools: 1, duration: .9 }, 5.1)
+    // 06 한눈에 (클릭 연출 무대)
+    .to(S, { orbit: 360, elev: 88, dist: 1.22, tx: .06, ty: .02, tz: .13, duration: .5 }, 6)
+    .to(S, { swap: 1, duration: .6 }, 7.2)
+    .to(S, { fade: 0, dist: 1.05, elev: 40, duration: 1 }, 8);
+
+  const toggle = document.getElementById('verToggle');
+  setVer = v => { toggle.querySelectorAll('button').forEach(x => x.classList.toggle('on', (x.dataset.ver === 'depth') === !!v)); gsap.to(S, { swap: v, duration: .7, ease: 'power2.inOut' }); };
+  toggle.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setVer(b.dataset.ver === 'depth' ? 1 : 0); });
+
+  /* ── 드래그로 돌려보기 · 클릭으로 소품 보기 ── */
+  let drag = 0, dragging = false, lastX = 0, downX = 0, downY = 0, moved = 0;
+  const cv = renderer.domElement;
+  const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(-2, -2), tip = document.getElementById('tip');
+  const cur = document.getElementById('cur');
+  const setMouse = e => { mouse.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); tip.style.left = cur.style.left = e.clientX + 'px'; tip.style.top = cur.style.top = e.clientY + 'px'; };
+  const hitProp = () => { if (!(S.tools > .99 && S.fade > .5) || focus) return null; ray.setFromCamera(mouse, cam);   // 플랫레이가 다 펼쳐진 뒤(06~07)에만
+    const h = ray.intersectObjects(clickables.filter(g => g.visible), true)[0]; if (!h) return null; let g = h.object; while (g && !g.userData.prop) g = g.parent; return g; };
+  cv.addEventListener('pointerdown', e => { setMouse(e); dragging = true; lastX = downX = e.clientX; downY = e.clientY; moved = 0; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', e => { if (dragging) { moved = Math.max(moved, Math.hypot(e.clientX - downX, e.clientY - downY)); if (!focus) drag += (e.clientX - lastX) * .35; lastX = e.clientX; } });
+  ['pointerup', 'pointercancel'].forEach(t => cv.addEventListener(t, e => { if (dragging && moved < 6 && t === 'pointerup') { setMouse(e); if (focus) unfocus(); else { const g = hitProp(); if (g) enterFocus(g); } } dragging = false; }));
+  document.body.style.touchAction = 'pan-y';
+  addEventListener('pointermove', setMouse, { passive: true });
+
+  const from = new THREE.Vector3(), camP = new THREE.Vector3(), camT = new THREE.Vector3(), fP = new THREE.Vector3(), fT = new THREE.Vector3();
+  const orbitPos = (out, tgt, dist, elev, orbit) => { const o = deg(orbit), e = deg(elev); return out.set(tgt.x + dist * Math.cos(e) * Math.sin(o), tgt.y + dist * Math.sin(e), tgt.z + dist * Math.cos(e) * Math.cos(o)); };
+  const clock = new THREE.Clock(); let spin = 0;
+  function apply() {
+    const dt = Math.min(clock.getDelta(), .05);
+    if (!dragging) drag *= .94;
+    // 카메라: 스크롤 카메라와 소품 카메라를 F.t 로 섞는다 (끊김 없음)
+    camT.set(S.tx, S.ty, S.tz); orbitPos(camP, camT, S.dist, S.elev, S.orbit + drag);
+    const ft = ease(F.t), fo = ease(F.open);
+    if (focus) { const c = focus.cam; orbitPos(fP, c.target, c.dist, c.elev, c.orbit); camP.lerp(fP, ft); camT.lerp(c.target, ft); }
+    cam.position.copy(camP); cam.lookAt(camT);
+    const isF = k => focus && focus.kind === k ? ft : 0, isFo = k => focus && focus.kind === k ? fo : 0;
+    // 상자 (glTF Y-up: Blender X→X, Y→-Z, Z→Y)
+    hinge.rotation.x = -deg(S.lid); flap.rotation.x = -deg(S.flap);
+    dustP.rotation.z = deg(S.dust); dustM.rotation.z = -deg(S.dust); earP.rotation.y = -deg(S.ear); earM.rotation.y = deg(S.ear);
+    const arc = t => Math.sin(Math.PI * t) * .10;
+    // 오른쪽 칸: 노트 위의 스티커 → 스쿱 → 노트
+    const r = S.right, tSt = seg(r, 0, .6), tSc = seg(r, .2, .8), tNt = seg(r, .4, 1);
+    note.position.set(lerp(note0.x, LAY.note[0], tNt), lerp(note0.y, 0, tNt) + arc(tNt), lerp(note0.z, LAY.note[2], tNt)); note.rotation.y = deg(LAY.note[3]) * tNt;
+    note.scale.setScalar(Math.max(.001, 1 - isF('note')));                        // 노트 연출 중에는 힌지 노트가 대신 선다
+    // 상자 안에서는 노트(두께 11mm) 위에 스쿱(104×146), 그 위에 스티커(116×166)가 겹쳐 보인다 → 스티커부터 들려 나온다
+    //   스쿱이 가려지지 않게 스티커는 앞·왼쪽으로, 스쿱은 뒤·오른쪽으로 어긋나게 둔다. 모두 칸 안쪽(x 1~137, z ±102) 안에 들어가는 값
+    const noteTop = note0.y + .0111;
+    for (const [g, L_, t, k, dy, x0, z0, r0] of [[sticker, LAY.sticker, tSt, 'sticker', .0022, -.0098, .0045, 0], [scoop, LAY.scoop, tSc, 'scoop', .0010, .0112, -.0285, 3]]) {
+      g.visible = true; const lift = isFo(k) * .03;
+      g.position.set(lerp(note0.x + x0, L_[0], t), lerp(noteTop + dy, L_[1], t) + arc(t) + lift, lerp(note0.z + z0, L_[2], t)); g.rotation.y = deg(lerp(r0, L_[3], t)); g.rotation.x = deg(14) * isFo(k); }
+    // 왼쪽 칸: 아코디언북이 앞으로, 빈 티백·파우치가 책 자리에서 두 줄로
+    const lf = ease(S.left);
+    book.position.set(lerp(book0.x, -.33, lf), book0.y + arc(lf) * 1.3, lerp(book0.z, .02, lf)); book.rotation.y = deg(-12) * lf;   // 벽(74mm)을 넘어 나오도록 높이 들어 올림
+    book.scale.setScalar(Math.max(.001, 1 - isF('acc')));                         // 병풍 연출 중에는 힌지 아코디언이 대신 선다
+    from.set(book.position.x, .05, book.position.z);
+    const sw = ease(S.swap);
+    const place = (arr, prog, scaleMul) => arr.forEach((g, i) => { const t = ease(clamp01(prog * (arr.length + 2) / 2 - i * .5)); const s = t * scaleMul(i);
+      const f = focus && focus.obj === g ? fo : 0;
+      g.visible = s > .002; const to = g.userData.to; g.position.set(lerp(from.x, to[0], t), g.userData.y + arc(t) * .5 + f * .035, lerp(from.z, to[1], t)); g.rotation.y = deg(25 - i * 8) * (1 - t); g.rotation.x = deg(26) * f; g.scale.setScalar(Math.max(.001, s)); });
+    place(pouchesT, S.pouch, i => i === 0 ? 1 : 1 - sw);
+    pouchesD.forEach((g, i) => { const s = sw * ease(clamp01((S.pouch - .9) * 10)); const f = focus && focus.obj === g ? fo : 0; g.visible = s > .002; const to = g.userData.to; g.position.set(to[0], g.userData.y + f * .035, to[1]); g.rotation.x = deg(26) * f; g.scale.setScalar(Math.max(.001, s)); });
+    const mk = ease(S.marks), mf = isFo('marks'); marks.forEach((g, i) => { const s = ease(clamp01(mk * 2 - i * .15)); g.visible = s > .002; g.scale.setScalar(Math.max(.001, s)); g.rotation.y = g.userData.rot - deg(i - 2.5) * 9 * mf; g.position.y = .0006 + i * .0012 + mf * .004 * i; });
+    // 간지 아래: 간지를 왼칸으로 밀어 두면(0~.3) → 안에 놓인 단팥차 샘플·인퓨저가 보이고(.3~.55 정지) → 단팥차 샘플(.55~.8) → 인퓨저(.7~1) 순으로 나온다
+    const tg = seg(S.tools, 0, .3), td = seg(S.tools, .55, .8), tw = seg(S.tools, .7, 1);
+    { const f = isFo('ganji'); ganji.position.set(lerp(note0.x, LAY.ganji[0], tg), lerp(note0.y - .0013, LAY.ganji[1], tg) + arc(tg) * .6 + f * .03, lerp(note0.z, LAY.ganji[2], tg)); ganji.rotation.y = deg(LAY.ganji[3]) * tg; ganji.rotation.x = deg(10) * f; }
+    // 단팥차 샘플(74×84): 칸 왼쪽 앞(x 3~77, z 16~100) — 인퓨저 손잡이와 겹치지 않는 자리
+    { const f = isFo('danpatt'); danpatt.position.set(lerp(.040, LAY.danpatt[0], td), lerp(.004, LAY.danpatt[1], td) + arc(td) * 1.3 + f * .035, lerp(.058, LAY.danpatt[2], td)); danpatt.rotation.y = deg(lerp(0, LAY.danpatt[3], td)); danpatt.rotation.x = deg(26) * f; }
+    // 인퓨저(길이 211·바스켓 Ø56): 칸(136×205)에는 대각선(25°)으로만 들어간다. 간지(y 52) 밑에 들어가도록 .88 배, 나오면 1 배 · 바닥에 손잡이가 닿게 8° 기울임
+    { infuser.visible = true; const f = isFo('infuser'), s = lerp(.88, 1, tw);
+      infuser.position.set(lerp(note0.x, LAY.infuser[0], tw), lerp(.0272, .0222, tw) + arc(tw) * 1.6 + f * .05, lerp(0, LAY.infuser[1], tw));
+      infuser.rotation.x = -deg(8) * tw; infuser.scale.setScalar(s);
+      if (f > 0) spin += dt * .5 * f; else { spin = ((spin + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; spin *= .92; }   // 연출 중 천천히 돌고, 돌아올 때 제자리로
+      infuser.rotation.y = deg(lerp(25, 4, tw)) + spin; }
+    // 병풍 연출: 접힘각 a 88° → 30°. 힌지 i 회전 = (-1)^i·2a, 첫 힌지 = a. 길이에 맞춰 가운데 정렬
+    const ai = isF('acc'), a = deg(lerp(88, 30, isFo('acc')));
+    acc.visible = ai > .002;
+    accH.forEach((h, i) => h.rotation.y = i === 0 ? a : (i % 2 ? -1 : 1) * 2 * a);
+    covF.rotation.y = -a * .55; covB.rotation.y = -(2 * a) * .45;
+    const pw = .130, len = 12 * pw * Math.cos(a);
+    acc.position.set(lerp(book.position.x, -len / 2, ai), 0, lerp(book.position.z, ACC_STAGE.z + .02, ai));
+    acc.scale.setScalar(Math.max(.001, ai));
+    // 노트 연출: 표지 → 내지 3장 차례로 (힌지는 등쪽 -X, 회전은 three Z)
+    const ni = isF('note'), no = isFo('note');
+    nt.visible = ni > .002; nt.scale.setScalar(Math.max(.001, ni));
+    ntCov.rotation.z = Math.PI * seg(no, 0, .4);
+    ntPg.forEach((h, k) => h.rotation.z = Math.PI * seg(no, .3 + k * .18, .62 + k * .18));
+    // 클릭 가능 표시: 소품 중심을 화면에 투영
+    const hotOn = S.tools > .99 && S.fade > .5 && !focus;
+    hotsEl.classList.toggle('on', hotOn);
+    if (hotOn) for (const h of HOTS) { const vis = h.arr.every(g => g.visible && g.scale.x > .5);
+      if (!vis) { h.el.classList.add('off'); continue; }
+      hb.makeEmpty(); h.arr.forEach(g => hb.expandByObject(g)); hv.set(hb.max.x, hb.max.y, hb.min.z).project(cam);   // 위에서 본 오른쪽 위 모서리
+      if (hv.z > 1) { h.el.classList.add('off'); continue; }
+      h.el.classList.remove('off'); h.el.style.transform = `translate(${((hv.x + 1) / 2 * innerWidth - 4).toFixed(1)}px,${((1 - hv.y) / 2 * innerHeight + 4).toFixed(1)}px)`; }
+    // 호버: 「보기」 커서 + 이름 (연출 중에는 「닫기」)
+    const hov = dragging ? null : hitProp();
+    const closing = !!focus && F.t > .5;
+    el.classList.toggle('hand', !!hov || closing);
+    cur.classList.toggle('on', (!!hov || closing) && mouse.x > -1.5); cur.textContent = closing ? '닫기' : '보기';
+    if (hov) { const k = hov.userData.prop, n = k === 'pouch' ? NAMES[hov.userData.key] : [FOCUS[k].t, '']; tip.innerHTML = `<b>${n[0]}</b>${n[1]}`; tip.style.opacity = 1; } else tip.style.opacity = 0;
+    renderer.domElement.style.opacity = S.fade;
+    renderer.render(scene, cam);
+  }
+  renderer.setAnimationLoop(apply);
+  addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  apply(); document.getElementById('load').classList.add('off');
+}
+</script>
+</body>
+</html>
