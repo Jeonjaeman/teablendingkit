@@ -56,6 +56,24 @@ body.scrolled .rail .rl-top{opacity:1}
 #menu .m-movie .th{width:124px;height:70px;background:#ccc center/cover;position:relative}
 #menu .m-movie .th::after{content:"";position:absolute;left:50%;top:50%;width:32px;height:32px;border:1px solid #fff;border-radius:50%;transform:translate(-50%,-50%);background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><path d='M3.5 2.5v5l4-2.5z' fill='white'/></svg>") center/14px no-repeat}
 #menu .m-movie span{font-family:var(--serif);font-size:12px;letter-spacing:.14em;color:var(--ink)}
+/* ── 취향 테스트: 어디서든 한 번에 (레일 세로 버튼 · 커버 CTA · 메뉴 첫 줄 · 오버레이) ── */
+.rail .rl-quiz{writing-mode:vertical-rl;background:var(--acc);color:#fff;font-family:var(--serif);font-size:12px;letter-spacing:.22em;padding:16px 7px 18px;border-radius:2px;margin-top:22px;transition:background .25s}
+.rail .rl-quiz:hover{background:#163a2c}
+.rail .rl-quiz::after{content:"→";display:block;margin-top:8px;font-family:var(--en);letter-spacing:0}
+.rail .top{display:flex;flex-direction:column;align-items:center}
+.cover .cta{display:inline-block;margin-top:22px;border:1px solid var(--ink);background:rgba(255,255,255,.7);padding:12px 26px;font-family:var(--serif);font-size:13px;letter-spacing:.16em;transition:background .25s,color .25s}
+.cover .cta:hover{background:var(--ink);color:#fff}
+#menu .m-list a.q{color:var(--acc)}
+#quiz{position:fixed;inset:0;z-index:65;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:auto;padding:14vh 7vw 80px;opacity:0;pointer-events:none;transition:opacity .4s;
+  --ink-mute:var(--mute);--u:var(--acc);--serif-kr:var(--serif);--serif-en:var(--en)}
+#quiz.open{opacity:1;pointer-events:auto}
+#quiz .q-close{position:fixed;right:24px;top:22px;font-family:var(--serif);font-size:12px;letter-spacing:.2em;background:#fff;border:1px solid var(--ink);padding:9px 16px;cursor:pointer;z-index:2}
+#quiz .q-close:hover{background:var(--ink);color:#fff}
+#quiz .tt{max-width:760px}
+#quiz .q-eyebrow{font-family:var(--en);font-size:13px;letter-spacing:.24em;color:var(--num);text-align:left;max-width:760px;margin:0 auto 6px}
+/* 추천 키트 강조(테스트 결과 → 키트 페이지) */
+.card.pick .ph{outline:1px solid var(--acc);outline-offset:6px}
+.card.pick .ph::before{content:"취향 테스트 추천";position:absolute;left:10px;top:10px;z-index:2;font-size:10px;letter-spacing:.14em;background:var(--acc);color:#fff;padding:4px 8px;border-radius:2px}
 /* 브랜드 무비 모달 */
 #movie{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center}
 #movie.open{display:flex}
@@ -279,6 +297,8 @@ body.home{overflow:hidden}
   .timeline::before{left:12px}.tl{grid-template-columns:1fr;gap:10px;padding-left:40px}.tl .yr{text-align:left;font-size:30px}.tl .yr::after{left:-34px;right:auto;top:8px}
   .cform label{padding-top:0}.cform .note,.cform .act{grid-column:1}
   #menu{padding:20px 18px}#menu .m-list{grid-template-columns:1fr;row-gap:22px}#menu .m-list a{font-size:17px}#menu .m-bottom{flex-direction:column;align-items:flex-start;gap:16px}
+  .rail .rl-quiz{font-size:11px;padding:12px 6px 14px;margin-top:14px}
+  #quiz{padding:90px 20px 60px}#quiz .q-close{right:14px;top:14px}
   .cover .mid{left:20px;right:60px;top:42%;flex-direction:column;align-items:flex-start;gap:26px;padding:22px 20px}
   .cover .brand .ring{width:50px;height:50px;flex:none}.cover .brand .ring img{width:22px}
   .cover .brand b{font-size:19px;letter-spacing:.24em;white-space:nowrap}.cover .brand small{font-size:8.5px;letter-spacing:.1em;white-space:nowrap}

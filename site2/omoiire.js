@@ -22,16 +22,17 @@
   chrome.innerHTML = `
   <a class="lg" href="index.html" aria-label="취향의 권리 홈"><img src="${EMBLEM}" alt=""></a>
   <div class="rail">
-    <a class="rl-shop" href="${SHOP}">Shop</a>
+    <div class="top"><a class="rl-shop" href="${SHOP}">Shop</a><button class="rl-quiz" data-quiz type="button">취향 찾기</button></div>
     <button class="rl-menu" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
     <a class="rl-top" href="#top">Page top</a>
   </div>
+  <div id="quiz" aria-hidden="true"><button class="q-close" type="button">닫기 ✕</button><div class="q-eyebrow">1분 취향 찾기 · 8개 질문 · 개인정보 수집 없음</div><div id="quizMount" class="tt"></div></div>
   <div id="menu" aria-hidden="true">
     <div class="m-top">
       <a class="m-logo" href="index.html"><span class="ring"><img src="${EMBLEM}" alt=""></span><span><b>취향의 권리</b><small>THE RIGHT TO TASTE · since 2026</small></span></a>
       <a class="m-shop" href="${SHOP}">Online Shop</a>
     </div>
-    <ul class="m-list">${PAGES.slice(1).map(p => `<li><a href="${p[0]}" class="${p[0] === here ? 'cur' : ''}">${p[1]}</a></li>`).join('')}</ul>
+    <ul class="m-list"><li><a href="#quiz" class="q" data-quiz>1분 취향 찾기</a></li>${PAGES.slice(1).map(p => `<li><a href="${p[0]}" class="${p[0] === here ? 'cur' : ''}">${p[1]}</a></li>`).join('')}</ul>
     <button class="m-close" aria-label="닫기"></button>
     <div class="m-bottom">
       <div class="lang"><a href="https://www.instagram.com/right.totaste/" target="_blank" rel="noopener" style="margin-right:14px">Instagram</a> <u>한국어</u> / <span title="준비 중">English</span></div>
@@ -64,6 +65,23 @@
   movie.addEventListener('click', e => { if (e.target === movie) { movie.classList.remove('open'); vid.pause(); } });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { openMenu(false); movie.classList.remove('open'); vid.pause(); } });
   document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => openMenu(true)));
+
+  /* ── 취향 테스트 오버레이: 공용 모듈(shared/taste-test.js)을 처음 열 때 불러와 붙인다 ── */
+  const quiz = document.getElementById('quiz'), qm = document.getElementById('quizMount');
+  let quizReady = null;
+  const loadQuiz = () => quizReady || (quizReady = new Promise(res => {
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../shared/taste-test.css'; document.head.appendChild(l);
+    const s = document.createElement('script'); s.src = '../shared/taste-test.js'; s.onload = () => {
+      const R = TasteTest.RESULTS; R.A.kitName = R.B.kitName = 'VER.1 Taste'; R.C.kitName = 'VER.2 Depth'; R.D.kitName = '2개 세트 · Taste + Depth';   // 10/20 확정 표기
+      TasteTest.mount(qm, { onKit(kit) { location.href = `products.html?pick=${kit}#pick`; }, onRetry() { quiz.scrollTo({ top: 0 }); } });
+      res(); };
+    document.head.appendChild(s); }));
+  const openQuiz = async o => { if (o) { await loadQuiz(); openMenu(false); } quiz.classList.toggle('open', o); quiz.setAttribute('aria-hidden', !o);
+    document.body.style.overflow = o || document.body.classList.contains('home') ? 'hidden' : ''; if (o) quiz.scrollTo({ top: 0 }); };
+  document.addEventListener('click', e => { const b = e.target.closest('[data-quiz]'); if (b) { e.preventDefault(); openQuiz(true); } });
+  quiz.querySelector('.q-close').addEventListener('click', () => openQuiz(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') openQuiz(false); });
+  if (location.hash === '#quiz' || new URLSearchParams(location.search).has('quiz')) setTimeout(() => openQuiz(true), 300);
 
   /* ── 등장 · Page top ── */
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
@@ -135,7 +153,7 @@
       id: i.key, name: i.kr, sub: i.en, price: '', soon: '낱개 · 오픈 예정', img: `../wadiz/assets/real/ing_${i.key}.png`, pad: true, ver: i.ver, kind: 'single',
       tags: [[i.ver === 'taste' ? 't' : 'd', i.ver === 'taste' ? 'Taste' : 'Depth'], ...flavor[i.key].map(f => ['', f])], flav: flavor[i.key], desc: i.feat })));
     grid.innerHTML = cards.map(c => `
-      <article class="card rv" data-ver="${c.ver}" data-kind="${c.kind}" data-flav="${c.flav.join(' ')}">
+      <article class="card rv" data-id="${c.id}" data-ver="${c.ver}" data-kind="${c.kind}" data-flav="${c.flav.join(' ')}">
         <a href="${c.kind === 'kit' ? SHOP : 'guide.html#' + c.id}">
           <div class="ph"><img class="${c.pad ? 'pad' : ''}" src="${c.img}" alt="${c.name}" loading="lazy"><svg class="hrt" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.4"><path d="M12 21s-7-4.6-9.3-9A5 5 0 0 1 12 6a5 5 0 0 1 9.3 6c-2.3 4.4-9.3 9-9.3 9z"/></svg></div>
           <h3>${c.name}<small class="small" style="display:block;letter-spacing:.14em;margin-top:2px">${c.sub}</small></h3>
@@ -152,6 +170,10 @@
     document.querySelectorAll('.chip[data-ver]').forEach(ch => ch.addEventListener('click', () => { state.ver = state.ver === ch.dataset.ver ? '' : ch.dataset.ver; document.querySelectorAll('.chip[data-ver]').forEach(x => x.classList.toggle('on', x.dataset.ver === state.ver)); apply(); }));
     document.querySelectorAll('.chip[data-flav]').forEach(ch => ch.addEventListener('click', () => { state.flav = state.flav === ch.dataset.flav ? '' : ch.dataset.flav; document.querySelectorAll('.chip[data-flav]').forEach(x => x.classList.toggle('on', x.dataset.flav === state.flav)); apply(); }));
     const reset = document.getElementById('preset'); if (reset) reset.addEventListener('click', e => { e.preventDefault(); state.ver = state.flav = ''; document.querySelectorAll('.chip').forEach(x => x.classList.remove('on')); apply(); });
+    // 취향 테스트 결과로 넘어온 경우: 추천 키트를 표시하고 그 자리로
+    const pick = new URLSearchParams(location.search).get('pick');
+    if (pick) { const c = grid.querySelector(`.card[data-id="${pick}"]`);
+      if (c) { c.classList.add('pick', 'on'); c.id = 'pick'; setTimeout(() => c.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400); } }
   }
 
   /* ── 원료 가이드: 목록 + 항목(라디얼 3축: 향·바디·여운) ── */

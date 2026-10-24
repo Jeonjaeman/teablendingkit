@@ -16,6 +16,10 @@
 | Contact (4칸 폼) | `contact.html` | 회사명·이름·이메일·문의 (접수 서버 없음 → mailto, 주소 교체 필요) |
 | 햄버거 메뉴(흰 오버레이, 2열 목록, 브랜드 무비 썸네일, 언어) | `omoiire.js`가 모든 페이지에 삽입 | Brand Movie = `video/brand.mp4`(기존 brand_v2 마스터를 720p로 줄임) |
 
+## 취향 테스트(가장 중요 — 어디서든 한 번에)
+- 오른쪽 레일의 초록 세로 버튼 「취향 찾기」, 홈 커버의 「1분 취향 찾기 →」, 메뉴 첫 줄, 즐기는 법 카드, 키트·블렌딩 페이지 버튼 — 모두 같은 오버레이(`#quiz`)를 연다. `#quiz` 해시나 `?quiz`로도 열린다.
+- 테스트 본체는 3D 사이트와 같은 공용 모듈 `shared/taste-test.js`(8문항, 결과 A~D)를 처음 열 때 불러와 붙인다. 결과의 「추천 키트 자세히 보기」 → `products.html?pick=ver1|ver2|set` → 해당 카드에 「취향 테스트 추천」 표시와 함께 스크롤.
+
 ## 자산
 - 새로 만든 것(GPT Image 2.5 via Higgsfield): `img/hero.jpg`, `img/enjoy_top.png`, `img/enjoy_01~04.png`(선화 일러스트).
 - 기존 것 재사용: `wadiz/assets/real/ing_*.png`(원료 실사 12), `wadiz/assets/photo/*`(인물·손·잔), `wadiz/assets/gen/*`, `wadiz/assets/3d/*`(상자 렌더).
