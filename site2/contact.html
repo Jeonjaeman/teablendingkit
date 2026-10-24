@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>문의｜취향의 권리</title>
+<meta name="description" content="선물용 포장, 단체 주문, 클래스, 제휴 — 편하게 문의해 주세요.">
+<link rel="icon" href="../wadiz/assets/emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&family=Noto+Serif+KR:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="omoiire.css">
+</head>
+<body id="top">
+<main>
+  <div class="inner">
+    <div class="phead">
+      <h1>문의<small>Contact</small></h1>
+      <div class="intro"><p>선물용 포장, 단체 주문, 블렌딩 클래스, 제휴 — 할 수 있는 한 정성껏 답합니다. 편하게 남겨 주세요.</p></div>
+    </div>
+    <section class="blk" style="padding-top:20px">
+      <form class="cform rv" id="cform" novalidate>
+        <label for="co">회사명</label><input id="co" name="company" type="text" autocomplete="organization">
+        <label for="nm">이름<i>필수</i></label><input id="nm" name="name" type="text" required autocomplete="name">
+        <label for="em">이메일<i>필수</i></label><input id="em" name="email" type="email" required autocomplete="email">
+        <label for="msg">문의 내용<i>필수</i></label><textarea id="msg" name="message" required></textarea>
+        <p class="note">입력하신 내용이 맞는지 확인해 주세요. 답변은 이메일로 드립니다.</p>
+        <div class="act">
+          <button class="btnbox" type="submit">보내기</button>
+          <a class="btnbox" href="#" id="kakao">카카오 채널로 문의</a>
+          <span class="small" id="cmsg"></span>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
+<script src="omoiire.js"></script>
+<script>
+// 접수 서버가 아직 없어 메일 앱으로 넘긴다. 주소는 대표 확정 후 교체.
+document.getElementById('cform').addEventListener('submit', e => {
+  e.preventDefault(); const f = e.target;
+  if (!f.name.value || !f.email.value || !f.message.value) { document.getElementById('cmsg').textContent = '필수 항목을 채워 주세요.'; return; }
+  const body = `이름: ${f.name.value}\n회사: ${f.company.value}\n이메일: ${f.email.value}\n\n${f.message.value}`;
+  location.href = 'mailto:hello@example.com?subject=' + encodeURIComponent('[취향의 권리] 문의') + '&body=' + encodeURIComponent(body);
+});
+document.getElementById('kakao').addEventListener('click', e => { e.preventDefault(); document.getElementById('cmsg').textContent = '카카오 채널 주소는 오픈 후 연결됩니다.'; });
+</script>
+</body>
+</html>
