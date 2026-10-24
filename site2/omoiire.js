@@ -184,8 +184,8 @@
         <polygon points="${poly}" fill="${'#E8E6BF'}" fill-opacity=".85" stroke="#9FA86A" stroke-width="1.2"/>
         ${[0, 1, 2].map(k => { const [x, y] = pt(k, R + 18); return `<text x="${x}" y="${y + 3}" text-anchor="middle">${ax[k]} ${v[k]}</text>`; }).join('')}</svg>`; };
     gi.innerHTML = ING.map((i, n) => `
-      <section class="gitem ${n % 2 ? 'rev' : ''}" id="${i.key}">
-        <div class="no ${n % 2 ? 'r' : ''} rv">${i.no}</div>
+      <section class="gitem" id="${i.key}">
+        <div class="no rv">${i.no}</div>
         <div class="cols">
           <div class="meta rv">
             <div class="nm">${i.kr}</div>

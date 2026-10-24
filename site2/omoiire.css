@@ -212,10 +212,7 @@ body.home{overflow:hidden}
 .gitem{padding:90px 0 40px;border-top:0}
 .gitem .no{display:flex;align-items:center;gap:16px;font-family:var(--en);font-size:13px;letter-spacing:.14em;color:var(--mute)}
 .gitem .no::after{content:"";flex:1;height:1px;background:var(--line)}
-.gitem .no.r{flex-direction:row-reverse}.gitem .no.r::after{order:-1}
 .gitem .cols{display:grid;grid-template-columns:260px 1fr 1fr;gap:40px;align-items:start;margin-top:30px}
-.gitem.rev .cols{grid-template-columns:1fr 1fr 260px}
-.gitem.rev .cols .meta{order:3}
 .gitem .nm{font-family:var(--serif);font-size:26px;letter-spacing:.1em;display:inline-block;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 4px;line-height:1.5}
 .gitem .sci{font-family:var(--en);font-size:12px;letter-spacing:.1em;color:var(--soft);margin-top:4px;font-style:italic}
 .gitem .ver{font-size:10.5px;letter-spacing:.14em;color:var(--acc);margin-top:6px}
@@ -227,7 +224,6 @@ body.home{overflow:hidden}
 .gitem .txt{display:grid;grid-template-columns:1fr 1fr;gap:34px;grid-column:span 2;margin-top:30px}
 .gitem .txt h4{font-size:13px;letter-spacing:.14em;margin-bottom:10px}
 .gitem .txt p{margin:0;font-size:12.5px;line-height:2;color:var(--mute)}
-.gitem.rev .vis,.gitem.rev .txt{grid-column:1 / span 2}
 
 /* ── 블렌딩(에세이) ── */
 .steps{counter-reset:s;display:grid;gap:70px}
@@ -285,6 +281,7 @@ body.home{overflow:hidden}
 .tl .yr{font-family:var(--en);font-size:40px;color:var(--num);text-align:right;line-height:1;position:relative}
 .tl .yr::after{content:"";position:absolute;right:-37px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--num);border:3px solid #fff}
 .tl .yr img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-top:16px;filter:saturate(.8)}
+.tl .yr img.book{width:auto;max-width:62%;aspect-ratio:auto;object-fit:contain;display:block;margin:18px 0 0 auto;box-shadow:0 12px 32px rgba(0,0,0,.12);filter:none}   /* 책은 항상 표지 전체(10/24) */
 .tl h5{font-family:var(--serif);font-weight:300;font-size:17px;letter-spacing:.08em;margin:6px 0 10px}
 .tl p{margin:0;font-size:12.5px;line-height:2;color:var(--mute)}
 .outline dl{display:grid;grid-template-columns:140px 1fr;gap:10px 20px;font-size:12.5px;max-width:720px}
@@ -309,17 +306,16 @@ body.home{overflow:hidden}
   .inner{padding:0 20px}
   .phead{grid-template-columns:1fr;padding-top:90px;min-height:0}
   .phead h1{padding-bottom:16px}.phead .intro{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
-  .two,.two.rev,.step,.makers,.enjoy,.shopi,.gitem .cols,.gitem.rev .cols,.cform{grid-template-columns:1fr}
+  .two,.two.rev,.step,.makers,.enjoy,.shopi,.gitem .cols,.cform{grid-template-columns:1fr}
   .two.rev>:first-child,.step:nth-child(even) .img{order:0}
   .bleed-r{margin-right:-20px}.bleed-l{margin-left:-20px}
   .grid3{grid-template-columns:repeat(2,1fr);gap:34px 18px}
   .glist{grid-template-columns:repeat(3,1fr)}
-  .gitem .vis,.gitem .txt,.gitem.rev .vis,.gitem.rev .txt{grid-column:1}
-  .gitem.rev .cols .meta{order:0}
+  .gitem .vis,.gitem .txt{grid-column:1}
   .pnav{display:none}
   .howto{grid-template-columns:repeat(2,1fr)}
   .recipe{grid-template-columns:1fr 1fr}
-  .timeline::before{left:12px}.tl{grid-template-columns:1fr;gap:10px;padding-left:40px}.tl .yr{text-align:left;font-size:30px}.tl .yr::after{left:-34px;right:auto;top:8px}
+  .timeline::before{left:12px}.tl{grid-template-columns:1fr;gap:10px;padding-left:40px}.tl .yr{text-align:left;font-size:30px}.tl .yr::after{left:-34px;right:auto;top:8px}.tl .yr img.book{margin-left:0;max-width:220px}
   .cform label{padding-top:0}.cform .note,.cform .act{grid-column:1}
   #menu{padding:20px 18px}#menu .m-list{grid-template-columns:1fr;row-gap:22px}#menu .m-list a{font-size:17px}#menu .m-bottom{flex-direction:column;align-items:flex-start;gap:16px}
   .rail .rl-quiz{font-size:11px;padding:12px 6px 14px;margin-top:14px}

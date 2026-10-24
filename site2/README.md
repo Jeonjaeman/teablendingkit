@@ -9,10 +9,10 @@
 | Home (커버 한 장: 사진 · 로고+2열 메뉴 · 하단 태그라인) | `index.html` | 사진 `img/hero.jpg`(GPT Image 2.5 생성), 로고 + 5개 메뉴, "Life is an endless blending." |
 | Products (제목/소개 → 필터 칩 → 3열 카드) | `products.html` | 버전(Taste/Depth)·태그 칩, 키트 3 + 원료 낱개 12(오픈 예정) |
 | About Chiran Tea (Point 1~4, 왼쪽 고정 포인트 내비, 마무리 와이드 사진 + 두 줄) | `about.html` | 1 취향은 완성되어 갑니다 · 2 열두 원료 4,000 조합(숫자) · 3 Taste/Depth 두 잔 · 4 고재의 그릇 |
-| Tea Guide (T-01~06 찻물 원, 품종별 레이더·사진·Feature/Biography·버튼) | `guide.html` | T-01~12 원료 — 목록은 3차수정 실사 누끼(`wadiz/assets/real/herb_*.png`, 10/24 전재만: 색 원 대신 원료 사진), 항목은 찻물 색 원을 빼고 그 자리에 레이더(원 크기), 레이더 자리에 「이 원료가 든 키트」 버튼, 오른쪽은 실사. 레이더는 와디즈 원료 노트의 향·바디·여운 3축(5점) |
+| Tea Guide (T-01~06 찻물 원, 품종별 레이더·사진·Feature/Biography·버튼) | `guide.html` | T-01~12 원료 — 목록은 3차수정 실사 누끼(`wadiz/assets/real/herb_*.png`, 10/24 전재만: 색 원 대신 원료 사진), 항목은 찻물 색 원을 빼고 그 자리에 레이더(원 크기), 레이더 자리에 「이 원료가 든 키트」 버튼, 오른쪽은 실사. 12개 항목 모두 같은 구성(좌우 번갈아 쓰지 않음, 10/24). 레이더는 와디즈 원료 노트의 향·바디·여운 3축(5점) |
 | Hamada Blends (에세이: 블렌딩 → 차사(Chashi) 두 사람 → 작업 01~05 → 마무리) | `blends.html` | 비율 → 이소연·양진호 → 고르기·담기·붓기·우리기·기록하기 → 레시피 2개 |
 | Tashinamu (큰 일러스트 + 사전 풀이 + 카드 4) | `enjoy.html` | 취향(趣向) 사전 풀이 + 취향 찾기·우리는 법·보관법·차 이야기 |
-| Shop Information (사진+주소 → Company outline → 연혁 타임라인 → Outline/Privacy) | `shop.html` | 구매처 → 티아포테카 → 2020·2024·2026 연혁 → Outline |
+| Shop Information (사진+주소 → Company outline → 연혁 타임라인 → Outline/Privacy) | `shop.html` | 구매처 → 주문(키트 3종) → 티아포테카 → 2020·2024·2026 연혁(책은 항상 표지 전체, 자르지 않음 — 10/24) → Outline |
 | Contact (4칸 폼) | `contact.html` | 회사명·이름·이메일·문의 (접수 서버 없음 → mailto, 주소 교체 필요) |
 | 햄버거 메뉴(흰 오버레이, 2열 목록, 브랜드 무비 썸네일, 언어) | `omoiire.js`가 모든 페이지에 삽입 | Brand Movie = `video/brand.mp4`(기존 brand_v2 마스터를 720p로 줄임) |
 
