@@ -17,7 +17,7 @@
 .nums span{display:block;font-size:11.5px;color:var(--mute);margin-top:6px;letter-spacing:.06em}
 .cups{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .cups figure{text-align:center}
-.cups .c{width:150px;height:150px;border-radius:50%;margin:0 auto 14px;box-shadow:inset 0 0 0 16px #fff,inset 0 0 0 17px #ececec,0 12px 30px rgba(0,0,0,.08)}
+.cups img{width:100%;aspect-ratio:1;object-fit:cover;display:block;margin:0 0 16px}   /* 10/24: 색 원 → 찻잔 옆모습 사진(GPT Image 2.5, 찻물 색) */
 .cups b{font-family:var(--serif);font-weight:300;font-size:15px;letter-spacing:.14em;display:block}
 .cups small{font-size:11px;color:var(--mute);letter-spacing:.06em}
 .wide img{width:100%;height:56vh;min-height:320px;object-fit:cover}
@@ -70,8 +70,8 @@
     <!-- Point 3 -->
     <section class="pt two" id="p3">
       <div class="rv cups">
-        <figure><div class="c" style="background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.5) 0, transparent 45%), #E6D27E"></div><b>VER.1 Taste</b><small>향과 색으로 — 95~100°C · 3~5분</small></figure>
-        <figure><div class="c" style="background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.4) 0, transparent 45%), #8E5A3C"></div><b>VER.2 Depth</b><small>깊이와 구수함으로 — 100°C · 7분</small></figure>
+        <figure><img src="img/cup_taste.jpg" alt="VER.1 Taste — 유리잔에 담긴 금빛 허브차" loading="lazy"><b>VER.1 Taste</b><small>향과 색으로 — 95~100°C · 3~5분</small></figure>
+        <figure><img src="img/cup_depth.jpg" alt="VER.2 Depth — 유리잔에 담긴 깊은 갈색 곡물차" loading="lazy"><b>VER.2 Depth</b><small>깊이와 구수함으로 — 100°C · 7분</small></figure>
       </div>
       <div class="rv">
         <div class="pnum">THE RIGHT TO TASTE · POINT <b>3</b></div>

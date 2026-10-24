@@ -28,7 +28,7 @@
 - 왼쪽 위 고정 버튼은 엠블럼만 둥글게(`wadiz/assets/emblem.svg`) 그대로.
 
 ## 자산
-- 새로 만든 것(GPT Image 2.5 via Higgsfield): `img/hero.jpg`, `img/enjoy_top.png`, `img/enjoy_01~04.png`(선화 일러스트).
+- 새로 만든 것(GPT Image 2.5 via Higgsfield): `img/hero.jpg`, `img/enjoy_top.png`, `img/enjoy_01~04.png`(선화 일러스트), `img/cup_taste.jpg`·`img/cup_depth.jpg`(About Point 3 — 유리잔 옆모습으로 찻물 색, 10/24 지시: 위에서 찍은 구도 말고 옆에서).
 - 기존 것 재사용: `wadiz/assets/real/herb_*.png`(3차수정 실사 누끼 12 — 가이드 목록·항목·키트 페이지 원료 카드), `wadiz/assets/photo/*`(인물·손·잔), `wadiz/assets/gen/*`, `wadiz/assets/3d/*`(상자 렌더).
 - 영상: 새로 만들 일이 생기면 힉스필드(전재만 지시). 지금은 기존 브랜드 필름 재인코딩만.
 
