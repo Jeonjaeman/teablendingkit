@@ -12,7 +12,7 @@
     ['shop.html', '구매 안내', 'Shop Information'],
     ['contact.html', '문의', 'Contact'],
   ];
-  const SHOP = '../site/index.html#buy';          // 온라인 숍 = 3D 사이트의 구매 구역
+  const SHOP = 'shop.html#order';                 // 구매는 site2 안에서(구매 안내의 주문 구역). site/ 와는 서로 독립
   const here = location.pathname.split('/').pop() || 'index.html';
   const page = PAGES.find(p => p[0] === here) || PAGES[0];
   const EMBLEM = '../wadiz/assets/emblem.svg';
@@ -26,7 +26,7 @@
     <button class="rl-menu" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
     <a class="rl-top" href="#top">Page top</a>
   </div>
-  <div id="quiz" aria-hidden="true"><button class="q-close" type="button">닫기 ✕</button><div class="q-eyebrow">1분 취향 찾기 · 8개 질문 · 개인정보 수집 없음</div><div id="quizMount" class="tt"></div></div>
+  <div id="quiz" aria-hidden="true"><div class="q-top"><div class="q-logo"><span><img src="${EMBLEM}" alt=""></span>취향의 권리</div><button class="q-close" type="button">닫기 ✕</button></div><div id="quizMount"></div></div>
   <div id="menu" aria-hidden="true">
     <div class="m-top">
       <a class="m-logo" href="index.html"><span class="ring"><img src="${EMBLEM}" alt=""></span><span><b>취향의 권리</b><small>THE RIGHT TO TASTE · since 2026</small></span></a>
@@ -50,7 +50,7 @@
     <div class="ring"><img src="${EMBLEM}" alt=""></div>
     <div class="nm">취향의 권리</div>
     <div class="ad">만든 곳 · 티아포테카 (Tea Apotheca)<br>문의 · 카카오 채널 / Instagram @right.totaste</div>
-    <div class="sns"><a href="contact.html">Contact</a><a href="${SHOP}">Online Shop</a><a href="../site/index.html">3D Site</a></div>
+    <div class="sns"><a href="contact.html">Contact</a><a href="${SHOP}">Online Shop</a><a href="#quiz" data-quiz>Taste Test</a></div>
     <div class="copy">© 2026 THE RIGHT TO TASTE. ALL RIGHTS RESERVED.</div>
   </footer>`;
   document.body.append(tail);
@@ -66,22 +66,18 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { openMenu(false); movie.classList.remove('open'); vid.pause(); } });
   document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => openMenu(true)));
 
-  /* ── 취향 테스트 오버레이: 공용 모듈(shared/taste-test.js)을 처음 열 때 불러와 붙인다 ── */
+  /* ── 취향 테스트 오버레이: site2 전용 모듈(quiz.js)을 처음 열 때 불러와 붙인다 ── */
   const quiz = document.getElementById('quiz'), qm = document.getElementById('quizMount');
   let quizReady = null;
   const loadQuiz = () => quizReady || (quizReady = new Promise(res => {
-    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '../shared/taste-test.css'; document.head.appendChild(l);
-    const s = document.createElement('script'); s.src = '../shared/taste-test.js'; s.onload = () => {
-      const R = TasteTest.RESULTS; R.A.kitName = R.B.kitName = 'VER.1 Taste'; R.C.kitName = 'VER.2 Depth'; R.D.kitName = '2개 세트 · Taste + Depth';   // 10/20 확정 표기
-      TasteTest.mount(qm, { onKit(kit) { location.href = `products.html?pick=${kit}#pick`; }, onRetry() { quiz.scrollTo({ top: 0 }); } });
-      res(); };
+    const s = document.createElement('script'); s.src = 'quiz.js'; s.onload = () => { RTTQuiz.mount(qm, { onKit(kit) { location.href = `products.html?pick=${kit}#pick`; } }); res(); };
     document.head.appendChild(s); }));
   const openQuiz = async o => { if (o) { await loadQuiz(); openMenu(false); } quiz.classList.toggle('open', o); quiz.setAttribute('aria-hidden', !o);
     document.body.style.overflow = o || document.body.classList.contains('home') ? 'hidden' : ''; if (o) quiz.scrollTo({ top: 0 }); };
   document.addEventListener('click', e => { const b = e.target.closest('[data-quiz]'); if (b) { e.preventDefault(); openQuiz(true); } });
   quiz.querySelector('.q-close').addEventListener('click', () => openQuiz(false));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') openQuiz(false); });
-  if (location.hash === '#quiz' || new URLSearchParams(location.search).has('quiz')) setTimeout(() => openQuiz(true), 300);
+  { const sp = new URLSearchParams(location.search); if (location.hash === '#quiz' || sp.has('quiz') || sp.has('result')) setTimeout(() => openQuiz(true), 300); }
 
   /* ── 등장 · Page top ── */
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
@@ -150,7 +146,7 @@
     const flavor = { lemon_balm: ['시트러스', '꽃향'], hibiscus: ['산미', '꽃향'], peppermint: ['맑음'], yuza: ['시트러스'], rose: ['꽃향'], chamomile: ['꽃향', '단맛'],
       solomons_seal: ['뿌리', '단맛'], sorghum: ['곡물'], red_bean: ['곡물', '단맛'], brown_rice: ['곡물'], dandelion_root: ['뿌리', '깊이'], barley: ['곡물'] };
     const cards = KITS.map(k => ({ ...k, flav: ['키트'] })).concat(ING.map(i => ({
-      id: i.key, name: i.kr, sub: i.en, price: '', soon: '낱개 · 오픈 예정', img: `../wadiz/assets/real/ing_${i.key}.png`, pad: true, ver: i.ver, kind: 'single',
+      id: i.key, name: i.kr, sub: i.en, price: '', soon: '낱개 · 오픈 예정', img: `../wadiz/assets/real/herb_${i.key}.png`, pad: true, ver: i.ver, kind: 'single',
       tags: [[i.ver === 'taste' ? 't' : 'd', i.ver === 'taste' ? 'Taste' : 'Depth'], ...flavor[i.key].map(f => ['', f])], flav: flavor[i.key], desc: i.feat })));
     grid.innerHTML = cards.map(c => `
       <article class="card rv" data-id="${c.id}" data-ver="${c.ver}" data-kind="${c.kind}" data-flav="${c.flav.join(' ')}">
@@ -179,7 +175,7 @@
   /* ── 원료 가이드: 목록 + 항목(라디얼 3축: 향·바디·여운) ── */
   const gl = document.getElementById('glist'), gi = document.getElementById('gitems');
   if (gl && gi) {
-    gl.innerHTML = ING.map(i => `<a href="#${i.key}"><span class="cup" style="background:radial-gradient(circle at 40% 35%, #fff8 0, transparent 40%), ${i.liq}"></span><span>${i.no}</span></a>`).join('');
+    gl.innerHTML = ING.map(i => `<a href="#${i.key}"><span class="cup"><img src="../wadiz/assets/real/herb_${i.key}.png" alt="${i.kr}" loading="lazy"></span><span>${i.no}</span></a>`).join('');   // 10/24: 찻물 색 원 → 3차수정 실사 누끼(herb_*.png)
     const radar = (a, b, f) => { const R = 70, cx = 100, cy = 104, ax = ['향', '바디', '여운'], v = [a, b, f];
       const pt = (k, r) => { const t = -Math.PI / 2 + k * 2 * Math.PI / 3; return [cx + r * Math.cos(t), cy + r * Math.sin(t)]; };
       const ring = r => [0, 1, 2].map(k => pt(k, r).join(',')).join(' ');
@@ -201,7 +197,7 @@
           </div>
           <div class="vis rv">
             <div class="liq" style="background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.45) 0, transparent 45%), ${i.liq}"></div>
-            <img class="herb" src="../wadiz/assets/real/ing_${i.key}.png" alt="${i.kr}" loading="lazy">
+            <img class="herb" src="../wadiz/assets/real/herb_${i.key}.png" alt="${i.kr}" loading="lazy">
           </div>
           <div class="txt rv">
             <div><h4>Feature · 향 노트</h4><p>${i.feat}</p></div>

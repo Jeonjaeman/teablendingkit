@@ -27,12 +27,31 @@
           <dt>SHIPPING</dt><dd>모든 리워드 무료배송 · 제주·도서산간 추가 배송비 3,000원</dd>
           <dt>CONTACT</dt><dd>카카오 채널 · Instagram @right.totaste</dd>
         </dl>
-        <a class="btnbox" href="../site/index.html#buy">Online Shop</a>
+        <a class="btnbox" href="#order">주문하기</a>
         <span style="display:inline-block;width:12px"></span>
         <a class="btnbox" href="contact.html">Contact</a>
         <p class="small" style="margin-top:16px">선물용 포장, 단체 주문, 클래스 문의는 Contact로 남겨 주세요.</p>
       </div>
       <figure class="rv bleed-r"><img src="../wadiz/assets/3d/open_34.jpg" alt="뚜껑을 연 키트" style="aspect-ratio:4/3;object-fit:cover"></figure>
+    </section>
+
+    <!-- 주문: 키트 3종 (레퍼런스의 Online Shop 역할을 site2 안에서) -->
+    <section class="blk" id="order" style="border-top:1px solid var(--line)">
+      <div class="tt rv"><span class="en">Order</span><h2>키트 세 가지 중 하나를 고르세요.</h2></div>
+      <div class="rv" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px" id="orderGrid">
+        <div class="ord" data-kit="ver1"><div class="small" style="letter-spacing:.2em">VER.1</div><h3>Taste</h3><p>레몬밤 · 히비스커스 · 페퍼민트 · 유자 · 장미 · 캐모마일<br>원료 6종 · 빈 티백 · 블렌딩 노트 · 레시피 21가지</p><div class="pr">59,000원</div><a class="btnbox" href="#" data-order="ver1">오늘의 향 만들기</a></div>
+        <div class="ord" data-kit="ver2"><div class="small" style="letter-spacing:.2em">VER.2</div><h3>Depth</h3><p>현미 · 민들레뿌리 · 찰수수 · 보리 · 단팥 · 둥굴레<br>원료 6종 · 빈 티백 · 블렌딩 노트 · 레시피 21가지</p><div class="pr">59,000원</div><a class="btnbox" href="#" data-order="ver2">나만의 로스트 만들기</a></div>
+        <div class="ord" data-kit="set"><div class="small" style="letter-spacing:.2em">2개 세트</div><h3>Taste + Depth</h3><p>키트 2개 · 노트 2권 · 인퓨저 2개 · 단팥차 샘플<br>허브와 곡물을 섞는 교차 블렌드까지</p><div class="pr">110,000원 <s>118,000원</s></div><a class="btnbox" href="#" data-order="set">12가지 원료로 향과 깊이 설계하기</a></div>
+      </div>
+      <p class="small rv" style="margin-top:22px;letter-spacing:.06em">가격·구성은 와디즈 리워드 기준이며 확정 전입니다. 주문 버튼은 펀딩 오픈과 함께 연결됩니다. 모든 리워드 무료배송 · 제주·도서산간 추가 배송비 3,000원.</p>
+      <style>
+        .ord{border:1px solid var(--line);padding:26px 24px 24px;display:flex;flex-direction:column;gap:10px;transition:border-color .3s,transform .3s}
+        .ord.pick{border-color:var(--acc);transform:translateY(-6px)}
+        .ord h3{font-size:22px;letter-spacing:.06em}.ord p{margin:0;font-size:12.5px;line-height:1.9;color:var(--mute);flex:1}
+        .ord .pr{font-size:18px;letter-spacing:.06em;margin-top:6px}.ord .pr s{font-size:12px;color:var(--soft);margin-left:6px}
+        .ord .btnbox{min-width:0;align-self:flex-start;margin-top:6px;font-size:12px;padding:12px 18px}
+        @media (max-width:860px){#orderGrid{grid-template-columns:1fr!important}}
+      </style>
     </section>
 
     <section class="blk">
@@ -71,5 +90,10 @@
   </div>
 </main>
 <script src="omoiire.js"></script>
+<script>
+// 주문 버튼: 결제 연결 전까지 안내. ?pick= 으로 들어오면 그 키트를 표시
+document.querySelectorAll('[data-order]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); b.textContent = '펀딩 오픈과 함께 연결됩니다'; b.style.pointerEvents = 'none'; }));
+{ const k = new URLSearchParams(location.search).get('pick'); const c = k && document.querySelector(`.ord[data-kit="${k}"]`); if (c) { c.classList.add('pick'); setTimeout(() => c.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400); } }
+</script>
 </body>
 </html>
