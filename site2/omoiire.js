@@ -26,10 +26,10 @@
     <button class="rl-menu" aria-label="메뉴 열기"><i></i><i></i><i></i></button>
     <a class="rl-top" href="#top">Page top</a>
   </div>
-  <div id="quiz" aria-hidden="true"><div class="q-top"><div class="q-logo"><span><img src="${EMBLEM}" alt=""></span>취향의 권리</div><button class="q-close" type="button">닫기 ✕</button></div><div id="quizMount"></div></div>
+  <div id="quiz" aria-hidden="true"><div class="q-top"><a class="q-logo" href="index.html"><img src="img/logo.svg" alt="취향의 권리 · the right to taste"></a><button class="q-close" type="button">닫기 ✕</button></div><div id="quizMount"></div></div>
   <div id="menu" aria-hidden="true">
     <div class="m-top">
-      <a class="m-logo" href="index.html"><span class="ring"><img src="${EMBLEM}" alt=""></span><span><b>취향의 권리</b><small>THE RIGHT TO TASTE · since 2026</small></span></a>
+      <a class="m-logo" href="index.html"><img class="logo" src="img/logo-wide.png" alt="취향의 권리 · the right to taste"></a>
       <a class="m-shop" href="${SHOP}">Online Shop</a>
     </div>
     <ul class="m-list"><li><a href="#quiz" class="q" data-quiz>1분 취향 찾기</a></li>${PAGES.slice(1).map(p => `<li><a href="${p[0]}" class="${p[0] === here ? 'cur' : ''}">${p[1]}</a></li>`).join('')}</ul>
@@ -47,8 +47,7 @@
   tail.innerHTML = here === 'index.html' ? '' : `
   <div class="bread"><div class="inner"><a href="index.html">Home</a><span>${page[1]}</span></div></div>
   <footer class="ft">
-    <div class="ring"><img src="${EMBLEM}" alt=""></div>
-    <div class="nm">취향의 권리</div>
+    <img class="logo-sq" src="img/logo-sq.png" alt="취향의 권리 · the right to taste">
     <div class="ad">만든 곳 · 티아포테카 (Tea Apotheca)<br>문의 · 카카오 채널 / Instagram @right.totaste</div>
     <div class="sns"><a href="contact.html">Contact</a><a href="${SHOP}">Online Shop</a><a href="#quiz" data-quiz>Taste Test</a></div>
     <div class="copy">© 2026 THE RIGHT TO TASTE. ALL RIGHTS RESERVED.</div>
@@ -192,11 +191,10 @@
             <div class="nm">${i.kr}</div>
             <div class="sci">${i.en} · ${i.sci}</div>
             <div class="ver">${i.ver === 'taste' ? 'VER.1 TASTE' : 'VER.2 DEPTH'} · 향 바디 여운 5점 기준</div>
-            ${radar(i.a, i.b, i.f)}
             <a class="btnbox sm" href="products.html">이 원료가 든 키트<br><small class="small">${i.ver === 'taste' ? 'VER.1 Taste' : 'VER.2 Depth'}</small></a>
           </div>
           <div class="vis rv">
-            <div class="liq" style="background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.45) 0, transparent 45%), ${i.liq}"></div>
+            ${radar(i.a, i.b, i.f)}
             <img class="herb" src="../wadiz/assets/real/herb_${i.key}.png" alt="${i.kr}" loading="lazy">
           </div>
           <div class="txt rv">

@@ -37,10 +37,7 @@ body.scrolled .rail .rl-top{opacity:1}
 #menu.open{opacity:1;pointer-events:auto}
 #menu .m-top{display:flex;justify-content:space-between;align-items:center}
 #menu .m-logo{display:flex;align-items:center;gap:14px}
-#menu .m-logo .ring{width:40px;height:40px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center}
-#menu .m-logo .ring img{width:18px}
-#menu .m-logo b{font-family:var(--serif);font-weight:300;font-size:16px;letter-spacing:.3em;display:block;line-height:1.3}
-#menu .m-logo small{font-family:var(--en);font-size:10px;letter-spacing:.26em;color:var(--mute);display:block}
+#menu .m-logo .logo{height:78px;width:auto;display:block}   /* 가로 띠형(img/logo-wide.png) */
 #menu .m-shop{font-family:var(--serif);font-size:13px;letter-spacing:.14em;border-bottom:1px solid var(--ink);padding-bottom:3px}
 #menu .m-list{flex:1;display:grid;grid-template-columns:repeat(2,max-content);column-gap:72px;row-gap:34px;align-content:center;justify-content:center;list-style:none;margin:0;padding:0}
 #menu .m-list a{font-family:var(--serif);font-size:19px;letter-spacing:.2em;padding-left:22px;position:relative;display:inline-block;transition:color .3s}
@@ -67,9 +64,7 @@ body.scrolled .rail .rl-top{opacity:1}
 #quiz{position:fixed;inset:0;z-index:65;background:#fff;overflow:auto;padding:0 7vw 80px;opacity:0;pointer-events:none;transition:opacity .4s}
 #quiz.open{opacity:1;pointer-events:auto}
 #quiz .q-top{display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:0 auto;padding:30px 0 60px}
-#quiz .q-top .q-logo{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:13px;letter-spacing:.26em}
-#quiz .q-top .q-logo span{width:36px;height:36px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center}
-#quiz .q-top .q-logo img{width:16px}
+#quiz .q-top .q-logo img{height:36px;width:auto;display:block}   /* 가로형 */
 #quiz .q-close{font-family:var(--serif);font-size:12px;letter-spacing:.2em;background:#fff;border:0;border-bottom:1px solid var(--ink);padding:0 0 3px;cursor:pointer}
 #quizMount{max-width:760px;margin:0 auto}
 /* 테스트 화면 — 레퍼런스의 문법(가는 선 · 명조 · 영문 이탤릭 번호 · 올리브 포인트) */
@@ -165,9 +160,7 @@ figcaption{font-size:11px;letter-spacing:.12em;color:var(--soft);margin-top:10px
 .bread .inner{display:flex;gap:14px}
 .bread span::before{content:"›";margin-right:14px;color:var(--soft)}
 footer.ft{text-align:center;padding:72px 0 60px}
-footer.ft .ring{width:60px;height:60px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;margin:0 auto 26px}
-footer.ft .ring img{width:26px}
-footer.ft .nm{font-family:var(--serif);font-size:13px;letter-spacing:.3em}
+footer.ft .logo-sq{width:124px;display:block;margin:0 auto}   /* 정방형(img/logo-sq.png) */
 footer.ft .ad{font-family:var(--serif);font-size:12px;letter-spacing:.12em;color:var(--mute);margin-top:12px;line-height:2.1}
 footer.ft .sns{margin-top:22px;font-size:11px;letter-spacing:.14em;color:var(--mute)}
 footer.ft .sns a{border-bottom:1px solid var(--line);margin:0 8px}
@@ -179,10 +172,8 @@ body.home{overflow:hidden}
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.82) 0,rgba(255,255,255,.62) 42%,rgba(255,255,255,.12) 66%,rgba(255,255,255,0))}
 .cover .mid{position:absolute;left:5.5vw;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:5vw;z-index:2;padding:30px 40px 30px 28px;background:rgba(255,255,255,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}   /* 사진 위에서도 메뉴가 읽히도록 반투명 미장판 */
 .cover .brand{display:flex;align-items:center;gap:16px}
-.cover .brand .ring{width:62px;height:62px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.6)}
-.cover .brand .ring img{width:26px}
-.cover .brand b{font-family:var(--serif);font-weight:300;font-size:22px;letter-spacing:.32em;display:block;line-height:1.3}
-.cover .brand small{font-family:var(--en);font-size:10.5px;letter-spacing:.28em;color:#4a4740;display:block;margin-top:2px}
+.cover .brand .logo{height:64px;width:auto;display:block}   /* 10/24: 실제 로고 — 가로형(img/logo.svg, 로고 PDF 벡터) */
+.cover .brand .logo-sq{display:none;width:120px}   /* 모바일에서는 정방형 */
 .cover nav{display:grid;grid-template-columns:repeat(2,max-content);column-gap:44px;row-gap:16px}
 .cover nav a{font-family:var(--serif);font-size:14px;letter-spacing:.18em;padding-left:16px;position:relative;white-space:nowrap}
 .cover nav a::before{content:"";position:absolute;left:0;top:50%;width:1px;height:12px;background:var(--ink);transform:translateY(-50%)}
@@ -228,10 +219,10 @@ body.home{overflow:hidden}
 .gitem .nm{font-family:var(--serif);font-size:26px;letter-spacing:.1em;display:inline-block;background:linear-gradient(transparent 62%,var(--hl) 62%);padding:0 4px;line-height:1.5}
 .gitem .sci{font-family:var(--en);font-size:12px;letter-spacing:.1em;color:var(--soft);margin-top:4px;font-style:italic}
 .gitem .ver{font-size:10.5px;letter-spacing:.14em;color:var(--acc);margin-top:6px}
-.radar{width:200px;height:200px;margin:22px 0 26px}
-.radar text{font-size:9px;letter-spacing:.06em;fill:#6a665c;font-family:var(--sans)}
+.gitem .meta .btnbox{margin-top:30px}
+.radar{width:100%;height:auto;aspect-ratio:1;display:block}   /* 10/24: 찻물 원 자리·크기로 */
+.radar text{font-size:8px;letter-spacing:.06em;fill:#6a665c;font-family:var(--sans)}
 .gitem .vis{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:end;grid-column:span 2}
-.gitem .liq{aspect-ratio:1;border-radius:50%;background:#eee;box-shadow:inset 0 0 0 18px #fff,inset 0 0 0 19px #ececec,0 10px 30px rgba(0,0,0,.08)}
 .gitem .herb{aspect-ratio:1;object-fit:contain;padding:8%;background:#f6f4ef}
 .gitem .txt{display:grid;grid-template-columns:1fr 1fr;gap:34px;grid-column:span 2;margin-top:30px}
 .gitem .txt h4{font-size:13px;letter-spacing:.14em;margin-bottom:10px}
@@ -334,8 +325,7 @@ body.home{overflow:hidden}
   .rail .rl-quiz{font-size:11px;padding:12px 6px 14px;margin-top:14px}
   #quiz{padding:0 20px 60px}#quiz .q-top{padding:18px 0 40px}
   .cover .mid{left:20px;right:60px;top:42%;flex-direction:column;align-items:flex-start;gap:26px;padding:22px 20px}
-  .cover .brand .ring{width:50px;height:50px;flex:none}.cover .brand .ring img{width:22px}
-  .cover .brand b{font-size:19px;letter-spacing:.24em;white-space:nowrap}.cover .brand small{font-size:8.5px;letter-spacing:.1em;white-space:nowrap}
+  .cover .brand .logo{display:none}.cover .brand .logo-sq{display:block}
   .cover nav{grid-template-columns:1fr;row-gap:12px}
   .cover .tag .en{font-size:22px}
 }
