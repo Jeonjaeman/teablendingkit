@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>키트｜취향의 권리</title>
-<meta name="description" content="티 블렌딩 키트 VER.1 Taste · VER.2 Depth · 2개 세트, 그리고 원료 12종. 마음이 가는 한 잔을 찾아보세요.">
+<meta name="description" content="티 블렌딩 키트 VER.1 Taste · VER.2 Depth · 2개 세트. 고르기 어려우면 1분 취향 찾기로, 그리고 우리는 법 · 보관하는 법 · 차 이야기.">
 <link rel="icon" href="../wadiz/assets/emblem.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&family=Noto+Serif+KR:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -13,25 +13,66 @@
 <main>
   <div class="inner">
     <div class="phead">
-      <h1>키트<small>Kit &amp; Ingredients</small></h1>
-      <div class="intro filter" style="border-left:0;padding-left:0;margin-top:0">
-        <p class="mute" style="margin-bottom:14px">마음이 가는 한 잔을 찾아보세요. <a id="preset" href="#" class="small" style="margin-left:10px;border-bottom:1px solid var(--line);color:var(--num)">Reset</a></p>
-        <div class="row"><h4>버전<a href="guide.html">→ 원료 가이드</a></h4><div class="chips"><button class="chip" data-ver="taste">VER.1 Taste · 향</button><button class="chip" data-ver="depth">VER.2 Depth · 깊이</button></div></div>
-        <div class="row"><h4>관련 태그</h4><div class="chips"><button class="chip" data-flav="키트">키트</button><button class="chip" data-flav="꽃향">꽃향</button><button class="chip" data-flav="시트러스">시트러스</button><button class="chip" data-flav="단맛">단맛</button><button class="chip" data-flav="곡물">곡물</button><button class="chip" data-flav="뿌리">뿌리</button><button class="chip" data-flav="깊이">깊이</button></div></div>
-      </div>
+      <h1>키트<small>Blending Kit</small></h1>
+      <div class="intro"><p>원료 여섯 가지와 빈 티백, 블렌딩 노트, 시음으로 고른 레시피 스물한 가지가 한 상자에. 향으로 즐기는 Taste, 깊이로 즐기는 Depth, 둘을 섞는 세트. 오픈 시에는 키트(시제품)로 먼저 시작합니다.</p></div>
     </div>
 
     <section class="blk" style="padding-top:0">
       <div id="pgrid" class="grid3"></div>
       <div class="more rv">
-        <p class="mute" style="font-size:12.5px;margin:0 0 18px">원료 낱개 판매는 취향의권리.com에서 순서대로 열립니다. 지금은 키트로 시작해 주세요.</p>
+        <p class="mute" style="font-size:12.5px;margin:0 0 18px">원료 단품은 순서대로 열립니다. 키트에 든 원료 하나하나는 <a href="ingredients.html" style="border-bottom:1px solid var(--line)">원료 페이지</a>에서.</p>
         <a class="btnbox" href="shop.html#order">키트 구매하기</a>
         <span style="display:inline-block;width:14px"></span>
-        <a class="btnbox" href="#quiz" data-quiz>1분 취향 찾기</a>
+        <a class="btnbox" href="blends.html">레시피 보기</a>
       </div>
+    </section>
+
+    <!-- 보조 도구: 키트 고르기 어려운 분을 위한 1분 취향 찾기 (10/25: 전면 강조 대신 여기로) -->
+    <section class="blk find rv" id="find">
+      <div>
+        <div class="small" style="letter-spacing:.2em;color:var(--num)">HELP ME CHOOSE</div>
+        <h3>어느 키트가 맞을지 고르기 어려우신가요?</h3>
+        <p>여덟 개의 질문에 답하면 Taste · Depth · 세트 가운데 오늘의 나에게 맞는 키트와, 처음 만들어 볼 레시피를 골라 드립니다. 1분이면 됩니다.</p>
+      </div>
+      <a class="btnbox" href="#quiz" data-quiz>1분 취향 찾기</a>
+    </section>
+
+    <!-- 즐기는 법 (예전 enjoy.html 을 키트 안으로) -->
+    <section class="blk" id="enjoy" style="border-top:1px solid var(--line)">
+      <div class="tt rv"><span class="en">How to brew</span><h2>고르기 → 담기 → 붓기 → 우리기 → 기록하기</h2></div>
+      <div class="howto rv">
+        <div><div class="k">01 · CHOOSE</div><b>고르기</b><p>아코디언북을 펼쳐 오늘의 기분에 맞는 원료를 고릅니다.</p></div>
+        <div><div class="k">02 · MEASURE</div><b>담기</b><p>레시피 비율대로 원료를 덜어 빈 티백에 담습니다. 종이 스쿱 한 스푼이 기준.</p></div>
+        <div><div class="k">03 · POUR</div><b>붓기</b><p>레시피의 온도로 물을 천천히 붓습니다. 허브 95~100°C, 곡물 100°C.</p></div>
+        <div><div class="k">04 · STEEP</div><b>우리기</b><p>레시피의 시간만큼 우립니다. Taste 3~5분, Depth 7분. 색이 바뀌는 순간을 지켜보세요.</p></div>
+        <div><div class="k">05 · NOTE</div><b>기록하기</b><p>좋았던 비율과 다음에 바꿔 볼 것을 노트에 남깁니다.</p></div>
+      </div>
+      <p class="body rv" style="margin-top:30px;max-width:620px">“그런데 저는 블렌딩을 해본 적이 없어요.” 괜찮습니다. 처음엔 레시피 그대로 따라 해보고, 그다음엔 하나를 더하거나 덜어서 바꿔보고, 마지막엔 나의 맛으로. 노트에 남긴 비율이 레시피가 됩니다.</p>
+    </section>
+
+    <section class="blk two" id="keep">
+      <div class="rv">
+        <div class="tt"><span class="en">How to store</span><h2>빛과 습기를 피해,<br>향이 가장 좋은 한 달 안에.</h2></div>
+        <p class="body">원료는 파우치째 아코디언북에 꽂아 두면 그대로 보관함이 됩니다. 직사광선과 습기를 피하고, 개봉한 원료는 향이 가장 좋은 한 달 안에 즐겨 주세요.</p>
+        <p class="body">곡물 원료(Depth)는 볶은 향이 날아가기 쉬우니 파우치 입구를 꼭 접어 두고, 꽃 원료(Taste)는 눌리지 않게 세워서. 냉장 보관은 권하지 않습니다 — 꺼낼 때 생기는 물기가 향을 가져갑니다.</p>
+      </div>
+      <figure class="rv bleed-r"><img src="../wadiz/assets/photo/jars.jpg" alt="원료 보관" style="aspect-ratio:4/3;object-fit:cover"></figure>
+    </section>
+
+    <section class="blk" id="talk">
+      <div class="tt rv"><span class="en">Tea trivia</span><h2>누군가에게 들려주고 싶은 이야기</h2></div>
+      <dl class="faq rv">
+        <dt><span>01</span>카페인이 있나요?</dt><dd>없습니다. 카페인이 없는 허브와 곡물로만 구성해 저녁이나 늦은 밤에도 편하게 즐길 수 있어요.</dd>
+        <dt><span>02</span>키트 하나로 몇 잔이나 마실 수 있나요?</dt><dd>150ml 기준 약 27잔. 레시피마다 쓰는 양이 달라 조금씩 차이가 납니다.</dd>
+        <dt><span>03</span>블렌딩 경험이 전혀 없는데 괜찮을까요?</dt><dd>네. 처음에는 추천 레시피를 따라 만들어 보세요. 익숙해지면 재료 하나를 더하거나 덜어 보고, 비율을 조금씩 바꾸면서 나만의 블렌딩을 만들 수 있습니다.</dd>
+        <dt><span>04</span>히비스커스를 넣으면 왜 색이 붉어지나요?</dt><dd>히비스커스는 꽃이 아니라 꽃받침을 말린 원료로, 물에 닿으면 붉은 색소가 빠르게 우러납니다. 한 꼬집만으로도 잔의 색이 달라져 눈으로 먼저 즐기는 블렌딩의 중심이 됩니다.</dd>
+        <dt><span>05</span>Taste와 Depth를 섞어도 되나요?</dt><dd>됩니다. 두 키트를 하나씩 가지면 허브와 곡물을 섞는 교차 블렌드까지 만들 수 있어요. 「밀크티 무드」가 그 첫 번째 예입니다.</dd>
+        <dt><span>06</span>다 쓴 뒤 재구매는 어떻게 하나요?</dt><dd>마음에 든 원료만 골라 <a href="ingredients.html" style="border-bottom:1px solid var(--line)">원료 페이지</a>에서 중량별로 구매할 수 있도록 순서대로 열립니다. 원료별 입고 알림을 남겨 두세요.</dd>
+      </dl>
     </section>
   </div>
 </main>
+<script src="catalog.js"></script>
 <script src="omoiire.js"></script>
 </body>
 </html>

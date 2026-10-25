@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>강사｜취향의 권리</title>
+<meta name="description" content="강사 파트너 안내와 가입 신청(검토 후 승인), 그리고 강의를 의뢰하려는 기관·개인을 위한 문의.">
+<link rel="icon" href="../wadiz/assets/emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400&family=Noto+Serif+KR:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="omoiire.css">
+<style>
+.benef{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.benef div{border-top:1px solid var(--ink);padding-top:14px}
+.benef b{display:block;font-family:var(--serif);font-weight:300;font-size:17px;letter-spacing:.08em;margin-bottom:6px}
+.benef p{margin:0;font-size:12.5px;line-height:1.9;color:var(--mute)}
+.benef .n{font-family:var(--en);font-size:12px;letter-spacing:.2em;color:var(--num)}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:40px}
+.tabs button{background:none;border:0;border-bottom:1px solid transparent;margin-bottom:-1px;padding:14px 22px;font-family:var(--serif);font-size:15px;letter-spacing:.1em;color:var(--mute);cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--ink)}
+.pane{display:none}.pane.on{display:block}
+.cform select{width:100%;border:1px solid var(--line);padding:13px 14px;font:300 13px var(--sans);color:var(--ink);background:#fff}
+.cform .chk{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--mute);line-height:1.8}
+.cform .chk input{width:auto;margin-top:7px}
+@media (max-width:860px){.benef{grid-template-columns:1fr}}
+</style>
+</head>
+<body id="top">
+<main>
+  <div class="inner">
+    <div class="phead">
+      <h1>강사<small>Partners</small></h1>
+      <div class="intro"><p>티 블렌딩을 가르치는 분들과 함께 갑니다. 강사 파트너로 가입하면 검토 후 승인되고, 등급별 할인가로 대용량 원료와 교육 자료를 구매할 수 있습니다. 강의를 의뢰하려는 기관·개인도 이곳에서 문의해 주세요.</p></div>
+    </div>
+
+    <section class="blk" style="padding-top:0">
+      <div class="tt rv"><span class="en">Partner benefits</span><h2>강사 파트너에게</h2></div>
+      <div class="benef rv">
+        <div><div class="n">01</div><b>등급별 할인가</b><p>승인된 강사 회원은 등급에 따라 소비자가 대비 30 · 40 · 50% 할인가로 구매합니다. 1kg 등 대용량 원료에 적용됩니다.</p></div>
+        <div><div class="n">02</div><b>교육 재료 · 자료</b><p>수업용 키트, 원료 리필, 블렌딩 노트와 교재를 강사 회원에게 먼저 엽니다.</p></div>
+        <div><div class="n">03</div><b>강의 연결</b><p>강의를 의뢰하는 기관·개인의 문의를 지역과 분야에 맞는 강사 파트너에게 잇습니다.</p></div>
+      </div>
+    </section>
+
+    <section class="blk" style="border-top:1px solid var(--line)">
+      <div class="tabs rv"><button class="on" data-pane="join" type="button">강사 파트너 가입 신청</button><button data-pane="ask" type="button">강의 의뢰 문의</button></div>
+
+      <!-- 가입 신청: 검토 후 승인. 접수 서버가 아직 없어 메일 앱으로 넘긴다(쇼핑몰 회원 연동 때 교체) -->
+      <form class="cform pane on rv" id="join" novalidate>
+        <label for="j-nm">이름<i>필수</i></label><input id="j-nm" name="name" type="text" required autocomplete="name">
+        <label for="j-em">이메일<i>필수</i></label><input id="j-em" name="email" type="email" required autocomplete="email">
+        <label for="j-ph">연락처</label><input id="j-ph" name="phone" type="tel" autocomplete="tel">
+        <label for="j-org">소속 · 활동 지역</label><input id="j-org" name="org" type="text" placeholder="예: 서울 마포 · 개인 공방">
+        <label for="j-exp">강의 경력<i>필수</i></label><textarea id="j-exp" name="exp" required placeholder="가르쳐 온 과정, 기간, 수강 인원 등을 적어 주세요. 관련 자격이 있으면 함께."></textarea>
+        <label for="j-link">참고 링크</label><input id="j-link" name="link" type="url" placeholder="인스타그램 · 블로그 · 포트폴리오">
+        <label class="chk" style="grid-column:2"><input type="checkbox" name="agree" required> 가입 신청 내용을 검토해 승인 여부를 이메일로 안내하는 데 동의합니다. 승인 전에는 소비자가로 구매할 수 있습니다.</label>
+        <p class="note">검토 후 승인되면 등급과 함께 안내드립니다(영업일 기준 3~5일).</p>
+        <div class="act"><button class="btnbox" type="submit">가입 신청 보내기</button><span class="small" id="j-msg"></span></div>
+      </form>
+
+      <!-- 강의 의뢰: 기관·개인 -->
+      <form class="cform pane rv" id="ask" novalidate>
+        <label for="a-type">의뢰 구분<i>필수</i></label><select id="a-type" name="type"><option>기관 · 단체</option><option>기업 · 워크숍</option><option>개인 · 소모임</option></select>
+        <label for="a-org">기관 · 이름<i>필수</i></label><input id="a-org" name="org" type="text" required>
+        <label for="a-em">이메일<i>필수</i></label><input id="a-em" name="email" type="email" required autocomplete="email">
+        <label for="a-ph">연락처</label><input id="a-ph" name="phone" type="tel" autocomplete="tel">
+        <label for="a-when">희망 일정 · 지역</label><input id="a-when" name="when" type="text" placeholder="예: 11월 중 · 부산 · 2시간 · 15명">
+        <label for="a-msg">내용<i>필수</i></label><textarea id="a-msg" name="message" required placeholder="대상, 인원, 원하는 수업 내용(블렌딩 체험 · 원료 이해 · 선물 만들기 등)을 적어 주세요."></textarea>
+        <p class="note">내용에 맞는 강사 파트너와 함께 답변드립니다. 답변은 이메일로.</p>
+        <div class="act"><button class="btnbox" type="submit">문의 보내기</button><a class="btnbox" href="#" id="kakao">카카오 채널로 문의</a><span class="small" id="a-msg2"></span></div>
+      </form>
+    </section>
+  </div>
+</main>
+<script src="catalog.js"></script>
+<script src="omoiire.js"></script>
+<script>
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b)); document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === b.dataset.pane)); }));
+if (location.hash === '#ask') document.querySelector('[data-pane=ask]').click();
+const MAIL = 'hello@example.com';   // 대표 확정 후 교체
+document.getElementById('join').addEventListener('submit', e => { e.preventDefault(); const f = e.target, m = document.getElementById('j-msg');
+  if (!f.name.value || !f.email.value || !f.exp.value || !f.agree.checked) { m.textContent = '필수 항목과 동의를 확인해 주세요.'; return; }
+  const body = `이름: ${f.name.value}\n이메일: ${f.email.value}\n연락처: ${f.phone.value}\n소속·지역: ${f.org.value}\n참고 링크: ${f.link.value}\n\n강의 경력:\n${f.exp.value}`;
+  location.href = `mailto:${MAIL}?subject=${encodeURIComponent('[취향의 권리] 강사 파트너 가입 신청')}&body=${encodeURIComponent(body)}`; m.textContent = '메일 앱이 열립니다. 보내기까지 눌러 주세요.'; });
+document.getElementById('ask').addEventListener('submit', e => { e.preventDefault(); const f = e.target, m = document.getElementById('a-msg2');
+  if (!f.org.value || !f.email.value || !f.message.value) { m.textContent = '필수 항목을 채워 주세요.'; return; }
+  const body = `구분: ${f.type.value}\n기관·이름: ${f.org.value}\n이메일: ${f.email.value}\n연락처: ${f.phone.value}\n희망 일정·지역: ${f.when.value}\n\n${f.message.value}`;
+  location.href = `mailto:${MAIL}?subject=${encodeURIComponent('[취향의 권리] 강의 의뢰 문의')}&body=${encodeURIComponent(body)}`; m.textContent = '메일 앱이 열립니다. 보내기까지 눌러 주세요.'; });
+document.getElementById('kakao').addEventListener('click', e => { e.preventDefault(); document.getElementById('a-msg2').textContent = '카카오 채널은 오픈 전 연결됩니다.'; });
+</script>
+</body>
+</html>

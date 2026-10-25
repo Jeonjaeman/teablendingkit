@@ -32,6 +32,7 @@
     </section>
   </div>
 </main>
+<script src="catalog.js"></script>
 <script src="omoiire.js"></script>
 <script>
 // 접수 서버가 아직 없어 메일 앱으로 넘긴다. 주소는 대표 확정 후 교체.
@@ -41,7 +42,7 @@ document.getElementById('cform').addEventListener('submit', e => {
   const body = `이름: ${f.name.value}\n회사: ${f.company.value}\n이메일: ${f.email.value}\n\n${f.message.value}`;
   location.href = 'mailto:hello@example.com?subject=' + encodeURIComponent('[취향의 권리] 문의') + '&body=' + encodeURIComponent(body);
 });
-document.getElementById('kakao').addEventListener('click', e => { e.preventDefault(); document.getElementById('cmsg').textContent = '카카오 채널 주소는 오픈 후 연결됩니다.'; });
+document.getElementById('kakao').addEventListener('click', e => { e.preventDefault(); document.getElementById('cmsg').textContent = '카카오 채널은 오픈 전 연결됩니다.'; });
 </script>
 </body>
 </html>
