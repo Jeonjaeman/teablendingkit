@@ -17,7 +17,8 @@
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:40px}
 .tabs button{background:none;border:0;border-bottom:1px solid transparent;margin-bottom:-1px;padding:14px 22px;font-family:var(--serif);font-size:15px;letter-spacing:.1em;color:var(--mute);cursor:pointer}
 .tabs button.on{color:var(--ink);border-color:var(--ink)}
-.pane{display:none}.pane.on{display:block}
+.pane{display:none}.pane.act{display:block}
+.tabs button{transition:color .2s}.tabs button:hover{color:var(--ink)}
 .cform select{width:100%;border:1px solid var(--line);padding:13px 14px;font:300 13px var(--sans);color:var(--ink);background:#fff}
 .cform .chk{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--mute);line-height:1.8}
 .cform .chk input{width:auto;margin-top:7px}
@@ -45,7 +46,7 @@
       <div class="tabs rv"><button class="on" data-pane="join" type="button">강사 파트너 가입 신청</button><button data-pane="ask" type="button">강의 의뢰 문의</button></div>
 
       <!-- 가입 신청: 검토 후 승인. 접수 서버가 아직 없어 메일 앱으로 넘긴다(쇼핑몰 회원 연동 때 교체) -->
-      <form class="cform pane on rv" id="join" novalidate>
+      <form class="cform pane act" id="join" novalidate>
         <label for="j-nm">이름<i>필수</i></label><input id="j-nm" name="name" type="text" required autocomplete="name">
         <label for="j-em">이메일<i>필수</i></label><input id="j-em" name="email" type="email" required autocomplete="email">
         <label for="j-ph">연락처</label><input id="j-ph" name="phone" type="tel" autocomplete="tel">
@@ -58,7 +59,7 @@
       </form>
 
       <!-- 강의 의뢰: 기관·개인 -->
-      <form class="cform pane rv" id="ask" novalidate>
+      <form class="cform pane" id="ask" novalidate>
         <label for="a-type">의뢰 구분<i>필수</i></label><select id="a-type" name="type"><option>기관 · 단체</option><option>기업 · 워크숍</option><option>개인 · 소모임</option></select>
         <label for="a-org">기관 · 이름<i>필수</i></label><input id="a-org" name="org" type="text" required>
         <label for="a-em">이메일<i>필수</i></label><input id="a-em" name="email" type="email" required autocomplete="email">
@@ -74,7 +75,7 @@
 <script src="catalog.js"></script>
 <script src="omoiire.js"></script>
 <script>
-document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b)); document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === b.dataset.pane)); }));
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b)); document.querySelectorAll('.pane').forEach(p => p.classList.toggle('act', p.id === b.dataset.pane)); }));
 if (location.hash === '#ask') document.querySelector('[data-pane=ask]').click();
 const MAIL = 'hello@example.com';   // 대표 확정 후 교체
 document.getElementById('join').addEventListener('submit', e => { e.preventDefault(); const f = e.target, m = document.getElementById('j-msg');
