@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- 스마트스토어 상세 — 와디즈 E안 CSS 그대로 + 대표 원고(11/6) 순서. 가격·펀딩·인물 소개 없음, Taste/Depth, 효능 문구 없음. 본문은 body.html, 조립은 build.py -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=860">
+<title>취향의 권리 티블렌딩 키트 · 스마트스토어 상세</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ───────── tokens (BRIEF-SET2 §5 · 스타일 E) ───────── */
+:root{
+  --bg:#FFFFFF;--bg-2:#F3F3F1;--ink:#111111;--ink-2:#555555;--rule:#111111;--rule-soft:#DDDDDD;
+  --accent:#1F4D3A;--accent-soft:#E6EEE9;
+  --f-sans:"Noto Sans KR",sans-serif;--f-eng:"Cormorant Infant",serif;--f-type:"Courier Prime",monospace;
+  --col:180px;--gap:20px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg)}
+body{color:var(--ink);font:400 16px/1.8 var(--f-sans);word-break:keep-all;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+img,video,svg{display:block;max-width:100%}
+img,video{height:auto}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+em{font-style:normal}
+
+/* ───────── page frame ───────── */
+.page{width:860px;margin:0 auto;padding:0 40px;background:var(--bg)}
+.mast{display:flex;align-items:center;gap:14px;padding:22px 0 18px;font:400 12px/1 var(--f-type);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.mast .em{width:22px;height:22px;color:var(--ink)}
+.mast .sep{flex:1;height:1px;background:var(--rule-soft)}
+
+/* 섹션 뼈대 : 2px 괘선 + 좌 3 / 우 9 */
+.sec{position:relative;border-top:2px solid var(--rule);padding:40px 0 72px;display:grid;grid-template-columns:var(--col) 1fr;column-gap:var(--gap);row-gap:32px;align-items:start}
+.sec>.lead{grid-column:1;display:flex;flex-direction:column;gap:14px}
+.num{font:700 72px/.9 var(--f-sans);letter-spacing:-.04em;margin-left:-4px}
+.num sup{font-size:24px;letter-spacing:0;vertical-align:top;margin-left:2px;line-height:1}
+.tag{font:400 12px/1.5 var(--f-type);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.en{font:italic 300 22px/1.2 var(--f-eng);color:var(--ink);letter-spacing:-.01em}
+.sec>.body{grid-column:2;display:flex;flex-direction:column;gap:28px;min-width:0}
+.full{grid-column:1/-1;min-width:0}
+.bleed{grid-column:1/-1;margin:0 -40px}
+
+/* 타이포 */
+h2{font:700 40px/1.3 var(--f-sans);letter-spacing:-.03em}
+h2.xl{font-size:44px;line-height:1.25}
+h3{font:700 22px/1.4 var(--f-sans);letter-spacing:-.02em}
+h4{font:700 16px/1.6 var(--f-sans);letter-spacing:-.01em}
+.sub{font-size:18px;line-height:1.7;color:var(--ink)}
+.p2{color:var(--ink-2)}
+.cap{font:400 12px/1.6 var(--f-type);color:var(--ink-2);margin-top:8px;letter-spacing:.02em}
+.ty{font-family:var(--f-type);letter-spacing:.04em}
+.acc{color:var(--accent)}
+.mark{background:var(--accent-soft);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 .15em}
+.rule{height:2px;background:var(--rule);border:0;margin:0}
+.rule-soft{height:1px;background:var(--rule-soft);border:0;margin:0}
+
+/* 미디어 : 직각 · 테두리 없음 · 필터 없음 */
+.media{width:100%;object-fit:cover;background:var(--bg-2)}
+.r169{aspect-ratio:16/9}
+.r32{aspect-ratio:3/2}
+.r43{aspect-ratio:4/3}
+.r11{aspect-ratio:1/1}
+.r45{aspect-ratio:4/5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.grid2>*,.grid3>*{min-width:0}
+
+/* 표 */
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{text-align:left;vertical-align:top;padding:14px 10px 14px 0}
+thead th{font:400 11px/1.4 var(--f-type);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);border-bottom:2px solid var(--rule);padding-top:0;padding-bottom:10px}
+tbody td,tbody th{border-bottom:1px solid var(--rule-soft);font-size:16px;line-height:1.7}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:2px solid var(--rule)}
+tbody th{font-weight:700}
+tr.grp th{background:var(--accent-soft);font:700 12px/1 var(--f-type);letter-spacing:.1em;color:var(--accent);padding:10px 12px;border-bottom:0}
+
+/* 막대 (향·바디·여운) */
+.bars{display:flex;flex-direction:column;gap:7px;padding-top:4px}
+.bar{display:grid;grid-template-columns:30px 1fr 14px;align-items:center;gap:6px;font:400 11px/1 var(--f-type);color:var(--ink-2)}
+.bar i{display:block;height:4px;background:var(--rule-soft)}
+.bar i b{display:block;height:100%;background:var(--accent)}
+.bar em{text-align:right;color:var(--ink)}
+
+/* 칩 · 배지 · 버튼 */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;border:1px solid var(--ink);padding:6px 12px;font:400 12px/1.4 var(--f-type);letter-spacing:.06em}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pct{display:inline-block;border:2px solid var(--accent);color:var(--accent);padding:1px 7px;font:700 13px/1.5 var(--f-sans);letter-spacing:0;vertical-align:middle}
+.btn{display:inline-block;background:var(--ink);color:#fff;padding:18px 28px;font:700 16px/1.2 var(--f-sans);letter-spacing:-.01em;transition:background .18s}
+.btn:hover{background:var(--accent)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.ratio-dots{color:var(--accent);letter-spacing:.08em;font-size:14px}
+
+/* 리스트형 블록 */
+.rows{display:flex;flex-direction:column}
+.rows>li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:20px 0;border-top:1px solid var(--rule-soft)}
+.rows>li:first-child{border-top:2px solid var(--rule)}
+.rows>li:last-child{border-bottom:2px solid var(--rule)}
+.rows .n{font:700 22px/1.4 var(--f-sans);letter-spacing:-.02em;color:var(--accent)}
+.rows .t{font-size:18px;line-height:1.7;font-weight:500}
+
+/* ───────── s01 ───────── */
+.hero-h{font:700 52px/1.2 var(--f-sans);letter-spacing:-.04em}
+.hero-logo{width:96px;margin-top:8px}
+.band{display:grid;grid-template-columns:1.3fr 1fr 1.4fr;border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);background:var(--accent-soft)}
+.band div{padding:16px 20px;font-size:16px;line-height:1.5;font-weight:500;border-left:1px solid var(--rule)}
+.band div:first-child{border-left:0;font-weight:700;color:var(--accent)}
+.band .ty{font-size:11px;display:block;color:var(--ink-2);margin-bottom:2px}
+.cups{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.cups img{aspect-ratio:1/1;width:100%;object-fit:cover}
+.cups .l img{object-position:12% 60%}
+.cups .r img{object-position:88% 60%}
+
+/* ───────── s03 ───────── */
+.parts{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.parts li{display:grid;grid-template-columns:32px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid var(--rule-soft);font-size:16px}
+.parts li .n{font:700 14px/1.9 var(--f-type);color:var(--accent)}
+/* 패키지 구조 핀 다이어그램 */
+.pinfig{position:relative}
+.pinfig .pin{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;background:var(--accent);color:#fff;font:700 13px/26px var(--f-type);text-align:center;box-shadow:0 0 0 2px #fff}
+.pins{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.pins li{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule-soft);font-size:15px;line-height:1.6}
+.pins li:nth-child(-n+2){border-top:2px solid var(--rule)}
+.pins li .k{width:26px;height:26px;background:var(--accent);color:#fff;font:700 13px/26px var(--f-type);text-align:center;margin-top:1px}
+.pins li b{display:block;font-size:16px;font-weight:700}
+.pins li span{color:var(--ink-2)}
+/* 누끼 컷 타일 */
+.cutbox{width:100%;aspect-ratio:4/5;background:var(--bg-2);display:flex;align-items:center;justify-content:center}
+.cutbox img{width:86%;height:auto;object-fit:contain;filter:drop-shadow(0 16px 14px rgba(60,48,30,.22))}
+
+/* ───────── s04 ───────── */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);row-gap:40px}
+.stat{border-top:2px solid var(--rule);padding-top:18px}
+.stat .v{font:700 96px/1 var(--f-sans);letter-spacing:-.05em;margin-left:-5px}
+.stat .v small{font-size:40px;letter-spacing:-.03em;margin-left:4px}
+.stat .v.txt{font-size:34px;letter-spacing:-.03em;line-height:1.3;padding:18px 0 14px;margin-left:0}
+.stat .l{font-size:16px;color:var(--ink-2);margin-top:10px}
+.stat .l small{display:block;font-size:14px;margin-top:4px}
+.stats-note{margin-top:40px;font-size:18px;line-height:1.7}
+.stats-foot{margin-top:10px;font-size:13px;color:var(--ink-2)}
+.tbd{display:inline-block;min-width:1.6em;text-align:center;color:var(--accent);border-bottom:1px dashed var(--accent);font-weight:700}
+
+/* ───────── s05 ───────── */
+.ver{border-top:2px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:14px}
+.ver .vt{font:700 12px/1 var(--f-type);letter-spacing:.12em;color:var(--accent)}
+.ver .vn{font:700 30px/1.2 var(--f-sans);letter-spacing:-.03em}
+.ver .ing{font-size:16px;line-height:1.7;color:var(--ink-2)}
+.ver .for{font-size:15px;line-height:1.6;padding:10px 12px;background:var(--accent-soft);color:var(--accent)}
+.setcard{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);border-top:2px solid var(--rule);padding-top:16px}
+.ingtbl td.art .thumb{width:60px;height:60px}
+.ingtbl td.art img{width:60px;height:60px;object-fit:cover}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px;vertical-align:1px}
+.ingtbl .enm{font-weight:700;font-size:16px;line-height:1.3}
+.ingtbl .sci{font:italic 300 15px/1.3 var(--f-eng);color:var(--ink-2)}
+.ingtbl .krn{font-size:14px;line-height:1.5;color:var(--ink-2);margin-top:4px}
+.ingtbl td.no{font:400 12px/2.2 var(--f-type);color:var(--ink-2)}
+
+/* ───────── s06 ───────── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+.step{border-top:2px solid var(--rule);padding-top:14px}
+.step .n{font:700 14px/1 var(--f-type);color:var(--accent);letter-spacing:.1em}
+.step h4{font-size:22px;margin-top:10px;line-height:1.3}
+.step p{margin-top:8px;color:var(--ink-2)}
+.quote{font:700 30px/1.45 var(--f-sans);letter-spacing:-.03em}
+
+/* ───────── s07 ───────── */
+.ts{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.ts>div{border-top:2px solid var(--rule);padding-top:14px}
+.ts .k{font:italic 400 24px/1 var(--f-eng);color:var(--accent)}
+.ts h3{font-size:26px;margin-top:12px}
+
+/* ───────── s08 ───────── */
+.rcp .rl{font:400 11px/1.5 var(--f-type);letter-spacing:.03em;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:4px}
+.rcp .rn{font:700 20px/1.3 var(--f-sans);letter-spacing:-.02em}
+.rcp .ratio li{display:grid;grid-template-columns:92px 1fr 18px;gap:6px;align-items:baseline;font-size:15px;line-height:1.6;white-space:nowrap}
+.rcp .ratio li em{text-align:right;font-weight:700}
+.rcp .brew{font:400 14px/1.8 var(--f-type);color:var(--ink);letter-spacing:.02em}
+.rcp td.note{font-size:15px;line-height:1.7;color:var(--ink-2)}
+
+/* ───────── s08b ───────── */
+.says li{padding:12px 0;border-bottom:1px solid var(--rule-soft);font-size:18px;font-weight:500}
+.says li:first-child{border-top:2px solid var(--rule)}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.phone{border:2px solid var(--ink);padding:22px 20px 24px;display:flex;flex-direction:column;gap:12px;min-height:420px}
+.phone .st{display:flex;justify-content:space-between;font:400 11px/1 var(--f-type);letter-spacing:.08em;color:var(--ink-2)}
+.phone .q{font:700 20px/1.4 var(--f-sans);letter-spacing:-.02em}
+.phone .opts li{padding:10px 12px;border:1px solid var(--rule-soft);margin-top:-1px;font-size:15px;line-height:1.5}
+.phone .opts li.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700;position:relative;z-index:1}
+.phone .res-t{font:700 26px/1.2 var(--f-sans);letter-spacing:-.03em}
+.phone .res-s{font-size:14px;color:var(--ink-2);margin-top:2px}
+.phone .kv{border-top:1px solid var(--rule-soft);padding-top:10px}
+.phone .kv .k{font:400 11px/1 var(--f-type);letter-spacing:.08em;color:var(--ink-2);text-transform:uppercase;margin-bottom:6px}
+.phone .kv .v{font-size:15px;line-height:1.7}
+.phone .cta{margin-top:auto;background:var(--ink);color:#fff;text-align:left;padding:12px 14px;font:700 14px/1.2 var(--f-sans)}
+.radar-wrap{display:grid;grid-template-columns:280px 1fr;gap:var(--gap);align-items:center;border-top:2px solid var(--rule);padding-top:20px}
+.radar{width:280px;height:240px}
+.radar .ring{fill:none;stroke:var(--rule-soft);stroke-width:1}
+.radar .axis{stroke:var(--rule-soft);stroke-width:1}
+.radar .area{fill:var(--accent);fill-opacity:.14;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+.radar .dot{fill:var(--accent)}
+.radar text{font:500 12px var(--f-sans);fill:var(--ink)}
+.legend li{display:grid;grid-template-columns:70px 1fr 20px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule-soft);font-size:15px}
+.legend li i{display:block;height:4px;background:var(--rule-soft)}
+.legend li i b{display:block;height:100%;background:var(--accent)}
+.legend li em{font-weight:700;text-align:right}
+.qrrow{display:grid;grid-template-columns:120px 1fr;gap:var(--gap);align-items:center}
+.qr{width:120px;height:120px;border:2px solid var(--ink);padding:4px;background:#fff}
+.qr img,.qr svg{width:100%;height:100%}
+
+/* ───────── s10 ───────── */
+.maker{display:grid;grid-template-columns:150px 1fr;gap:var(--gap);border-top:2px solid var(--rule);padding:18px 0}
+.maker .role{font:400 12px/1.6 var(--f-type);letter-spacing:.1em;color:var(--accent)}
+.maker .nm{font:700 26px/1.3 var(--f-sans);letter-spacing:-.03em}
+.maker .nm small{font-size:16px;font-weight:500;color:var(--ink-2);margin-right:8px;letter-spacing:-.01em}
+.maker p{margin-top:6px}
+.books{font-size:16px;line-height:1.8}
+.books i{font-style:normal;font-weight:500;white-space:nowrap}
+
+/* ───────── s11 ───────── */
+.tcard{border-top:2px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.tcard .lb{display:flex;justify-content:space-between;font:400 11px/1 var(--f-type);letter-spacing:.08em;color:var(--ink-2)}
+.tcard .lb b{color:var(--accent)}
+.tcard p{font-size:15px;line-height:1.7}
+
+/* ───────── s13 ───────── */
+.price-line{display:grid;grid-template-columns:1fr auto;gap:var(--gap);align-items:end;border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);padding:16px 0}
+.price-line .pr{font:700 28px/1 var(--f-sans);letter-spacing:-.03em}
+.price-line .pr small{font-size:13px;font-weight:400;color:var(--ink-2);margin-right:8px;letter-spacing:0}
+.rw .rid{font:400 11px/1 var(--f-type);letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:6px}
+.rw .rnm{font:700 19px/1.3 var(--f-sans);letter-spacing:-.02em}
+.rw .lim{display:block;font-size:13px;color:var(--ink-2);margin-top:4px}
+.rw .pv{font:700 24px/1.1 var(--f-sans);letter-spacing:-.03em}
+.rw .pv s{display:block;font:400 13px/1.6 var(--f-sans);color:var(--ink-2);letter-spacing:0}
+.rw .pv .pct{margin-top:6px}
+.rw .pv.tbd{font-size:17px;line-height:1.4;letter-spacing:-.01em}
+.rw .bene li{position:relative;padding-left:14px;font-size:15px;line-height:1.65}
+.rw .bene li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:2px;background:var(--accent)}
+.notice{background:var(--accent-soft);padding:18px 20px;font-size:15px;line-height:1.75}
+
+/* ───────── s14 ───────── */
+.fine li{font-size:14px;line-height:1.7;color:var(--ink-2);padding-left:12px;position:relative}
+.fine li::before{content:"·";position:absolute;left:0}
+
+/* ───────── s15 ───────── */
+.faq dt{font:700 19px/1.5 var(--f-sans);letter-spacing:-.02em;padding:20px 0 6px;border-top:1px solid var(--rule-soft);display:grid;grid-template-columns:36px 1fr;gap:8px}
+.faq dt:first-child{border-top:2px solid var(--rule)}
+.faq dt .q{font:700 14px/2 var(--f-type);color:var(--accent);letter-spacing:.06em}
+.faq dd{display:grid;grid-template-columns:36px 1fr;gap:8px;padding-bottom:22px;color:var(--ink-2)}
+.faq dd::before{content:"A";font:400 14px/2 var(--f-type);color:var(--ink-2)}
+.faq dd:last-child{border-bottom:2px solid var(--rule)}
+.spec th{width:170px;color:var(--ink-2);font-weight:500}
+
+/* ───────── s16 ───────── */
+.links{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.links>div{border-top:2px solid var(--rule);padding-top:14px}
+.links .k{font:400 11px/1 var(--f-type);letter-spacing:.1em;color:var(--ink-2);margin-bottom:12px;display:block}
+.foot{padding:28px 0 60px;font:400 12px/1.8 var(--f-type);letter-spacing:.06em;color:var(--ink-2);border-top:2px solid var(--rule);display:flex;justify-content:space-between;align-items:flex-end}
+.foot img{width:72px;height:auto}
+
+/* ───────── v1 (10/20 대표 수정) ───────── */
+.stat-wide{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;align-items:end;column-gap:28px}
+.stat-wide .l{font:700 24px/1.4 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin:0 0 10px}
+.why{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;background:var(--accent-soft);border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);padding:16px 20px}
+.why .ty{font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase}
+.why p{font-size:17px;line-height:1.5}
+.why b{color:var(--accent)}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:var(--accent);margin-right:8px;flex:none}
+.ck svg{width:12px;height:12px}
+.rec td{font-size:15px;line-height:1.6;padding-right:14px}
+.rec td>span{display:flex;align-items:flex-start}
+.rec td>span .ck{margin-top:3px}
+.howto td.n{font:700 22px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent)}
+.howto th.st{font:700 18px/1.4 var(--f-sans)}
+.howto th.st small{display:block;font:400 11px/1.6 var(--f-type);letter-spacing:.1em;color:var(--ink-2);text-transform:uppercase}
+.radar2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);border-top:2px solid var(--rule);padding-top:20px}
+.radar2 figure{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.radar2 .rt{font:700 20px/1.3 var(--f-sans);letter-spacing:-.02em}
+.master{display:grid;grid-template-columns:330px 1fr;gap:28px;border-top:2px solid var(--rule);padding-top:20px;align-items:start}
+.master .role{font:400 12px/1.6 var(--f-type);letter-spacing:.1em;color:var(--accent)}
+.master .mt{font:700 24px/1.3 var(--f-sans);letter-spacing:-.02em;color:var(--accent);margin-top:12px}
+.master .mn{font:700 64px/1.05 var(--f-sans);letter-spacing:-.05em;margin-top:2px}
+.master p{margin-top:12px}
+.portrait{aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.book-row{display:flex;gap:14px;margin-top:18px;align-items:flex-end}
+.book-row img{height:132px;width:auto;box-shadow:0 10px 18px rgba(0,0,0,.16),0 2px 4px rgba(0,0,0,.08)}
+.ribbon-row{display:flex;gap:16px;align-items:center;margin-top:18px}
+.ribbon-row img{width:104px;height:auto}
+.ribbon-row .rb{font:400 11px/1.5 var(--f-type);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.ribbon-row .rb b{display:block;font:700 44px/1 var(--f-sans);letter-spacing:-.04em;color:#123C86;margin:2px 0}
+.hero-sig{font:400 14px/1.6 var(--f-type);letter-spacing:.06em;color:var(--accent)}
+
+/* 루프 모션 보조 : 사진 줌을 프레임 안에서 자른다 · 핀 파동은 액센트색 */
+.clip{overflow:hidden}
+.pinfig .pin.mo-ring::after{border-color:var(--accent)}
+
+@media (prefers-reduced-motion:reduce){
+  .btn{transition:none}
+}
+/* ───────── 스마트스토어용 덧붙임 (E안 CSS는 위에 그대로) ─────────
+   688px로 짜고 1.25배(device scale)로 찍어 가로 860px 이미지를 만든다 → 본문 16px이 20px로 읽힌다. */
+.page{width:688px;padding:0 32px}
+:root{--col:144px}
+.bleed{margin:0 -32px}
+.gifslot img{width:100%;height:auto}
+.url{font:700 34px/1.15 var(--f-sans);letter-spacing:-.04em}
+.links .url{font-size:30px}
+.rows .p2{margin-top:4px;font-size:15px;line-height:1.7}
+.howto td{font-size:17px}
+.ingtbl td.art img{width:56px;height:56px;object-fit:cover}
+.ver .vn{font-size:24px}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="mast" aria-label="머리말">
+    <img class="em" src="../wadiz/assets/emblem.svg" alt="" width="22" height="22">
+    <span>The Right to Taste</span>
+    <span class="sep" aria-hidden="true"></span>
+    <span>Tea Blending Kit · 2026</span>
+  </header>
+
+  <!-- ═══════════════ 01 메인 비주얼 ═══════════════ -->
+  <section class="sec" id="s01" aria-labelledby="h01">
+    <figure class="bleed gifslot" data-gif="gif/main_brew.gif"><img class="media" src="gif/main_brew.gif" alt="우러나며 색이 번지는 찻물"></figure>
+    <div class="lead">
+      <div class="num">01</div>
+      <div class="tag">Tea Blending Kit</div>
+      <div class="en">Your cup,<br>your call.</div>
+    </div>
+    <div class="body">
+      <h1 class="hero-h" id="h01">오늘의 차는,<br>내가 정해요</h1>
+      <p class="sub">허브와 곡물을 직접 골라 섞는<br>티블렌딩 키트, 취향의 권리</p>
+      <img class="hero-logo" src="../wadiz/assets/logo.png" alt="취향의 권리 — the right to taste" width="96" height="95">
+    </div>
+    <div class="band full" role="note">
+      <div><span class="ty">Caffeine free</span>카페인 없음</div>
+      <div><span class="ty">Single origin pack</span>원료별 100% 소포장</div>
+      <div><span class="ty">Recipe · Note</span>레시피와 기록 노트 포함</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 02 브랜드 소개 ═══════════════ -->
+  <section class="sec" id="s02" aria-labelledby="h02">
+    <div class="lead">
+      <div class="num">02</div>
+      <div class="tag">The Right to Taste</div>
+      <div class="en">Find your own<br>flavor.</div>
+    </div>
+    <div class="body">
+      <h2 id="h02">정해진 맛을 따르는 대신,<br>향을 맡고 색을 보며<br>내 맛을 찾는 시간.</h2>
+      <p class="sub">취향의 권리는 허브와 곡물을 한 가지씩 나눠 담아,<br>누구나 직접 섞어 나만의 차를 만들 수 있게 했습니다.</p>
+    </div>
+    <div class="full grid2" style="align-items:end">
+      <img class="media r45" src="../wadiz/assets/stills/still_12.jpg" alt="원료의 향을 맡는 사람" style="object-position:55% 50%">
+      <img class="media r45" src="../wadiz/assets/stills/still_10.jpg" alt="스푼으로 원료를 덜어내는 손" style="object-position:42% 50%">
+    </div>
+  </section>
+
+  <!-- ═══════════════ 03 어른도 아이도 ═══════════════ -->
+  <section class="sec" id="s03" aria-labelledby="h03">
+    <div class="lead">
+      <div class="num">03</div>
+      <div class="tag">Together</div>
+      <div class="en">Scoop, mix,<br>steep.</div>
+    </div>
+    <div class="body">
+      <h2 id="h03">어른도 아이도,<br>함께 즐기는 블렌딩</h2>
+      <p class="sub">스푼으로 담고, 섞고, 우려 마셔요.<br>어른에게는 쉬는 시간, 아이에게는 즐거운 놀이가 됩니다.</p>
+    </div>
+    <!-- 원고 3번 사진 제안(어른과 아이가 원료를 담는 손, 찻물 유리잔). AI 생성(GPT Image 2.6, Sunra) — 인물만, 제품·패키지 없음. 실촬영본이 오면 교체 -->
+    <figure class="full"><img class="media r169" src="img/ai/together_pick.jpg" alt="엄마와 아이가 나란히 앉아 아이가 스푼으로 장미 꽃잎을 덜어 담는 모습"></figure>
+    <div class="full grid2">
+      <figure><img class="media r43" src="img/frames/t66.jpg" alt="원료가 담긴 유리병을 고르는 손" style="object-position:40% 50%"><figcaption class="cap">Pick — 오늘의 원료를 고르고</figcaption></figure>
+      <figure><img class="media r43" src="img/frames/t120.jpg" alt="유리 그릇에 담긴 캐모마일과 원료" style="object-position:45% 60%"><figcaption class="cap">Look — 색과 모양을 살펴보고</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 04 키트 구성 ═══════════════ -->
+  <section class="sec" id="s04" aria-labelledby="h04">
+    <div class="lead">
+      <div class="num">04</div>
+      <div class="tag">Inside the box</div>
+      <div class="en">Six ingredients,<br>one kit.</div>
+    </div>
+    <div class="body">
+      <h2 id="h04">상자를 열면,<br>여섯 가지 원료가 기다립니다.</h2>
+      <p>원료를 고르고, 섞고, 우리는 데 필요한 것을<br>하나의 키트에 담았습니다.</p>
+    </div>
+    <figure class="bleed gifslot" data-gif="gif/kit_unbox.gif"><img class="media" src="gif/kit_unbox.gif" alt="상자가 열리고 구성품이 차례로 펼쳐지는 장면"></figure>
+    <figure class="full"><img class="media" src="../wadiz/assets/photo/kit_real.jpg" alt="키트 구성품 전체 — 상자, 아코디언 북, 원료 6팩, 엽서, 책, 인퓨저"><figcaption class="cap">Kit at a glance — 실물 구성</figcaption></figure>
+    <div class="lead"><div class="tag">In the box · Layout</div></div>
+    <div class="body">
+      <ol class="pins">
+        <li><span class="k">L</span><p><b>왼쪽 칸</b><span>아코디언 북(원료 6팩 · 엽서 수납), 종이 스쿠프, 허브 스티커</span></p></li>
+        <li><span class="k">R</span><p><b>오른쪽 칸</b><span>스테인리스 인퓨저, 단팥차 샘플, 책(레시피 · 기록 노트)</span></p></li>
+      </ol>
+    </div>
+    <div class="full grid3">
+      <figure><img class="media r11" src="img/frames/t84.jpg" alt="띠지를 두른 아코디언 북과 책" style="object-position:30% 50%"><figcaption class="cap">Accordion book</figcaption></figure>
+      <figure><img class="media r11" src="img/frames/t104.jpg" alt="책과 원료 팩" style="object-position:40% 50%"><figcaption class="cap">Book · Recipe &amp; note</figcaption></figure>
+      <figure><img class="media r11" src="../wadiz/assets/photo/cards_pair.jpg" alt="허브 스티커 시트"><figcaption class="cap">Herb stickers</figcaption></figure>
+      <figure><img class="media r11" src="img/frames/t148.jpg" alt="원료 6팩" style="object-position:55% 60%"><figcaption class="cap">Ingredient packs · 6</figcaption></figure>
+      <figure><img class="media r11" src="../wadiz/assets/photo/infuser_1.jpg" alt="스테인리스 인퓨저" style="object-fit:contain;background:#fff"><figcaption class="cap">Stainless infuser</figcaption></figure>
+      <figure><img class="media r11" src="../wadiz/assets/photo/danpatt_sample.jpg" alt="단팥차 샘플"><figcaption class="cap">Danpatt sample</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 05 두 가지 버전 ═══════════════ -->
+  <section class="sec" id="s05" aria-labelledby="h05">
+    <div class="lead">
+      <div class="num">05</div>
+      <div class="tag">Taste &amp; Depth</div>
+      <div class="en">Two kits,<br>two moods.</div>
+    </div>
+    <div class="body">
+      <h2 id="h05">두 가지 버전,<br>Taste와 Depth</h2>
+    </div>
+    <div class="full grid2">
+      <article class="ver">
+        <div class="vt">VER.1 — Taste</div>
+        <div class="vn">꽃향 · 상큼함 · 시원함</div>
+        <img class="media r32" src="../wadiz/assets/real/herbs_taste.jpg" alt="Taste 원료 6종 실물">
+        <p class="ing">캐모마일 · 페퍼민트 · 유자<br>장미 · 레몬밤 · 히비스커스</p>
+        <p class="for">밝은 찻물</p>
+      </article>
+      <article class="ver">
+        <div class="vt">VER.2 — Depth</div>
+        <div class="vn">구수함 · 고소함 · 은은한 단맛</div>
+        <img class="media r32" src="../wadiz/assets/real/herbs_depth.jpg" alt="Depth 원료 6종 실물">
+        <p class="ing">찰수수 · 보리 · 현미<br>단팥 · 둥굴레 · 민들레 뿌리</p>
+        <p class="for">깊은 찻물</p>
+      </article>
+    </div>
+
+    <div class="lead"><div class="tag">Ingredients · 12</div></div>
+    <div class="body">
+      <h3>원료 노트</h3>
+      <p class="p2">향과 맛 중심의 한 줄 소개. 향 · 바디 · 여운은 5점 기준의 시음 노트입니다.</p>
+    </div>
+    <table class="ingtbl full">
+      <colgroup><col style="width:30px"><col style="width:68px"><col style="width:150px"><col><col style="width:132px"></colgroup>
+      <thead><tr><th>No.</th><th>&nbsp;</th><th>Ingredient</th><th>Note</th><th style="white-space:nowrap;letter-spacing:.06em">Aroma · Body · Finish</th></tr></thead>
+      <tbody>
+        <tr class="grp"><th colspan="5">VER.1 — Taste</th></tr>
+        <tr><td class="no">01</td><td class="art"><img src="../wadiz/assets/real/herb_chamomile.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#E6CB6A"></i>Chamomile</div><div class="sci">Matricaria chamomilla</div><div class="krn">캐모마일</div></td><td>사과와 꿀을 연상시키는 부드러운 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">02</td><td class="art"><img src="../wadiz/assets/real/herb_peppermint.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#4E9A78"></i>Peppermint</div><div class="sci">Mentha × piperita</div><div class="krn">페퍼민트</div></td><td>차갑고 깨끗한 상쾌함. 소량부터.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr><td class="no">03</td><td class="art"><img src="../wadiz/assets/real/herb_yuza.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#E2B13A"></i>Yuza</div><div class="sci">Citrus junos</div><div class="krn">유자</div></td><td>새콤하고 상큼한 향. 감귤 껍질의 은은한 쌉싸름함.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">04</td><td class="art"><img src="../wadiz/assets/real/herb_rose.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#D98A9C"></i>Rose</div><div class="sci">Rosa damascena</div><div class="krn">장미</div></td><td>우아하고 풍성한 꽃향. 긴 아로마.</td><td><div class="bars"><div class="bar">향<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
+        <tr><td class="no">05</td><td class="art"><img src="../wadiz/assets/real/herb_lemon_balm.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#9BB36B"></i>Lemon Balm</div><div class="sci">Melissa officinalis</div><div class="krn">레몬밤</div></td><td>레몬과 풋잎을 떠올리게 하는 산뜻함. 첫 향을 밝게 엽니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">06</td><td class="art"><img src="../wadiz/assets/real/herb_hibiscus.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#A8324A"></i>Hibiscus</div><div class="sci">Hibiscus sabdariffa</div><div class="krn">히비스커스</div></td><td>붉은 과일을 연상시키는 선명한 산미. 찻물 색을 바꿉니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr class="grp"><th colspan="5">VER.2 — Depth</th></tr>
+        <tr><td class="no">07</td><td class="art"><img src="../wadiz/assets/real/herb_sorghum.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#9A563C"></i>Glutinous Sorghum</div><div class="sci">Sorghum bicolor</div><div class="krn">찰수수</div></td><td>담백하고 순한 곡물의 구수함. 뿌리 원료를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">08</td><td class="art"><img src="../wadiz/assets/real/herb_barley.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#C4A266"></i>Barley</div><div class="sci">Hordeum vulgare</div><div class="krn">보리</div></td><td>익숙하고 선명한 볶은 곡물 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">09</td><td class="art"><img src="../wadiz/assets/real/herb_brown_rice.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#C9A673"></i>Brown Rice</div><div class="sci">Oryza sativa</div><div class="krn">현미</div></td><td>볶은 쌀의 담백하고 고소한 향. 바디를 받쳐 줍니다.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">여운<i><b style="width:40%"></b></i><em>2</em></div></div></td></tr>
+        <tr><td class="no">10</td><td class="art"><img src="../wadiz/assets/real/herb_red_bean.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#7B2D2F"></i>Red Bean</div><div class="sci">Vigna angularis</div><div class="krn">단팥</div></td><td>구운 빵 같은 고소한 향. 부드러운 여운.</td><td><div class="bars"><div class="bar">향<i><b style="width:60%"></b></i><em>3</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:80%"></b></i><em>4</em></div></div></td></tr>
+        <tr><td class="no">11</td><td class="art"><img src="../wadiz/assets/real/herb_solomons_seal.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#B88B5A"></i>Solomon's Seal</div><div class="sci">Polygonatum odoratum</div><div class="krn">둥굴레</div></td><td>부드러운 볶은 뿌리와 은은한 단맛. 바디감을 둥글게.</td><td><div class="bars"><div class="bar">향<i><b style="width:40%"></b></i><em>2</em></div><div class="bar">바디<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">여운<i><b style="width:60%"></b></i><em>3</em></div></div></td></tr>
+        <tr><td class="no">12</td><td class="art"><img src="../wadiz/assets/real/herb_dandelion_root.png" alt=""></td><td><div class="enm"><i class="dot" style="--c:#5A3925"></i>Dandelion Root</div><div class="sci">Taraxacum officinale</div><div class="krn">민들레 뿌리</div></td><td>흙 · 나무 · 커피 · 카카오를 연상시키는 깊은 볶음 향.</td><td><div class="bars"><div class="bar">향<i><b style="width:80%"></b></i><em>4</em></div><div class="bar">바디<i><b style="width:100%"></b></i><em>5</em></div><div class="bar">여운<i><b style="width:100%"></b></i><em>5</em></div></div></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════ 06 블렌딩 방법 3단계 ═══════════════ -->
+  <section class="sec" id="s06" aria-labelledby="h06">
+    <div class="lead">
+      <div class="num">06</div>
+      <div class="tag">How to blend</div>
+      <div class="en">Scoop, fill,<br>pour.</div>
+    </div>
+    <div class="body">
+      <h2 id="h06">블렌딩 방법 3단계</h2>
+    </div>
+    <div class="steps full">
+      <div class="step"><div class="n">STEP 01</div><h4>나의 스푼 정하기</h4><p>집에 있는 티스푼 하나를 ‘나의 스푼’으로 정해요.</p></div>
+      <div class="step"><div class="n">STEP 02</div><h4>비율대로 담기</h4><p>레시피 비율(예: 2:1:1)대로 인퓨저에 담아요.</p></div>
+      <div class="step"><div class="n">STEP 03</div><h4>붓고 우리기</h4><p>뜨거운 물을 붓고 우려요.</p></div>
+    </div>
+    <figure class="bleed gifslot" data-gif="gif/blend_steps.gif"><img class="media" src="gif/blend_steps.gif" alt="스푼으로 원료를 담고 물을 붓는 장면"></figure>
+    <div class="lead"><div class="tag">Brew guide</div></div>
+    <div class="body">
+      <h3>버전별 우리는 법</h3>
+      <table class="howto">
+        <colgroup><col style="width:120px"><col><col><col></colgroup>
+        <thead><tr><th>Version</th><th>Water</th><th>Temp</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr><th class="st">Taste<small>VER.1</small></th><td>150ml</td><td>95~100°C</td><td>3~5분</td></tr>
+          <tr><th class="st">Depth<small>VER.2</small></th><td>150ml</td><td>100°C</td><td>7분</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 07 나의 취향찾기 ═══════════════ -->
+  <section class="sec" id="s07" aria-labelledby="h07">
+    <div class="lead">
+      <div class="num">07</div>
+      <div class="tag">Find your taste</div>
+      <div class="en">A few questions,<br>one first cup.</div>
+    </div>
+    <div class="body">
+      <h2 id="h07">막연하고 어렵다면,<br><span class="acc">나의 취향찾기</span></h2>
+      <p class="sub">무엇을 섞어야 할지 막연하거나 어렵게 느껴진다면,<br>몇 가지 질문에 답해 보세요.<br>내 취향에 맞는 블렌딩을 찾아 드려요.</p>
+    </div>
+    <div class="phones full" aria-label="나의 취향찾기 화면 예시">
+      <div class="phone" role="img" aria-label="질문 화면 예시">
+        <div class="st"><span>나의 취향찾기</span><span>질문 1 / 8</span></div>
+        <p class="q">가장 먼저 느끼고 싶은<br>향은 무엇인가요?</p>
+        <ul class="opts">
+          <li>장미와 캐모마일 같은 화사한 꽃향</li>
+          <li class="on">유자와 레몬밤 같은 밝은 과일·허브 향</li>
+          <li>볶은 곡물과 뿌리 원료의 깊은 향</li>
+          <li>깊은 로스트 위에 피어나는 과일·꽃·허브 향</li>
+        </ul>
+        <div class="cta">다음 →</div>
+      </div>
+      <div class="phone" role="img" aria-label="결과 화면 예시">
+        <div class="st"><span>오늘 나의 한 잔</span><span>결과</span></div>
+        <div><div class="res-t">로즈가든</div><div class="res-s">VER.1 Taste</div></div>
+        <div class="kv"><div class="k">나의 스푼으로</div><div class="v">캐모마일 <span class="ratio-dots">●●</span> 2스푼<br>장미 <span class="ratio-dots">●</span> 1스푼<br>레몬밤 <span class="ratio-dots">●</span> 1스푼</div></div>
+        <div class="kv"><div class="k">이렇게 우려요</div><div class="v">물 150ml, 95~100°C · 3~5분</div></div>
+        <div class="cta">이 레시피로 시작하기</div>
+      </div>
+    </div>
+    <div class="lead"></div>
+    <div class="body">
+      <div class="qrrow">
+        <div class="qr"><img src="img/qr_site.svg" alt="취향의권리.com QR 코드"></div>
+        <div>
+          <p class="url">취향의권리.com</p>
+          <p class="cap" style="margin-top:6px">홈페이지에서 ‘나의 취향찾기’ · 휴대폰 카메라로 QR을 찍어 보세요</p>
+        </div>
+      </div>
+      <p class="p2">추천 레시피와 더 많은 조합도 홈페이지에서 안내합니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 08 안심 정보 ═══════════════ -->
+  <section class="sec" id="s08" aria-labelledby="h08">
+    <div class="lead">
+      <div class="num">08</div>
+      <div class="tag">Good to know</div>
+      <div class="en">Simple,<br>and clear.</div>
+    </div>
+    <div class="body">
+      <h2 id="h08">안심 정보</h2>
+      <ol class="rows">
+        <li><span class="n">01</span><p class="t">카페인 없는 허브 · 곡물 원료</p></li>
+        <li><span class="n">02</span><p class="t">배합하지 않은 원료별 100% 소포장</p></li>
+        <li><span class="n">03</span><div><p class="t">알레르기 안내</p><p class="p2">캐모마일은 국화과 식물입니다. 해당 알레르기가 있거나 특이체질 · 임신 · 수유 중이면 섭취 전 상담하세요.</p></div></li>
+        <li><span class="n">04</span><div><p class="t">어린이는 보호자와 함께</p><p class="p2">뜨거운 물에 주의해 주세요.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 09 홈페이지 ═══════════════ -->
+  <section class="sec" id="s09" aria-labelledby="h09">
+    <div class="lead">
+      <div class="num">09</div>
+      <div class="tag">More on homepage</div>
+      <div class="en">See you<br>there.</div>
+    </div>
+    <div class="body">
+      <h2 id="h09">더 많은 이야기는<br>홈페이지에서</h2>
+      <p class="sub">블렌딩 클래스, 강사 연결, 단체 · 대량 문의는<br>취향의 권리 홈페이지에서 만나요.</p>
+      <div class="chips"><span class="chip on">블렌딩 클래스</span><span class="chip">강사 연결</span><span class="chip">단체 · 대량 문의</span></div>
+    </div>
+    <figure class="full"><img class="media r169" src="../wadiz/assets/stills/still_24.jpg" alt="창가에 앉아 차를 마시는 모습" style="object-position:50% 50%"></figure>
+    <div class="lead"></div>
+    <div class="body">
+      <div class="links">
+        <div>
+          <span class="k">OFFICIAL SITE</span>
+          <p class="url">취향의권리.com</p>
+        </div>
+        <div>
+          <span class="k">QR CODE</span>
+          <div class="qr"><img src="img/qr_site.svg" alt="취향의권리.com QR 코드"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ 10 표시사항 ═══════════════ -->
+  <section class="sec" id="s10" aria-labelledby="h10">
+    <div class="lead">
+      <div class="num">10</div>
+      <div class="tag">Product information</div>
+      <div class="en">Details.</div>
+    </div>
+    <div class="body">
+      <h2 id="h10">표시사항 · 배송 · 교환</h2>
+      <table class="spec">
+        <tbody>
+          <tr><th scope="row">제품명</th><td>취향의 권리 티블렌딩 키트 (Taste / Depth)</td></tr>
+          <tr><th scope="row">판매원</th><td>조인젠블렌드 (충북 청주시 흥덕구 가락길 60)</td></tr>
+          <tr><th scope="row">제조원</th><td>주식회사 티아포테카 (충북 청주시 흥덕구 청주역로 661-4, 1층)</td></tr>
+          <tr><th scope="row">소비기한</th><td>제조일로부터 2년</td></tr>
+          <tr><th scope="row">배송 · 교환 · 반품</th><td>스토어의 배송 · 교환 · 반품 안내를 확인해 주세요.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <img src="../wadiz/assets/logo.png" alt="취향의 권리 — the right to taste" width="72" height="72">
+    <span>© 취향의 권리 · The Right to Taste</span>
+  </footer>
+</div>
+
+</body>
+</html>
